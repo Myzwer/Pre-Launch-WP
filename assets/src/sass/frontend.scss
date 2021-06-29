@@ -1,0 +1,10 @@
+/**
+ * Front-end CSS
+ * =================================
+ * This file is what webpack actually renders out. It will contain an @use for all SCSS / Tailwind Files.
+ * This file should be kept clean and free of loose edits. If it doesn't start with @use, it doesn't go here.
+ *
+ *
+ */
+
+@use 'components/main';

@@ -1,0 +1,10 @@
+$bg: peachpuff;
+
+:root {
+  --text: green;
+}
+
+body {
+  background-color: $bg;
+  color: var(--text);
+}
