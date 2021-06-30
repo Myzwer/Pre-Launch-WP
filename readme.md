@@ -15,6 +15,8 @@
 - Mini CSS extractor
 - PostCSS
 - PostCSS preset env
+- ESlint
+- StylelintCSS
 ***
 
 - Different Commands (yarn run)
