@@ -21,3 +21,4 @@
 - Prod / Dev
 - What all the files do
 - Adding Custom Colors in TailwindCSS
+- Preflight specifics
