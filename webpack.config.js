@@ -3,6 +3,7 @@
 const path = require( 'path' );
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const StylelintPlugin = require( 'stylelint-webpack-plugin' );
 
 // ***** SET ENVIRONMENT *****
 // * This tells webpack to always run in development mode.
@@ -74,6 +75,8 @@ module.exports = {
 				reload: false,
 			}
 		),
+
+		new StylelintPlugin(),
 
 		// * Lets get that CSS rolling. This plugin lets Webpack actually build a CSS file that's separate.
 		// * If you want that file to be somewhere else, the path below will change that.
