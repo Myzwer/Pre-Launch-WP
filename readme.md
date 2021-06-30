@@ -20,3 +20,4 @@
 - Different Commands (yarn run)
 - Prod / Dev
 - What all the files do
+- Adding Custom Colors in TailwindCSS
