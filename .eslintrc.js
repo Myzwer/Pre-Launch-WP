@@ -12,5 +12,16 @@ module.exports = {
     'sourceType': 'module',
   },
   'rules': {
+    'max-len': [2, 120, 4, {'ignoreUrls': true}],
   },
+  'globals': {
+    'wp': true,
+    'jQuery': true,
+  },
+  'ignorePatterns': [
+    'tests/**/*.js',
+    'temp.js',
+    '/vendor/**/**/*.js',
+    '/node_modules/**/**/*.js',
+  ],
 };
