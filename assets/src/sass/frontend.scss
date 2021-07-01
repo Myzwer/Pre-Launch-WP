@@ -8,8 +8,9 @@
  */
 
 @use 'components/main';
+@use 'fonts/fonts.css';
 
-// This section adds tailwind, but @tailwind isn't recognized so we have to surpress stylelint.
+// This section adds tailwind, but @tailwind isn't recognized so we have to suppress stylelint.
 
 /* stylelint-disable */
 @tailwind base;

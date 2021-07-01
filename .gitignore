@@ -3,3 +3,5 @@ package-lock.json
 /assets/public
 .idea
 .DS_Store
+*.woff
+*.woof2

@@ -7,6 +7,7 @@
 - Xcode
 - Iterm
 - PHPStorm
+- Local by FW
 ***
 - Dart Sass
 - Babel
@@ -24,3 +25,4 @@
 - What all the files do
 - Adding Custom Colors in TailwindCSS
 - Preflight specifics
+- Add fonts (custom + google)
