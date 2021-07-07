@@ -28,3 +28,8 @@
 - Adding Custom Colors in TailwindCSS
 - Preflight specifics
 - Add fonts (custom + google)
+
+
+Known Issues:
+- Css not compiling in production mode
+- JS only compiles in production when CSS throws no errors.
