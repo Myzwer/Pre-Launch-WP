@@ -18,6 +18,8 @@
 - PostCSS preset env
 - ESlint
 - StylelintCSS
+- Url Loader
+- File Loader
 ***
 
 - Different Commands (yarn run)

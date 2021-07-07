@@ -1,9 +1,9 @@
 // ***** WEBPACK'S DEMANDS *****
 // * Not really a list of demands but also kind of that. This is where we tell Webpack what it needs to require.
-const path = require( 'path' );
-const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
-const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
-const StylelintPlugin = require( 'stylelint-webpack-plugin' );
+const path = require('path');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 
 // ***** SET ENVIRONMENT *****
 // * This tells webpack to always run in development mode.
@@ -11,7 +11,7 @@ let mode = 'development';
 
 // * This tells webpack that if we switch the node env (For n00bs: we run 'yarn run prod' in terminal), to switch it to
 // * production mode instead, which minifies, mangles, etc our code.
-if ( process.env.NODE_ENV === 'production' ) {
+if (process.env.NODE_ENV === 'production') {
 	mode = 'production';
 }
 
@@ -27,6 +27,7 @@ module.exports = {
 					MiniCssExtractPlugin.loader,
 					'css-loader',
 					'postcss-loader',
+					'resolve-url-loader',
 					'sass-loader',
 				],
 			},
@@ -38,10 +39,14 @@ module.exports = {
 				},
 			},
 			{
-				test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-				exclude: /node_modules/,
+				test: /\.(ttf|eot|woff|woff2|svg)$/,
 				use: {
 					loader: 'file-loader',
+					options: {
+						name: '[name].[ext]',
+						outputPath: '../fonts/',
+						esModule: false,
+					},
 				},
 			},
 		],
@@ -51,7 +56,7 @@ module.exports = {
 	entry: './assets/src/js/frontend.js',
 	output: {
 		filename: 'frontend.js',
-		path: path.resolve( __dirname, 'assets/public/js' ),
+		path: path.resolve(__dirname, 'assets/public/js'),
 	},
 
 	// ***** SET DEVTOOL *****
@@ -88,8 +93,8 @@ module.exports = {
 		// * Lets get that CSS rolling. This plugin lets Webpack actually build a CSS file that's separate.
 		// * If you want that file to be somewhere else, the path below will change that.
 		// * The path is relevant to output.path (the folder where frontend.js is).
-		new MiniCssExtractPlugin( {
+		new MiniCssExtractPlugin({
 			filename: '../css/frontend.css',
-		} ),
+		}),
 	],
 };
