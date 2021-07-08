@@ -1,4 +1,5 @@
 ## Wordpress Pre-Launch
+*STILL A WORK IN PROGRESS, IF YOU'RE SEEING THIS MESSAGE IT MEANS THIS IS STILL UNDER ACTIVE CONSTRUCTION*
 
 - Yarn
 - NPM
@@ -8,7 +9,9 @@
 - Iterm
 - PHPStorm
 - Local by FW
-***
+
+---
+
 - Dart Sass
 - Babel
 - Browsersync
@@ -20,7 +23,8 @@
 - StylelintCSS
 - Url Loader
 - File Loader
-***
+
+---
 
 - Different Commands (yarn run)
 - Prod / Dev
@@ -29,7 +33,7 @@
 - Preflight specifics
 - Add fonts (custom + google)
 
-
 Known Issues:
+
 - Css not compiling in production mode
 - JS only compiles in production when CSS throws no errors.

@@ -1,0 +1,7 @@
+/node_modules
+package-lock.json
+/assets/public
+.idea
+.DS_Store
+*.woff
+*.woff2
