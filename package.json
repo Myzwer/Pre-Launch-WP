@@ -10,7 +10,10 @@
     "dev:watch": "webpack --watch",
     "prod": "NODE_ENV=production webpack",
     "prod:watch": "NODE_ENV=production webpack --watch",
-    "lint": "eslint"
+    "lint": "eslint",
+    "pretty": "prettier --write .",
+    "stylelint": "npx stylelint \"**/*.[s]css\" --fix",
+    "fix": "eslint && npx stylelint \"**/*.css\" && prettier --write ."
   },
   "dependencies": {
     "@babel/core": "^7.14.6",
