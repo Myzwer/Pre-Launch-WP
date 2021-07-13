@@ -5,3 +5,4 @@ package-lock.json
 .DS_Store
 *.woff
 *.woff2
+readme.md

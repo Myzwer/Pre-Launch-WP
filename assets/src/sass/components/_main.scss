@@ -1,10 +1,6 @@
-$bg: peachpuff;
-
-:root {
-  --text: green;
-}
-
 body {
-  background-color: $bg;
-  color: var(--text);
+  font-family: "gotham", sans-serif !important;
+  ::placeholder {
+    color: #808080;
+  }
 }
