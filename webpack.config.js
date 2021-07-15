@@ -103,25 +103,22 @@ module.exports = {
   // ***** SET PLUGINS *****
   plugins: [
     // *** BROWSERSYNC ***
-    new BrowserSyncPlugin(
-      {
-        host: "localhost",
-        port: 3000,
-
-        // * YOU NEED TO CHANGE THIS. VVV
-        // * Local is going to output a Site Domain that ends in .local
-        // * That needs to be pasted here to get Browersync to work properly.
-        proxy: "prelaunch.local",
-        // * CHANGE ME ^^^
-      },
-
-      {
-        // * Prevent BrowserSync from reloading the page
-        // * This lets Webpack Dev Server take care of this
-        // * Unless you have a reason to change it, leave this alone.
-        reload: false,
-      }
-    ),
+    new BrowserSyncPlugin({
+      enable: true, // enable or disable browserSync
+      host: "localhost",
+      port: 3000,
+      mode: "proxy", // proxy | server
+      // * YOU NEED TO CHANGE THIS. VVV
+      // * Local is going to output a Site Domain that ends in .local
+      // * That needs to be pasted here to get Browersync to work properly.
+      proxy: "https://prelaunch.local",
+      // * CHANGE ME ^^^
+      // BrowserSync will automatically watch for changes to any files connected to our entry,
+      // including both JS and Sass files. We can use this property to tell BrowserSync to watch
+      // for other types of files, in this case PHP files, in our project.
+      files: "**/**/**.php",
+      reload: true,
+    }),
 
     // *** STYLELINT ***
     new StylelintPlugin(),
