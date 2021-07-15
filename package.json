@@ -16,6 +16,9 @@
     "stylelint": "stylelint assets/src/**/**/*.{css,scss,pcss} --fix",
     "fix-all": "eslint assets/src/js/**/*.js --fix && prettier --write . && stylelint assets/src/**/**/*.{css,scss,pcss} --fix"
   },
+  "babel": {
+    "extends": "./webpack/babel.config.js"
+  },
   "dependencies": {
     "tailwindcss": "^2.2.4"
   },

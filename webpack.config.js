@@ -65,11 +65,12 @@ module.exports = {
     ],
   },
 
-  // * CSS Minimization!
+  // * Minimization!
   // * So this is where CSSNano is configured to minimize our CSS.
   // * It does a few extra goodies like removing comments and stuff
-  // * Currently using defaul settings. More on that here:
+  // * Currently using default settings. More on that here:
   // * https://cssnano.co/docs/optimisations
+  // * This is also where we ping TerserPlugin to minify our JS too.
   optimization: {
     minimizer: [
       new CssnanoPlugin({
@@ -83,6 +84,14 @@ module.exports = {
           ],
         },
       }),
+      (compiler) => {
+        const TerserPlugin = require("terser-webpack-plugin");
+        new TerserPlugin({
+          terserOptions: {
+            compress: {},
+          },
+        }).apply(compiler);
+      },
     ],
   },
 
