@@ -36,10 +36,4 @@ module.exports = {
     "media-feature-colon-space-before": "never",
     "media-feature-colon-space-after": "always",
   },
-  ignoreFiles: [
-    "./assets/public/css/**/*.css",
-    "./vendor/**/**/*.css",
-    "./node_modules/**/**/*.css",
-    "./tests/**/**/*.css",
-  ],
 };
