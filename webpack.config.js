@@ -33,11 +33,18 @@ module.exports = {
       {
         test: /\.s?css$/i,
         use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "resolve-url-loader",
-          "sass-loader",
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: "css-loader" },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                config: "./webpack/postcss.config.js",
+              },
+            },
+          },
+          { loader: "resolve-url-loader" },
+          { loader: "sass-loader" },
         ],
       },
 
