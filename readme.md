@@ -42,15 +42,15 @@ Wordpress Pre-Launch is a VERY beginnger friendly wordpress template built on we
 
 <img src = "https://i.imgflip.com/5gak9s.jpg" width= 50%; alt = "How do you do fellow coders?">
 
-### Hey. I'm Josh.
+### Hey.
 
-I am not at all qualified to be making something like this to teach new people, yet here I am, making it. This template has 2 major sections, depending on what you need.
+So this template has 2 major sections, depending on what you need.
 
 ---
 
 # Section 1: I Know What I'm Doing.
 
-Alright you know what to do.
+You've got it then. 
 
 ```bash
 # 1-- Set up a local instance of Worpress in Local or something.
@@ -125,23 +125,23 @@ Things I plan to Cover:
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">``
 4. Copy the link from the 3rd block, minus the &display=swap. In the example above, it would be this:
-```
+```css
 https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400
 ```
 5. Navigate to functions.php, specifically the fonts part.
 6. Wrap your code in the wp function:
-```
+```php
 wp_register_style( 'FONTNAME_font', 'FONTLINK' );
 wp_enqueue_style('FONTNAME_font');
 ```
 7. Name it whatever where FONTNAME_font is (it doesn't matter what you call it, but it does make sense to name it the fontname for ease of reference later), and add the link to FONTLINK. So to complete our example:
-```
+```php
 wp_register_style( 'roboto_font', 'https://fonts.googleapis.com/css2?familY=Roboto:ital,wght@0,400;0,500;0,700;1,400' );
 wp_enqueue_style('roboto_font');
 ```
 8. Go back to google, copy the font family section and you can begin using it in your CSS!
 9. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. 
-```
+```css
 fontFamily: {
        'myfontname': ['Roboto', 'sans-serif'], // text-roboto
       }
@@ -158,7 +158,7 @@ fontFamily: {
 8. Copy all .woff and .woff2 files into ./assets/src/webfonts in the wordpress project. You can delete any existing files that you no longer need including 'hello.txt'.
 9. Open up stylesheet.css, copy all the code out of it, and paste that into fonts.css. (.assets/src/sass/fonts/)
 10. Lastly, you'll need to tell your fonts where they can find the woff files. This means adding ``../../webfonts/`` to the beginnging of all of your URL's.
-```
+```css
 font-family: "MYFONT";
   src: url("../../webfonts/MYFONT.woff2") format("woff2"),
     url("../../webfonts/MYFONT.woff") format("woff");
