@@ -42,15 +42,15 @@ Wordpress Pre-Launch is a VERY beginnger friendly wordpress template built on we
 
 <img src = "https://i.imgflip.com/5gak9s.jpg" width= 50%; alt = "How do you do fellow coders?">
 
-### Hey. I'm Josh.
+### Hey.
 
-I am not at all qualified to be making something like this to teach new people, yet here I am, making it. This template has 2 major sections, depending on what you need.
+So this template has 2 major sections, depending on what you need.
 
 ---
 
 # Section 1: I Know What I'm Doing.
 
-Alright you know what to do.
+You've got it then. 
 
 ```bash
 # 1-- Set up a local instance of Worpress in Local or something.
@@ -115,3 +115,56 @@ Things I plan to Cover:
 - Preflight specifics
 - Add fonts (custom + google)
 - Stylelint Settings
+
+### How To Add Fonts To Your Project
+#### Google Fonts
+1. Go to https://fonts.google.com/
+2. Pick a font family that you like, and select a few styles. (as a note, the more files you choose the slower the site will be. So only pick ones you need to use)
+3. Under "use on the web" section, make sure < link > is selected, and look at the code that is generated. It should look _something_ like this: 
+``<link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">``
+4. Copy the link from the 3rd block, minus the &display=swap. In the example above, it would be this:
+```css
+https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400
+```
+5. Navigate to functions.php, specifically the fonts part.
+6. Wrap your code in the wp function:
+```php
+wp_register_style( 'FONTNAME_font', 'FONTLINK' );
+wp_enqueue_style('FONTNAME_font');
+```
+7. Name it whatever where FONTNAME_font is (it doesn't matter what you call it, but it does make sense to name it the fontname for ease of reference later), and add the link to FONTLINK. So to complete our example:
+```php
+wp_register_style( 'roboto_font', 'https://fonts.googleapis.com/css2?familY=Roboto:ital,wght@0,400;0,500;0,700;1,400' );
+wp_enqueue_style('roboto_font');
+```
+8. Go back to google, copy the font family section and you can begin using it in your CSS!
+9. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. 
+```css
+fontFamily: {
+       'myfontname': ['Roboto', 'sans-serif'], // text-roboto
+      }
+  ```
+---
+#### Custom Fonts
+1. Purchase or download font files. They will most likely come as .otf or .ttf or something like that. It doesn't matter which you use. 
+2. Go to [Transfonter](https://transfonter.org/) and select the fontses you want to include. The more files you include the slower your website will be, so only get the ones you need. 
+3. Upload the font files to the site.
+4. You do not need to adjust any settings on the bottom section unless you want to.
+5. Download your @font-face kit zip file with new fonts!
+6. Upzip. ;)
+7. You don't need demo.html, though can see what your fonts looks like on a page if you load it up. 
+8. Copy all .woff and .woff2 files into ./assets/src/webfonts in the wordpress project. You can delete any existing files that you no longer need including 'hello.txt'.
+9. Open up stylesheet.css, copy all the code out of it, and paste that into fonts.css. (.assets/src/sass/fonts/)
+10. Lastly, you'll need to tell your fonts where they can find the woff files. This means adding ``../../webfonts/`` to the beginnging of all of your URL's.
+```css
+font-family: "MYFONT";
+  src: url("../../webfonts/MYFONT.woff2") format("woff2"),
+    url("../../webfonts/MYFONT.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+```
+11. Once added, if you have prettier and stylelint up and running, both of those will throw errors, so hop over to iterm and type ``yarn stylelint`` to get it fixed. 
+12. Once linked like this, you are free to use your new font families! The name is whatever fontfamily is called. In the above example (where I showed linking) MYFONT would be the name you'd use. 
