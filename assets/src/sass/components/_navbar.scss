@@ -1,0 +1,181 @@
+nav {
+  background-color: #f98324; // header background color
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  display: block;
+  float: left;
+  padding: 0 10px;
+
+  img {
+    max-height: 80px;
+  }
+}
+
+nav svg {
+  float: right;
+  height: 40px;
+  margin-top: 20px;
+}
+
+nav:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+nav ul {
+  float: right;
+  list-style: none;
+  padding-top: 10px;
+  position: relative;
+}
+
+nav ul li {
+  background-color: #f98324; // Individual link backgrounds (should be the same as main nav)
+  display: inline-block;
+  float: left;
+  margin: 0;
+}
+
+nav a {
+  color: #ffffff;
+  display: block;
+  font-size: 1em;
+  line-height: 60px;
+  padding: 0 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #333333; // Effects the color (or background color) of hovers on links
+}
+
+nav ul ul {
+  display: none;
+  position: absolute;
+  top: 60px;
+}
+
+nav ul li:hover > ul {
+  display: inherit;
+}
+
+nav ul ul li {
+  display: list-item;
+  float: none;
+  position: relative;
+  width: 170px;
+}
+
+nav ul ul ul li {
+  left: 170px;
+  position: relative;
+  top: -60px;
+}
+
+li > a:after {
+  // after drop down links
+  border: solid;
+  border-width: 0 3px 3px 0;
+  content: " ";
+  display: inline-block;
+  margin-left: 6px;
+  margin-bottom: 2px;
+  padding: 3px;
+  transform: rotate(45deg);
+}
+
+.toggle,
+[id^="drop"] {
+  display: none;
+}
+
+li > a:only-child:after {
+  // after all links
+  border: 0;
+  content: "";
+
+  margin: 0;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 832px) {
+  // set this when you want the hamburger menu to trigger
+
+  nav {
+    margin: 0;
+  }
+  .toggle + a,
+  .menu {
+    display: none;
+  }
+  .toggle {
+    background-color: #fa8c35; // Background color of dropdowns
+    border: 0;
+    color: #ffffff;
+    display: block;
+
+    line-height: 60px;
+    padding: 0 20px;
+    text-decoration: none;
+  }
+
+  .toggle:hover {
+    background-color: #fa8c35;
+  }
+
+  [id^="drop"]:checked + ul {
+    display: block;
+  }
+
+  nav ul {
+    padding-top: 0;
+  }
+
+  nav ul li {
+    display: block;
+    width: 100%;
+  }
+
+  nav ul ul .toggle,
+  nav ul ul a {
+    padding: 0 40px;
+  }
+
+  nav ul ul ul a {
+    padding: 0 80px;
+  }
+
+  /*  nav a:hover,
+  nav ul ul ul a {
+    background-color: #00ffff;
+  } */
+
+  nav ul li ul li .toggle,
+  nav ul ul a {
+    background-color: #fc9b53; // Submenu colors
+  }
+
+  nav ul ul {
+    color: #ffffff;
+    float: none;
+    position: static;
+  }
+
+  nav ul ul li:hover > ul,
+  nav ul li:hover > ul {
+    display: none;
+  }
+
+  nav ul ul li {
+    display: block;
+    width: 100%;
+  }
+
+  nav ul ul ul li {
+    position: static;
+  }
+}
