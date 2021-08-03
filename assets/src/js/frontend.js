@@ -1,15 +1,7 @@
 import "../sass/frontend.scss";
 
-const dragon = {
-  fire: 1,
-  anger: 400,
-  treasure: 6,
-};
-
-const fireDragon = {
-  ...dragon,
-  deadAdventurers: 80,
-  anger: 3000,
-};
-
-console.log(fireDragon);
+jQuery(document).ready(function () {
+  jQuery("#nav-icon3").click(function () {
+    jQuery(this).toggleClass("open");
+  });
+});

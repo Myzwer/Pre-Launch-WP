@@ -82,8 +82,8 @@ li > a:after {
   border-width: 0 3px 3px 0;
   content: " ";
   display: inline-block;
-  margin-left: 6px;
   margin-bottom: 2px;
+  margin-left: 6px;
   padding: 3px;
   transform: rotate(45deg);
 }
@@ -178,4 +178,63 @@ li > a:only-child:after {
   nav ul ul ul li {
     position: static;
   }
+}
+
+#nav-icon3 {
+  cursor: pointer;
+  height: 0;
+  margin: 24px auto 0 auto;
+  position: relative;
+  transform: rotate(0deg);
+  transition: 0.5s ease-in-out;
+  width: 40px;
+  float: right;
+}
+
+#nav-icon3 span {
+  background: #ffffff;
+  border-radius: 9px;
+  display: block;
+  height: 6px;
+  left: 0;
+  opacity: 1;
+  position: absolute;
+  transform: rotate(0deg);
+  transition: 0.25s ease-in-out;
+  width: 100%;
+}
+
+/* Icon 3 */
+
+#nav-icon3 span:nth-child(1) {
+  top: 0;
+}
+
+#nav-icon3 span:nth-child(2),
+#nav-icon3 span:nth-child(3) {
+  top: 14px;
+}
+
+#nav-icon3 span:nth-child(4) {
+  top: 28px;
+}
+
+#nav-icon3.open span:nth-child(1) {
+  left: 50%;
+  top: 18px;
+  width: 0%;
+}
+
+#nav-icon3.open span:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+#nav-icon3.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+#nav-icon3.open span:nth-child(4) {
+  left: 50%;
+  top: 18px;
+  width: 0%;
 }
