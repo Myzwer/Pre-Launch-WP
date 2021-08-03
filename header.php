@@ -32,7 +32,7 @@
                 src="https://images.squarespace-cdn.com/content/v1/575a6067b654f9b902f452f4/1552683653140-0UUVQSSUEWVC73AWAEQG/300Logo.png"
                 alt=""></div>
     <label for="drop" class="toggle">
-        <div id="nav-icon3">
+        <div class = "borger-menu">
             <span></span>
             <span></span>
             <span></span>

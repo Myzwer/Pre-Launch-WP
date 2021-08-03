@@ -1,3 +1,4 @@
+/* stylelint-disable selector-max-compound-selectors */
 nav {
   background-color: #f98324; // header background color
   margin: 0;
@@ -59,7 +60,7 @@ nav ul ul {
   top: 60px;
 }
 
-nav ul li:hover > ul {
+nav li:hover > ul {
   display: inherit;
 }
 
@@ -195,18 +196,18 @@ li > a:only-child:after {
 
 /* Hamburger Menu Icon */
 
-#nav-icon3 {
+.borger-menu {
   cursor: pointer;
+  float: right;
   height: 0;
-  margin: 24px auto 0 auto;
+  margin: 24px auto 0;
   position: relative;
   transform: rotate(0deg);
   transition: 0.5s ease-in-out;
   width: 40px;
-  float: right;
 }
 
-#nav-icon3 span {
+.borger-menu span {
   background: #ffffff;
   border-radius: 9px;
   display: block;
@@ -221,34 +222,34 @@ li > a:only-child:after {
 
 /* Icon 3 */
 
-#nav-icon3 span:nth-child(1) {
+.borger-menu span:nth-child(1) {
   top: 0;
 }
 
-#nav-icon3 span:nth-child(2),
-#nav-icon3 span:nth-child(3) {
+.borger-menu span:nth-child(2),
+.borger-menu span:nth-child(3) {
   top: 14px;
 }
 
-#nav-icon3 span:nth-child(4) {
+.borger-menu span:nth-child(4) {
   top: 28px;
 }
 
-#nav-icon3.open span:nth-child(1) {
+.borger-menu.open span:nth-child(1) {
   left: 50%;
   top: 18px;
   width: 0%;
 }
 
-#nav-icon3.open span:nth-child(2) {
+.borger-menu.open span:nth-child(2) {
   transform: rotate(45deg);
 }
 
-#nav-icon3.open span:nth-child(3) {
+.borger-menu.open span:nth-child(3) {
   transform: rotate(-45deg);
 }
 
-#nav-icon3.open span:nth-child(4) {
+.borger-menu.open span:nth-child(4) {
   left: 50%;
   top: 18px;
   width: 0%;
