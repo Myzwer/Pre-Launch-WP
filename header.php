@@ -56,7 +56,7 @@
         <li>
 
             <!-- First Tier Drop Down -->
-            <label for="drop-2" class="toggle">Portfolio +</label>
+            <label for="drop-2" class="toggle">Portfolio</label>
             <a href="#">Portfolio</a>
             <input type="checkbox" id="drop-2"/>
             <ul>
@@ -65,7 +65,7 @@
                 <li>
 
                     <!-- Second Tier Drop Down -->
-                    <label for="drop-3" class="toggle">Works +</label>
+                    <label for="drop-3" class="toggle">Works</label>
                     <a href="#">Works</a>
                     <input type="checkbox" id="drop-3"/>
                     <ul>

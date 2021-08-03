@@ -108,16 +108,17 @@ li > a:only-child:after {
   nav {
     margin: 0;
   }
+
   .toggle + a,
   .menu {
     display: none;
   }
+
   .toggle {
     background-color: #fa8c35; // Background color of dropdowns
     border: 0;
     color: #ffffff;
     display: block;
-
     line-height: 60px;
     padding: 0 20px;
     text-decoration: none;
@@ -133,6 +134,18 @@ li > a:only-child:after {
 
   nav ul {
     padding-top: 0;
+  }
+
+  li > label:after {
+    // after drop down links
+    border: solid;
+    border-width: 0 3px 3px 0;
+    content: " ";
+    display: inline-block;
+    margin-bottom: 2px;
+    margin-left: 6px;
+    padding: 3px;
+    transform: rotate(45deg);
   }
 
   nav ul li {
@@ -179,6 +192,8 @@ li > a:only-child:after {
     position: static;
   }
 }
+
+/* Hamburger Menu Icon */
 
 #nav-icon3 {
   cursor: pointer;
