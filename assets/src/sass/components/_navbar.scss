@@ -163,11 +163,6 @@ li > a:only-child:after {
     padding: 0 80px;
   }
 
-  /*  nav a:hover,
-  nav ul ul ul a {
-    background-color: #00ffff;
-  } */
-
   nav ul li ul li .toggle,
   nav ul ul a {
     background-color: #fc9b53; // Submenu colors
@@ -219,8 +214,6 @@ li > a:only-child:after {
   transition: 0.25s ease-in-out;
   width: 100%;
 }
-
-/* Icon 3 */
 
 .borger-menu span:nth-child(1) {
   top: 0;
