@@ -102,12 +102,21 @@ li > a:only-child:after {
   margin: 0;
 }
 
+nav label {
+  display: none;
+}
+
 /* Responsive Styles */
 @media screen and (max-width: 832px) {
   // set this when you want the hamburger menu to trigger
 
   nav {
     margin: 0;
+  }
+
+  nav label {
+    color: #ffffff;
+    display: block;
   }
 
   .toggle + a,
