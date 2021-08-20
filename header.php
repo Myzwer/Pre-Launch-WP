@@ -27,31 +27,70 @@
 <?php wp_body_open(); ?>
 
 
-<nav>
-    <div class="logo"><img
-                src="https://images.squarespace-cdn.com/content/v1/575a6067b654f9b902f452f4/1552683653140-0UUVQSSUEWVC73AWAEQG/300Logo.png"
-                alt=""></div>
-    <label for="drop" class="toggle">
-        <div class="borger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+<section class="navigation">
+    <div class="nav-container">
+        <div class="brand">
+            <a href="#!">
+                <img src="https://images.squarespace-cdn.com/content/v1/575a6067b654f9b902f452f4/1552683653140-0UUVQSSUEWVC73AWAEQG/300Logo.png" alt="">
+            </a>
         </div>
-    </label>
+        <nav>
+            <div class="nav-mobile">
+                <a id="nav-toggle" href="#!"><span></span></a>
+            </div>
 
+            <!-- tart Wordpress-->
+            <ul class="nav-list">
+                <li>
+                    <a href="#!">Home</a>
+                </li>
+                <li>
+                    <a href="#!">About</a>
+                </li>
+                <li>
+                    <a href="#!">Services</a>
+                    <ul class="nav-dropdown">
+                        <li>
+                            <a href="#!">Web Design</a>
+                        </li>
+                        <li>
+                            <a href="#!">Web Development</a>
+                        </li>
+                        <li>
+                            <a href="#!">Graphic Design</a>
+                        </li>
+                    </ul>
+                </li>
 
-    <?php
-    wp_nav_menu(array(
-    'theme_location' => 'header-menu',
-    'menu_class' => 'primary-menu', // pass whatever classes to be added to top level here
-    'walker' => new PreLaunch_Walker(),
-    'items_wrap' => '<input type="checkbox" id="drop"/><ul class = \'menu %2$s\'>%3$s</ul>'
+                <li>
+                    <a href="#!">Pricing</a>
+                </li>
 
-    ));
-    ?>
+                <li>
+                    <a href="#!">Portfolio</a>
+                    <ul class="nav-dropdown">
+                        <li>
+                            <a href="#!">Web Design</a>
+                        </li>
+                        <li>
+                            <a href="#!">Web Development</a>
+                        </li>
+                        <li>
+                            <a href="#!">Graphic Design</a>
+                        </li>
+                    </ul>
+                </li>
 
-</nav>
+                <li>
+                    <a href="#!">Contact</a>
+                </li>
+
+            <!-- End Wordress -->
+            </ul>
+        </nav>
+    </div>
+</section>
+
 
 
 

@@ -17,7 +17,8 @@
 get_header(); ?>
 
     <div class="m-4 md:m-10 lg:max-w-4xl lg:text-center lg:mx-auto">
-        <div class="grid grid-cols-12">
+        <div class="grid">
+        <div class=" grid-cols-12">
             <div class="col-span-12">
                 <div class="text-center md:text-left mb-1">
                     <h1>Color Pod</h1>
@@ -25,6 +26,7 @@ get_header(); ?>
                 </div>
                 <hr>
             </div>
+        </div>
         </div>
 
         <div class="grid grid-cols-12 gap-4 mt-6">

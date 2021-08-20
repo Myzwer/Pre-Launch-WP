@@ -1,258 +1,199 @@
-/* stylelint-disable selector-max-compound-selectors */
-nav {
-  background-color: #f98324; // header background color
-  margin: 0;
-  padding: 0;
+/*
+ * Navbar SCSS
+ * ---------------------------
+ * This is the scss file to control the styles of the navbar.
+ * A few stylelint rules had to be disabled as navbar's merit them
+ * Special thanks to https://codepen.io/taniarascia/pen/dYvvYv for the navbar
+ *
+*/
+
+// Turn off Stylelint settings
+/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
+
+// Navbar quick settings
+$content-width: 1000px; // How wide or narrow do you want the bar to be?
+$breakpoint: 799px; // When do you want to switch from mobile to desktop?
+$nav-height: 70px; // How tall do you want the navbar to be?
+$nav-background: #262626; // What background color do you want?
+$nav-font-color: #ffffff; // What primary font color?
+$link-hover-color: #2581dc; // What color when you hover?
+
+// Outer navigation wrapper
+.navigation {
+  background: $nav-background;
+  height: $nav-height;
 }
 
-.logo {
-  display: block;
+// Logo and branding
+.brand {
   float: left;
-  padding: 0 10px;
-
-  img {
-    max-height: 80px;
-  }
-}
-
-nav svg {
-  float: right;
-  height: 40px;
-  margin-top: 20px;
-}
-
-nav:after {
-  clear: both;
-  content: "";
-  display: table;
-}
-
-nav ul {
-  float: right;
-  list-style: none;
-  padding-top: 10px;
-  position: relative;
-}
-
-nav ul li {
-  background-color: #f98324; // Individual link backgrounds (should be the same as main nav)
-  display: inline-block;
-  float: left;
-  margin: 0;
-}
-
-nav a {
-  color: #ffffff;
-  display: block;
-  font-size: 1em;
-  line-height: 60px;
-  padding: 0 20px;
-  text-decoration: none;
-}
-
-nav a:hover {
-  color: #333333; // Effects the color (or background color) of hovers on links
-}
-
-nav ul ul {
-  display: none;
+  font-size: 1.4em;
+  line-height: $nav-height;
+  padding-left: 20px;
   position: absolute;
-  top: 60px;
-}
-
-nav li:hover > ul {
-  display: inherit;
-}
-
-nav ul ul li {
-  display: list-item;
-  float: none;
-  position: relative;
-  width: 170px;
-}
-
-nav ul ul ul li {
-  left: 170px;
-  position: relative;
-  top: -60px;
-}
-
-li > a:after {
-  // after drop down links
-  border: solid;
-  border-width: 0 3px 3px 0;
-  content: " ";
-  display: inline-block;
-  margin-bottom: 2px;
-  margin-left: 6px;
-  padding: 3px;
-  transform: rotate(45deg);
-}
-
-.toggle,
-[id^="drop"] {
-  display: none;
-}
-
-li > a:only-child:after {
-  // after all links
-  border: 0;
-  content: "";
-
-  margin: 0;
-}
-
-nav label {
-  display: none;
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 832px) {
-  // set this when you want the hamburger menu to trigger
-
-  nav {
-    margin: 0;
-  }
-
-  nav label {
-    color: #ffffff;
-    display: block;
-  }
-
-  .toggle + a,
-  .menu {
-    display: none;
-  }
-
-  .toggle {
-    background-color: #fa8c35; // Background color of dropdowns
-    border: 0;
-    color: #ffffff;
-    display: block;
-    line-height: 60px;
-    padding: 0 20px;
+  text-transform: uppercase;
+  a,
+  a:visited {
+    color: $nav-font-color;
     text-decoration: none;
   }
 
-  .toggle:hover {
-    background-color: #fa8c35;
-  }
-
-  [id^="drop"]:checked + ul {
-    display: block;
-  }
-
-  nav ul {
-    padding-top: 0;
-  }
-
-  li > label:after {
-    // after drop down links
-    border: solid;
-    border-width: 0 3px 3px 0;
-    content: " ";
-    display: inline-block;
-    margin-bottom: 2px;
-    margin-left: 6px;
-    padding: 3px;
-    transform: rotate(45deg);
-  }
-
-  nav ul li {
-    display: block;
-    width: 100%;
-  }
-
-  nav ul ul .toggle,
-  nav ul ul a {
-    padding: 0 40px;
-  }
-
-  nav ul ul ul a {
-    padding: 0 80px;
-  }
-
-  nav ul li ul li .toggle,
-  nav ul ul a {
-    background-color: #fc9b53; // Submenu colors
-  }
-
-  nav ul ul {
-    color: #ffffff;
-    float: none;
-    position: static;
-  }
-
-  nav ul ul li:hover > ul,
-  nav ul li:hover > ul {
-    display: none;
-  }
-
-  nav ul ul li {
-    display: block;
-    width: 100%;
-  }
-
-  nav ul ul ul li {
-    position: static;
+  // If you change your navbar height, you may need to adjust this.
+  img {
+    height: 70px;
   }
 }
 
-/* Hamburger Menu Icon */
+// Container with no padding for navbar
+.nav-container {
+  margin: 0 auto;
+  max-width: $content-width;
+}
 
-.borger-menu {
-  cursor: pointer;
+// Navigation
+nav {
   float: right;
-  height: 0;
-  margin: 24px auto 0;
-  position: relative;
-  transform: rotate(0deg);
-  transition: 0.5s ease-in-out;
-  width: 40px;
-}
-
-.borger-menu span {
-  background: #ffffff;
-  border-radius: 9px;
-  display: block;
-  height: 6px;
-  left: 0;
-  opacity: 1;
   position: absolute;
-  transform: rotate(0deg);
-  transition: 0.25s ease-in-out;
-  width: 100%;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      float: left;
+      position: relative;
+      a,
+      a:visited {
+        background: $nav-background;
+        color: $nav-font-color;
+        display: block;
+        line-height: $nav-height;
+        padding: 0 20px;
+        text-decoration: none;
+        &:hover {
+          background: $link-hover-color;
+          color: $nav-font-color;
+        }
+        &:not(:only-child):after {
+          content: " ▾";
+          padding-left: 4px;
+        }
+      } // Dropdown list
+      ul li {
+        min-width: 190px;
+        a {
+          line-height: 20px;
+          padding: 15px;
+        }
+      }
+    }
+  }
 }
 
-.borger-menu span:nth-child(1) {
+// removes the position absolute from mobile.
+@media screen and (min-width: 40em) {
+  nav {
+    position: relative;
+  }
+}
+
+// Dropdown list binds to JS toggle event
+.nav-dropdown {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Mobile navigation */
+
+// Binds to JS Toggle
+.nav-mobile {
+  background: $nav-background;
+  display: none;
+  height: $nav-height;
+  position: absolute;
+  right: 0;
   top: 0;
+  width: $nav-height;
+}
+@media only screen and (max-width: 798px) {
+  // Hamburger nav visible on mobile only
+  .nav-mobile {
+    display: block;
+  }
+  nav {
+    padding: $nav-height 0 15px;
+    width: 100%;
+    ul {
+      display: none;
+      li {
+        float: none;
+        a {
+          line-height: 20px;
+          padding: 15px;
+        }
+        ul li a {
+          padding-left: 30px;
+        }
+      }
+    }
+  }
+  .nav-dropdown {
+    position: static;
+  }
+}
+@media screen and (min-width: $breakpoint) {
+  .nav-list {
+    display: block !important;
+  }
+}
+#nav-toggle {
+  cursor: pointer;
+  left: 18px;
+  padding: 10px 35px 16px 0;
+  position: absolute;
+  top: 22px;
+
+  span,
+  span:before,
+  span:after {
+    background: $nav-font-color;
+    border-radius: 1px;
+    content: "";
+    cursor: pointer;
+    display: block;
+    height: 3px;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    width: 35px;
+  }
+
+  span:after {
+    margin-left: 10px;
+    width: 25px;
+  }
+
+  span:before {
+    top: -10px;
+  }
+  span:after {
+    bottom: -10px;
+  }
+  &.active span {
+    background-color: transparent;
+    &:before,
+    &:after {
+      top: 0;
+    }
+    &:before {
+      transform: rotate(45deg);
+    }
+    &:after {
+      margin: 0;
+      transform: rotate(-45deg);
+      width: 35px;
+    }
+  }
 }
 
-.borger-menu span:nth-child(2),
-.borger-menu span:nth-child(3) {
-  top: 14px;
-}
-
-.borger-menu span:nth-child(4) {
-  top: 28px;
-}
-
-.borger-menu.open span:nth-child(1) {
-  left: 50%;
-  top: 18px;
-  width: 0%;
-}
-
-.borger-menu.open span:nth-child(2) {
-  transform: rotate(45deg);
-}
-
-.borger-menu.open span:nth-child(3) {
-  transform: rotate(-45deg);
-}
-
-.borger-menu.open span:nth-child(4) {
-  left: 50%;
-  top: 18px;
-  width: 0%;
-}
+/* stylelint-enable max-nesting-depth, selector-max-compound-selectors, selector-max-id,  no-duplicate-selectors */
