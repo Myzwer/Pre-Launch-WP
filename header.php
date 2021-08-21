@@ -78,13 +78,20 @@
                         <li>
                             <a href="#!">Graphic Design</a>
                         </li>
+                        <li>
+                            <a href="#!">Graphic Design</a>
+                        </li>
+                        <li>
+                            <a href="#!">Graphic Design</a>
+                        </li>
+                        <li>
+                            <a href="#!">Graphic Design</a>
+                        </li>
                     </ul>
                 </li>
 
-                <li>
-                    <a href="#!">Contact</a>
-                </li>
 
+                <li class = "button"><a href="#!">Book Now</a></li>
             <!-- End Wordress -->
             </ul>
         </nav>

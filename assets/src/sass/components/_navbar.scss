@@ -3,6 +3,7 @@
  * ---------------------------
  * This is the scss file to control the styles of the navbar.
  * A few stylelint rules had to be disabled as navbar's merit them
+ * Most of the "settings" are at the top, but dig around to change more specific things.
  * Special thanks to https://codepen.io/taniarascia/pen/dYvvYv for the navbar
  *
 */
@@ -17,6 +18,8 @@ $nav-height: 70px; // How tall do you want the navbar to be?
 $nav-background: #262626; // What background color do you want?
 $nav-font-color: #ffffff; // What primary font color?
 $link-hover-color: #2581dc; // What color when you hover?
+$button-color: #ff5555; // What background color do you want the button to be?
+$button-hover-color: #e03a3a; // What hover color do you want the button to be?
 
 // Outer navigation wrapper
 .navigation {
@@ -124,6 +127,7 @@ nav {
   nav {
     padding: $nav-height 0 15px;
     width: 100%;
+    z-index: 10;
     ul {
       display: none;
       li {
@@ -145,8 +149,10 @@ nav {
 @media screen and (min-width: $breakpoint) {
   .nav-list {
     display: block !important;
+    z-index: 10;
   }
 }
+
 #nav-toggle {
   cursor: pointer;
   left: 18px;
@@ -193,6 +199,54 @@ nav {
       transform: rotate(-45deg);
       width: 35px;
     }
+  }
+}
+
+.button {
+  align-self: center;
+  background-color: $button-color;
+  color: #ffffff;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.1s ease-in-out;
+}
+
+.button a {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.button:hover a {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.button:hover {
+  background: $button-hover-color;
+}
+
+.button:active {
+  transform: scale(1.025);
+}
+
+@media screen and (min-width: $breakpoint) {
+  .button {
+    border-radius: 10px;
+    margin-top: 15px;
+  }
+
+  .button a {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .button:hover a {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  nav ul .button a,
+  nav ul .button a:visited {
+    line-height: 10px;
+    padding: 15px;
   }
 }
 
