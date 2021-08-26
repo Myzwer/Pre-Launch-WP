@@ -124,6 +124,10 @@ nav {
   .nav-mobile {
     display: block;
   }
+
+  .brand {
+    padding-left: 10px;
+  }
   nav {
     padding: $nav-height 0 15px;
     width: 100%;

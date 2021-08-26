@@ -20,13 +20,17 @@ class PreLaunch_Walker extends Walker_Nav_Menu
     {
         $title = $item->title;
         $permalink = $item->url;
-        if (in_array("menu-item-has-children", $item->classes)) {
+/*        if (in_array("menu-item-has-children", $item->classes)) {
             $output .= "<li><label for='drop-{$item->ID}'>$title</label>";
             $output .= "<a href='$permalink'>$title</a>";
             $output .= "<input type='checkbox' id='drop-{$item->ID}' />";
         } else {
             $output .= "<li><a href='$permalink'>$title";
-        }
+        }*/
+
+        $output .= "<li>";
+        $output .= "<a href='$permalink'>$title</a>";
+
     }
 
 
@@ -44,7 +48,7 @@ class PreLaunch_Walker extends Walker_Nav_Menu
 //        $after = $args->after;
         // Passed by reference, thus no need to return a value.
 //        $output .= $after;
-        $output .= "</a></li>";
+        $output .= "</li>";
     }
 
     /**
@@ -56,7 +60,7 @@ class PreLaunch_Walker extends Walker_Nav_Menu
      */
     public function start_lvl(&$output, $depth = 0, $args = null)
     {
-        $output .= '<ul>';
+        $output .= '<ul class="nav-dropdown">';
     }
 
     /**
