@@ -46,8 +46,7 @@
                 'theme_location' => 'header-menu',
                 'menu_class'     => 'primary-menu', // pass whatever classes to be added to top level here
                 'walker' => new PreLaunch_Walker(),
-//                'items_wrap' => '<nav role="navigation" class="%2$s">%3$s</nav>'
-                 'items_wrap' => '<ul class="nav-list">%3$s</ul>'
+                'items_wrap' => '<ul class="nav-list">%3$s</ul>'
             ));
             ?>
             <!-- End Wordress -->
