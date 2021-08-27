@@ -1,0 +1,257 @@
+/*
+ * Navbar SCSS
+ * ---------------------------
+ * This is the scss file to control the styles of the navbar.
+ * A few stylelint rules had to be disabled as navbar's merit them
+ * Most of the "settings" are at the top, but dig around to change more specific things.
+ * Special thanks to https://codepen.io/taniarascia/pen/dYvvYv for the navbar
+ *
+*/
+
+// Turn off Stylelint settings
+/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
+
+// Navbar quick settings
+$content-width: 1000px; // How wide or narrow do you want the bar to be?
+$breakpoint: 799px; // When do you want to switch from mobile to desktop?
+$nav-height: 70px; // How tall do you want the navbar to be?
+$nav-background: #262626; // What background color do you want?
+$nav-font-color: #ffffff; // What primary font color?
+$link-hover-color: #2581dc; // What color when you hover?
+$button-color: #ff5555; // What background color do you want the button to be?
+$button-hover-color: #e03a3a; // What hover color do you want the button to be?
+
+// Outer navigation wrapper
+.navigation {
+  background: $nav-background;
+  height: $nav-height;
+}
+
+// Logo and branding
+.brand {
+  float: left;
+  font-size: 1.4em;
+  line-height: $nav-height;
+  padding-left: 20px;
+  position: absolute;
+  text-transform: uppercase;
+  a,
+  a:visited {
+    color: $nav-font-color;
+    text-decoration: none;
+  }
+
+  // If you change your navbar height, you may need to adjust this.
+  img {
+    height: 70px;
+  }
+}
+
+// Container with no padding for navbar
+.nav-container {
+  margin: 0 auto;
+  max-width: $content-width;
+}
+
+// Navigation
+nav {
+  float: right;
+  position: absolute;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      float: left;
+      position: relative;
+      a,
+      a:visited {
+        background: $nav-background;
+        color: $nav-font-color;
+        display: block;
+        line-height: $nav-height;
+        padding: 0 20px;
+        text-decoration: none;
+        &:hover {
+          background: $link-hover-color;
+          color: $nav-font-color;
+        }
+        &:not(:only-child):after {
+          content: " ▾";
+          padding-left: 4px;
+        }
+      } // Dropdown list
+      ul li {
+        min-width: 190px;
+        a {
+          line-height: 20px;
+          padding: 15px;
+        }
+      }
+    }
+  }
+}
+
+// removes the position absolute from mobile.
+@media screen and (min-width: 40em) {
+  nav {
+    position: relative;
+  }
+}
+
+// Dropdown list binds to JS toggle event
+.nav-dropdown {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Mobile navigation */
+
+// Binds to JS Toggle
+.nav-mobile {
+  background: $nav-background;
+  display: none;
+  height: $nav-height;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $nav-height;
+}
+@media only screen and (max-width: 798px) {
+  // Hamburger nav visible on mobile only
+  .nav-mobile {
+    display: block;
+  }
+
+  .brand {
+    padding-left: 10px;
+  }
+  nav {
+    padding: $nav-height 0 15px;
+    width: 100%;
+    z-index: 10;
+    ul {
+      display: none;
+      li {
+        float: none;
+        a {
+          line-height: 20px;
+          padding: 15px;
+        }
+        ul li a {
+          padding-left: 30px;
+        }
+      }
+    }
+  }
+  .nav-dropdown {
+    position: static;
+  }
+}
+@media screen and (min-width: $breakpoint) {
+  .nav-list {
+    display: block !important;
+    z-index: 10;
+  }
+}
+
+#nav-toggle {
+  cursor: pointer;
+  left: 18px;
+  padding: 10px 35px 16px 0;
+  position: absolute;
+  top: 22px;
+
+  span,
+  span:before,
+  span:after {
+    background: $nav-font-color;
+    border-radius: 1px;
+    content: "";
+    cursor: pointer;
+    display: block;
+    height: 3px;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    width: 35px;
+  }
+
+  span:after {
+    margin-left: 10px;
+    width: 25px;
+  }
+
+  span:before {
+    top: -10px;
+  }
+  span:after {
+    bottom: -10px;
+  }
+  &.active span {
+    background-color: transparent;
+    &:before,
+    &:after {
+      top: 0;
+    }
+    &:before {
+      transform: rotate(45deg);
+    }
+    &:after {
+      margin: 0;
+      transform: rotate(-45deg);
+      width: 35px;
+    }
+  }
+}
+
+.button {
+  align-self: center;
+  background-color: $button-color;
+  color: #ffffff;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.1s ease-in-out;
+}
+
+.button a {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.button:hover a {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.button:hover {
+  background: $button-hover-color;
+}
+
+.button:active {
+  transform: scale(1.025);
+}
+
+@media screen and (min-width: $breakpoint) {
+  .button {
+    border-radius: 10px;
+    margin-top: 15px;
+  }
+
+  .button a {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .button:hover a {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  nav ul .button a,
+  nav ul .button a:visited {
+    line-height: 10px;
+    padding: 15px;
+  }
+}
+
+/* stylelint-enable max-nesting-depth, selector-max-compound-selectors, selector-max-id,  no-duplicate-selectors */

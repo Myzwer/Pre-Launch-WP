@@ -116,7 +116,7 @@ Things I plan to Cover:
 - Add fonts (custom + google)
 - Stylelint Settings
 
-### How To Add Fonts To Your Project
+## How To Add Fonts To Your Project
 #### Google Fonts
 1. Go to https://fonts.google.com/
 2. Pick a font family that you like, and select a few styles. (as a note, the more files you choose the slower the site will be. So only pick ones you need to use)
@@ -168,3 +168,33 @@ font-family: "MYFONT";
 ```
 11. Once added, if you have prettier and stylelint up and running, both of those will throw errors, so hop over to iterm and type ``yarn stylelint`` to get it fixed. 
 12. Once linked like this, you are free to use your new font families! The name is whatever fontfamily is called. In the above example (where I showed linking) MYFONT would be the name you'd use. 
+
+## Navbar - Header.php
+#### What is going on here?
+So if you've never had the pleasure of creating a navbar before, it's a tossup between creating one and getting waterboarded for me. They are miserable to deal with for a couple reasons. They are already finicky enough without introducing wordpress into the mixture. 
+
+Wait, what do you mean "in wordpress"? I mean that your navbar isn't much good if the URL's are only work on local or production, but not both. Or if the user can't go in and edit a link like they wanted to. So we build it In wordpress, meaning we use php to generate the navbar code on the server side, rather than a whole bunch of HTML. However, wordpress has a very specific way of outputing code, and it is without fail NEVER the code you needed it to be. So we use a custom navwalker to fix this. 
+
+That sounds complicated. It was, luckily it's done for you. The navbar is plug and play as is, right now. 
+
+*** IMPORTANT NOTE: THIS NAVBAR DOES NOT USE TAILWIND SO REMOVING TAILWIND FROM THE PROJECT WILL NOT EFFECT IT. ***
+
+#### **I just want to use the navbar as is.**
+Great! You can swap the logo out in `header.php` and edit the links in WP admin. Happy coding!
+
+#### **Ok so I like it, but I wanna tweak some things.**
+Well, head over to `/assets/src/sass/components/_navbar.scss`. Notice at the top there's some SCSS variables with comments. These are some "hotfix" style things you can edit such as width, height, breakpoint, colors, etc. If you can't accomplish what you are looking to do via those, you'll need to jump into the code to make your changes. I've commented as well as I can for you. Happy Coding!
+
+#### **Nah I've got my own navbar, can I use that?**
+Sure. It's your project and I didn't include malware with this install to tell me whether you tampered with the navbar or not. To get rid of it and add your own:
+1. Delete everything out of `/assets/src/sass/components/_navbar.scss`. I don't see a reason why you wouldn't just replace it with your new css, but if you want to delete the file you can.
+2. Delete all the code in `header.php` FROM `<section class="navigation">` through `</section>`. Leave the rest alone.
+3. You might need to edit functions.php as well, depending on to what extext you are pruging the navbar. 
+
+Good luck with your own navbar! I'd recommend you follow this pattern but it really up to you. Again, malware free over here.
+1. Get the navbar working independent of your project, in codepen or something. Eliminates a lot of "is this not working because the code is wrong or because the project is messing it up?"
+2. Import it in, and get it working static. meaning no php, none of that. Once you see that the navbar is working perfectly...
+3. Convert it to wordpress. How to do that is beyond the scope of this readme, but there are plenty of resources online to help. Don't fall into the trap of saying you don't need to convert it. You do. It'll save you and your clients a headache in the future. 
+- https://www.wpbeginner.com/beginners-guide/how-to-add-navigation-menu-in-wordpress-beginners-guide/
+- https://css-tricks.com/the-wordpress-nav-walker-class-a-guided-var_dump/
+Happy coding!
