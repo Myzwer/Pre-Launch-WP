@@ -7,8 +7,6 @@
  *
 */
 
-/* The footer is fixed to the bottom of the page */
-
 $background-color: #222222;
 $color: #ffffff;
 $breakpoint: 40em;
@@ -61,7 +59,7 @@ $breakpoint: 40em;
   text-align: center;
 }
 
-/* Footer Center */
+/* Footer Right */
 
 .footer-right {
   width: 100%;
@@ -78,7 +76,7 @@ $breakpoint: 40em;
   }
 }
 
-/* Footer Right */
+/* Footer Bottom */
 
 .footer-bottom {
   width: 100%;
@@ -140,6 +138,10 @@ $breakpoint: 40em;
     text-align: left;
     width: 50%;
 
+    div {
+      display: inline-block;
+    }
+
     ul {
       display: inline-block;
       padding-left: 20px;
@@ -169,8 +171,8 @@ $breakpoint: 40em;
     padding-top: 10px;
 
     img {
-      width: 30%;
       margin-top: 20px;
+      width: 30%;
     }
   }
 

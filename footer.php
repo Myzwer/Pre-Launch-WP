@@ -23,18 +23,8 @@
 
     <div class="footer-right">
         <div class="right-inner">
-            <ul>
-                <li>Home</li>
-                <li>About Us</li>
-                <li>Booking</li>
-                <li>Other Page</li>
-            </ul>
-
-            <ul>
-                <li>Contact</li>
-                <li>404 Error</li>
-                <li>Privacy Policy</li>
-            </ul>
+            <?php wp_nav_menu( array( 'theme_location' => 'footer-column-1' ) ); ?>
+            <?php wp_nav_menu( array( 'theme_location' => 'footer-column-2' ) ); ?>
         </div>
 
     </div>
