@@ -1,0 +1,142 @@
+/*
+ * Footer SCSS
+ * ---------------------------
+ * This is the scss file to control the styles of the footer.
+ * The footer is built in mostly tailwind, so this has just a few settings to quickchange some things.
+ * Should be obvious but this footer will NOT work if tailwind is disabled.
+ *
+*/
+
+/* The footer is fixed to the bottom of the page */
+
+$background-color: #222222;
+$color: #ffffff;
+$breakpoint: 40em;
+
+.footer {
+  background-color: $background-color;
+  box-sizing: border-box;
+  margin-top: 80px;
+  padding: 20px;
+  text-align: left;
+  width: 100%;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  display: block;
+  margin-bottom: 20px;
+  text-align: center;
+  vertical-align: top;
+}
+
+/* Footer left */
+.footer-left {
+  width: 100%;
+
+  .left-inner {
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  img {
+    margin: 0 auto;
+    width: 50%;
+  }
+
+  h3 {
+    color: $color;
+    font-size: 2em;
+    margin-top: -10px;
+    text-align: center;
+  }
+}
+
+.phone-number {
+  color: $color;
+  font-size: 0.8em;
+  margin: 0;
+  opacity: 0.6;
+  text-align: center;
+}
+
+/* Footer Center */
+
+.footer-center {
+  width: 100%;
+
+  ul {
+    text-align: left;
+    color: #ffffff;
+    padding-left: 10px;
+    opacity: 0.6;
+  }
+
+  li {
+    padding-bottom: 5px;
+  }
+}
+
+/* Footer Right */
+
+.footer-right {
+  width: 100%;
+}
+
+.footer-company-about {
+  color: #92999f;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+}
+
+.footer-company-about span {
+  color: #ffffff;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.footer-icons {
+  margin-top: 25px;
+}
+
+.footer-icons a {
+  background-color: #33383b;
+  border-radius: 2px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  height: 35px;
+  line-height: 35px;
+  margin-bottom: 5px;
+  margin-right: 3px;
+  text-align: center;
+  width: 35px;
+}
+
+/* Here is the code for Responsive Footer */
+/* You can remove below code if you don't want Footer to be responsive */
+
+@media screen and (min-width: 40em) {
+  .footer {
+    padding: 50px 50px 60px;
+  }
+
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: left;
+    width: 33%;
+  }
+
+  .footer-center i {
+    margin-left: 0;
+  }
+}
