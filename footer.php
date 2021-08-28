@@ -21,23 +21,25 @@
         </div>
     </div>
 
-    <div class="footer-center">
-        <ul>
-            <li>Home</li>
-            <li>About Us</li>
-            <li>Booking</li>
-            <li>Contact</li>
-        </ul>
+    <div class="footer-right">
+        <div class="right-inner">
+            <ul>
+                <li>Home</li>
+                <li>About Us</li>
+                <li>Booking</li>
+                <li>Other Page</li>
+            </ul>
 
-        <ul>
-            <li>404 Error</li>
-            <li>Privacy Policy</li>
-            <li>Other Page</li>
-        </ul>
+            <ul>
+                <li>Contact</li>
+                <li>404 Error</li>
+                <li>Privacy Policy</li>
+            </ul>
+        </div>
 
     </div>
-    <div class="footer-right">
-        <div class="footer-company-about">
+    <div class="footer-bottom">
+        <div class="bot-inner">
             <p>Some Text</p>
             <p>© <?php echo date("Y"); ?> Website Company Name</p>
             <div class="footer-icons">
