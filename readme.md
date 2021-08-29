@@ -42,12 +42,6 @@ Wordpress Pre-Launch is a VERY beginnger friendly wordpress template built on we
 
 <img src = "https://i.imgflip.com/5gak9s.jpg" width= 50%; alt = "How do you do fellow coders?">
 
-### Hey.
-
-So this template has 2 major sections, depending on what you need.
-
----
-
 # Section 1: I Know What I'm Doing.
 
 You've got it then. 
@@ -81,8 +75,8 @@ Couple Notes before we start:
 - While the aim of this guide is to help users get set up as much as possible, I am not going to cover how to build out a complete theme in WordPress. The goal is to get you from 0 to a working template, then run on your own.
 
 # Table of Contents: 
-1. [Adding Custom Fonts](#How To Add Fonts To Your Project)  
-2. [Navbar](#Navbar)  
+1. [Adding Custom Fonts](#how-to-add-fonts-to-your-project)  
+2. [Navbar](#navbar---headerphp)  
 
 Nothing yet. Sorry if you found this already. Lotta hype for nothing.
 Things I plan to Cover:
