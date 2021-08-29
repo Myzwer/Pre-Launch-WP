@@ -80,6 +80,10 @@ Couple Notes before we start:
 - If the rest of this seems hella incomplete, it probably is. I am currently pushing new commits pretty frequently, and so guides will come with that.
 - While the aim of this guide is to help users get set up as much as possible, I am not going to cover how to build out a complete theme in WordPress. The goal is to get you from 0 to a working template, then run on your own.
 
+# Table of Contents: 
+1. [Adding Custom Fonts](#How To Add Fonts To Your Project)  
+2. [Navbar](#Navbar)  
+
 Nothing yet. Sorry if you found this already. Lotta hype for nothing.
 Things I plan to Cover:
 
@@ -116,14 +120,16 @@ Things I plan to Cover:
 - Add fonts (custom + google)
 - Stylelint Settings
 
-## How To Add Fonts To Your Project
-#### Google Fonts
+# How To Add Fonts To Your Project
+## Google Fonts
 1. Go to https://fonts.google.com/
 2. Pick a font family that you like, and select a few styles. (as a note, the more files you choose the slower the site will be. So only pick ones you need to use)
 3. Under "use on the web" section, make sure < link > is selected, and look at the code that is generated. It should look _something_ like this: 
-``<link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">``
+```
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+```
 4. Copy the link from the 3rd block, minus the &display=swap. In the example above, it would be this:
 ```css
 https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400
@@ -147,7 +153,7 @@ fontFamily: {
       }
   ```
 ---
-#### Custom Fonts
+## Custom Fonts
 1. Purchase or download font files. They will most likely come as .otf or .ttf or something like that. It doesn't matter which you use. 
 2. Go to [Transfonter](https://transfonter.org/) and select the fontses you want to include. The more files you include the slower your website will be, so only get the ones you need. 
 3. Upload the font files to the site.
@@ -169,8 +175,9 @@ font-family: "MYFONT";
 11. Once added, if you have prettier and stylelint up and running, both of those will throw errors, so hop over to iterm and type ``yarn stylelint`` to get it fixed. 
 12. Once linked like this, you are free to use your new font families! The name is whatever fontfamily is called. In the above example (where I showed linking) MYFONT would be the name you'd use. 
 
-## Navbar - Header.php
-#### What is going on here?
+# Navbar - Header.php
+<img src = "https://i.imgflip.com/5ku7z5.jpg" width= 50%; alt = "What the hell happened here?">
+
 So if you've never had the pleasure of creating a navbar before, it's a tossup between creating one and getting waterboarded for me. They are miserable to deal with for a couple reasons. They are already finicky enough without introducing wordpress into the mixture. 
 
 Wait, what do you mean "in wordpress"? I mean that your navbar isn't much good if the URL's are only work on local or production, but not both. Or if the user can't go in and edit a link like they wanted to. So we build it In wordpress, meaning we use php to generate the navbar code on the server side, rather than a whole bunch of HTML. However, wordpress has a very specific way of outputing code, and it is without fail NEVER the code you needed it to be. So we use a custom navwalker to fix this. 
@@ -179,13 +186,13 @@ That sounds complicated. It was, luckily it's done for you. The navbar is plug a
 
 *** IMPORTANT NOTE: THIS NAVBAR DOES NOT USE TAILWIND SO REMOVING TAILWIND FROM THE PROJECT WILL NOT EFFECT IT. ***
 
-#### **I just want to use the navbar as is.**
+## **I just want to use the navbar as is.**
 Great! You can swap the logo out in `header.php` and edit the links in WP admin. Happy coding!
 
-#### **Ok so I like it, but I wanna tweak some things.**
+## **Ok so I like it, but I wanna tweak some things.**
 Well, head over to `/assets/src/sass/components/_navbar.scss`. Notice at the top there's some SCSS variables with comments. These are some "hotfix" style things you can edit such as width, height, breakpoint, colors, etc. If you can't accomplish what you are looking to do via those, you'll need to jump into the code to make your changes. I've commented as well as I can for you. Happy Coding!
 
-#### **Nah I've got my own navbar, can I use that?**
+## **Nah I've got my own navbar, can I use that?**
 Sure. It's your project and I didn't include malware with this install to tell me whether you tampered with the navbar or not. To get rid of it and add your own:
 1. Delete everything out of `/assets/src/sass/components/_navbar.scss`. I don't see a reason why you wouldn't just replace it with your new css, but if you want to delete the file you can.
 2. Delete all the code in `header.php` FROM `<section class="navigation">` through `</section>`. Leave the rest alone.
