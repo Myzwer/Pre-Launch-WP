@@ -206,51 +206,53 @@ nav {
   }
 }
 
-.button {
-  align-self: center;
-  background-color: $button-color;
-  color: #ffffff;
-  cursor: pointer;
-  letter-spacing: 1px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: all 0.1s ease-in-out;
-}
-
-.button a {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.button:hover a {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.button:hover {
-  background: $button-hover-color;
-}
-
-.button:active {
-  transform: scale(1.025);
-}
-
-@media screen and (min-width: $breakpoint) {
-  .button {
-    border-radius: 10px;
-    margin-top: 15px;
+.navigation {
+  li:last-of-type {
+    align-self: center;
+    background-color: $button-color;
+    color: #ffffff;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all 0.1s ease-in-out;
   }
 
-  .button a {
+  li:last-of-type a {
     background-color: rgba(0, 0, 0, 0);
   }
 
-  .button:hover a {
+  li:last-of-type:hover a {
     background-color: rgba(0, 0, 0, 0);
   }
 
-  nav ul .button a,
-  nav ul .button a:visited {
-    line-height: 10px;
-    padding: 15px;
+  li:last-of-type:hover {
+    background: $button-hover-color;
+  }
+
+  li:last-of-type:active {
+    transform: scale(1.025);
+  }
+
+  @media screen and (min-width: $breakpoint) {
+    li:last-of-type {
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    li:last-of-type a {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    li:last-of-type:hover a {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    nav ul li:last-of-type a,
+    nav ul li:last-of-type a:visited {
+      line-height: 10px;
+      padding: 15px;
+    }
   }
 }
 

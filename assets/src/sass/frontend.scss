@@ -10,6 +10,7 @@
 @use 'components/main';
 @use 'fonts/fonts.css';
 @use 'components/navbar';
+@use 'components/footer';
 
 // This section adds tailwind, but @tailwind isn't recognized so we have to suppress stylelint.
 

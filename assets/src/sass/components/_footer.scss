@@ -1,0 +1,223 @@
+/*
+ * Footer SCSS
+ * ---------------------------
+ * This is the scss file to control the styles of the footer.
+ * Most of the "settings" are at the top, but dig around to change more specific things.
+ * The Color settings are at the top, but any other specific edits will need scss editing.
+ * This does follow mobile first design, so to edit tablet +, make sure you edit past the media query.
+ *
+*/
+
+/* Color Settings */
+$background-color: #222222;
+$color: #ffffff;
+
+/*
+ * General Settings
+ * --------------
+ * Remember, mobile first.
+ *
+ */
+.footer {
+  background-color: $background-color;
+  box-sizing: border-box;
+  margin-top: 80px;
+  padding: 20px;
+  text-align: left;
+  width: 100%;
+}
+
+.footer-left,
+.footer-right,
+.footer-bottom {
+  display: block;
+  margin-bottom: 20px;
+  text-align: center;
+  vertical-align: top;
+}
+
+/*
+ * Footer Left
+ * --------------
+ * Logo and Phone Number
+ *
+ */
+
+.footer-left {
+  width: 100%;
+
+  .left-inner {
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  // The Logo
+  img {
+    margin: 0 auto;
+    width: 50%;
+  }
+
+  // Company Name
+  h3 {
+    color: $color;
+    font-size: 2em;
+    margin-top: -10px;
+    text-align: center;
+  }
+
+  .phone-number {
+    color: $color;
+    font-size: 0.8em;
+    margin: 0;
+    opacity: 0.6;
+    text-align: center;
+  }
+}
+
+/*
+ * Footer Right
+ * --------------
+ * Links
+ *
+ */
+
+.footer-right {
+  width: 100%;
+
+  // Link List
+  ul {
+    color: #ffffff;
+    opacity: 0.6;
+    padding-left: 10px;
+    text-align: left;
+  }
+
+  li {
+    padding-bottom: 5px;
+  }
+}
+
+/*
+ * Footer Bottom
+ * --------------
+ * Social Links and Copyright
+ *
+ */
+
+.footer-bottom {
+  width: 100%;
+}
+
+.bot-inner {
+  color: #92999f;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+}
+
+// Details and Copyright
+.bot-inner span {
+  color: #ffffff;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+// Socials
+.footer-icons {
+  margin-top: 25px;
+}
+
+.footer-icons a {
+  background-color: #33383b;
+  border-radius: 2px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  height: 35px;
+  line-height: 35px;
+  margin-bottom: 5px;
+  margin-right: 3px;
+  text-align: center;
+  width: 35px;
+}
+
+/*
+ * Tablet
+ * --------------
+ *
+ *
+ */
+
+@media screen and (min-width: 40em) {
+  .footer {
+    padding: 50px 50px 60px;
+  }
+
+  .footer-left {
+    display: inline-block;
+    margin-bottom: 40px;
+    text-align: left;
+    width: 45%;
+  }
+
+  .footer-right {
+    display: inline-block;
+    margin-bottom: 40px;
+    text-align: left;
+    width: 50%;
+
+    // Wordpress adds a div so this just makes sure it gets set to inline block
+    div {
+      display: inline-block;
+    }
+
+    ul {
+      display: inline-block;
+      padding-left: 20px;
+      vertical-align: top;
+    }
+  }
+
+  .right-inner {
+    margin-left: 10%;
+    margin-top: 25%;
+  }
+
+  .footer-bottom {
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .footer-bottom i {
+    margin-left: 0;
+  }
+}
+
+/*
+ * Desktop
+ * --------------
+ *
+ *
+ */
+
+@media screen and (min-width: 64em) {
+  .footer {
+    padding-top: 10px;
+
+    img {
+      margin-top: 20px;
+      width: 30%;
+    }
+  }
+
+  .right-inner {
+    margin-left: 30%;
+    margin-top: 18%;
+  }
+}
