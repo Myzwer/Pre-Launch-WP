@@ -2,15 +2,22 @@
  * Footer SCSS
  * ---------------------------
  * This is the scss file to control the styles of the footer.
- * The footer is built in mostly tailwind, so this has just a few settings to quickchange some things.
- * Should be obvious but this footer will NOT work if tailwind is disabled.
+ * Most of the "settings" are at the top, but dig around to change more specific things.
+ * The Color settings are at the top, but any other specific edits will need scss editing.
+ * This does follow mobile first design, so to edit tablet +, make sure you edit past the media query.
  *
 */
 
+/* Color Settings */
 $background-color: #222222;
 $color: #ffffff;
-$breakpoint: 40em;
 
+/*
+ * General Settings
+ * --------------
+ * Remember, mobile first.
+ *
+ */
 .footer {
   background-color: $background-color;
   box-sizing: border-box;
@@ -21,7 +28,7 @@ $breakpoint: 40em;
 }
 
 .footer-left,
-.footer-center,
+.footer-right,
 .footer-bottom {
   display: block;
   margin-bottom: 20px;
@@ -29,7 +36,13 @@ $breakpoint: 40em;
   vertical-align: top;
 }
 
-/* Footer left */
+/*
+ * Footer Left
+ * --------------
+ * Logo and Phone Number
+ *
+ */
+
 .footer-left {
   width: 100%;
 
@@ -38,32 +51,40 @@ $breakpoint: 40em;
     text-align: left;
   }
 
+  // The Logo
   img {
     margin: 0 auto;
     width: 50%;
   }
 
+  // Company Name
   h3 {
     color: $color;
     font-size: 2em;
     margin-top: -10px;
     text-align: center;
   }
+
+  .phone-number {
+    color: $color;
+    font-size: 0.8em;
+    margin: 0;
+    opacity: 0.6;
+    text-align: center;
+  }
 }
 
-.phone-number {
-  color: $color;
-  font-size: 0.8em;
-  margin: 0;
-  opacity: 0.6;
-  text-align: center;
-}
-
-/* Footer Right */
+/*
+ * Footer Right
+ * --------------
+ * Links
+ *
+ */
 
 .footer-right {
   width: 100%;
 
+  // Link List
   ul {
     color: #ffffff;
     opacity: 0.6;
@@ -76,7 +97,12 @@ $breakpoint: 40em;
   }
 }
 
-/* Footer Bottom */
+/*
+ * Footer Bottom
+ * --------------
+ * Social Links and Copyright
+ *
+ */
 
 .footer-bottom {
   width: 100%;
@@ -90,6 +116,7 @@ $breakpoint: 40em;
   margin: 0;
 }
 
+// Details and Copyright
 .bot-inner span {
   color: #ffffff;
   display: block;
@@ -98,6 +125,7 @@ $breakpoint: 40em;
   margin-bottom: 20px;
 }
 
+// Socials
 .footer-icons {
   margin-top: 25px;
 }
@@ -117,8 +145,12 @@ $breakpoint: 40em;
   width: 35px;
 }
 
-/* Here is the code for Responsive Footer */
-/* You can remove below code if you don't want Footer to be responsive */
+/*
+ * Tablet
+ * --------------
+ *
+ *
+ */
 
 @media screen and (min-width: 40em) {
   .footer {
@@ -138,6 +170,7 @@ $breakpoint: 40em;
     text-align: left;
     width: 50%;
 
+    // Wordpress adds a div so this just makes sure it gets set to inline block
     div {
       display: inline-block;
     }
@@ -165,6 +198,13 @@ $breakpoint: 40em;
     margin-left: 0;
   }
 }
+
+/*
+ * Desktop
+ * --------------
+ *
+ *
+ */
 
 @media screen and (min-width: 64em) {
   .footer {
