@@ -1,12 +1,16 @@
 <?php
 /**
- * Pre-Launch Theme - Functions and Definitions
+ * Functions and definitions
+ * This file is pretty intimidating if you are new, and that's okay.
+ * Most of this is already pre-configured for you.
+ * There are comments throughout to explain how to do things, edit things, and what to remove if needed.
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package pre-launch-wp
+ * @package WordPress
+ * @subpackage Pre_Launch_WP
+ * @since 1.0.0
  */
-
 
 
 //*****************************************************
@@ -43,9 +47,23 @@ add_action('wp_enqueue_scripts', 'load_styles');
 
 
 
+//*****************************************************
+//******************* M E N U S ***********************
+//*****************************************************
 
+// This is the code to include the navwalker. If you aren't going to use the menu you'll need to get rid of this line.
+// If you are going to use the navwalker, leave it alone. She's sensitive.
 require_once("nav_walker.php");
-//*********** Header ***********
+
+
+/*
+ * So, in order for WP Admin to even know menus exist, we have to create them here.
+ * This theme ships with the navbar and 2 footer columns.
+ * If for some reason you need more than this, you can copy and paste one of the code blocks below and modify it.
+ * https://www.wpbeginner.com/wp-themes/how-to-add-custom-navigation-menus-in-wordpress-3-0-themes/
+*/
+
+//*********** Navbar ***********
 function register_my_menu() {
     register_nav_menu('header-menu', ( 'Header Menu' ));
 }
@@ -64,9 +82,4 @@ function register_col_2() {
 }
 add_action( 'init', 'register_col_2' );
 
-//*********** Footer Col 3 ***********
-function register_col_3() {
-    register_nav_menu('footer-column-3', ( 'Footer Column 3' ));
-}
-add_action( 'init', 'register_col_3' );
 

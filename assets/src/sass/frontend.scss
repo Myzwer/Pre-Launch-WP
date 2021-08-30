@@ -2,18 +2,18 @@
  * Front-end CSS
  * =================================
  * This file is what webpack actually renders out. It will contain an @use for all SCSS / Tailwind Files.
- * This file should be kept clean and free of loose edits. If it doesn't start with @use, it doesn't go here.
+ * This file should be kept clean and free of loose edits. If it doesn't start with @use or @tailwind, it doesn't go here.
  *
  *
  */
 
+// All new scss files are linked below. If you add a new one, you'll need to link it here first.
 @use 'components/main';
 @use 'fonts/fonts.css';
 @use 'components/navbar';
 @use 'components/footer';
 
 // This section adds tailwind, but @tailwind isn't recognized so we have to suppress stylelint.
-
 /* stylelint-disable */
 @tailwind base;
 @tailwind components;

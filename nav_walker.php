@@ -1,11 +1,21 @@
 <?php
+/**
+ * The custom Navwalker for the theme.
+ * This pairs with the header.php file to generate the right code to make the navwalker work.
+ * You can read more about this in the Header section of the readme.
+ *
+ * The Walker class was implemented in WordPress 2.1 to provide developers with a means to traverse
+ * tree-like data structures for the purpose of rendering HTML.
+ *
+ * @link https://developer.wordpress.org/reference/classes/walker/
+ *
+ * @package WordPress
+ * @subpackage Pre_Launch_WP
+ * @since 1.0.0
+ */
 
 class PreLaunch_Walker extends Walker_Nav_Menu
 {
-    private $topLevelClasses = "a-class another-class";
-    private $secondLevelClasses = "a-third-classssss";
-    private $drops = "drop-1";
-
     /**
      * Append the opening html for a nav menu item, and the menu item itself.
      * @note Startel handles everything from <li><a href = "">TEXT
@@ -20,17 +30,9 @@ class PreLaunch_Walker extends Walker_Nav_Menu
     {
         $title = $item->title;
         $permalink = $item->url;
-/*        if (in_array("menu-item-has-children", $item->classes)) {
-            $output .= "<li><label for='drop-{$item->ID}'>$title</label>";
-            $output .= "<a href='$permalink'>$title</a>";
-            $output .= "<input type='checkbox' id='drop-{$item->ID}' />";
-        } else {
-            $output .= "<li><a href='$permalink'>$title";
-        }*/
 
         $output .= "<li>";
         $output .= "<a href='$permalink'>$title</a>";
-
     }
 
 
@@ -44,10 +46,6 @@ class PreLaunch_Walker extends Walker_Nav_Menu
      */
     public function end_el(&$output, $item, $depth = 0, $args = null)
     {
-        // Grab the closing html that we defined in the shortcode cb.
-//        $after = $args->after;
-        // Passed by reference, thus no need to return a value.
-//        $output .= $after;
         $output .= "</li>";
     }
 
@@ -73,10 +71,6 @@ class PreLaunch_Walker extends Walker_Nav_Menu
     public function end_lvl(&$output, $depth = 0, $args = null)
     {
         $output .= '</ul>';
-        /*// Grab the closing html that we defined in the shortcode cb.
-        $after = $args->after_submenu;
-        // Passed by reference, thus no need to return a value.
-        $output .= $after;*/
     }
 }
 

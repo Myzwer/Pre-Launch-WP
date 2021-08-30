@@ -7,10 +7,13 @@
  * It is used to display a page when nothing more specific matches a query.
  * E.g., it puts together the home page when no home.php file exists.
  *
+ * Because of the way this template was built, this page will rarely ever be seen.
+ * Frontpage will be what users see first, not this.
+ *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
  * @package WordPress
- * @subpackage Pre-Launch WP
+ * @subpackage Pre_Launch_WP
  * @since 1.0.0
  */
 
