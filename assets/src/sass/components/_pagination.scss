@@ -1,0 +1,38 @@
+/**
+ * Pagination
+ * =================================
+ * This controls what the pagionation buttons at the bottom of the blog page look like
+ *
+ *
+ *
+ *
+ *
+ */
+
+/* stylelint-disable selector-no-qualifying-type */
+.pagination {
+  ul {
+    margin-top: 40px;
+  }
+  li {
+    display: inline;
+  }
+
+  li a,
+  li a:hover,
+  li.active a,
+  li.disabled {
+    background-color: #333333;
+    border-radius: 3px;
+    color: #dddddd;
+    cursor: pointer;
+    padding: 0.75em;
+    text-decoration: none;
+  }
+
+  li a:hover,
+  li.active a {
+    background-color: #000000;
+  }
+}
+/* stylelint-enable selector-no-qualifying-type */
