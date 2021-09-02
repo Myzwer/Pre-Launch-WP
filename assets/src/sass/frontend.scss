@@ -15,6 +15,7 @@
 @use 'components/background';
 @use 'components/blog-card';
 @use 'components/pagination';
+@use 'components/wordpress';
 
 // This section adds tailwind, but @tailwind isn't recognized so we have to suppress stylelint.
 /* stylelint-disable */

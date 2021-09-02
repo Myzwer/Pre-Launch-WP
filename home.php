@@ -13,20 +13,17 @@
 
 get_header(); ?>
 
-    <div class="content">
-        <div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
-      rgba(0, 0, 0, 0.45),
-      rgba(0, 0, 0, 0.45)
-    ), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center;
-     height: 60vh;">
-
-            <div class="content-middle text-white text-center">
-                <h1 class="text-4xl mb-5">Articles & Podcasts</h1>
-                <a href=""
-                   class="bg-white rounded-full font-bold text-black px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
-                    Click here
-                </a>
-            </div>
+    <div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
+  rgba(0, 0, 0, 0.45),
+  rgba(0, 0, 0, 0.45)
+), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center;
+ height: 60vh;">
+        <div class="content-middle text-white text-center">
+            <h1 class="text-4xl mb-5">Articles & Podcasts</h1>
+            <a href=""
+               class="bg-white rounded-full font-bold text-black px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
+                Click here
+            </a>
         </div>
     </div>
 

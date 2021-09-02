@@ -1,0 +1,21 @@
+/**
+ * Wordpress
+ * =================================
+ * Sometimes wordpress generates things and tailwind can't hit it. This edits those.
+ * - Single - Category
+ *
+ *
+ *
+ *
+ */
+
+.category {
+  ul {
+    display: inline-block;
+  }
+
+  li {
+    background-color: #0a4b78;
+    padding: 10px;
+  }
+}
