@@ -7,17 +7,21 @@
  * It is used to display a page when nothing more specific matches a query.
  * E.g., it puts together the home page when no home.php file exists.
  *
+ * Because of the way this template was built, this page will rarely ever be seen.
+ * Frontpage will be what users see first, not this.
+ *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
  * @package WordPress
- * @subpackage Pre-Launch WP
+ * @subpackage Pre_Launch_WP
  * @since 1.0.0
  */
 
 get_header(); ?>
 
     <div class="m-4 md:m-10 lg:max-w-4xl lg:text-center lg:mx-auto">
-        <div class="grid grid-cols-12">
+        <div class="grid">
+        <div class=" grid-cols-12">
             <div class="col-span-12">
                 <div class="text-center md:text-left mb-1">
                     <h1>Color Pod</h1>
@@ -25,6 +29,7 @@ get_header(); ?>
                 </div>
                 <hr>
             </div>
+        </div>
         </div>
 
         <div class="grid grid-cols-12 gap-4 mt-6">

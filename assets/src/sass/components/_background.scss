@@ -1,0 +1,82 @@
+/**
+ * Backgrounds
+ * =================================
+ * - Photo Header
+ * - Video Header
+ *
+ *
+ *
+ *
+ */
+
+//*********************************************
+//************** PHOTO HEADER *****************
+//*********************************************
+.full-background {
+  background-attachment: scroll;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 600px;
+  margin-top: -80px;
+  position: relative;
+  z-index: -1;
+}
+
+.full-background-xl {
+  height: 100vh;
+}
+
+//*********************************************
+//************** VIDEO HEADER *****************
+//*********************************************
+.header-video {
+  height: 100vh;
+  left: 50%;
+  margin-top: -1px;
+  object-fit: cover;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  z-index: -2;
+}
+
+.viewport-header {
+  align-items: center;
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+//This can be used anywhere, but it HAS to have relative positioning above it or it won't work.
+.content-middle {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+//content middle ONLY on tablet and higher
+@media screen and (min-width: 40em) {
+  .content-middle-medium {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 64em) {
+  .content-middle-large {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+}

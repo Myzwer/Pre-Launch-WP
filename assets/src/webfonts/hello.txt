@@ -1,2 +1,0 @@
-Hey. I wanted to make sure this folder showed up in my file structure in git, but I can't actually upload font files
-to github as that's frowned upon. Basically, I'm a placeholder, you can delete me. :)
