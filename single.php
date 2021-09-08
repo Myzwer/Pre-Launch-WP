@@ -39,34 +39,28 @@ get_header();
             <div class="next-prev grid grid-cols-12">
                 <div class="col-span-12 md:col-span-4 mb-10">
 					<?php if ( strlen( get_next_post()->post_title ) > 0 ) { ?> <!-- Check if next post exists -->
-                        <a href="<?php echo get_permalink( get_adjacent_post( false, '', false ) ); ?>">
-                            <!-- Get link of next post-->
-                            <a href=""
-                               class="bg-black text-white rounded-full font-bold px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
-                                Next Post
-                            </a>
+                        <a href="<?php echo get_permalink( get_adjacent_post( false, '', false ) ); ?>"
+                           class="bg-black text-white rounded-full font-bold px-8 py-3 transition duration-300 ease-in-out
+                           hover:bg-blue-light mt-10">
+                            Next Post
                         </a>
 					<?php } ?>
                 </div>
 
                 <div class="col-span-12 md:col-span-4 mb-10">
-                    <a href="/play">
-                        <a href=""
-                           class="bg-black text-white rounded-full font-bold px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
-                            All Posts
-                        </a>
+                    <a href="/play"
+                       class="bg-black text-white rounded-full font-bold px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
+                        All Posts
                     </a>
                 </div>
 
 
                 <div class="col-span-12 md:col-span-4 mb-10">
 					<?php if ( strlen( get_previous_post()->post_title ) > 0 ) { ?> <!-- Check if previous post exists -->
-                        <a href="<?php echo get_permalink( get_adjacent_post( false, '', true ) ); ?>">
-                            <!-- Get link of next post -->
-                            <a href=""
-                               class="bg-black text-white  rounded-full px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
-                                Previous Post
-                            </a>
+                        <a href="<?php echo get_permalink( get_adjacent_post( false, '', true ) ); ?>"
+                           class="bg-black text-white  rounded-full px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
+                            Previous Post
+                        </a>
                         </a>
 					<?php } ?>
                 </div>
