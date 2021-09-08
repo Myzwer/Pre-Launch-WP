@@ -7,7 +7,7 @@
  *
  *
  * @package WordPress
- * @subpackage Wordpack Theme
+ * @subpackage Pre_Launch_WP
  * @since 1.0.0
  */
 
