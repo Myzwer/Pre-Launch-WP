@@ -3,7 +3,7 @@
  * =================================
  * Sometimes wordpress generates things and tailwind can't hit it. This edits those.
  * - Single - Category
- * - Single - Next/Prev post
+ * - Privacy Policy Styles
  *
  *
  *
@@ -20,4 +20,12 @@
   }
 }
 
-/* Next Prev Post */
+/* Privacy Policy Page */
+// WP generates this, so in order for it to look right I have to manually style it.
+.privacy-policy {
+  h2 {
+    font-size: 2em;
+    font-weight: 800;
+    padding-top: 10px;
+  }
+}
