@@ -61,7 +61,6 @@ get_header();
                            class="bg-black text-white  rounded-full px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
                             Previous Post
                         </a>
-                        </a>
 					<?php } ?>
                 </div>
             </div>
