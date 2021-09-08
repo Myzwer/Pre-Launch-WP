@@ -237,6 +237,7 @@ nav {
   @media screen and (min-width: $breakpoint) {
     li:last-of-type {
       border-radius: 10px;
+      margin-left: 6px;
       margin-top: 15px;
     }
 
