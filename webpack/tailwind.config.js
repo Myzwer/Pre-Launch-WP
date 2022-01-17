@@ -1,22 +1,14 @@
 module.exports = {
-  /*
-   * Enable JIT mode, a bleeding edge experimental feature released with tailwind v2.1
-   * If you don't want to use this, just delete the line of code.
-   *
-   * https://tailwindcss.com/docs/just-in-time-mode#enabling-jit-mode
-   */
-  mode: "jit",
+
 
   /*
-   * So the purge feature. Super cool.
-   * Below you need to set the purge location. This basically means where Tailwind needs to look for classes.
-   * It might seem backwards, but its checking those files for things NOT to purge.
-   * Unless you need to change it, you should be able to just leave this alone. It checks the php and js files.
+   * This project now uses v3 of Tailwind, if you don't know what that means, then don't worry about it.
+   * If you're familiar with the way a previous version worked, Tailwind no longer purges CSS, rather it uses a
+   * new feature called JIT (just in time) to call the CSS as needed as opposed to purging after the fact.
    *
-   * JIT MODE UPDATE: Does the same thing, but its instead looking for classes to ADD, not purge.
+   * More information: https://tailwindcss.com/blog/tailwindcss-v3
    */
-  purge: ["*.php", "./assets/src/js/*.js"],
-  darkMode: false, // or 'media' or 'class'
+  content: ["*.php", "./assets/src/js/*.js"],
   theme: {
     colors: {
       transparent: "transparent",
@@ -56,9 +48,6 @@ module.exports = {
         DEFAULT: "#000000",
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 };
