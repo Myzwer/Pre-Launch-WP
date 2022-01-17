@@ -38,14 +38,18 @@
   },
   "prettier": "./webpack/.prettierrc.json",
   "dependencies": {
-    "tailwindcss": "^2.2.4"
+    "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/line-clamp": "^0.3.1",
+    "@tailwindcss/typography": "^0.5.0",
+    "tailwindcss": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/eslint-parser": "^7.14.7",
     "@babel/preset-env": "^7.14.7",
     "@wordpress/eslint-plugin": "^9.0.6",
-    "autoprefixer": "^10.3.1",
+    "autoprefixer": "latest",
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.27.4",
     "browser-sync-webpack-plugin": "^2.3.0",
@@ -57,7 +61,7 @@
     "eslint-config-prettier": "^8.3.0",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^2.1.0",
-    "postcss": "^8.3.5",
+    "postcss": "latest",
     "postcss-loader": "^6.1.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "2.3.2",
