@@ -1,7 +1,12 @@
-/node_modules
-package-lock.json
 /assets/public
 .idea
 .DS_Store
 *.woff
 *.woff2
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
