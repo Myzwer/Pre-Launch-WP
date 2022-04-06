@@ -54,6 +54,7 @@ Wordpress Pre-Launch is a VERY beginnger friendly wordpress template built on we
 
 ---
 <img src = "https://i.imgflip.com/5gak9s.jpg" width= 50%; alt = "How do you do fellow coders?">
+
 # Section 1: I Know What I'm Doing.
 
 You've got it then. 
