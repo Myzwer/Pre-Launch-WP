@@ -31,6 +31,9 @@ get_header(); ?>
 <!-- Featured Post -->
     <div class="m-4 md:m-10 lg:max-w-4xl lg:text-center lg:mx-auto">
         <div class="grid grid-cols-12 gap-4 mt-6 shadow-xl rounded-xl featured-card">
+            <div class="col-span-12 text-center mx-auto">
+                <h3 class="text-2xl md:text-3xl mb-3 font-bold">Latest Post<?php // this is the formatting for ACF: the_field('body_title_2', $post_id); ?></h3>
+            </div>
 			<?php $posts_query = new WP_Query( 'posts_per_page=1' ); //limit post to 1 since this is our featured post
 			while ( $posts_query->have_posts() ) : $posts_query->the_post();
 				?>
@@ -57,6 +60,9 @@ get_header(); ?>
 
         <!-- All Other Posts -->
         <div class="grid grid-cols-12 gap-4 mt-6 ">
+            <div class="col-span-12 text-center mx-auto mt-10">
+                <h3 class="text-2xl md:text-3xl mb-3 font-bold">All Posts<?php // this is the formatting for ACF: the_field('body_title_2', $post_id); ?></h3>
+            </div>
 			<?php
 			/*
 			 * This little php block handles a few things.
