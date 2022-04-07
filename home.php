@@ -16,7 +16,7 @@ get_header(); ?>
     <div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
   rgba(0, 0, 0, 0.45),
   rgba(0, 0, 0, 0.45)
-), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center;
+), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center; background-repeat: no-repeat; background-size: cover;
  height: 60vh;">
         <div class="content-middle text-white text-center">
             <h1 class="text-4xl mb-5">Articles & Podcasts</h1>
