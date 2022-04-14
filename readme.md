@@ -90,6 +90,146 @@ Couple Notes before we start:
 **This is still a work in progress. I plan to write a lot more, but it's going to be as I go. The template is usable, but the readme is still under construction. 🚧 Bear with me as this is updated.**
 
 ***
+# Getting started.
+In order to develop in wordpress, you need a couple things in place on your computer already. This is where (in my opinion) the process falls apart for a lot of new developers. It's very easy here to jump into a rabit hold of "you need X"...which requires Y, which requires Z, and so on. So while you may need other things in the future, let's start at the top. If you have some of these already, yay, you're ahead of me. If you don't, hop along for the ride.
+
+### ALL the browers
+- Chrome, Firefox, Edge, Safari, Opera... you need them all to do effective development. Might as well go get them now.
+
+### Something to edit code with
+- You want to see people at each other's throats more than talking about politics? Walk into stackoverflow and ask front end devs what the best code editor / IDE is. (NOTE: Not all the editors on the list are IDE's (Integrated Development Environment), and that's ok.).
+- What you choose comes down to your budget and your preference. There is no right or wrong way to choose.
+- Options
+  - Visual Studio Code - far and away the most popular - free - takes some degree of work to setup all the plugins for it
+  - PhpStorm / Webstorm - incredibly powerful out of the box features - expensive - choose which you like more based on how much php or js you'll be writing.
+  - Sublime Text 3 - Simple editor, easy to understand - free - Takes some setup for more advanced features
+  - Anything else - Use whatever makes you happy. You can always switch later. Just make sure it has some degree of syntax highlighting, or you'll hate yourself very soon.
+
+### Iterm2
+- You don't technically * NEED * this, as the terminal on your computer already works fine. But if you want to customize colors, get autocomplete, etc, go ahead and grab this software, we'll use it later. 
+
+### Local by Flywheel
+- While there are other options, I can't recommend Local enough. 
+- "What's a local?"
+- Flywheel is a company that hosts managed wordpress (I also recommend, but that's not the scope here) and they made a tool for developers called "local." It basically spins up a wordpress instance on your computer with a few clicks. It requires almost no brainpower on your part. 
+- If you want to be difficult you can just MAMP, but... don't.
+
+### Xcode (mac)
+- Xcode is a program from the mac store that you will download and forget about, but it installs some stuff that we can then use later. 
+- You will literally never launch the program after you download it that first time, but it's necessary. Maybe someone smarter than me can tell you why. Who tf knows. Just do it. You can always uninstall it later if I'm wrong. 
+
+### Homebrew
+- Homebrew is a piece of software that acts as a portal for us to download other software via the command line. Which sounds scary but this makes things really easy to do.
+
+### NodeJS
+- A lot of dev tools need this, might as well get it out of the way now.
+- Grab the installer of their website, it really helps the process. Just do what it says. 
+
+## That's it for the apps. Onto the tools. 
+
+- Most of what is coming up will be done via command line. 😱😱😱
+- Yes, if you've never worked with it, it's scary. It sure SEEMS like you can destroy your entire computer by typing in the wrong thing, but I assure you they've made it not easy to do that. Ever tried to clean up storage space on your computer? You get me. 
+- Couple commands you need to know: [Read This](https://www.hongkiat.com/blog/web-designers-essential-command-lines/).
+- Highlights
+  - `cd` means change directory, it switches your folder (PRO TIP: You can drag and drop a folder from finder)
+  - `mkdir` mean made folder. It.. makes a folder wherever you currently are. 
+  - `touch` means make a new file where you are. so `touch cats.txt` will make a folder called cats.txt wherever you currently are.
+  - `ls` means list directory. Basically it spits out whatever files exist in the area you are.
+- Note, you can also check if something installed right by adding `-v` or `-version` to the end of the name.
+- `git -version` should spit out `git version 2.24.3 (Apple Git-128)`.
+
+### Git
+- Hopefully you at least know what git is, but it's a bit confusing * what * it is. 
+- **Git ± Github.** They aren't the same thing. This took me 5 years to understand. Git is what you install on your machine to keep track of file changes and such, Github is merely a "host" for git, and displays it in a pretty way. 
+- **YOU CAN USE GIT WITHOUT GITHUB, YOU CANNOT USE GITHUB WITHOUT GIT.**
+- I'm done ranting just watch [this video.](https://youtu.be/2ReR1YJrNOM)
+- We will use homebrew to install git, so pop open terminal, make sure you are in root (type `cd` then press enter)
+- Type
+  - `brew install git`
+- Watch the magic. Boom. Now git is installed and can work on your machine. 
+
+### Node
+- This comes with npm, ironically something for use later to install more stuff. 90% of web development is just installing crap.
+- Made sure you are in root directory `cd`.
+- `brew install node`
+- Done. Easy.
+
+### Yarn
+- Also a thing we will use later (this project uses yarn). It does the same thing as npm, it installs stuff, I just prefer yarn for reasons outside the scope of this. Regardless, you'll have both installed.
+- `brew install yarn` in command line and call it a day.
+
+## And we are done. You are ready to start developing. 
+By this point you should have installed:
+- A bunch of browsers
+- Something to edit code with
+- Iterm2 (if you want it)
+- Local By Flywheel
+- Xcode (mac only)
+- Homebrew
+- NodeJS
+- Git
+- Node
+- Yarn
+
+Seems like a lot but it's very much a one and done kind of thing. Time to start developing. 
+
+# Setup Wordpress Environment
+- Create a folder to hold the website. If this folder is in your desktop or downloads photo uninstall all this and get a new job. DON'T. do this. File management will save yourself later. Do it right now.
+- Launch Local.
+- Hit the green + In the corner and create a new website. 
+- Give it a name.
+- Click advanced options
+- Change your local site path to the file you created before.
+- Don't use a blueprint, you don't have one. 
+- Next page, click preferred, you don't have anything you need to change here. 
+- Next page, create a username and password.
+- Create your site!
+
+### Viola! You now have a wordpress website.
+- If you click "view site" in local, you can see it up and running. 
+- However, we want THIS theme, not twenty whatever theme.
+- So, in terminal, navigate down the rabithole to get to your themes folder. 
+- Should be something like
+  - `whateverfolderyoumade/app/public/wp-content/themes`
+- Now, in there you should see a few folders of themes.
+
+- We now need to get this theme off of github and onto your computer in the right spot.
+- Option 1: Download it as a zip file, unzip and drag and drop into `/themes`.
+- Option 2 (the better way, albiet more difficult): Now that you are in `/themes` in your terminal,  type this code:
+  - `git clone https://github.com/Myzwer/Pre-Launch-WP.git`
+- This will create a new folder called prelaunch-wp and it will have the theme in it. Simple as that. 
+
+### Run the installs
+- This theme uses a bunch of stuff, and we need to install it, every single time. Navigate from `/themes` into prelaunch-wp.
+  - `cd /pre-launch-wp`
+- Type
+  - `yarn install`
+- Pray everything works because there's like 40 fail points from here. It will succeed with warnings, but it shouldn't fail out. If it does, put on your googling hat, find the place that threw the error, and start googling what the problem is. Best of luck. 
+- If it installs correctly, then we are almost there.
+
+### Webpack Proxy
+- Sounds complicated, really isn't.
+- Open your code in whatever program you chose before.
+- Find `webpack.config.js`. Open that file.
+- At the time of this writing, the line you are looking for is 130. 
+- It says:
+  - `proxy: "https://prelaunch.local",`
+- Once you find it, reopen local, and check "Site Domain" at the top. It should be whatever you called it with `.local` on the end.
+- Replace the url on line 130 with that new URL.
+
+### Change the theme in WP Admin
+- Use local to launch WP Admin
+- Login.
+- Go to Appearance, and change the theme to Pre-Launch WP.
+
+### Launch the site with Browsersync
+- Go back to iTerm2, and assuming you did all the other steps correctly...
+  - `yarn dev:watch`
+- If all is right, after a few seconds a webpage should open showing you the pre-launch homepage, and live-reload + browsersync should be on as well. Meaning if you make a change and save it, it will update itself. 
+- Happy coding!
+
+# Wordpress is installed... now what?
+The following sections cover various things you might need to know how to do in the future. They are in no particular order, and mostly specific to this theme. General wordpress build stuff can come from people who are a LOT smarter than I. 
 ***
 # How To Add Fonts To Your Project
 ### Google Fonts
