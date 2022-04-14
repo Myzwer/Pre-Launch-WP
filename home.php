@@ -16,7 +16,7 @@ get_header(); ?>
     <div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
   rgba(0, 0, 0, 0.45),
   rgba(0, 0, 0, 0.45)
-), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center;
+), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center; background-repeat: no-repeat; background-size: cover;
  height: 60vh;">
         <div class="content-middle text-white text-center">
             <h1 class="text-4xl mb-5">Articles & Podcasts</h1>
@@ -31,6 +31,9 @@ get_header(); ?>
 <!-- Featured Post -->
     <div class="m-4 md:m-10 lg:max-w-4xl lg:text-center lg:mx-auto">
         <div class="grid grid-cols-12 gap-4 mt-6 shadow-xl rounded-xl featured-card">
+            <div class="col-span-12 text-center mx-auto">
+                <h3 class="text-2xl md:text-3xl mb-3 font-bold">Latest Post<?php // this is the formatting for ACF: the_field('body_title_2', $post_id); ?></h3>
+            </div>
 			<?php $posts_query = new WP_Query( 'posts_per_page=1' ); //limit post to 1 since this is our featured post
 			while ( $posts_query->have_posts() ) : $posts_query->the_post();
 				?>
@@ -57,6 +60,9 @@ get_header(); ?>
 
         <!-- All Other Posts -->
         <div class="grid grid-cols-12 gap-4 mt-6 ">
+            <div class="col-span-12 text-center mx-auto mt-10">
+                <h3 class="text-2xl md:text-3xl mb-3 font-bold">All Posts<?php // this is the formatting for ACF: the_field('body_title_2', $post_id); ?></h3>
+            </div>
 			<?php
 			/*
 			 * This little php block handles a few things.
