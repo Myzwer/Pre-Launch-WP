@@ -1,0 +1,8 @@
+/node_modules
+yarn.lock
+/assets/public
+.idea
+.DS_Store
+*.woff
+*.woff2
+readme.md
