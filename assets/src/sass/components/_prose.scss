@@ -1,0 +1,37 @@
+/**
+ * Prose
+ * =================================
+ * - These are classes used to overwrite or help the tailwind "prose" class.
+ *
+ *
+ *
+ *
+ */
+
+// This styles the UL / LI to have actual colored disks
+.prose ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose li {
+  margin: 0.1em 0;
+}
+
+.prose li:before {
+  color: #000000;
+  content: "•";
+  padding-right: 10px;
+}
+
+// This can be added in the WYSIWYG editor to force a subtitle to sit right under the main title be removing margin.
+.subtitle {
+  margin-top: -1em !important;
+}
+
+.prose hr {
+  background-color: #333333;
+  border: 0;
+  height: 2px;
+  opacity: 0.6;
+}
