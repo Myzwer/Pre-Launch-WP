@@ -23,6 +23,10 @@
   z-index: -1;
 }
 
+.full-background-lg {
+  height: 80vh;
+}
+
 .full-background-xl {
   height: 100vh;
 }
@@ -31,12 +35,12 @@
 //************** VIDEO HEADER *****************
 //*********************************************
 .header-video {
-  height: 100vh;
+  height: 130vh; // DO NOT CHANGE THIS. Adjust video height in the .viewport-header class
   left: 50%;
   margin-top: -1px;
   object-fit: cover;
   position: fixed;
-  top: 50%;
+  top: 60%;
   transform: translate(-50%, -50%);
   width: 100vw;
   z-index: -2;
@@ -45,7 +49,7 @@
 .viewport-header {
   align-items: center;
   display: flex;
-  height: 80vh;
+  height: 60vh; // Adjust height of video here.
   justify-content: center;
   position: relative;
   text-align: center;
@@ -61,7 +65,7 @@
 }
 
 //content middle ONLY on tablet and higher
-@media screen and (min-width: 40em) {
+@media screen and (min-width: 64em) {
   .content-middle-medium {
     left: 50%;
     position: absolute;
