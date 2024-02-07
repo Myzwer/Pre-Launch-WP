@@ -20,6 +20,7 @@
 @use 'components/forms';
 @use 'components/gradients';
 @use 'components/prose';
+@use 'components/video';
 
 // This section adds tailwind, but @tailwind isn't recognized so we have to suppress stylelint.
 /* stylelint-disable */

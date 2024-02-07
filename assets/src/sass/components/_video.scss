@@ -1,0 +1,33 @@
+/**
+ * Video
+ * =================================
+ * - Full Width Video, fills container
+ *
+ *
+ *
+ *
+ *
+ */
+
+.video-container {
+  height: 0;
+  padding-top: 56.25%;
+  position: relative;
+  /* width is set as 100% here. any width can be specified as per requirement */
+  width: 100%;
+}
+
+iframe {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/*
+Usage:
+ <div class="video-container">
+    <?php the_field("youtube_link"); ?>
+</div>
+*/
