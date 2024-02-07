@@ -4,8 +4,18 @@
  * This is the scss file to control the styles of the navbar.
  * A few stylelint rules had to be disabled as navbar's merit them
  * Most of the "settings" are at the top, but dig around to change more specific things.
- * Special thanks to https://codepen.io/taniarascia/pen/dYvvYv for the navbar
+ * This is mobile first, so if you're trying to make changes to desktop, scroll to the bottom.
  *
+*/
+
+/*
+* LEFT ALIGN NAV? (on desktop)
+*
+* Enable the comment in the main <nav> element
+* in the DESKTOP QUERY of nav-list > li:last-of-type, delete the position. It's commented.
+*
+* (see Left Align notes in document)
+*
 */
 
 // Turn off Stylelint settings
@@ -13,27 +23,30 @@
 
 // Navbar quick settings
 $content-width: 2000px; // How wide or narrow do you want the bar to be?
-$breakpoint: 1001px; // When do you want to switch from mobile to desktop?
-$nav-height: 70px; // How tall do you want the navbar to be?
-$nav-background: #262626; // What background color do you want?
-$nav-font-color: #ffffff; // What primary font color?
-$link-hover-color: #2581dc; // What color when you hover?
-$button-color: #ff5555; // What background color do you want the button to be?
-$button-hover-color: #e03a3a; // What hover color do you want the button to be?
+$breakpoint: 1101px; // When do you want to switch from mobile to desktop?
+$nav-height: 85px; // How tall do you want the navbar to be?
+$nav-background: #333333; // What background color do you want?
+$nav-font-color: #fafafa; // What primary font color?
+$link-hover-color: #7498be; // What color when you hover?
+$button-color: #fafafa; // What background color do you want the button to be?
+$button-hover-color: #eaeaea; // What hover color do you want the button to be?
 
-// Outer navigation wrapper
+// Sets the initial height and color of the navbar
 .navigation {
   background: $nav-background;
   height: $nav-height;
 }
 
+// This is the container that is one layer under the navbar.
+.nav-container {
+  margin: 0 auto;
+  max-width: $content-width;
+}
+
 // Logo and branding
 .brand {
   float: left;
-  font-size: 1.4em;
-  font-weight: 400;
-  line-height: $nav-height;
-  padding-left: 20px;
+  padding-left: 10px;
   position: absolute;
   text-transform: uppercase;
   z-index: 15;
@@ -45,127 +58,86 @@ $button-hover-color: #e03a3a; // What hover color do you want the button to be?
 
   // If you change your navbar height, you may need to adjust this.
   img {
-    height: 65px;
+    height: 75px;
     padding-right: 15px;
-    padding-top: 5px;
-  }
-
-  h1 {
-    display: none;
+    padding-top: 10px;
   }
 }
 
-// Container with no padding for navbar
-.nav-container {
-  margin: 0 auto;
-  max-width: $content-width;
+// JS handles this, but this is the class that controls what color the top level UL stays when clicked.
+.active-dropdown {
+  background-color: $link-hover-color;
 }
 
-// Navigation
-nav {
-  float: right;
-  position: absolute;
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    li {
-      float: left;
-      position: relative;
-      text-transform: uppercase;
-      a,
-      a:visited {
-        background: $nav-background;
-        color: $nav-font-color;
-        display: block;
-        line-height: $nav-height;
-        padding: 0 20px;
-        text-decoration: none;
-        &:hover {
-          background: $link-hover-color;
-          color: #eeeeee;
-        }
-        &:not(:only-child):after {
-          content: " ▾";
-          padding-left: 4px;
-        }
-      } // Dropdown list
-      ul li {
-        min-width: 190px;
-        a {
-          line-height: 20px;
-          padding: 15px;
-        }
-      }
-    }
-  }
-}
-
-// removes the position absolute from mobile.
-@media screen and (min-width: 1000px) {
-  nav {
-    position: relative;
-  }
-}
-
-// Dropdown list binds to JS toggle event
 .nav-dropdown {
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-  display: none;
-  position: absolute;
-  z-index: 1;
+  position: static;
 }
-
-/* Mobile navigation */
 
 // Binds to JS Toggle
 .nav-mobile {
   background: $nav-background;
-  display: none;
   height: $nav-height;
   position: absolute;
   right: 0;
   top: 0;
   width: $nav-height;
 }
-@media only screen and (max-width: 1000px) {
-  // Hamburger nav visible on mobile only
-  .nav-mobile {
-    display: block;
-  }
 
-  .brand {
-    padding-left: 10px;
-  }
-  nav {
-    padding: $nav-height 0 15px;
-    width: 100%;
-    z-index: 10;
-    ul {
-      display: none;
-      li {
-        float: none;
+// Main Navigation Controls
+nav {
+  align-items: center;
+  background-color: $nav-background;
+  display: block;
+  float: none;
+  justify-content: center;
+  padding: $nav-height 0 0;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  ul {
+    display: none;
+    li {
+      float: none;
+      position: relative;
+      text-transform: uppercase;
+      a,
+      a:visited {
+        color: $nav-font-color;
+        display: block;
+        line-height: 20px;
+        padding: 15px;
+        text-decoration: none;
+        &:hover {
+          background: $link-hover-color;
+          color: #eeeeee;
+        }
+
+        &:not(:only-child):after {
+          content: " ▾";
+          padding-left: 4px;
+        }
+      }
+
+      // Dropdown list
+      ul li {
+        min-width: 190px;
         a {
           line-height: 20px;
-          padding: 15px;
+          padding-left: 30px; //changes how far indented the subnav links are
         }
-        ul li a {
-          padding-left: 30px;
-        }
+      }
+
+      li:nth-child(even) {
+        background-color: #494949;
+      }
+      li:nth-child(odd) {
+        background-color: #404040;
       }
     }
   }
-  .nav-dropdown {
-    position: static;
-  }
-}
-@media screen and (min-width: $breakpoint) {
-  .nav-list {
-    display: block !important;
-    z-index: 10;
-  }
 }
 
+// Hamburger Menu and animation
 #nav-toggle {
   cursor: pointer;
   left: 18px;
@@ -215,6 +187,67 @@ nav {
   }
 }
 
+// DESKTOP STYLES
+
+@media screen and (min-width: $breakpoint) {
+  // Hamburger nav hidden on desktop
+  .nav-mobile {
+    display: none;
+  }
+
+  .nav-list {
+    display: block !important;
+    z-index: 10;
+  }
+
+  nav {
+    position: relative;
+  }
+
+  // Dropdown list binds to JS toggle event
+  .nav-dropdown {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  // Navigation
+  nav {
+    display: flex;
+    // LEFT ALIGN? ENABLE THIS
+    //justify-content: flex-end;
+    padding: 0;
+    position: relative;
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        float: left;
+        a,
+        a:visited {
+          line-height: $nav-height;
+          padding: 0 20px;
+
+          &:not(:only-child):after {
+            content: " ▾";
+            padding-left: 4px;
+          }
+        }
+
+        // Dropdown list
+        ul li {
+          a {
+            padding: 15px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Takes whatever the last item in the list is and makes it a button
 .nav-list > li:last-of-type {
   align-self: center;
   background-color: $button-color;
@@ -228,13 +261,21 @@ nav {
 
 .nav-list > li:last-of-type a {
   background-color: rgba(0, 0, 0, 0);
-  color: #eeeeee;
+  color: #234058;
   font-weight: 600;
+  padding: 8px 20px 15px;
+}
+
+// Icon Control
+.nav-list > li:last-of-type i {
+  font-size: 1.6em;
+  position: relative;
+  top: 3px;
 }
 
 .nav-list > li:last-of-type:hover a {
   background-color: rgba(0, 0, 0, 0);
-  color: #eeeeee;
+  color: #234058;
 }
 
 .nav-list > li:last-of-type:hover {
@@ -245,12 +286,16 @@ nav {
   transform: scale(1.025);
 }
 
+// When not in hamburger menu
 @media screen and (min-width: $breakpoint) {
   .nav-list > li:last-of-type {
-    border-radius: 10px;
+    border-radius: 20px;
     margin-left: 6px;
     margin-right: 10px;
-    margin-top: 18px;
+    margin-top: 22px;
+    // LEFT ALIGN? DELETE THE POSITION
+    position: absolute;
+    right: 0;
   }
 
   .nav-list > .nav-list > li:last-of-type a {
@@ -261,9 +306,12 @@ nav {
     background-color: rgba(0, 0, 0, 0);
   }
 
-  nav ul li:last-of-type a,
-  nav ul li:last-of-type a:visited {
-    line-height: 10px;
-    padding: 15px;
+  .nav-list > li:last-of-type a,
+  .nav-list > li:last-of-type a:visited {
+    line-height: 8px;
+    padding: 15px 20px;
   }
 }
+
+// Turn Stylelint settings back on
+/* stylelint-enable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
