@@ -17,6 +17,7 @@
 @use 'components/pagination';
 @use 'components/wordpress';
 @use 'components/buttons';
+@use 'components/forms';
 
 // This section adds tailwind, but @tailwind isn't recognized so we have to suppress stylelint.
 /* stylelint-disable */
