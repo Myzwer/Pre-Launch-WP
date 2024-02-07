@@ -1,6 +1,23 @@
+/**
+ * Main
+ * =================================
+ * Anything that is site wide and doesn't really fit into another type of file.
+ * Typography example below.
+ *
+ *
+ *
+ *
+ *
+ */
+
 body {
-  font-family: "gotham", sans-serif !important;
-  ::placeholder {
-    color: #808080;
-  }
+  //font-family: "gotham", sans-serif;
+}
+
+.gotham {
+  //font-family: "gotham", sans-serif;
+}
+
+.helvetica {
+  //font-family: "Helvetica LT Std", sans-serif;
 }
