@@ -1,0 +1,121 @@
+/**
+ * Buttons
+ * =================================
+ * This controls all the buttons on the site. They get REALLY cumbersome in Tailwind.
+ *
+ * - Main Button
+ *
+ *
+ *
+ */
+
+$black: #333333;
+
+$white: #fafafa;
+$white-grad-1: rgb(250, 250, 250);
+$white-grad-2: rgb(235, 235, 235);
+$white-hover: #ffffff;
+
+$saltydog: #234058;
+$saltydog-hover: #152c3d;
+
+$lightblue-grad-1: rgb(204, 219, 229);
+$lightblue-grad-2: rgb(222, 232, 238);
+$lightblue-grad-hover: #bcd1da;
+
+.fab-main {
+  background-color: $saltydog;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  color: $white;
+  font-weight: 800;
+  padding: 10px 30px;
+}
+
+.fab-main:hover {
+  background-color: $saltydog-hover;
+}
+
+.fab-main-white {
+  background-color: $white;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  color: $saltydog;
+  font-weight: 800;
+  padding: 10px 30px;
+}
+
+.fab-main-white:hover {
+  background-color: $white-hover;
+}
+
+.elevated-blue {
+  background: linear-gradient(
+    90deg,
+    $lightblue-grad-1 0%,
+    $lightblue-grad-2 100%
+  );
+  background-color: $lightblue-grad-1;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  color: $saltydog;
+  font-weight: 800;
+  padding: 10px 20px;
+}
+
+.elevated-blue:hover {
+  background: $lightblue-grad-hover;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+}
+
+.elevated-white {
+  background: linear-gradient(90deg, $white-grad-1 0%, $white-grad-2 100%);
+  background-color: $white-grad-1;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  color: $saltydog;
+  font-weight: 800;
+  padding: 10px 20px;
+}
+
+.elevated-white:hover {
+  background: $white-hover;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+}
+
+.ghost-black {
+  border: 1px solid $black;
+  border-radius: 18px;
+  color: $black;
+  font-weight: 800;
+  padding: 4px 22px;
+}
+
+.ghost-white {
+  border: 1px solid $white;
+  border-radius: 18px;
+  color: $white;
+  font-weight: 800;
+  padding: 4px 22px;
+}
+
+// This is used when a ghost button is with another button, it makes the sizes line up.
+.ghost-paired {
+  border: 1px solid $black;
+  border-radius: 18px;
+  color: $black;
+  font-weight: 800;
+  padding: 8px 18px;
+}
+
+// This is the button used on the single event pages so they stand out a little more
+.elevated-salty {
+  background-color: $saltydog;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  color: $white;
+  font-weight: 800;
+  padding: 10px 30px;
+}
