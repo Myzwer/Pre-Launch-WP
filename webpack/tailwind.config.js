@@ -1,12 +1,14 @@
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   /*
-   * This project now uses v3 of Tailwind, if you don't know what that means, then don't worry about it.
+   * This project now uses v3 of Tailwind.
    * If you're familiar with the way a previous version worked, Tailwind no longer purges CSS, rather it uses a
    * new feature called JIT (just in time) to call the CSS as needed as opposed to purging after the fact.
    *
    * More information: https://tailwindcss.com/blog/tailwindcss-v3
    */
-  content: ["*.php", "./assets/src/js/*.js"],
+  content: ["*.php", "./components/**/*.php", "./assets/src/js/*.js"],
   theme: {
     colors: {
       screens: {
@@ -60,5 +62,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
