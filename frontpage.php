@@ -20,7 +20,7 @@ get_header(); ?>
 
 <?php get_template_part('components/layouts/_info'); ?>
 
-
+<?php get_template_part('components/layouts/_side-image'); ?>
 
 <?php
 get_footer();
