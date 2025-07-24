@@ -16,6 +16,7 @@ get_header(); ?>
 
 <?php get_template_part('components/headers/_hero'); ?>
 
+<?php get_template_part('components/layouts/_highlight'); ?>
 
     <div class="bg-white md:p-10">
         <div class=" lg:max-w-5xl lg:mx-auto">
