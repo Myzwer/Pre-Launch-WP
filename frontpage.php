@@ -24,5 +24,7 @@ get_header(); ?>
 
 <?php get_template_part('components/layouts/_process'); ?>
 
+<?php get_template_part('components/layouts/_faq'); ?>
+
 <?php
 get_footer();

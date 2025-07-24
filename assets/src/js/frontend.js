@@ -1,5 +1,6 @@
 import $ from "jquery";
 import "../sass/frontend.scss";
+import "./accordion";
 
 $(function () {
   // DOM ready

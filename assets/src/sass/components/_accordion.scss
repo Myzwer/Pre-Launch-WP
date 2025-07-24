@@ -1,0 +1,34 @@
+/**
+ * Accordion
+ * =================================
+ *
+ *
+ *
+ *
+ *
+ */
+
+
+.faq-content {
+  summary {
+    background-color: #AED4BC;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+    color: #333333;
+    cursor: pointer;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 5px 0;
+    padding: 10px;
+    position: relative;
+    text-transform: capitalize;
+  }
+
+  .tab-details {
+    background-color: #AED4BC;
+    border-radius: 10px;
+    color: #333333;
+    display: none; /* Hidden by default */
+    padding: 20px;
+  }
+}
