@@ -12,24 +12,48 @@
  * @version 1.0.0
  */
 
-//******************** FAB (Floating Action) *********************
 
-/*
- * MAIN BUTTON
- * Defaults to "#" if no value is given
- * If "cc='y'" is added to the shortcode it will open the church center modal.
- * Usage: [main_button text="Learn More" url="https://example.com" cc="Y"]
-*/
-
-function main_button_shortcode($atts, $content = null)
+/**
+ * Function to generate a shortcode for creating a button with specified class and icon HTML.
+ *
+ * This function returns another function that acts as a shortcode handler.
+ * The returned function handles the button's text, URL, and whether it should open in a new tab.
+ *
+ * Shortcode attributes:
+ * - text: The text to display on the button.
+ * - url: The URL where the button should link to.
+ * - tab: Controls how the link opens. Valid values are 'y' (opens in a new tab) or other (opens in same tab).
+ *
+ * @param string $class_name The class name to apply to the button.
+ * @param string $icon_html The HTML for the button's icon. Default is an empty string.
+ *
+ * @return callable The function that will be used as the shortcode handler. This function returns a string containing the HTML for the generated button.
+ */
+function generate_button_shortcode($class_name, $icon_html = '')
 {
-    $button_text = isset($atts['text']) ? $atts['text'] : 'Learn More';
-    $button_url = isset($atts['url']) ? $atts['url'] : '#';
-    $open_in_cc_modal = isset($atts['cc']) && strtolower($atts['cc']) === 'y' ? ' data-open-in-church-center-modal="true"' : '';
-    return '<a href="' . esc_url($button_url) . '"' . $open_in_cc_modal . '><button class="fab-main mt-3"><i class="fa-solid fa-circle-arrow-right"></i> ' . esc_html($button_text) . '</button></a>';
+    // Return a function that generates the shortcode output
+    return function ($atts) use ($class_name, $icon_html) {
+        // Get the button text and URL from the shortcode attributes
+        $button_text = isset($atts['text']) ? $atts['text'] : null;
+        $button_url = isset($atts['url']) ? $atts['url'] : null;
+
+        // Determine if button details are complete or hidden
+        $all_details = (!empty($button_text) && !empty($button_url)) ? '' : 'hidden';
+
+        // Set how new tab behavior is handled based on the 'tab' attribute
+        $open_in_tab = isset($atts['tab']) && strtolower($atts['tab']) === 'y' ? " target='_blank'" : '';
+
+        // Return the HTML for the button
+        return '<span class="not-prose"><a href="' . esc_url($button_url) . '"' . $open_in_tab . ' class="' . esc_attr($class_name) . ' mt-3 ' . esc_attr($all_details) . '">' . $icon_html . esc_html($button_text) . '</a></span>';
+    };
 }
 
-add_shortcode('main_button', 'main_button_shortcode');
+// Define shortcodes with appropriate classes and icons
+add_shortcode('btn_main', generate_button_shortcode('btn-main', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
+add_shortcode('btn_light', generate_button_shortcode('btn-light', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
+add_shortcode('btn_dark', generate_button_shortcode('btn-dark', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
+add_shortcode('btn_ghost_white', generate_button_shortcode('btn-ghost-white', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
+add_shortcode('btn_ghost_black', generate_button_shortcode('btn-ghost-black', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
 
 
 
