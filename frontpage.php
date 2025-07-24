@@ -22,5 +22,7 @@ get_header(); ?>
 
 <?php get_template_part('components/layouts/_side-image'); ?>
 
+<?php get_template_part('components/layouts/_process'); ?>
+
 <?php
 get_footer();
