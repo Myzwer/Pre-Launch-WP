@@ -4,8 +4,21 @@
     <div class="text-center p-5">
         <h1 class="text-white text-5xl pb-5"><?php the_field('title'); ?></h1>
         <h3 class="text-white text-2xl pb-10"><?php the_field('subtitle'); ?></h3>
-        <a href="/contact" class="fab-main">
-            <i class="fa-solid fa-circle-arrow-right"></i> Button
-        </a>
+        <?php
+        if (have_rows('primary_cta_button')):
+            while (have_rows('primary_cta_button')): the_row(); ?>
+                <a href="<?php the_sub_field('button_link'); ?>" class="btn-main">
+                    <i class="fa-sharp fa-solid fa-arrow-right"></i>
+                    <?php the_sub_field('button_text'); ?>
+                </a>
+
+            <?php
+            endwhile;
+        endif;
+        ?>
     </div>
 </div>
+
+
+
+
