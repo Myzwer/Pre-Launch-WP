@@ -8,6 +8,44 @@
  *
  */
 
+.prose {
+  h1 {
+    margin-bottom: 0;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.7em;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+  }
+
+  button {
+    margin-top: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  i {
+    padding-bottom: 10px;
+    padding-right: 10px;
+  }
+
+  .icons {
+    font-size: 1.2em;
+  }
+}
+
+.force-white {
+  color: #eeeeee !important;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #eeeeee !important;
+  }
+}
+
 // This styles the UL / LI to have actual colored disks
 .prose ul {
   list-style: none;
@@ -15,7 +53,7 @@
 }
 
 .prose li {
-  margin: 0.1em 0;
+  margin: .1em 0;
 }
 
 .prose li:before {
@@ -26,12 +64,31 @@
 
 // This can be added in the WYSIWYG editor to force a subtitle to sit right under the main title be removing margin.
 .subtitle {
-  margin-top: -1em !important;
+  margin-top: -1.5em !important;
 }
 
 .prose hr {
   background-color: #333333;
   border: 0;
   height: 2px;
-  opacity: 0.6;
+  margin-bottom: 20px;
+  opacity: .6;
+}
+
+// This forces the copy in the info text block to not be so spaced out
+.prose .info {
+  color: #000000;
+
+  h3 {
+    color: #000000;
+    margin-bottom: 0;
+  }
+
+  h3:first-of-type {
+    margin-top: 0;
+  }
+
+  p {
+    margin-top: 0;
+  }
 }
