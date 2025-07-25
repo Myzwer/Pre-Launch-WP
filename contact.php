@@ -11,15 +11,15 @@
  */
 
 get_header(); ?>
-<div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
-  rgba(0, 0, 0, 0.45),
-  rgba(0, 0, 0, 0.45)
-), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center;
- height: 40vh;">
-    <div class="content-middle text-white text-center">
-        <h1 class="text-4xl md:text-5xl mb-3">Contact</h1>
+    <div class="bg-scroll bg-cover relative" style="background: linear-gradient(
+            rgba(0, 0, 0, 0.45),
+            rgba(0, 0, 0, 0.45)
+            ), url('<?php the_field('background_image'); ?>') center center / cover no-repeat;
+            height: 40vh;">
+        <div class="content-middle text-white prose force-white">
+            <?php the_field('page_title'); ?>
+        </div>
     </div>
-</div>
 
 <div class="bg-white mb-10">
     <div class="mx-4 md:mx-10 lg:max-w-4xl lg:text-center lg:mx-auto pt-10">
