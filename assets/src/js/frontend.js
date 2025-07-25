@@ -7,6 +7,12 @@ $(function () {
 
   // If a link has a dropdown, add sub menu toggle.
   $("nav ul li a:not(:only-child)").click(function (e) {
+    // 👇 Prevent the browser from following href="#" and adding # to the URL
+    e.preventDefault();
+
+    // 👇 Keep this: stop the click from bubbling up to <html>
+    e.stopPropagation();
+
     // Remove "active-dropdown" class from other anchor elements
     $("nav ul li a").not(this).removeClass("active-dropdown");
 
@@ -27,8 +33,6 @@ $(function () {
 
     // Close one dropdown when selecting another
     $(".nav-dropdown").not($(this).siblings()).hide();
-
-    e.stopPropagation();
   });
 
   // Clicking away from dropdown will remove the dropdown class and active-dropdown class
