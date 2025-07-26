@@ -12,17 +12,48 @@
 .bg-white-gradient {
   background: rgb(250, 250, 250);
   background: linear-gradient(
-    128deg,
-    rgba(250, 250, 250, 1) 0%,
-    rgba(235, 235, 235, 1) 100%
+                  128deg,
+                  rgba(250, 250, 250, 1) 0%,
+                  rgba(235, 235, 235, 1) 100%
   );
 }
 
 .bg-blue-gradient {
   background: rgb(204, 219, 229);
   background: linear-gradient(
-    128deg,
-    rgba(204, 219, 229, 1) 0%,
-    rgba(222, 232, 238, 1) 100%
+                  128deg,
+                  rgba(204, 219, 229, 1) 0%,
+                  rgba(222, 232, 238, 1) 100%
   );
+}
+
+.bg-salty-gradient {
+  background: rgb(35, 64, 88);
+  background: linear-gradient(
+                  128deg,
+                  rgba(35, 64, 88, 1) 0%,
+                  rgba(75, 116, 150, 1) 100%
+  );
+}
+
+// The White gradient for alternating background control
+.alt-bg-wrap {
+  .bg-alternating-gradient:nth-child(odd of :not(:empty)) {
+    background: rgb(250, 250, 250);
+    background: linear-gradient(
+                    128deg,
+                    rgba(250, 250, 250, 1) 0%,
+                    rgba(235, 235, 235, 1) 100%
+    );
+  }
+
+  // The Blue gradient for alternating background control
+  .bg-alternating-gradient:nth-child(even of :not(:empty)) {
+    background: rgb(204, 219, 229);
+    background: linear-gradient(
+                    128deg,
+                    rgba(204, 219, 229, 1) 0%,
+                    rgba(222, 232, 238, 1) 100%
+    );
+  }
 }
