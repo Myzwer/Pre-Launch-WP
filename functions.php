@@ -37,3 +37,6 @@ require_once get_template_directory() . '/includes/custom_post_types.php';
 
 // Include Shortcodes
 require_once get_template_directory() . '/includes/shortcodes.php';
+
+// Include SEO
+require_once get_template_directory() . '/includes/seo.php';
