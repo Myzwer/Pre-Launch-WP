@@ -28,6 +28,24 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
   mode,
 
+  // ***** WEBPACK FILESYSTEM CACHE *****
+  // * Speeds up rebuilds by caching module processing results to disk.
+  // * Safe + predictable for a “stable for 2+ years” template.
+  cache: {
+    type: "filesystem",
+
+    // Keep cache inside the repo (not node_modules) so it works with Yarn Berry / PnP setups too.
+    cacheDirectory: path.resolve(__dirname, ".cache/webpack"),
+
+    // Separate cache by mode so dev/prod don’t fight each other.
+    name: mode,
+
+    // Invalidate cache when webpack.config.js changes
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
+
   module: {
     rules: [
       // *** CSS ***
