@@ -8,6 +8,8 @@
 // * Lol ok not really a list of demands but also kind of that.
 // * This is where we tell Webpack what it needs to require.
 const path = require("path");
+const fs = require("fs");
+const dotenv = require("dotenv");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
@@ -23,6 +25,27 @@ let mode = "development";
 if (process.env.NODE_ENV === "production") {
   mode = "production";
 }
+
+// ***** LOAD .ENV (DEV ONLY) *****
+// Order: .env then .env.local (local overrides base)
+if (mode === "development") {
+  const envFiles = [".env", ".env.local"];
+
+  envFiles.forEach((file) => {
+    const fullPath = path.resolve(__dirname, file);
+    if (fs.existsSync(fullPath)) {
+      dotenv.config({ path: fullPath, override: true });
+    }
+  });
+}
+
+// ***** BROWSERSYNC DEFAULTS *****
+// Matches your current hardcoded values unless overridden in .env
+const BS_HOST = process.env.BROWSERSYNC_HOST || "localhost";
+const BS_PORT = Number(process.env.BROWSERSYNC_PORT || 3000);
+const BS_PROXY = process.env.BROWSERSYNC_PROXY || "https://prelaunch.local";
+const BS_FILES = process.env.BROWSERSYNC_FILES || "**/**/**.php";
+
 
 // ***** MODULE EXPORTS *****
 module.exports = {
@@ -153,11 +176,11 @@ module.exports = {
       ? [
         new BrowserSyncPlugin({
           enable: true,
-          host: "localhost",
-          port: 3000,
+          host: BS_HOST,
+          port: BS_PORT,
           mode: "proxy",
-          proxy: "https://prelaunch.local",
-          files: "**/**/**.php",
+          proxy: BS_PROXY,
+          files: BS_FILES,
           reload: true,
         }),
         new StylelintPlugin(),

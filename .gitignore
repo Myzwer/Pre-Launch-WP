@@ -6,6 +6,9 @@ node_modules
 *.woff
 *.woff2
 .pnp.*
+.env
+.env.local
+.env.*.local
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
