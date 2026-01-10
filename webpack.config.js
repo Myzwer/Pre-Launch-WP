@@ -11,7 +11,8 @@ const path = require("path");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
-const CssnanoPlugin = require("cssnano-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 // ***** SET ENVIRONMENT *****
 // * This tells webpack to always run in development mode.
@@ -34,19 +35,36 @@ module.exports = {
         test: /\.s?css$/i,
         use: [
           { loader: MiniCssExtractPlugin.loader },
-          { loader: "css-loader" },
+
+          {
+            loader: "css-loader",
+            options: { sourceMap: mode !== "production" },
+          },
+
           {
             loader: "postcss-loader",
             options: {
+              sourceMap: mode !== "production",
               postcssOptions: {
                 config: "./webpack/postcss.config.js",
               },
             },
           },
-          { loader: "resolve-url-loader" },
-          { loader: "sass-loader" },
+
+          {
+            loader: "resolve-url-loader",
+            options: { sourceMap: mode !== "production" },
+          },
+
+          {
+            loader: "sass-loader",
+            // Keep this true so resolve-url-loader always has what it needs
+            // (even if you change other sourceMap settings later)
+            options: { sourceMap: true },
+          },
         ],
       },
+
 
       // *** BABEL ***
       {
@@ -59,14 +77,10 @@ module.exports = {
 
       // *** FONTS ***
       {
-        test: /\.(ttf|eot|woff|woff2|svg)$/,
-        use: {
-          loader: "file-loader",
-          options: {
-            name: "[name].[ext]",
-            outputPath: "../fonts/",
-            esModule: false,
-          },
+        test: /\.(ttf|eot|woff|woff2|svg)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "../fonts/[name][ext]",
         },
       },
     ],
@@ -79,10 +93,15 @@ module.exports = {
   // * https://cssnano.co/docs/optimisations
   // * This is also where we ping TerserPlugin to minify our JS too.
   optimization: {
+    minimize: mode === "production",
     minimizer: [
-      new CssnanoPlugin({
-        test: /\.s?css$/i,
-        cssnanoOptions: {
+      new TerserPlugin({
+        terserOptions: {
+          compress: {},
+        },
+      }),
+      new CssMinimizerPlugin({
+        minimizerOptions: {
           preset: [
             "default",
             {
@@ -91,16 +110,9 @@ module.exports = {
           ],
         },
       }),
-      (compiler) => {
-        const TerserPlugin = require("terser-webpack-plugin");
-        new TerserPlugin({
-          terserOptions: {
-            compress: {},
-          },
-        }).apply(compiler);
-      },
     ],
   },
+
 
   // *** INPUT / OUTPUT ***
   // * This is how to change entry location as well as output location and name
@@ -114,35 +126,26 @@ module.exports = {
   // ***** SET DEVTOOL *****
   // * What else can you set this to?
   // * https://webpack.js.org/configuration/devtool/
-  devtool: "source-map",
+  devtool: mode === "production" ? "source-map" : "eval-cheap-module-source-map",
+
 
   // ***** SET PLUGINS *****
   plugins: [
-    // *** BROWSERSYNC ***
-    new BrowserSyncPlugin({
-      enable: true, // enable or disable browserSync
-      host: "localhost",
-      port: 3000,
-      mode: "proxy", // proxy | server
-      // * YOU NEED TO CHANGE THIS. VVV
-      // * Local is going to output a Site Domain that ends in .local
-      // * That needs to be pasted here to get Browersync to work properly.
-      proxy: "https://prelaunch.local",
-      // * CHANGE ME ^^^
-      // BrowserSync will automatically watch for changes to any files connected to our entry,
-      // including both JS and Sass files. We can use this property to tell BrowserSync to watch
-      // for other types of files, in this case PHP files, in our project.
-      files: "**/**/**.php",
-      reload: true,
-    }),
+    ...(mode === "development"
+      ? [
+        new BrowserSyncPlugin({
+          enable: true,
+          host: "localhost",
+          port: 3000,
+          mode: "proxy",
+          proxy: "https://prelaunch.local",
+          files: "**/**/**.php",
+          reload: true,
+        }),
+        new StylelintPlugin(),
+      ]
+      : []),
 
-    // *** STYLELINT ***
-    new StylelintPlugin(),
-
-    // *** MINI CSS EXTRACT PLUGIN ***
-    // * Lets get that CSS rolling. This plugin lets Webpack actually build a CSS file that's separate.
-    // * If you want that file to be somewhere else, the path below will change that.
-    // * The path is relative to output.path (the folder where frontend.js is).
     new MiniCssExtractPlugin({
       filename: "../css/frontend.css",
     }),
