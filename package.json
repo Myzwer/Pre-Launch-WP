@@ -14,7 +14,21 @@
     "lint:fix": "eslint assets/src/js/**/*.js --fix",
     "pretty": "prettier --write .",
     "stylelint": "stylelint assets/src/**/**/*.{css,scss,pcss} --fix",
-    "fix-all": "eslint assets/src/js/**/*.js --fix && prettier --write . && stylelint assets/src/**/**/*.{css,scss,pcss} --fix"
+    "fix-all": "eslint assets/src/js/**/*.js --fix && prettier --write . && stylelint assets/src/**/**/*.{css,scss,pcss} --fix",
+    "clean": "rimraf assets/public/js/frontend.js* assets/public/css/frontend.css* assets/public/fonts/*",
+    "build": "yarn clean && yarn prod"
+  },
+  "browserslist": {
+    "production": [
+      "defaults",
+      "not IE 11",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "babel": {
     "extends": "./webpack/babel.config.js"
@@ -66,6 +80,7 @@
     "postcss-preset-env": "^6.7.0",
     "prettier": "2.3.2",
     "resolve-url-loader": "^4.0.0",
+    "rimraf": "^6.1.2",
     "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
     "stylelint": "^13.13.1",
