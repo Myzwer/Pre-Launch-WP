@@ -9,6 +9,8 @@ node_modules
 .env
 .env.local
 .env.*.local
+/vendor/
+/.cache/php-cs-fixer/
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
