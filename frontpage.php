@@ -26,7 +26,5 @@ get_header(); ?>
 
 <?php get_template_part('components/layouts/_faq'); ?>
 
-<?php [ 'a' => 'b' ]; ?>
-
 <?php
 get_footer();
