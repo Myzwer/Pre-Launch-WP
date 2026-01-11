@@ -109,11 +109,9 @@ module.exports = {
 
       // *** BABEL ***
       {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
+        use: { loader: "babel-loader" },
       },
 
       // *** FONTS ***
@@ -158,6 +156,11 @@ module.exports = {
   // *** INPUT / OUTPUT ***
   // * This is how to change entry location as well as output location and name
   // * Relative to this file, tell it where your js is coming from and where its going.
+
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+  },
+
   entry: "./assets/src/js/frontend.js",
   output: {
     filename: "frontend.js",
