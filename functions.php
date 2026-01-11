@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Functions and definitions
  *
@@ -15,7 +16,6 @@
  * @author Josh Forrester <josh@onefortyfivedesign.com>
  * @version 1.0.0
  */
-
 
 // Include Scripts and Styles
 require_once get_template_directory() . '/includes/enqueue.php';

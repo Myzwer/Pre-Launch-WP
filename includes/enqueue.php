@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Enqueue
  *
@@ -27,11 +28,10 @@ add_action('wp_enqueue_scripts', 'scripts_loadin');
 
 function churchcenter_script()
 {
-    wp_enqueue_script('churchcenter-modal', 'https://js.churchcenter.com/modal/v1', array(), null, true);
+    wp_enqueue_script('churchcenter-modal', 'https://js.churchcenter.com/modal/v1', [], null, true);
 }
 
 add_action('wp_enqueue_scripts', 'churchcenter_script');
-
 
 // Styles Load In
 function load_styles()

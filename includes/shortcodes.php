@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Shortcodes
  *
@@ -11,7 +12,6 @@
  * @author Josh Forrester <josh@onefortyfivedesign.com>
  * @version 1.0.0
  */
-
 
 /**
  * Function to generate a shortcode for creating a button with specified class and icon HTML.
@@ -54,8 +54,6 @@ add_shortcode('btn_light', generate_button_shortcode('btn-light', '<i class="fa-
 add_shortcode('btn_dark', generate_button_shortcode('btn-dark', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
 add_shortcode('btn_ghost_white', generate_button_shortcode('btn-ghost-white', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
 add_shortcode('btn_ghost_black', generate_button_shortcode('btn-ghost-black', '<i class="fa-sharp fa-solid fa-arrow-right"></i> '));
-
-
 
 //******************** SOCIALS *********************
 /*

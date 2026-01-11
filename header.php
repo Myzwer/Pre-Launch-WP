@@ -53,13 +53,13 @@
 
             <!-- Start Wordpress-->
             <?php
-            wp_nav_menu(array(
+            wp_nav_menu([
                 'theme_location' => 'header-menu',
-                'menu_class'     => 'primary-menu', // pass whatever classes to be added to top level here
+                'menu_class' => 'primary-menu', // pass whatever classes to be added to top level here
                 'walker' => new PreLaunch_Walker(),
-                'items_wrap' => '<ul class="nav-list">%3$s</ul>'
-            ));
-            ?>
+                'items_wrap' => '<ul class="nav-list">%3$s</ul>',
+            ]);
+?>
             <!-- End Wordress -->
         </nav>
     </div>

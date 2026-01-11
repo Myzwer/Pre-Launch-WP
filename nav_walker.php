@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The custom Navwalker for the theme.
  * This pairs with the header.php file to generate the right code to make the navwalker work.
@@ -26,15 +27,14 @@ class PreLaunch_Walker extends Walker_Nav_Menu
      * @param stdClass $args An object of wp_nav_menu() arguments.
      * @param int $id Current item ID.
      */
-    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+    public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
     {
         $title = $item->title;
         $permalink = $item->url;
 
-        $output .= "<li>";
+        $output .= '<li>';
         $output .= "<a href='$permalink'>$title</a>";
     }
-
 
     /**
      * Append the closing html for a menu item.
@@ -46,7 +46,7 @@ class PreLaunch_Walker extends Walker_Nav_Menu
      */
     public function end_el(&$output, $item, $depth = 0, $args = null)
     {
-        $output .= "</li>";
+        $output .= '</li>';
     }
 
     /**
@@ -73,9 +73,3 @@ class PreLaunch_Walker extends Walker_Nav_Menu
         $output .= '</ul>';
     }
 }
-
-
-
-
-
-

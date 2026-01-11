@@ -36,10 +36,10 @@ get_header(); ?>
                                     case 'file_download_cta':
                                         ?>
                                         <div class="block">
-                                            <a class="no-underline" href="<?php the_sub_field("file_for_download"); ?>"
+                                            <a class="no-underline" href="<?php the_sub_field('file_for_download'); ?>"
                                                download>
                                                 <button class="fab-main mt-3">
-                                                    <i class="fa-regular fa-arrow-down-to-line"></i> <?php the_sub_field("button_text"); ?>
+                                                    <i class="fa-regular fa-arrow-down-to-line"></i> <?php the_sub_field('button_text'); ?>
                                                 </button>
                                             </a>
                                         </div>
@@ -49,9 +49,9 @@ get_header(); ?>
                                     case 'primary_cta':
                                         ?>
                                         <div class="block">
-                                            <a href="<?php the_sub_field("button_link"); ?>">
+                                            <a href="<?php the_sub_field('button_link'); ?>">
                                                 <button class="fab-main mt-3">
-                                                    <i class="fa-solid fa-circle-arrow-right"></i> <?php the_sub_field("button_text"); ?>
+                                                    <i class="fa-solid fa-circle-arrow-right"></i> <?php the_sub_field('button_text'); ?>
                                                 </button>
                                             </a>
                                         </div>
@@ -61,26 +61,25 @@ get_header(); ?>
                                     case 'secondary_cta':
                                         ?>
                                         <div class="block">
-                                            <a href="<?php the_sub_field("button_link"); ?>">
+                                            <a href="<?php the_sub_field('button_link'); ?>">
                                                 <button class="ghost-black mt-3">
-                                                    <?php the_sub_field("button_text"); ?>
+                                                    <?php the_sub_field('button_text'); ?>
                                                 </button>
                                             </a>
                                         </div>
                                         <?php
                                         break;
 
-
-                                    // FIXME: Only for building/debugging, shouldn't be left in for production
+                                        // FIXME: Only for building/debugging, shouldn't be left in for production
                                     default:
-                                        echo "Unhandled content block: " . get_row_layout();
+                                        echo 'Unhandled content block: ' . get_row_layout();
                                         break;
                                 }
 
                             endwhile;
                         else :
                         endif;
-                        ?>
+?>
                     </div>
                 </div>
 

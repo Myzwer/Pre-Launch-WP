@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Menus
  *
@@ -15,7 +16,7 @@
  */
 
 // Adds the navwalker for the main Menu.
-require_once("nav_walker.php");
+require_once('nav_walker.php');
 
 /*
  * Registers the new menus
@@ -24,20 +25,22 @@ require_once("nav_walker.php");
 */
 
 //*********** Navbar ***********
-function register_my_menu() {
-    register_nav_menu('header-menu', ( 'Header Menu' ));
+function register_my_menu()
+{
+    register_nav_menu('header-menu', ('Header Menu'));
 }
-add_action( 'init', 'register_my_menu' );
-
+add_action('init', 'register_my_menu');
 
 //*********** Footer Col 1 ***********
-function register_col_1() {
-    register_nav_menu('footer-column-1', ( 'Footer Column 1' ));
+function register_col_1()
+{
+    register_nav_menu('footer-column-1', ('Footer Column 1'));
 }
-add_action( 'init', 'register_col_1' );
+add_action('init', 'register_col_1');
 
 //*********** Footer Col 2 ***********
-function register_col_2() {
-    register_nav_menu('footer-column-2', ( 'Footer Column 2' ));
+function register_col_2()
+{
+    register_nav_menu('footer-column-2', ('Footer Column 2'));
 }
-add_action( 'init', 'register_col_2' );
+add_action('init', 'register_col_2');

@@ -1,7 +1,7 @@
 <?php
 
 // Filter for generating the SEO description based on ACF content
-add_filter( 'the_seo_framework_generated_description', 'prioritized_tsf_generated_description', 10, 2 );
+add_filter('the_seo_framework_generated_description', 'prioritized_tsf_generated_description', 10, 2);
 
 /**
  * Filters the generated meta description for SEO by prioritizing specific ACF layout content.
@@ -22,47 +22,48 @@ add_filter( 'the_seo_framework_generated_description', 'prioritized_tsf_generate
  *
  * @return string The modified or original meta description.
  */
-function prioritized_tsf_generated_description( string $desc, ?array $args ): string {
+function prioritized_tsf_generated_description(string $desc, ?array $args): string
+{
     // If ACF is not available, return the original meta description.
-    if ( ! function_exists( 'get_field' ) ) {
+    if (! function_exists('get_field')) {
         return $desc;
     }
 
     // Retrieve the current query object from The SEO Framework.
     $tsfquery = tsf()->query();
-    $post_id  = $tsfquery->is_singular() ? $tsfquery->get_the_real_id() : null;
+    $post_id = $tsfquery->is_singular() ? $tsfquery->get_the_real_id() : null;
 
     // Proceed only if we have a valid post ID (i.e., on a single post or page).
-    if ( ! empty( $post_id ) ) {
+    if (! empty($post_id)) {
         // Retrieve the 'body_sections' ACF field for the post.
-        $body_sections = get_field( 'body_sections', $post_id );
+        $body_sections = get_field('body_sections', $post_id);
 
         // Define the priority order of layouts to search through.
         $priority_order = [
             'text_block',
-            'image_banner_text'
+            'image_banner_text',
         ];
 
         // Initialize an empty string to store the content if found.
         $editor_content = '';
 
         // Loop through the layouts in the priority order and search for content.
-        foreach ( $priority_order as $layout_type ) {
+        foreach ($priority_order as $layout_type) {
             // Ensure we clear content on each iteration.
             $editor_content = '';
 
             // Check if body sections exist and are in an array format.
-            if ( is_array( $body_sections ) ) {
-                foreach ( $body_sections as $section ) {
+            if (is_array($body_sections)) {
+                foreach ($body_sections as $section) {
                     // If the layout matches the current priority, retrieve the content.
-                    if ( isset( $section['acf_fc_layout'] ) && $section['acf_fc_layout'] === $layout_type ) {
+                    if (isset($section['acf_fc_layout']) && $section['acf_fc_layout'] === $layout_type) {
                         $editor_content = $section['text_editor'] ?? ''; // Use null coalescing operator for safety.
 
                         // Log the chosen layout and its content for debugging.
-                        error_log( "Using content from: $layout_type with content: $editor_content" );
+                        error_log("Using content from: $layout_type with content: $editor_content");
 
                         // If content is found, break out of both loops.
-                        if ( ! empty( $editor_content ) ) {
+                        if (! empty($editor_content)) {
                             break 2; // Break out of both the inner and outer loops.
                         }
                     }
@@ -71,12 +72,12 @@ function prioritized_tsf_generated_description( string $desc, ?array $args ): st
         }
 
         // If content is found, clean and prepare it as the meta description.
-        if ( ! empty( $editor_content ) ) {
+        if (! empty($editor_content)) {
             // Strip HTML tags for the meta description.
-            $cleaned_content = wp_strip_all_tags( $editor_content );
+            $cleaned_content = wp_strip_all_tags($editor_content);
 
             // Trim the description to a maximum of 159 characters.
-            $desc = strlen( $cleaned_content ) > 159 ? substr( $cleaned_content, 0, 156 ) . '...' : $cleaned_content;
+            $desc = strlen($cleaned_content) > 159 ? substr($cleaned_content, 0, 156) . '...' : $cleaned_content;
         }
     }
 

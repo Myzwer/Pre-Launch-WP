@@ -27,8 +27,8 @@ get_header(); ?>
     <div class="m-4 md:m-10 lg:max-w-4xl lg:mx-auto privacy-policy">
         <div class="grid grid-cols-12 gap-4">
 	        <div class="col-span-12 p-5">
-			<?php if ( have_posts() ) : while ( have_posts() ) : the_post();
-				the_content();
+			<?php if (have_posts()) : while (have_posts()) : the_post();
+			    the_content();
 			endwhile;
 			else: ?>
                 <p>Sorry, no posts matched your criteria.</p>

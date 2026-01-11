@@ -50,8 +50,8 @@ $get_author_id = get_the_author_meta('ID');
         <div class="col-span-12 md:col-span-6 md:col-start-4 text-center my-5">
             <div class="next-prev grid grid-cols-12">
                 <div class="col-span-12 md:col-span-4 mb-10">
-                    <?php $next = get_permalink(get_adjacent_post(false,'',false));
-                    if ($next != get_permalink()) { ?>
+                    <?php $next = get_permalink(get_adjacent_post(false, '', false));
+if ($next != get_permalink()) { ?>
                         <a href="<?php echo $next; ?>"
                            class="uppercase inline-block rounded-md mt-3 py-3 px-6 text-white bg-gray-dark hover:bg-gray-darkest transition duration-300">
                             Next Post
@@ -68,8 +68,8 @@ $get_author_id = get_the_author_meta('ID');
 
 
                 <div class="col-span-12 md:col-span-4 mb-10">
-                    <?php $prev = get_permalink(get_adjacent_post(false,'',true));
-                    if ($prev != get_permalink()) { ?>
+                    <?php $prev = get_permalink(get_adjacent_post(false, '', true));
+if ($prev != get_permalink()) { ?>
                         <a href="<?php echo $prev; ?>"
                            class="uppercase inline-block rounded-md mt-3 py-3 px-6 text-white bg-gray-dark hover:bg-gray-darkest transition duration-300">
                             Previous Post

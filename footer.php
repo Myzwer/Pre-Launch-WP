@@ -30,8 +30,8 @@
     <div class="footer-right">
         <div class="right-inner">
             <!--Wordpress Generated Link Lists-->
-            <?php wp_nav_menu( array( 'theme_location' => 'footer-column-1' ) ); ?>
-            <?php wp_nav_menu( array( 'theme_location' => 'footer-column-2' ) ); ?>
+            <?php wp_nav_menu([ 'theme_location' => 'footer-column-1' ]); ?>
+            <?php wp_nav_menu([ 'theme_location' => 'footer-column-2' ]); ?>
         </div>
 
     </div>
@@ -40,7 +40,7 @@
 
             <!--Copyright Info-->
             <p>Some Text</p>
-            <p>© <?php echo date("Y"); ?> Website Company Name</p>
+            <p>© <?php echo date('Y'); ?> Website Company Name</p>
 
             <!--Socials, icons from: https://fontawesome.com/ -->
             <div class="footer-icons">

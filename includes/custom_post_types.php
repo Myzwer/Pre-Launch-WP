@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Custom Post Types
  *
@@ -15,5 +16,3 @@
  */
 
 //**************** Custom Post Type Title ******************
-
-
