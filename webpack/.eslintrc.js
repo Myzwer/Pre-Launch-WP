@@ -11,6 +11,7 @@ module.exports = {
   },
   rules: {
     "max-len": [2, 120, 4, { ignoreUrls: true }],
+    "no-invalid-this": "off",
   },
   globals: {
     wp: true,
