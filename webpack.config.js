@@ -161,7 +161,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
   },
 
-  entry: "./assets/src/js/frontend.js",
+  entry: "./assets/src/js/frontend.ts",
   output: {
     filename: "frontend.js",
     path: path.resolve(__dirname, "assets/public/js"),

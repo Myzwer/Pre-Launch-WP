@@ -11,10 +11,10 @@
     "prod": "NODE_ENV=production webpack",
     "prod:watch": "NODE_ENV=production webpack --watch",
     "lint": "eslint",
-    "lint:fix": "eslint assets/src/js/**/*.js --fix",
+    "lint:fix": "eslint \"assets/src/js/**/*.{js,ts}\" --fix",
+    "fix-all": "eslint \"assets/src/js/**/*.{js,ts}\" --fix && prettier --write . && stylelint assets/src/**/**/*.{css,scss,pcss} --fix",
     "pretty": "prettier --write .",
     "stylelint": "stylelint assets/src/**/**/*.{css,scss,pcss} --fix",
-    "fix-all": "eslint assets/src/js/**/*.js --fix && prettier --write . && stylelint assets/src/**/**/*.{css,scss,pcss} --fix",
     "clean": "rimraf assets/public/js/frontend.js* assets/public/css/frontend.css* assets/public/fonts/*",
     "build": "yarn clean && yarn prod",
     "typecheck": "tsc --noEmit"
@@ -39,9 +39,6 @@
       "stylelint --fix"
     ],
     "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ],
-    "*.{php,html}": [
       "prettier --write"
     ]
   },
