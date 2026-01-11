@@ -13,15 +13,15 @@
 
 get_header(); ?>
 
-    <div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
+    <div class="relative bg-scroll bg-no-repeat bg-cover" style="background: linear-gradient(
   rgba(0, 0, 0, 0.45),
   rgba(0, 0, 0, 0.45)
 ), url('https://images.unsplash.com/photo-1501612780327-45045538702b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80') center center; background-repeat: no-repeat; background-size: cover;
  height: 60vh;">
-        <div class="content-middle text-white text-center">
-            <h1 class="text-4xl mb-5">Articles & Podcasts</h1>
+        <div class="text-center text-white content-middle">
+            <h1 class="mb-5 text-4xl">Articles & Podcasts</h1>
             <a href=""
-               class="bg-white rounded-full font-bold text-black px-8 py-3 transition duration-300 ease-in-out hover:bg-blue-light mt-10">
+               class="py-3 px-8 mt-10 font-bold text-black bg-white rounded-full transition duration-300 ease-in-out hover:bg-blue-light">
                 Click here
             </a>
         </div>
@@ -29,10 +29,10 @@ get_header(); ?>
 
 
 <!-- Featured Post -->
-    <div class="m-4 md:m-10 lg:max-w-4xl lg:text-center lg:mx-auto">
-        <div class="grid grid-cols-12 gap-4 mt-6 shadow-xl rounded-xl featured-card">
-            <div class="col-span-12 text-center mx-auto">
-                <h3 class="text-2xl md:text-3xl mb-3 font-bold">Latest Post<?php // this is the formatting for ACF: the_field('body_title_2', $post_id);?></h3>
+    <div class="m-4 md:m-10 lg:mx-auto lg:max-w-4xl lg:text-center">
+        <div class="grid grid-cols-12 gap-4 mt-6 rounded-xl shadow-xl featured-card">
+            <div class="col-span-12 mx-auto text-center">
+                <h3 class="mb-3 text-2xl font-bold md:text-3xl">Latest Post<?php // this is the formatting for ACF: the_field('body_title_2', $post_id);?></h3>
             </div>
 			<?php $posts_query = new WP_Query('posts_per_page=1'); //limit post to 1 since this is our featured post
 while ($posts_query->have_posts()) : $posts_query->the_post();
@@ -41,7 +41,7 @@ while ($posts_query->have_posts()) : $posts_query->the_post();
 					<?php the_post_thumbnail(); ?>
                 </div>
 
-                <div class="col-span-12 lg:col-span-5 text-left p-3">
+                <div class="col-span-12 p-3 text-left lg:col-span-5">
                     <h6 class=""><span class="font-bold">Category</span> - <span
                                 class="opacity-60"> <?php echo get_the_date(); ?> </span>
                     </h6>
@@ -49,7 +49,7 @@ while ($posts_query->have_posts()) : $posts_query->the_post();
 					<?php the_excerpt('<p class = "blog-excerpt">', '</p>'); ?>
 
                     <a href="<?php echo get_permalink(); ?>">
-                        <button class="mx-auto lg:mx-0 shadow-xl bg-black text-white font-bold rounded-full my-6 py-2 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                        <button class="py-2 px-8 my-6 mx-auto font-bold text-white bg-black rounded-full shadow-lg shadow-xl transition duration-300 ease-in-out transform lg:mx-0 hover:scale-105 focus:outline-none focus:shadow-outline">
                             Read More
                         </button>
                     </a>
@@ -59,9 +59,9 @@ wp_reset_query(); ?>
         </div>
 
         <!-- All Other Posts -->
-        <div class="grid grid-cols-12 gap-4 mt-6 ">
-            <div class="col-span-12 text-center mx-auto mt-10">
-                <h3 class="text-2xl md:text-3xl mb-3 font-bold">All Posts<?php // this is the formatting for ACF: the_field('body_title_2', $post_id);?></h3>
+        <div class="grid grid-cols-12 gap-4 mt-6">
+            <div class="col-span-12 mx-auto mt-10 text-center">
+                <h3 class="mb-3 text-2xl font-bold md:text-3xl">All Posts<?php // this is the formatting for ACF: the_field('body_title_2', $post_id);?></h3>
             </div>
 			<?php
 /*
@@ -97,7 +97,7 @@ while ($loop->have_posts()) :
     $loop->the_post();
     ?>
 
-                <div class="blog-card col-span-12 md:col-span-6 rounded-xl shadow-xl">
+                <div class="col-span-12 rounded-xl shadow-xl md:col-span-6 blog-card">
 					<?php the_post_thumbnail(); ?>
                     <div class="p-4 text-left">
                         <h6 class=""><span class="font-bold">Category</span> - <span
@@ -107,7 +107,7 @@ while ($loop->have_posts()) :
 						<?php the_excerpt('<p class = "blog-excerpt">', '</p>'); ?>
                         <p class="mt-5 font-bold">Written by: <?php the_author(); ?></p>
                         <a href="<?php echo get_permalink(); ?>">
-                            <button class="mx-auto lg:mx-0 shadow-xl bg-black text-white font-bold rounded-full my-6 py-2 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            <button class="py-2 px-8 my-6 mx-auto font-bold text-white bg-black rounded-full shadow-lg shadow-xl transition duration-300 ease-in-out transform lg:mx-0 hover:scale-105 focus:outline-none focus:shadow-outline">
                                 Read More
                             </button>
                         </a>

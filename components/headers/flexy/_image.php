@@ -11,16 +11,16 @@
  * */
 ?>
 
-<div class="bg-no-repeat bg-scroll bg-cover relative" style="background: linear-gradient(
+<div class="relative bg-scroll bg-no-repeat bg-cover" style="background: linear-gradient(
   rgba(0, 0, 0, 0.45),
   rgba(0, 0, 0, 0.45)
 ), url('<?php the_sub_field( "side_photo" ); ?>') center center; background-repeat: no-repeat; background-size: cover;
  height: 60vh;">
-    <div class="content-middle-medium text-center px-5 text-pretty">
+    <div class="px-5 text-center content-middle-medium text-pretty">
         <div class="center add-padding">
-            <h2 class="text-white text-xl lg:text-2xl lb-2 font-bold"><?php the_sub_field( "small_subtitle" ); ?></h2>
+            <h2 class="text-xl font-bold text-white lg:text-2xl lb-2"><?php the_sub_field( "small_subtitle" ); ?></h2>
         </div>
-        <h1 class="text-white text-3xl lg:text-5xl uppercase font-bold"><?php the_sub_field( "main_title" ); ?></h1>
+        <h1 class="text-3xl font-bold text-white uppercase lg:text-5xl"><?php the_sub_field( "main_title" ); ?></h1>
 
 
         <?php if ( have_rows( 'primary_cta' ) ): ?>

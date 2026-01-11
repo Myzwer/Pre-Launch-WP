@@ -11,13 +11,13 @@
 ?>
 
 <div class="bg-black">
-    <div class="bg-no-repeat bg-scroll bg-cover relative"
+    <div class="relative bg-scroll bg-no-repeat bg-cover"
          style="height: 30vh;">
-        <div class="content-middle text-center">
+        <div class="text-center content-middle">
             <div class="center add-padding">
-                <h2 class="text-white text-xl md:text-2xl lb-2 font-bold"><?php the_sub_field( "small_subtitle" ); ?></h2>
+                <h2 class="text-xl font-bold text-white md:text-2xl lb-2"><?php the_sub_field( "small_subtitle" ); ?></h2>
             </div>
-            <h1 class="text-white text-3xl md:text-5xl uppercase font-bold"><?php the_sub_field( "main_title" ); ?></h1>
+            <h1 class="text-3xl font-bold text-white uppercase md:text-5xl"><?php the_sub_field( "main_title" ); ?></h1>
 
 			<?php if ( have_rows( 'primary_cta' ) ): ?>
 				<?php while ( have_rows( 'primary_cta' ) ): the_row(); ?>

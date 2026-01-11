@@ -20,8 +20,8 @@
 ?>
 
 <div class="bg-white-gradient">
-    <div class="content-middle text-center">
-        <h1 class="text-white text-3xl md:text-5xl font-bold uppercase">
+    <div class="text-center content-middle">
+        <h1 class="text-3xl font-bold text-white uppercase md:text-5xl">
             <?php
             // This enables simple_title to work regardless of its a top level field or a subfield in flex content
             if(get_sub_field('simple_title')): the_sub_field('simple_title');
@@ -35,12 +35,12 @@
 <!--
 Textured background?
 <div class="bg-white-gradient">
-    <div class="bg-no-repeat bg-scroll bg-cover relative"
+    <div class="relative bg-scroll bg-no-repeat bg-cover"
          style="background:
                  url('<?php /*echo get_template_directory_uri(); */?>/assets/src/img/topography.png') center center;
                  height: 20vh;">
-        <div class="content-middle text-center">
-            <h1 class="text-white text-3xl md:text-5xl font-bold uppercase">
+        <div class="text-center content-middle">
+            <h1 class="text-3xl font-bold text-white uppercase md:text-5xl">
                 <?php
 /*                // This enables simple_title to work regardless of its a top level field or a subfield in flex content
                 if(get_sub_field('simple_title')): the_sub_field('simple_title');

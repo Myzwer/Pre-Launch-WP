@@ -16,10 +16,10 @@
  */
 ?>
 
-<div class="bg-white mx-5 mb-8 bg-gray-light shadow-xl rounded-xl relative flex flex-col">
+<div class="flex relative flex-col mx-5 mb-8 bg-white rounded-xl shadow-xl bg-gray-light">
     <img class="rounded-t-lg" src="https://via.placeholder.com/500x300" alt="Event Brand">
-    <div class="p-5 flex-grow">
-        <h2 class="text-xl md:text-2xl font-bold capitalize">Card Title</h2>
+    <div class="flex-grow p-5">
+        <h2 class="text-xl font-bold capitalize md:text-2xl">Card Title</h2>
         <h3 class="text-lg">Card Subtitle</h3>
         <p class="pb-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquam libero vel nisl malesuada, vitae
@@ -28,12 +28,12 @@
     </div>
 
     <div class="grid grid-cols-12 rounded-bl-xl">
-        <div class="col-span-6 text-center bg-gray-dark rounded-bl-xl">
-            <a class="block text-lg uppercase py-3 text-white font-bold" href="#">Register</a>
+        <div class="col-span-6 text-center rounded-bl-xl bg-gray-dark">
+            <a class="block py-3 text-lg font-bold text-white uppercase" href="#">Register</a>
         </div>
 
-        <div class="col-span-6 rounded-br-xl bg-gray-darkest text-white text-center">
-            <a class="block text-lg uppercase py-3 font-bold" href="#">Learn More</a>
+        <div class="col-span-6 text-center text-white rounded-br-xl bg-gray-darkest">
+            <a class="block py-3 text-lg font-bold uppercase" href="#">Learn More</a>
         </div>
     </div>
 </div>

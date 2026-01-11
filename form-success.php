@@ -15,12 +15,12 @@
 get_header(); ?>
 
     <div class="bg-blue-gradient">
-        <div class="bg-no-repeat bg-scroll bg-cover relative"
+        <div class="relative bg-scroll bg-no-repeat bg-cover"
              style="background:
                      url('<?php echo get_template_directory_uri(); ?>/assets/src/img/topography-salty.png') center center;">
             <div class="grid grid-cols-12 text-black">
-                <div class="col-span-12 md:col-span-6 text-center relative">
-                    <div class="content-middle-medium prose py-20">
+                <div class="relative col-span-12 text-center md:col-span-6">
+                    <div class="py-20 content-middle-medium prose">
                         <?php the_field('content'); ?>
 
                         <?php
@@ -38,7 +38,7 @@ get_header(); ?>
                                         <div class="block">
                                             <a class="no-underline" href="<?php the_sub_field('file_for_download'); ?>"
                                                download>
-                                                <button class="fab-main mt-3">
+                                                <button class="mt-3 fab-main">
                                                     <i class="fa-regular fa-arrow-down-to-line"></i> <?php the_sub_field('button_text'); ?>
                                                 </button>
                                             </a>
@@ -50,7 +50,7 @@ get_header(); ?>
                                         ?>
                                         <div class="block">
                                             <a href="<?php the_sub_field('button_link'); ?>">
-                                                <button class="fab-main mt-3">
+                                                <button class="mt-3 fab-main">
                                                     <i class="fa-solid fa-circle-arrow-right"></i> <?php the_sub_field('button_text'); ?>
                                                 </button>
                                             </a>
@@ -62,7 +62,7 @@ get_header(); ?>
                                         ?>
                                         <div class="block">
                                             <a href="<?php the_sub_field('button_link'); ?>">
-                                                <button class="ghost-black mt-3">
+                                                <button class="mt-3 ghost-black">
                                                     <?php the_sub_field('button_text'); ?>
                                                 </button>
                                             </a>
@@ -84,7 +84,7 @@ get_header(); ?>
                 </div>
 
                 <div class="col-span-12 md:col-span-6">
-                    <div class="bg-no-repeat bg-scroll bg-cover relative"
+                    <div class="relative bg-scroll bg-no-repeat bg-cover"
                          style="background: url('<?php the_field('side_image'); ?>') center center;
                                  height: 80vh;">
                     </div>
