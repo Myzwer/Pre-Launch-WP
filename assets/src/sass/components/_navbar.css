@@ -1,0 +1,264 @@
+@charset "UTF-8";
+/*
+ * Navbar SCSS
+ * ---------------------------
+ * This is the scss file to control the styles of the navbar.
+ * A few stylelint rules had to be disabled as navbar's merit them
+ * Most of the "settings" are at the top, but dig around to change more specific things.
+ * This is mobile first, so if you're trying to make changes to desktop, scroll to the bottom.
+ *
+*/
+/*
+* LEFT ALIGN NAV? (on desktop)
+*
+* Enable the comment in the main <nav> element
+* in the DESKTOP QUERY of nav-list > li:last-of-type, delete the position. It's commented.
+*
+* (see Left Align notes in document)
+*
+*/
+/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
+.navigation {
+  background: #333333;
+  height: 85px;
+}
+
+.nav-container {
+  margin: 0 auto;
+  max-width: 2000px;
+}
+
+.brand {
+  float: left;
+  padding-left: 10px;
+  position: absolute;
+  text-transform: uppercase;
+  z-index: 15;
+}
+.brand a,
+.brand a:visited {
+  color: #fafafa;
+  text-decoration: none;
+}
+.brand img {
+  height: 75px;
+  padding-right: 15px;
+  padding-top: 10px;
+}
+
+.active-dropdown {
+  background-color: #7498be;
+}
+
+.nav-dropdown {
+  position: static;
+}
+
+.nav-mobile {
+  background: #333333;
+  height: 85px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 85px;
+}
+
+nav {
+  align-items: center;
+  background-color: #333333;
+  display: block;
+  float: none;
+  justify-content: center;
+  padding: 85px 0 0;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+nav ul {
+  display: none;
+}
+nav ul li {
+  float: none;
+  position: relative;
+  text-transform: uppercase;
+}
+nav ul li a,
+nav ul li a:visited {
+  color: #fafafa;
+  display: block;
+  line-height: 20px;
+  padding: 15px;
+  text-decoration: none;
+}
+nav ul li a:hover,
+nav ul li a:visited:hover {
+  background: #7498be;
+  color: #eeeeee;
+}
+nav ul li a:not(:only-child):after,
+nav ul li a:visited:not(:only-child):after {
+  content: " ▾";
+  padding-left: 4px;
+}
+nav ul li ul li {
+  min-width: 190px;
+}
+nav ul li ul li a {
+  line-height: 20px;
+  padding-left: 30px;
+}
+nav ul li li:nth-child(even) {
+  background-color: #494949;
+}
+nav ul li li:nth-child(odd) {
+  background-color: #404040;
+}
+
+#nav-toggle {
+  cursor: pointer;
+  left: 18px;
+  padding: 10px 35px 16px 0;
+  position: absolute;
+  top: 28px;
+}
+#nav-toggle span,
+#nav-toggle span:before,
+#nav-toggle span:after {
+  background: #fafafa;
+  border-radius: 1px;
+  content: "";
+  cursor: pointer;
+  display: block;
+  height: 3px;
+  position: absolute;
+  transition: all 0.3s ease-in-out;
+  width: 35px;
+}
+#nav-toggle span:after {
+  margin-left: 10px;
+  width: 25px;
+}
+#nav-toggle span:before {
+  top: -10px;
+}
+#nav-toggle span:after {
+  bottom: -10px;
+}
+#nav-toggle.active span {
+  background-color: transparent;
+}
+#nav-toggle.active span:before, #nav-toggle.active span:after {
+  top: 0;
+}
+#nav-toggle.active span:before {
+  transform: rotate(45deg);
+}
+#nav-toggle.active span:after {
+  margin: 0;
+  transform: rotate(-45deg);
+  width: 35px;
+}
+
+@media screen and (min-width: 1101px) {
+  .nav-mobile {
+    display: none;
+  }
+  .nav-list {
+    display: block !important;
+    z-index: 10;
+  }
+  nav {
+    position: relative;
+  }
+  .nav-dropdown {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    position: absolute;
+    z-index: 1;
+  }
+  nav {
+    display: flex;
+    padding: 0;
+    position: relative;
+  }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav ul li {
+    float: left;
+  }
+  nav ul li a,
+  nav ul li a:visited {
+    line-height: 85px;
+    padding: 0 20px;
+  }
+  nav ul li a:not(:only-child):after,
+  nav ul li a:visited:not(:only-child):after {
+    content: " ▾";
+    padding-left: 4px;
+  }
+  nav ul li ul li a {
+    padding: 15px;
+  }
+}
+.nav-list > li:last-of-type {
+  align-self: center;
+  background-color: #fafafa;
+  color: #333333;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.1s ease-in-out;
+}
+
+.nav-list > li:last-of-type a {
+  background-color: rgba(0, 0, 0, 0);
+  color: #234058;
+  font-weight: 600;
+  padding: 8px 20px 15px;
+}
+
+.nav-list > li:last-of-type i {
+  font-size: 1.6em;
+  position: relative;
+  top: 3px;
+}
+
+.nav-list > li:last-of-type:hover a {
+  background-color: rgba(0, 0, 0, 0);
+  color: #234058;
+}
+
+.nav-list > li:last-of-type:hover {
+  background: #eaeaea;
+}
+
+.nav-list > li:last-of-type:active {
+  transform: scale(1.025);
+}
+
+@media screen and (min-width: 1101px) {
+  .nav-list > li:last-of-type {
+    border-radius: 20px;
+    margin-left: 6px;
+    margin-right: 10px;
+    margin-top: 82px;
+    position: absolute;
+    right: 0;
+  }
+  .nav-list > .nav-list > li:last-of-type a {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .nav-list > li:last-of-type:hover a {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .nav-list > li:last-of-type a,
+  .nav-list > li:last-of-type a:visited {
+    line-height: 8px;
+    padding: 15px 20px;
+  }
+}
+/* stylelint-enable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
