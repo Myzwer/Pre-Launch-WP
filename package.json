@@ -82,6 +82,7 @@
     "@babel/eslint-parser": "^7.14.7",
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-typescript": "^7.28.5",
+    "@types/jquery": "^3.5.33",
     "@wordpress/eslint-plugin": "^9.0.6",
     "autoprefixer": "^10.4",
     "babel-loader": "^8.2.2",
