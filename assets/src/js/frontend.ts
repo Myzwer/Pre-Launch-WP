@@ -2,15 +2,15 @@ import $ from "jquery";
 import "../sass/frontend.scss";
 import "./accordion";
 
-$(function () {
-  // DOM ready
+$(() => {
+  const $navLinksWithDropdown = $("nav ul li a:not(:only-child)");
+  const $navDropdowns = $(".nav-dropdown");
+  const $navToggle = $("#nav-toggle");
+  const $navUl = $("nav ul");
 
   // If a link has a dropdown, add sub menu toggle.
-  $("nav ul li a:not(:only-child)").click(function (e) {
-    // 👇 Prevent the browser from following href="#" and adding # to the URL
+  $navLinksWithDropdown.on("click", function (this: HTMLElement, e) {
     e.preventDefault();
-
-    // 👇 Keep this: stop the click from bubbling up to <html>
     e.stopPropagation();
 
     // Remove "active-dropdown" class from other anchor elements
@@ -22,32 +22,25 @@ $(function () {
     // Toggle the visibility of the sibling dropdown
     const mediaQuery = window.matchMedia("(max-width: 64em)");
 
-    // Check the screen size using the media query
     if (mediaQuery.matches) {
-      // Mobile: Use slideToggle()
       $(this).siblings(".nav-dropdown").slideToggle();
     } else {
-      // Desktop: Use toggle()
       $(this).siblings(".nav-dropdown").toggle();
     }
 
     // Close one dropdown when selecting another
-    $(".nav-dropdown").not($(this).siblings()).hide();
+    $navDropdowns.not($(this).siblings()).hide();
   });
 
   // Clicking away from dropdown will remove the dropdown class and active-dropdown class
-  $("html").click(function () {
-    $(".nav-dropdown").hide();
-    $("nav ul li a:not(:only-child)").removeClass("active-dropdown");
+  $("html").on("click", () => {
+    $navDropdowns.hide();
+    $navLinksWithDropdown.removeClass("active-dropdown");
   });
 
-  // Toggle open and close nav styles on click
-  $("#nav-toggle").click(function () {
-    $("nav ul").slideToggle();
-  });
-
-  // Hamburger to X toggle
-  $("#nav-toggle").on("click", function () {
+  // Toggle open/close nav styles AND hamburger->X toggle
+  $navToggle.on("click", function (this: HTMLElement) {
+    $navUl.slideToggle();
     this.classList.toggle("active");
   });
 });
