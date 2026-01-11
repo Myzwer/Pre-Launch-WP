@@ -1,5 +1,3 @@
-const plugin = require("tailwindcss/plugin");
-
 module.exports = {
   /*
    * This project now uses v3 of Tailwind.
@@ -8,7 +6,11 @@ module.exports = {
    *
    * More information: https://tailwindcss.com/blog/tailwindcss-v3
    */
-  content: ["*.php", "./components/**/*.php", "./assets/src/js/*.js"],
+  content: [
+    "*.php",
+    "./components/**/*.php",
+    "./assets/src/js/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     screens: {
       sm: "39.9375em",
