@@ -19,7 +19,9 @@
     "build": "yarn clean && yarn prod",
     "typecheck": "tsc --noEmit",
     "php:fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
-    "php:check": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff"
+    "php:check": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff",
+    "tw:sort": "npx rustywind --write . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\"",
+    "tw:check": "npx rustywind --check-formatted . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\""
   },
   "browserslist": {
     "production": [
@@ -35,6 +37,7 @@
   },
   "lint-staged": {
     "*.php": [
+      "npx rustywind --write --quiet",
       "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --path-mode=intersection"
     ],
     "*.{js,jsx,ts,tsx}": [
@@ -104,6 +107,7 @@
     "prettier": "^3",
     "resolve-url-loader": "^5",
     "rimraf": "^6.1.2",
+    "rustywind": "^0.24.3",
     "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
     "simple-git-hooks": "^2",

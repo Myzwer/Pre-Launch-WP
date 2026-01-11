@@ -2447,6 +2447,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"agent-base@npm:^7.1.2":
+  version: 7.1.4
+  resolution: "agent-base@npm:7.1.4"
+  checksum: 86a7f542af277cfbd77dd61e7df8422f90bac512953709003a1c530171a9d019d072e2400eab2b59f84b49ab9dd237be44315ca663ac73e82b3922d10ea5eafa
+  languageName: node
+  linkType: hard
+
 "agentkeepalive@npm:^4.1.3":
   version: 4.2.0
   resolution: "agentkeepalive@npm:4.2.0"
@@ -5532,6 +5539,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"https-proxy-agent@npm:^7.0.6":
+  version: 7.0.6
+  resolution: "https-proxy-agent@npm:7.0.6"
+  dependencies:
+    agent-base: ^7.1.2
+    debug: 4
+  checksum: b882377a120aa0544846172e5db021fa8afbf83fea2a897d397bd2ddd8095ab268c24bc462f40a15f2a8c600bf4aa05ce52927f70038d4014e68aefecfa94e8d
+  languageName: node
+  linkType: hard
+
 "human-signals@npm:^5.0.0":
   version: 5.0.0
   resolution: "human-signals@npm:5.0.0"
@@ -8522,6 +8539,7 @@ __metadata:
     prettier: ^3
     resolve-url-loader: ^5
     rimraf: ^6.1.2
+    rustywind: ^0.24.3
     sass: ^1.35.2
     sass-loader: ^12.1.0
     simple-git-hooks: ^2
@@ -8596,6 +8614,13 @@ __metadata:
     object-assign: ^4.1.1
     react-is: ^16.8.1
   checksum: 5eef82fdda64252c7e75aa5c8cc28a24bbdece0f540adb60ce67c205cf978a5bd56b83e4f269f91c6e4dcfd80b36f2a2dec24d362e278913db2086ca9c6f9430
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
   languageName: node
   linkType: hard
 
@@ -9118,6 +9143,18 @@ __metadata:
   dependencies:
     queue-microtask: ^1.2.2
   checksum: cb4f97ad25a75ebc11a8ef4e33bb962f8af8516bb2001082ceabd8902e15b98f4b84b4f8a9b222e5d57fc3bd1379c483886ed4619367a7680dad65316993021d
+  languageName: node
+  linkType: hard
+
+"rustywind@npm:^0.24.3":
+  version: 0.24.3
+  resolution: "rustywind@npm:0.24.3"
+  dependencies:
+    https-proxy-agent: ^7.0.6
+    proxy-from-env: ^1.1.0
+  bin:
+    rustywind: bin/rustywind
+  checksum: 522fa1a3bf6240355e396cb6f192164489e613b4a693a4c4f36f87f697476d8077588725e161e35a1958ab33a1386055ae6edf281f0c523ba13aa8d85fe72c3a
   languageName: node
   linkType: hard
 
