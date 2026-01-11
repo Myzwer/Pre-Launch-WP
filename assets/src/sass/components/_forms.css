@@ -7,10 +7,7 @@
  *
  *
  */
-
-// Not my class names, sooo....
 /* stylelint-disable selector-max-id, selector-max-compound-selectors, selector-class-pattern */
-
 .gform_title,
 .gform_description {
   display: none;
@@ -21,10 +18,8 @@
   text-align: center;
 }
 
-.gfield_consent_label {
-  a {
-    text-decoration: underline;
-  }
+.gfield_consent_label a {
+  text-decoration: underline;
 }
 
 .gform_wrapper.gravity-theme .gfield_consent_description {

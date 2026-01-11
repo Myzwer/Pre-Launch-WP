@@ -1,0 +1,28 @@
+/**
+ * Wordpress
+ * =================================
+ * Sometimes wordpress generates things and tailwind can't hit it. This edits those.
+ * - Single - Category
+ * - Privacy Policy Styles
+ *
+ *
+ *
+ */
+.category ul {
+  display: inline-block;
+}
+.category li {
+  background-color: #0a4b78;
+  padding: 10px;
+}
+
+.blog-content p {
+  padding-bottom: 15px;
+}
+
+/* Privacy Policy Page */
+.privacy-policy h2 {
+  font-size: 2em;
+  font-weight: 800;
+  padding-top: 10px;
+}

@@ -1,0 +1,33 @@
+/**
+ * Gradient
+ * =================================
+ * This controls all the color gradients used across the site.
+ *
+ *
+ *
+ *
+ *
+ */
+.bg-white-gradient {
+  background: rgb(250, 250, 250);
+  background: linear-gradient(128deg, rgb(250, 250, 250) 0%, rgb(235, 235, 235) 100%);
+}
+
+.bg-blue-gradient {
+  background: rgb(204, 219, 229);
+  background: linear-gradient(128deg, rgb(204, 219, 229) 0%, rgb(222, 232, 238) 100%);
+}
+
+.bg-salty-gradient {
+  background: rgb(35, 64, 88);
+  background: linear-gradient(128deg, rgb(35, 64, 88) 0%, rgb(75, 116, 150) 100%);
+}
+
+.alt-bg-wrap .bg-alternating-gradient:nth-child(odd of :not(:empty)) {
+  background: rgb(250, 250, 250);
+  background: linear-gradient(128deg, rgb(250, 250, 250) 0%, rgb(235, 235, 235) 100%);
+}
+.alt-bg-wrap .bg-alternating-gradient:nth-child(even of :not(:empty)) {
+  background: rgb(204, 219, 229);
+  background: linear-gradient(128deg, rgb(204, 219, 229) 0%, rgb(222, 232, 238) 100%);
+}
