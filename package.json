@@ -12,7 +12,7 @@
     "prod:watch": "NODE_ENV=production webpack --watch",
     "lint": "eslint",
     "lint:fix": "eslint \"assets/src/js/**/*.{js,ts}\" --fix",
-    "pretty": "prettier --write .",
+    "pretty": "prettier --write \"**/*.{json,md,yml,yaml}\"",
     "fix-all": "eslint \"assets/src/js/**/*.{js,ts}\" --fix && prettier --write . && stylelint assets/src/**/**/*.{css,pcss} --fix",
     "stylelint": "stylelint assets/src/**/**/*.{css,pcss} --fix",
     "clean": "rimraf .cache/webpack .cache/stylelint assets/public/js/frontend.js* assets/public/css/frontend.css* assets/public/fonts/*",
@@ -43,7 +43,7 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix"
     ],
-    "*.{css,scss,pcss}": [
+    "*.{css,pcss}": [
       "stylelint --fix --cache --cache-location .cache/stylelint"
     ],
     "*.{json,md,yml,yaml}": [
@@ -106,9 +106,8 @@
     "rimraf": "^6.1.2",
     "rustywind": "^0.24.3",
     "simple-git-hooks": "^2",
-    "stylelint": "^13.13.1",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-webpack-plugin": "^2.2.2",
+    "stylelint": "^16",
+    "stylelint-webpack-plugin": "^5",
     "typescript": "^5.9.3",
     "webpack": "^5",
     "webpack-cli": "^5"

@@ -8,30 +8,22 @@
  */
 
 module.exports = {
-  extends: ["stylelint-config-prettier"],
   plugins: [],
   rules: {
     "no-empty-source": null,
     "no-duplicate-selectors": true,
+
     "color-hex-length": "long",
-    "selector-attribute-quotes": "always",
-    "selector-attribute-operator-space-before": "never",
-    "selector-attribute-operator-space-after": "never",
-    "selector-attribute-brackets-space-inside": "never",
-    "property-no-vendor-prefix": true,
-    "value-no-vendor-prefix": true,
     "function-url-quotes": "always",
     "font-family-name-quotes": "always-unless-keyword",
     "comment-whitespace-inside": "always",
     "selector-pseudo-element-colon-notation": "single",
     "selector-no-vendor-prefix": true,
-    "unit-allowed-list": ["px", "em", "deg", "%", "vh", "vw", "s"],
-    "media-feature-range-operator-space-before": "always",
-    "media-feature-range-operator-space-after": "always",
-    "media-feature-parentheses-space-inside": "never",
+    "property-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
     "media-feature-name-no-vendor-prefix": true,
-    "media-feature-colon-space-before": "never",
-    "media-feature-colon-space-after": "always",
+
+    "unit-allowed-list": ["px", "em", "deg", "%", "vh", "vw", "s"],
 
     // Allow Tailwind v4 + common Tailwind at-rules
     "at-rule-no-unknown": [
@@ -42,3 +34,4 @@ module.exports = {
     ],
   },
 };
+
