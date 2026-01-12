@@ -23,7 +23,8 @@ module.exports = {
     "value-no-vendor-prefix": true,
     "media-feature-name-no-vendor-prefix": true,
 
-    "unit-allowed-list": ["px", "em", "deg", "%", "vh", "vw", "s"],
+    "unit-allowed-list":
+      ["px", "em", "deg", "%", "vh", "vw", "s", "rem", "fr", "ms", "ch", "vmin", "vmax"],
 
     // Allow Tailwind v4 + common Tailwind at-rules
     "at-rule-no-unknown": [
