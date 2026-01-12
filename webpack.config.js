@@ -73,13 +73,16 @@ module.exports = {
     rules: [
       // *** CSS ***
       {
-        test: /\.s?css$/i,
+        test: /\.css$/i,
         use: [
           { loader: MiniCssExtractPlugin.loader },
 
           {
             loader: "css-loader",
-            options: { sourceMap: mode !== "production" },
+            options: {
+              sourceMap: mode !== "production",
+              importLoaders: 1, // ensures @import-ed files also run through postcss-loader
+            },
           },
 
           {
@@ -91,21 +94,8 @@ module.exports = {
               },
             },
           },
-
-          {
-            loader: "resolve-url-loader",
-            options: { sourceMap: mode !== "production" },
-          },
-
-          {
-            loader: "sass-loader",
-            // Keep this true so resolve-url-loader always has what it needs
-            // (even if you change other sourceMap settings later)
-            options: { sourceMap: true },
-          },
         ],
       },
-
 
       // *** BABEL ***
       {

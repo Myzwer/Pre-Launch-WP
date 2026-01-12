@@ -1,7 +1,6 @@
 module.exports = {
   plugins: {
+    "@tailwindcss/postcss": {},
     "postcss-preset-env": {},
-    tailwindcss: { config: "./webpack/tailwind.config.js" },
-    autoprefixer: {},
   },
 };

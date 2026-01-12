@@ -1,5 +1,6 @@
 import $ from "jquery";
-import "../sass/frontend.scss";
+import "../css/tailwind.css";
+import "../css/frontend.css";
 import "./accordion";
 
 $(() => {

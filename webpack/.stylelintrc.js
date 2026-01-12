@@ -4,17 +4,14 @@
  *
  * @docs Stylelint https://stylelint.io/user-guide/
  * @docs StylelintWebpackPlugin: https://webpack.js.org/plugins/stylelint-webpack-plugin/
- * @docs stylelint-scss : https://github.com/kristerkari/stylelint-scss
  * @since 1.0.0
  */
 
 module.exports = {
-  extends: ["stylelint-config-sass-guidelines", "stylelint-config-prettier"],
-  plugins: ["stylelint-scss"],
+  extends: ["stylelint-config-prettier"],
+  plugins: [],
   rules: {
     "no-empty-source": null,
-    "at-rule-no-unknown": null,
-    "scss/at-rule-no-unknown": true,
     "no-duplicate-selectors": true,
     "color-hex-length": "long",
     "selector-attribute-quotes": "always",
@@ -35,5 +32,13 @@ module.exports = {
     "media-feature-name-no-vendor-prefix": true,
     "media-feature-colon-space-before": "never",
     "media-feature-colon-space-after": "always",
+
+    // Allow Tailwind v4 + common Tailwind at-rules
+    "at-rule-no-unknown": [
+      true,
+      {
+        ignoreAtRules: ["tailwind", "apply", "layer", "config", "plugin"],
+      },
+    ],
   },
 };
