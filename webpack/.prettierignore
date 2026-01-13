@@ -1,8 +1,62 @@
+###
+# Dependencies / Package Manager
+# --------------------------------------------------
+# Never format dependency trees or lockfiles.
+###
+
 /node_modules
+/vendor
 yarn.lock
+.pnp.*
+.yarn/
+
+
+###
+# Build Output / Generated Files
+# --------------------------------------------------
+# Compiled assets and caches are not source-of-truth.
+###
+
 /assets/public
+.cache/
+/.cache/php-cs-fixer/
+
+
+###
+# IDE / Editor Files
+# --------------------------------------------------
+# Editor configuration should not be formatted by Prettier.
+###
+
 .idea
 .DS_Store
+
+
+###
+# Fonts
+# --------------------------------------------------
+# Binary assets should never be touched by Prettier.
+###
+
 *.woff
 *.woff2
+
+
+###
+# Environment / Configuration
+# --------------------------------------------------
+# Environment-specific files are not formatted.
+###
+
+.env
+.env.local
+.env.*.local
+
+
+###
+# Documentation
+# --------------------------------------------------
+# README is intentionally hand-formatted.
+###
+
 readme.md
