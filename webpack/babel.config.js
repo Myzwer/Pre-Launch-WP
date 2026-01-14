@@ -1,10 +1,10 @@
 /**
- * Stylelint configuration.
+ * Babel configuration.
  *
- * Lints plain CSS for correctness and consistency.
- * Tailwind-specific at-rules are explicitly allowed.
+ * Transpiles modern JavaScript and TypeScript for browser compatibility.
+ * Used by Webpack to process frontend source files.
  *
- * @docs https://stylelint.io/user-guide/
+ * @docs https://babeljs.io/docs/
  */
 
 
