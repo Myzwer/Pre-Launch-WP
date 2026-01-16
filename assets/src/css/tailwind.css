@@ -1,3 +1,287 @@
 @config "../../../webpack/tailwind.config.js";
-@plugin "@tailwindcss/typography";
 @import "tailwindcss";
+
+/* =========================================================
+   Tailwind Theme (edit points)
+   - [TOKENS]  Colors, gradients, fonts (update per site)
+   - [BEHAVIOR] Base defaults (update sometimes)
+   - [COMPONENTS] Buttons/cards/etc (update sometimes)
+   - [UTILITIES] Wrap/grid helpers (rarely change)
+   Docs: README → Tailwind Theme
+   ========================================================= */
+
+@theme {
+	/* [TOKENS] Colors + gradients (update per site)
+	   Notes:
+	   - --color-* => text-* / bg-* / border-* / utilities
+       - --background-image-* => bg-* / utilities
+*/
+
+	/* Neutrals */
+	--color-black: #0F172A;
+	--color-white: #F8FAFC;
+
+	/* Brand roles (saturated) */
+	--color-primary: #63C1E9;
+	--color-secondary: #397B52;
+
+	/* Soft roles (pastels) */
+	--color-soft-1: #E0F2FE;
+	--color-soft-2: #ECFDF3;
+
+	/* Gradient endpoints */
+	--color-primary-gradient-to: #C9E9FF;
+	--color-secondary-gradient-to: #C6FFDD;
+	--color-impact-gradient-to: #28563A;
+
+	/* Gradients */
+	--background-image-primary-gradient: linear-gradient(
+		135deg,
+		var(--color-soft-1),
+		var(--color-primary-gradient-to)
+	);
+
+	--background-image-secondary-gradient: linear-gradient(
+		135deg,
+		var(--color-soft-2),
+		var(--color-secondary-gradient-to)
+	);
+
+	--background-image-impact-gradient: linear-gradient(
+		135deg,
+		var(--color-secondary),
+		var(--color-impact-gradient-to)
+	);
+
+	/* [TOKENS] Fonts (update per site) */
+	--font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+	"Apple Color Emoji", "Segoe UI Emoji";
+	--font-display: var(--font-body);
+}
+
+/* [BEHAVIOR] Font utilities (override anywhere in markup)
+   Use: font-body | font-display
+*/
+@layer utilities {
+	.font-body { font-family: var(--font-body); }
+	.font-display { font-family: var(--font-display); }
+}
+
+/* [BEHAVIOR] Global typography defaults (update sometimes)
+   Default: body uses body font; H1/H2 use display font
+*/
+@layer base {
+	body { font-family: var(--font-body); }
+
+	h1, h2 { font-family: var(--font-display); }
+	h3, h4, h5, h6 { font-family: var(--font-body); }
+}
+
+/* =========================================================
+   [BEHAVIOR] Base colors + theme inversion
+   ---------------------------------------------------------
+   Default: black text on white background
+   Invert:  white text on dark background
+   ========================================================= */
+
+@layer base {
+	html {
+		background-color: var(--color-white);
+		color: var(--color-black);
+	}
+}
+
+/* Apply to any section that needs white text */
+@layer utilities {
+	.theme-invert {
+		color: var(--color-white);
+	}
+}
+
+/* =========================================================
+   [COMPONENTS] Prose wrapper (use for all WYSIWYG content)
+   ---------------------------------------------------------
+   Use: class="prose-theme"
+   Works with: theme-invert
+   ========================================================= */
+
+@layer components {
+	.prose-theme {
+		@apply prose max-w-none;
+		color: var(--color-black);
+
+		/* Map typography plugin colors to theme tokens */
+		--tw-prose-body: var(--color-black);
+		--tw-prose-headings: var(--color-black);
+		--tw-prose-links: var(--color-primary);
+		--tw-prose-bold: var(--color-black);
+		--tw-prose-counters: var(--color-black);
+		--tw-prose-bullets: var(--color-black);
+		--tw-prose-hr: var(--color-black);
+		--tw-prose-quotes: var(--color-black);
+		--tw-prose-quote-borders: var(--color-black);
+		--tw-prose-captions: var(--color-black);
+		--tw-prose-code: var(--color-black);
+		--tw-prose-pre-code: var(--color-white);
+		--tw-prose-pre-bg: var(--color-black);
+	}
+
+	/* Inverted prose (used inside .theme-invert sections) */
+	.theme-invert .prose-theme {
+		color: var(--color-white);
+
+		--tw-prose-body: var(--color-white);
+		--tw-prose-headings: var(--color-white);
+		--tw-prose-links: var(--color-primary);
+		--tw-prose-bold: var(--color-white);
+		--tw-prose-counters: var(--color-white);
+		--tw-prose-bullets: var(--color-white);
+		--tw-prose-hr: var(--color-white);
+		--tw-prose-quotes: var(--color-white);
+		--tw-prose-quote-borders: var(--color-white);
+		--tw-prose-captions: var(--color-white);
+		--tw-prose-code: var(--color-white);
+		--tw-prose-pre-code: var(--color-black);
+		--tw-prose-pre-bg: var(--color-white);
+	}
+}
+
+
+/* =========================================================
+   [COMPONENTS] Buttons (used in shortcodes / WYSIWYG)
+   ---------------------------------------------------------
+   Public classes:
+     btn_main, btn_secondary, btn_light, btn_dark,
+     btn_ghost_white, btn_ghost_black
+
+   Notes:
+   - Shared base styles are applied via grouped selectors.
+   - Variants set explicit bg/text/border so behavior is stable
+     inside .theme-invert sections.
+   ========================================================= */
+
+@layer components {
+	/* Shared base for all buttons (no extra .btn class needed) */
+	.btn_main,
+	.btn_secondary,
+	.btn_light,
+	.btn_dark,
+	.btn_ghost_white,
+	.btn_ghost_black {
+		@apply inline-flex items-center justify-center gap-2
+		font-semibold no-underline
+		px-5 py-3
+		transition
+		rounded-lg
+		focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+
+		/* Keep buttons from inheriting weird text colors in nested contexts */
+		text-decoration: none;
+	}
+
+	/* Optional: keep icon alignment consistent if you use <i> prefixes */
+	.btn_main i,
+	.btn_secondary i,
+	.btn_light i,
+	.btn_dark i,
+	.btn_ghost_white i,
+	.btn_ghost_black i {
+		@apply shrink-0;
+	}
+
+	/* Main: primary background, usually black text */
+	.btn_main {
+		background-color: var(--color-primary);
+		color: var(--color-black);
+	}
+	.btn_main:hover { filter: brightness(0.95); }
+
+	/* Secondary: secondary background, usually black text */
+	.btn_secondary {
+		background-color: var(--color-secondary);
+		color: var(--color-black);
+	}
+	.btn_secondary:hover { filter: brightness(0.95); }
+
+	/* Light: always white bg + black text */
+	.btn_light {
+		background-color: var(--color-white);
+		color: var(--color-black);
+		border: 1px solid var(--color-black);
+	}
+	.btn_light:hover { filter: brightness(0.97); }
+
+	/* Dark: always black bg + white text */
+	.btn_dark {
+		background-color: var(--color-black);
+		color: var(--color-white);
+	}
+	.btn_dark:hover { filter: brightness(1.1); }
+
+	/* Ghost (white): transparent with white border/text */
+	.btn_ghost_white {
+		background-color: transparent;
+		color: var(--color-white);
+		border: 1px solid var(--color-white);
+	}
+	.btn_ghost_white:hover {
+		background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+	}
+
+	/* Ghost (black): transparent with black border/text */
+	.btn_ghost_black {
+		background-color: transparent;
+		color: var(--color-black);
+		border: 1px solid var(--color-black);
+	}
+	.btn_ghost_black:hover {
+		background-color: color-mix(in oklab, var(--color-black) 8%, transparent);
+	}
+}
+
+/* =========================================================
+   [COMPONENTS] Prose protection for buttons
+   ---------------------------------------------------------
+   @tailwindcss/typography styles .prose a as article links.
+   This ensures button links keep their button styling.
+   ========================================================= */
+
+@layer components {
+	/* Remove typography link styling from any anchor that is a button */
+	.prose :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black),
+	.prose-theme :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black) {
+		text-decoration: none;
+	}
+
+	/* Ensure hover doesn’t get the prose underline back */
+	.prose :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black):hover,
+	.prose-theme :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black):hover {
+		text-decoration: none;
+	}
+}
+
+
+/* =========================================================
+   [UTILITIES] Layout helpers (rarely change)
+   ---------------------------------------------------------
+   Use:
+     section      => full width section wrapper
+     wrap         => main inner container (max-w-6xl + padding)
+     wrap-wide    => wide container (max-w-screen-2xl + padding)
+     grid-12      => 12-col grid with sane gaps
+   ========================================================= */
+
+@layer utilities {
+	.section { @apply w-full; }
+
+	/* Standard inner container */
+	.wrap { @apply mx-auto max-w-6xl px-5 lg:px-10; }
+
+	/* For your max-screen-2xl pattern (option B style) */
+	.wrap-wide { @apply mx-auto max-w-screen-2xl px-5; }
+
+	/* Grid-first workflow */
+	.grid-12 { @apply grid grid-cols-12 gap-4 md:gap-10; }
+}
+
+
