@@ -49,7 +49,7 @@ module.exports = {
 		"at-rule-no-unknown": [
 			true,
 			{
-				ignoreAtRules: ["tailwind", "apply", "layer", "config", "plugin"],
+				ignoreAtRules: ["tailwind", "apply", "layer", "config", "plugin", "theme"],
 			},
 		],
 	},
