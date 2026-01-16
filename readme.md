@@ -192,6 +192,303 @@ fontFamily: {
       }
 ```
 
+# Tailwind Theme System (Base Styles)
+
+This project uses **Tailwind v4**, but not in a “raw utility soup everywhere” way.
+
+Instead, there is a small, opinionated **theme layer** that sits on top of Tailwind and handles:
+
+- colors & gradients
+- typography defaults
+- light vs inverted (dark) sections
+- buttons
+- a few layout helpers
+
+The goal here is **consistency without rigidity**.
+You should be able to spin up a new site quickly, update a few values, and move on.
+
+---
+
+## Quick Reference (Read This First)
+
+```text
+Theme helpers
+-------------
+theme-invert     → flips default text to white for a section
+prose-theme      → WYSIWYG / rich text styling (no enforced width)
+not-prose        → escape hatch for buttons / UI inside prose
+
+Layout helpers
+--------------
+wrap             → centered container (max-w-6xl + padding)
+wrap-wide        → wider container (max-w-screen-2xl + padding)
+grid-12          → 12-column grid with standard gaps
+
+Buttons
+-------
+btn_main
+btn_secondary
+btn_light
+btn_dark
+btn_ghost_white
+btn_ghost_black
+
+Color tokens
+------------
+black
+white
+primary
+secondary
+soft-1
+soft-2
+
+Gradient tokens
+---------------
+primary-gradient
+secondary-gradient
+impact-gradient
+```
+
+---
+
+## Example: Helpers Working Together
+
+```php
+<div class="bg-primary">
+  <div class="wrap-wide py-10">
+    <div class="grid-12">
+      <div class="col-span-12 prose-theme max-w-3xl">
+        <!-- prose-theme restores typography, width is explicit -->
+        <p>This is WYSIWYG content.</p>
+
+        <div class="not-prose mt-6">
+          <!-- not-prose prevents typography plugin from styling buttons -->
+          <a class="btn_main" href="#">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Key takeaways:
+
+- Background is chosen with `bg-*`
+- Width is controlled by layout helpers or `max-w-*`
+- Typography is opt-in via `prose-theme`
+- UI inside prose uses `not-prose`
+
+---
+
+## Step 1 – Update Theme Tokens (Always Do This)
+
+All site-level design decisions live in one place:
+
+```text
+assets/src/css/tailwind.css
+```
+
+Inside the `@theme {}` block.
+
+### Colors & Gradients
+
+Colors are defined as **roles**, not names.
+
+You are not defining “blue” or “green” — you are defining _how a color is used_.
+
+Typical roles:
+
+- `black` / `white` → global neutrals
+- `primary` → main CTA color
+- `secondary` → secondary emphasis
+- `soft-*` → pastel tones used for gradients
+- `*-gradient` → section backgrounds
+
+Once defined, Tailwind automatically gives you utilities like:
+
+- `bg-primary`
+- `text-secondary`
+- `bg-primary-gradient`
+
+You never reference CSS variables directly in markup.
+
+---
+
+### Fonts
+
+There are exactly **two font roles**:
+
+- `--font-body` → most text
+- `--font-display` → h1 / h2 by default
+
+Default behavior:
+
+- body text uses `--font-body`
+- `h1` and `h2` use `--font-display`
+
+If a site only uses one font, just point both variables to the same family.
+
+You can override per-element using:
+
+- `font-body`
+- `font-display`
+
+Fonts must still be **loaded via WordPress**.
+Tailwind only references the font names.
+
+---
+
+## Step 2 – Theme Behavior (Read Once)
+
+### Default vs Inverted Sections
+
+The site has one global default:
+
+- black text
+- light background
+
+For standout / impact sections, use:
+
+```html
+<section class="theme-invert"></section>
+```
+
+This flips the **default text color to white** inside that section.
+
+Important:
+
+- `theme-invert` does **not** set a background
+- backgrounds are still chosen via `bg-*`
+- this is not “dark mode” — it’s a per-section override
+
+Typical usage:
+
+```html
+<section class="bg-impact-gradient theme-invert"></section>
+```
+
+---
+
+## Step 3 – Typography & WYSIWYG
+
+### `prose-theme`
+
+All WYSIWYG / rich text should use:
+
+```html
+<div class="prose-theme"></div>
+```
+
+This:
+
+1. enables Tailwind typography styles
+2. maps text colors to theme tokens
+3. removes enforced max-width
+
+You control width explicitly:
+
+```html
+<div class="prose-theme max-w-3xl"></div>
+```
+
+---
+
+### `theme-invert` + `prose-theme`
+
+When `prose-theme` is nested inside `theme-invert`:
+
+- text flips to white automatically
+- headings, lists, and links stay consistent
+- no `text-white` spam needed
+
+Do **not** use `prose-invert` in this system.
+
+---
+
+### `not-prose`
+
+Typography styles links as article content.
+
+That’s great for paragraphs — bad for UI.
+
+Wrap buttons, icons, and UI elements like this:
+
+```html
+<div class="not-prose">
+	<a class="btn_main">Book Now</a>
+</div>
+```
+
+Button shortcodes already do this automatically.
+
+---
+
+## Step 4 – Buttons
+
+Buttons are **component classes**, not utility chains.
+
+This keeps:
+
+- shortcodes clean
+- markup readable
+- behavior consistent inside prose and inverted sections
+
+Available buttons:
+
+- `btn_main` – primary CTA
+- `btn_secondary` – secondary emphasis
+- `btn_light` – white background, black text
+- `btn_dark` – black background, white text
+- `btn_ghost_white` – white outline / text
+- `btn_ghost_black` – black outline / text
+
+---
+
+## Step 5 – Layout Helpers
+
+These exist purely to reduce repetition.
+
+### `wrap`
+
+```html
+<div class="wrap"></div>
+```
+
+Centered container with max-width and horizontal padding.
+
+---
+
+### `wrap-wide`
+
+```html
+<div class="wrap-wide"></div>
+```
+
+Use for wider layouts or hero sections.
+
+---
+
+### `grid-12`
+
+```html
+<div class="grid-12"></div>
+```
+
+Equivalent to:
+
+- `grid`
+- `grid-cols-12`
+- standard gaps
+
+---
+
+## Common Gotchas
+
+- **Buttons underlined?** → missing `not-prose`
+- **Text not turning white?** → forgot `theme-invert`
+- **Prose width wrong?** → add `max-w-*` yourself
+- **Colors not applying?** → check token names, not utilities
+
 # Navbar - Header.php
 
 <img src = "https://i.imgflip.com/5ku7z5.jpg" width= 50%; alt = "What the hell happened here?">
