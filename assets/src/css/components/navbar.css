@@ -1,264 +1,370 @@
 @charset "UTF-8";
-/*
- * Navbar SCSS
- * ---------------------------
- * This is the scss file to control the styles of the navbar.
- * A few stylelint rules had to be disabled as navbar's merit them
- * Most of the "settings" are at the top, but dig around to change more specific things.
- * This is mobile first, so if you're trying to make changes to desktop, scroll to the bottom.
- *
-*/
-/*
-* LEFT ALIGN NAV? (on desktop)
-*
-* Enable the comment in the main <nav> element
-* in the DESKTOP QUERY of nav-list > li:last-of-type, delete the position. It's commented.
-*
-* (see Left Align notes in document)
-*
-*/
+
+/* ==========================================================================
+   Navbar Tokens + Quick Knobs
+   Tailwind provides brand tokens; navbar consumes them here.
+   Keep this list SHORT on purpose — everything else is commented inline below.
+   ========================================================================== */
+:root {
+	/* --------------------------------------------------------------------------
+	   COLORS (tokens)
+	   -------------------------------------------------------------------------- */
+	--nav-bg: var(--color-secondary);     /* Navbar background */
+	--nav-text: var(--color-white);       /* Link + hamburger color */
+	--nav-hover-bg: var(--color-primary); /* Hover + active dropdown background */
+
+	--nav-cta-bg: var(--color-primary);   /* CTA background */
+	--nav-cta-text: var(--color-black);   /* CTA text color */
+
+	/* Dropdown striping (component-local; not used anywhere else) */
+	--nav-dropdown-stripe-a: #27603C;     /* Dropdown stripe A */
+	--nav-dropdown-stripe-b: #1C6B3A;     /* Dropdown stripe B */
+
+	/* Misc */
+	--nav-hover-text: #eeeeee;               /* Hover text color on links */
+	--nav-shadow-color: rgba(0, 0, 0, 0.15); /* Desktop dropdown shadow tint */
+
+	/* --------------------------------------------------------------------------
+	   REAL-WORLD KNOBS (things you actually change)
+	   -------------------------------------------------------------------------- */
+	--nav-height: 85px; /* Change this when logo size changes (also update nav padding below) */
+
+	/* --------------------------------------------------------------------------
+	   DESKTOP ALIGNMENT KNOBS (safe)
+	   Default keeps current behavior.
+	   To push middle items toward the CTA:
+	     - set --nav-desktop-justify: flex-end;
+	     - set --nav-desktop-ul-reserve: 150px; (tweak for CTA width)
+	   -------------------------------------------------------------------------- */
+	--nav-desktop-justify: center; /* center (default) | flex-end */
+	--nav-desktop-ul-reserve: 0px; /* reserve space so UL doesn't sit under the absolute CTA */
+}
+
+/* --------------------------------------------------------------------------
+   QUICK NOTES
+   - Want a taller/shorter navbar? Change --nav-height, then also update:
+       nav { padding: <NAV HEIGHT> 0 0; }  (mobile menu top padding)
+
+   - Desktop: push menu items toward CTA (logo + CTA do NOT move):
+       --nav-desktop-justify: flex-end;
+       --nav-desktop-ul-reserve: 240px;  (adjust until last item sits near CTA)
+   -------------------------------------------------------------------------- */
+
 /* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
+
+/* ==========================================================================
+   Top Bar Wrapper
+   ========================================================================== */
 .navigation {
-  background: #333333;
-  height: 85px;
+	background: var(--nav-bg);
+	height: var(--nav-height); /* Navbar height */
 }
 
 .nav-container {
-  margin: 0 auto;
-  max-width: 2000px;
+	margin: 0 auto;
+	max-width: 2000px; /* Change overall nav container width */
 }
 
+/* ==========================================================================
+   Brand (Logo / Site Title)
+   ========================================================================== */
 .brand {
-  float: left;
-  padding-left: 10px;
-  position: absolute;
-  text-transform: uppercase;
-  z-index: 15;
+	float: left;
+	padding-left: 10px; /* Brand left padding */
+	position: absolute;
+	text-transform: uppercase;
+	z-index: 15; /* Keep brand above nav panel on mobile */
 }
+
 .brand a,
 .brand a:visited {
-  color: #fafafa;
-  text-decoration: none;
-}
-.brand img {
-  height: 75px;
-  padding-right: 15px;
-  padding-top: 10px;
+	color: var(--nav-text);
+	text-decoration: none;
 }
 
+.brand img {
+	height: 75px;       /* Logo height (often changes along with --nav-height) */
+	padding-right: 15px;
+	padding-top: 10px;
+}
+
+/* ==========================================================================
+   Dropdown State (used by JS)
+   ========================================================================== */
 .active-dropdown {
-  background-color: #7498be;
+	background-color: var(--nav-hover-bg); /* JS sets this class on active dropdown parent */
 }
 
 .nav-dropdown {
-  position: static;
+	position: static; /* Mobile: dropdowns flow in document */
 }
 
+/* ==========================================================================
+   Mobile Toggle Area (hamburger container)
+   ========================================================================== */
 .nav-mobile {
-  background: #333333;
-  height: 85px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 85px;
+	background: var(--nav-bg);
+	height: var(--nav-height);
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 85px; /* Width of the clickable hamburger area */
 }
 
+/* ==========================================================================
+   Mobile Nav Panel + Base Nav Styles
+   ========================================================================== */
 nav {
-  align-items: center;
-  background-color: #333333;
-  display: block;
-  float: none;
-  justify-content: center;
-  padding: 85px 0 0;
-  position: absolute;
-  width: 100%;
-  z-index: 10;
+	align-items: center;
+	background-color: var(--nav-bg);
+	display: block;
+	float: none;
+	justify-content: center;
+	padding: 85px 0 0; /* Mobile panel top padding (keep in sync with --nav-height) */
+	position: absolute;
+	width: 100%;
+	z-index: 10; /* Nav panel stacking */
 }
+
 nav ul {
-  display: none;
+	display: none; /* JS toggles this open/closed */
 }
+
 nav ul li {
-  float: none;
-  position: relative;
-  text-transform: uppercase;
+	float: none;
+	position: relative;
+	text-transform: uppercase;
 }
+
+/* Links */
 nav ul li a,
 nav ul li a:visited {
-  color: #fafafa;
-  display: block;
-  line-height: 20px;
-  padding: 15px;
-  text-decoration: none;
-}
-nav ul li a:hover,
-nav ul li a:visited:hover {
-  background: #7498be;
-  color: #eeeeee;
-}
-nav ul li a:not(:only-child):after,
-nav ul li a:visited:not(:only-child):after {
-  content: " ▾";
-  padding-left: 4px;
-}
-nav ul li ul li {
-  min-width: 190px;
-}
-nav ul li ul li a {
-  line-height: 20px;
-  padding-left: 30px;
-}
-nav ul li li:nth-child(even) {
-  background-color: #494949;
-}
-nav ul li li:nth-child(odd) {
-  background-color: #404040;
+	color: var(--nav-text);
+	display: block;
+	line-height: 20px;
+	padding: 15px; /* Mobile link padding */
+	text-decoration: none;
 }
 
-#nav-toggle {
-  cursor: pointer;
-  left: 18px;
-  padding: 10px 35px 16px 0;
-  position: absolute;
-  top: 28px;
+/* Hover */
+nav ul li a:hover,
+nav ul li a:visited:hover {
+	background: var(--nav-hover-bg);
+	color: var(--nav-hover-text);
 }
+
+/* Dropdown caret */
+nav ul li a:not(:only-child):after,
+nav ul li a:visited:not(:only-child):after {
+	content: " ▾";
+	padding-left: 4px;
+}
+
+/* Dropdown sizing */
+nav ul li ul li {
+	min-width: 190px; /* Dropdown min width */
+}
+
+nav ul li ul li a {
+	line-height: 20px;
+	padding-left: 30px; /* Indent dropdown items on mobile */
+}
+
+/* ==========================================================================
+   Dropdown Striping (component-local colors)
+   ========================================================================== */
+nav ul li li:nth-child(even) {
+	background-color: var(--nav-dropdown-stripe-b);
+}
+
+nav ul li li:nth-child(odd) {
+	background-color: var(--nav-dropdown-stripe-a);
+}
+
+/* ==========================================================================
+   Hamburger Icon
+   ========================================================================== */
+#nav-toggle {
+	cursor: pointer;
+	left: 18px;                 /* Hamburger horizontal position */
+	padding: 10px 35px 16px 0;  /* Hamburger click target padding */
+	position: absolute;
+	top: 28px;                  /* Hamburger vertical position */
+}
+
 #nav-toggle span,
 #nav-toggle span:before,
 #nav-toggle span:after {
-  background: #fafafa;
-  border-radius: 1px;
-  content: "";
-  cursor: pointer;
-  display: block;
-  height: 3px;
-  position: absolute;
-  transition: all 0.3s ease-in-out;
-  width: 35px;
-}
-#nav-toggle span:after {
-  margin-left: 10px;
-  width: 25px;
-}
-#nav-toggle span:before {
-  top: -10px;
-}
-#nav-toggle span:after {
-  bottom: -10px;
-}
-#nav-toggle.active span {
-  background-color: transparent;
-}
-#nav-toggle.active span:before, #nav-toggle.active span:after {
-  top: 0;
-}
-#nav-toggle.active span:before {
-  transform: rotate(45deg);
-}
-#nav-toggle.active span:after {
-  margin: 0;
-  transform: rotate(-45deg);
-  width: 35px;
+	background: var(--nav-text);
+	border-radius: 1px; /* Bar corner rounding */
+	content: "";
+	cursor: pointer;
+	display: block;
+	height: 3px; /* Bar thickness */
+	position: absolute;
+	transition: all 0.3s ease-in-out;
+	width: 35px; /* Bar width */
 }
 
-@media screen and (min-width: 1101px) {
-  .nav-mobile {
-    display: none;
-  }
-  .nav-list {
-    display: block !important;
-    z-index: 10;
-  }
-  nav {
-    position: relative;
-  }
-  .nav-dropdown {
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-    display: none;
-    position: absolute;
-    z-index: 1;
-  }
-  nav {
-    display: flex;
-    padding: 0;
-    position: relative;
-  }
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  nav ul li {
-    float: left;
-  }
-  nav ul li a,
-  nav ul li a:visited {
-    line-height: 85px;
-    padding: 0 20px;
-  }
-  nav ul li a:not(:only-child):after,
-  nav ul li a:visited:not(:only-child):after {
-    content: " ▾";
-    padding-left: 4px;
-  }
-  nav ul li ul li a {
-    padding: 15px;
-  }
+#nav-toggle span:after {
+	margin-left: 10px; /* Offset the bottom bar for style */
+	width: 25px;       /* Shorter bottom bar */
 }
+
+#nav-toggle span:before {
+	top: -10px; /* Top bar offset */
+}
+
+#nav-toggle span:after {
+	bottom: -10px; /* Bottom bar offset */
+}
+
+#nav-toggle.active span {
+	background-color: transparent;
+}
+
+#nav-toggle.active span:before,
+#nav-toggle.active span:after {
+	top: 0;
+}
+
+#nav-toggle.active span:before {
+	transform: rotate(45deg);
+}
+
+#nav-toggle.active span:after {
+	margin: 0;
+	transform: rotate(-45deg);
+	width: 35px;
+}
+
+/* ==========================================================================
+   Desktop Overrides
+   ========================================================================== */
+@media screen and (min-width: 1101px) { /* Desktop breakpoint */
+	.nav-mobile {
+		display: none;
+	}
+
+	.nav-list {
+		display: block !important;
+		z-index: 10;
+	}
+
+	nav {
+		position: relative;
+	}
+
+	/* Dropdown container on desktop */
+	.nav-dropdown {
+		box-shadow: 0 3px 12px var(--nav-shadow-color); /* Dropdown shadow */
+		display: none;
+		position: absolute;
+		z-index: 1;
+	}
+
+	/* Desktop nav layout */
+	nav {
+		display: flex;
+		padding: 0;
+		position: relative;
+
+		/* SAFE alignment toggle (matches your SCSS comment) */
+		justify-content: var(--nav-desktop-justify);
+	}
+
+	nav ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		/* Reserve space so the UL doesn't drift under the absolute CTA */
+		margin-right: var(--nav-desktop-ul-reserve);
+	}
+
+	nav ul li {
+		float: left;
+	}
+
+	nav ul li a,
+	nav ul li a:visited {
+		line-height: var(--nav-height); /* Match navbar height */
+		padding: 0 20px; /* Desktop link horizontal padding */
+	}
+
+	nav ul li a:not(:only-child):after,
+	nav ul li a:visited:not(:only-child):after {
+		content: " ▾";
+		padding-left: 4px;
+	}
+
+	nav ul li ul li a {
+		padding: 15px; /* Dropdown link padding on desktop */
+	}
+}
+
+/* ==========================================================================
+   CTA / "Last Item" Button Styles
+   NOTE: This uses :last-of-type because WordPress menu output is inconsistent.
+   ========================================================================== */
 .nav-list > li:last-of-type {
-  align-self: center;
-  background-color: #fafafa;
-  color: #333333;
-  cursor: pointer;
-  letter-spacing: 1px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: all 0.1s ease-in-out;
+	align-self: center;
+	background-color: var(--nav-cta-bg);
+	color: var(--nav-cta-text);
+	cursor: pointer;
+	letter-spacing: 1px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: all 0.1s ease-in-out;
 }
 
 .nav-list > li:last-of-type a {
-  background-color: rgba(0, 0, 0, 0);
-  color: #234058;
-  font-weight: 600;
-  padding: 8px 20px 15px;
+	background-color: transparent;
+	color: var(--nav-cta-text);
+	font-weight: 600;
+	padding: 8px 20px 15px; /* CTA padding on mobile */
 }
 
 .nav-list > li:last-of-type i {
-  font-size: 1.6em;
-  position: relative;
-  top: 3px;
+	font-size: 1.6em;
+	position: relative;
+	top: 3px;
 }
 
+/* CTA hover */
 .nav-list > li:last-of-type:hover a {
-  background-color: rgba(0, 0, 0, 0);
-  color: #234058;
+	background-color: transparent;
+	color: var(--nav-cta-text);
 }
 
 .nav-list > li:last-of-type:hover {
-  background: #eaeaea;
+	background: var(--nav-cta-bg); /* CTA hover background */
 }
 
 .nav-list > li:last-of-type:active {
-  transform: scale(1.025);
+	transform: scale(1.025);
 }
 
+/* Desktop CTA positioning */
 @media screen and (min-width: 1101px) {
-  .nav-list > li:last-of-type {
-    border-radius: 20px;
-    margin-left: 6px;
-    margin-right: 10px;
-    margin-top: 82px;
-    position: absolute;
-    right: 0;
-  }
-  .nav-list > .nav-list > li:last-of-type a {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  .nav-list > li:last-of-type:hover a {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  .nav-list > li:last-of-type a,
-  .nav-list > li:last-of-type a:visited {
-    line-height: 8px;
-    padding: 15px 20px;
-  }
+	.nav-list > li:last-of-type {
+		border-radius: 20px; /* CTA pill radius (desktop) */
+		margin-left: 6px;
+		margin-right: 10px;
+		margin-top: 82px; /* Move CTA down on desktop */
+		position: absolute;
+		right: 0;
+	}
+
+	.nav-list > li:last-of-type:hover a {
+		background-color: transparent;
+	}
+
+	.nav-list > li:last-of-type a,
+	.nav-list > li:last-of-type a:visited {
+		line-height: 8px;      /* CTA text line height (desktop) */
+		padding: 15px 20px;    /* CTA padding (desktop) */
+	}
 }
+
 /* stylelint-enable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
