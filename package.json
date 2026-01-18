@@ -1,117 +1,117 @@
 {
-  "name": "prelaunch-wp",
-  "version": "1.0.0",
-  "description": "Maybe later.",
-  "main": "frontend.js",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack",
-    "dev:watch": "webpack --watch",
-    "prod": "NODE_ENV=production webpack",
-    "prod:watch": "NODE_ENV=production webpack --watch",
-    "lint": "eslint \"assets/src/js/**/*.{js,ts,tsx}\"",
-    "lint:fix": "eslint \"assets/src/js/**/*.{js,ts,tsx}\" --fix",
-    "pretty": "prettier --write \"**/*.{json,md,yml,yaml}\"",
-    "stylelint": "stylelint assets/src/**/**/*.{css,pcss}",
-    "stylelint:fix": "stylelint assets/src/**/**/*.{css,pcss} --fix",
-    "fix-all": "yarn lint:fix && yarn pretty && yarn stylelint:fix",
-    "clean": "rimraf .cache/webpack .cache/stylelint assets/public/...tend.js* assets/public/css/frontend.css* assets/public/fonts/*",
-    "build": "yarn clean && yarn prod",
-    "typecheck": "tsc --noEmit",
-    "php:fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
-    "php:check": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff",
-    "tw:sort": "npx rustywind --write . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\"",
-    "tw:check": "npx rustywind --check-formatted . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\""
-  },
-  "browserslist": {
-    "production": [
-      "defaults",
-      "not IE 11",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "lint-staged": {
-    "*.php": [
-      "npx rustywind --write --quiet",
-      "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --path-mode=intersection"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "*.{css,pcss}": [
-      "stylelint --fix --cache --cache-location .cache/stylelint"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ]
-  },
-  "simple-git-hooks": {
-    "pre-commit": "yarn lint-staged"
-  },
-  "babel": {
-    "extends": "./webpack/babel.config.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "./webpack/.eslintrc.js"
-    ]
-  },
-  "stylelint": {
-    "ignoreFiles": [
-      "./assets/public/css/**/*.css",
-      "./vendor/**/**/*.css",
-      "./node_modules/**/**/*.css",
-      "./tests/**/**/*.css",
-      "./readme.md"
-    ],
-    "extends": [
-      "./webpack/.stylelintrc.js"
-    ]
-  },
-  "prettier": "./webpack/.prettierrc.json",
-  "dependencies": {
-    "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/typography": "^0.5.10",
-    "jquery": "^3.7.1",
-    "tailwindcss": "^4"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/eslint-parser": "^7.14.7",
-    "@babel/preset-env": "^7.14.7",
-    "@babel/preset-typescript": "^7.28.5",
-    "@tailwindcss/postcss": "^4",
-    "@types/jquery": "^3.5.33",
-    "@wordpress/eslint-plugin": "^9.0.6",
-    "babel-loader": "^8.2.2",
-    "browser-sync": "^2.27.4",
-    "browser-sync-webpack-plugin": "^2.3.0",
-    "css-loader": "^6",
-    "css-minimizer-webpack-plugin": "^7.0.4",
-    "dotenv": "^17.2.3",
-    "eslint": "^8",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.3.0",
-    "lint-staged": "^15",
-    "mini-css-extract-plugin": "^2.1.0",
-    "postcss": "^8.4.31",
-    "postcss-loader": "^6.1.1",
-    "postcss-preset-env": "^6.7.0",
-    "prettier": "^3",
-    "rimraf": "^6.1.2",
-    "rustywind": "^0.24.3",
-    "simple-git-hooks": "^2",
-    "stylelint": "^16",
-    "stylelint-webpack-plugin": "^5",
-    "typescript": "^5.9.3",
-    "webpack": "^5",
-    "webpack-cli": "^5"
-  },
-  "packageManager": "yarn@3.2.3"
+	"name": "prelaunch-wp",
+	"version": "1.0.0",
+	"description": "Maybe later.",
+	"main": "frontend.js",
+	"private": true,
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "webpack",
+		"dev:watch": "webpack --watch",
+		"prod": "NODE_ENV=production webpack",
+		"prod:watch": "NODE_ENV=production webpack --watch",
+		"lint": "eslint \"assets/src/js/**/*.{js,ts,tsx}\"",
+		"lint:fix": "eslint \"assets/src/js/**/*.{js,ts,tsx}\" --fix",
+		"pretty": "prettier --write \"**/*.{json,md,yml,yaml}\"",
+		"stylelint": "stylelint assets/src/**/**/*.{css,pcss}",
+		"stylelint:fix": "stylelint assets/src/**/**/*.{css,pcss} --fix",
+		"fix-all": "yarn lint:fix && yarn pretty && yarn stylelint:fix",
+		"clean": "rimraf .cache/webpack .cache/stylelint assets/public/js/frontend.js* assets/public/css/frontend.css* assets/public/fonts/*",
+		"build": "yarn clean && yarn prod",
+		"typecheck": "tsc --noEmit",
+		"php:fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
+		"php:check": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff",
+		"tw:sort": "npx rustywind --write . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\"",
+		"tw:check": "npx rustywind --check-formatted . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\""
+	},
+	"browserslist": {
+		"production": [
+			"defaults",
+			"not IE 11",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"lint-staged": {
+		"*.php": [
+			"npx rustywind --write --quiet",
+			"vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --path-mode=intersection"
+		],
+		"*.{js,jsx,ts,tsx}": [
+			"eslint --fix"
+		],
+		"*.{css,pcss}": [
+			"stylelint --fix --cache --cache-location .cache/stylelint"
+		],
+		"*.{json,md,yml,yaml}": [
+			"prettier --write"
+		]
+	},
+	"simple-git-hooks": {
+		"pre-commit": "yarn lint-staged"
+	},
+	"babel": {
+		"extends": "./webpack/babel.config.js"
+	},
+	"eslintConfig": {
+		"extends": [
+			"./webpack/.eslintrc.js"
+		]
+	},
+	"stylelint": {
+		"ignoreFiles": [
+			"./assets/public/css/**/*.css",
+			"./vendor/**/**/*.css",
+			"./node_modules/**/**/*.css",
+			"./tests/**/**/*.css",
+			"./readme.md"
+		],
+		"extends": [
+			"./webpack/.stylelintrc.js"
+		]
+	},
+	"prettier": "./webpack/.prettierrc.json",
+	"dependencies": {
+		"@tailwindcss/forms": "^0.5.10",
+		"@tailwindcss/typography": "^0.5.10",
+		"jquery": "^3.7.1",
+		"tailwindcss": "^4"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.14.6",
+		"@babel/eslint-parser": "^7.14.7",
+		"@babel/preset-env": "^7.14.7",
+		"@babel/preset-typescript": "^7.28.5",
+		"@tailwindcss/postcss": "^4",
+		"@types/jquery": "^3.5.33",
+		"@wordpress/eslint-plugin": "^9.0.6",
+		"babel-loader": "^8.2.2",
+		"browser-sync": "^2.27.4",
+		"browser-sync-webpack-plugin": "^2.3.0",
+		"css-loader": "^6",
+		"css-minimizer-webpack-plugin": "^7.0.4",
+		"dotenv": "^17.2.3",
+		"eslint": "^8",
+		"eslint-config-google": "^0.14.0",
+		"eslint-config-prettier": "^8.3.0",
+		"lint-staged": "^15",
+		"mini-css-extract-plugin": "^2.1.0",
+		"postcss": "^8.4.31",
+		"postcss-loader": "^6.1.1",
+		"postcss-preset-env": "^6.7.0",
+		"prettier": "^3",
+		"rimraf": "^6.1.2",
+		"rustywind": "^0.24.3",
+		"simple-git-hooks": "^2",
+		"stylelint": "^16",
+		"stylelint-webpack-plugin": "^5",
+		"typescript": "^5.9.3",
+		"webpack": "^5",
+		"webpack-cli": "^5"
+	},
+	"packageManager": "yarn@3.2.3"
 }
