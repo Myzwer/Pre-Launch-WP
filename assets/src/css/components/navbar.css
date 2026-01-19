@@ -1,0 +1,145 @@
+@reference "../tailwind.css";
+
+@layer components {
+	/* ---------- Shell ---------- */
+	.site-header {
+		@apply relative z-50;
+	}
+
+	.nav-shell {
+		@apply flex items-center justify-between gap-4 px-4;
+	}
+
+	.nav-brand {
+		@apply shrink-0;
+	}
+
+	.nav-brand-logo {
+		@apply h-10 w-auto;
+	}
+
+	/* ---------- Hamburger ---------- */
+	.nav-hamburger {
+		@apply inline-flex items-center justify-center rounded-md p-2;
+	}
+
+	/* Draw the hamburger (no glyphs needed in markup) */
+	.nav-hamburger-icon {
+		@apply relative block h-4 w-6;
+		background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+	}
+
+	.nav-hamburger-icon:before,
+	.nav-hamburger-icon:after {
+		content: "";
+		@apply absolute left-0 right-0 h-0.5 bg-current;
+	}
+
+	.nav-hamburger-icon:before {
+		top: 0;
+	}
+
+	.nav-hamburger-icon:after {
+		bottom: 0;
+	}
+
+	@media (min-width: 1024px) {
+		.nav-hamburger {
+			@apply hidden;
+		}
+	}
+
+	/* ---------- Panel ---------- */
+	.nav {
+		@apply relative;
+	}
+
+	.nav-panel {
+		@apply mt-3;
+	}
+
+	.nav-panel[hidden] {
+		display: none;
+	}
+
+	@media (min-width: 1024px) {
+		.nav-panel {
+			@apply mt-0;
+			display: block !important;
+		}
+	}
+
+	/* ---------- List ---------- */
+	.nav-list {
+		@apply flex flex-col gap-1;
+	}
+
+	@media (min-width: 1024px) {
+		.nav-list {
+			@apply flex-row items-center gap-2;
+		}
+	}
+
+	.nav-item-inner {
+		@apply flex items-center gap-1;
+	}
+
+	/* ---------- Links ---------- */
+	.nav-link {
+		@apply inline-flex items-center px-3 py-2 text-sm font-medium;
+	}
+
+	.nav-cta-link {
+		@apply rounded-md px-4 py-2 font-semibold;
+	}
+
+	/* ---------- Submenus ---------- */
+	.nav-item.has-submenu {
+		@apply relative;
+	}
+
+	.nav-toggle {
+		@apply inline-flex items-center justify-center p-2 text-sm;
+	}
+
+	/* Draw the caret/chevron (no glyphs needed in markup) */
+	.nav-toggle-icon {
+		@apply relative block h-2 w-2;
+	}
+
+	.nav-toggle-icon:before {
+		content: "";
+		@apply absolute inset-0;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: rotate(45deg);
+	}
+
+	/* Rotate caret when open (JS sets .is-open on the li) */
+	.nav-item.is-open .nav-toggle-icon:before {
+		transform: rotate(-135deg);
+	}
+
+	.nav-submenu {
+		@apply mt-1;
+	}
+
+	@media (min-width: 1024px) {
+		.nav-submenu {
+			@apply absolute left-0 top-full mt-2 min-w-[12rem];
+		}
+	}
+
+	.nav-submenu-list {
+		@apply flex flex-col;
+	}
+
+	/* Striping */
+	.nav-submenu-list > .nav-subitem:nth-child(odd) {
+		@apply bg-black/5;
+	}
+
+	.nav-sublink {
+		@apply block px-4 py-2 text-sm;
+	}
+}
