@@ -35,35 +35,56 @@
 <?php wp_body_open(); ?>
 
 
-<!--Start Navbar-->
-<section class="navigation">
-    <div class="nav-container">
-        <div class="brand">
-            <a href="/frontpage">
-                <!--Company Logo / Branding. Template supports both Text and Logo-->
-                <img src="https://images.squarespace-cdn.com/content/v1/575a6067b654f9b902f452f4/1552683653140-0UUVQSSUEWVC73AWAEQG/300Logo.png"
-                     alt="Company Logo">
-            </a>
-        </div>
+<!-- Start Navbar -->
+<header class="site-header">
+	<div class="nav-shell">
+		<a class="nav-brand" href="<?php echo esc_url(home_url('/')); ?>">
+			<?php
+            $logo = function_exists('get_field') ? get_field('site_nav_logo', 'option') : null;
 
-        <nav>
-            <div class="nav-mobile">
-                <a id="nav-toggle" href="#!"><span></span></a>
-            </div>
+if (is_array($logo) && !empty($logo['url'])) : ?>
+				<img
+					class="nav-brand-logo"
+					src="<?php echo esc_url($logo['url']); ?>"
+					alt="<?php echo esc_attr(!empty($logo['alt']) ? $logo['alt'] : get_bloginfo('name')); ?>"
+					loading="eager"
+					decoding="async"
+				/>
+			<?php else : ?>
+				<span class="nav-brand-text"><?php echo esc_html(get_bloginfo('name')); ?></span>
+			<?php endif; ?>
+		</a>
 
-            <!-- Start Wordpress-->
-            <?php
-            wp_nav_menu([
-                'theme_location' => 'header-menu',
-                'menu_class' => 'primary-menu', // pass whatever classes to be added to top level here
-                'walker' => new PreLaunch_Walker(),
-                'items_wrap' => '<ul class="nav-list">%3$s</ul>',
-            ]);
+
+
+		<nav class="nav" aria-label="Primary">
+			<button
+				class="nav-hamburger"
+				type="button"
+				aria-expanded="false"
+				aria-controls="nav-panel"
+			>
+				<span class="sr-only">Menu</span>
+				<span class="nav-hamburger-icon" aria-hidden="true"></span>
+			</button>
+
+			<div class="nav-panel" id="nav-panel">
+				<?php
+    wp_nav_menu([
+        'theme_location' => 'header-menu',
+        'depth' => 2,
+        'container' => false,
+        'fallback_cb' => false,
+        'walker' => new PreLaunch_Walker(),
+        'items_wrap' => '<ul class="nav-list" role="list">%3$s</ul>',
+    ]);
 ?>
-            <!-- End Wordress -->
-        </nav>
-    </div>
-</section>
+			</div>
+		</nav>
+	</div>
+</header>
+<!-- End Navbar -->
+
 <!--Start Body-->
 
 
