@@ -2,6 +2,16 @@
 
 /**
  * PreLaunch_Walker - contract-based nav walker (depth 2 only).
+ *
+ * Rules:
+ * - Exactly 2 levels (top-level + one submenu level).
+ * - If a top-level item has children, it is a DISCLOSURE (button), not a link.
+ * - Submenus are wrapped in: div.nav-submenu#submenu-{ID}[hidden] > ul.nav-submenu-list
+ *
+ * Admin-controlled hooks:
+ * - CTA: add class "nav-cta" OR "is-cta" OR "menu-cta" to the menu item in WP admin
+ * - Icons: add "has-icon" + one or more "icon-*" classes to the menu item in WP admin
+ * - Future mega hook: add "is-mega" to menu item class (not implemented yet)
  */
 
 if (!defined('ABSPATH')) {
@@ -12,11 +22,19 @@ if (!class_exists('PreLaunch_Walker')) {
 
     class PreLaunch_Walker extends Walker_Nav_Menu
     {
+        /**
+         * Track submenu IDs for the current top-level item (depth 0).
+         * start_el() sets it, start_lvl() consumes it.
+         */
         private array $submenu_id_stack = [];
+
+        /**
+         * Reliable child detection (WP core is inconsistent depending on context).
+         */
         private array $item_has_children = [];
 
         /**
-         * Ensure $args->has_children is reliably set (WP core is inconsistent here depending on context).
+         * Ensure $args->has_children is reliably set.
          */
         public function display_element($element, &$children_elements, $max_depth, $depth = 0, $args = null, &$output = null)
         {
@@ -41,7 +59,7 @@ if (!class_exists('PreLaunch_Walker')) {
         }
 
         /**
-         * Only keep "intentional" menu item classes (admin hooks) instead of WP's noisy defaults.
+         * Only keep intentional menu item classes (admin hooks) instead of WP's noisy defaults.
          */
         private function filter_item_classes(array $classes): array
         {
@@ -91,6 +109,7 @@ if (!class_exists('PreLaunch_Walker')) {
         public function end_lvl(&$output, $depth = 0, $args = null)
         {
             $depth = (int) $depth;
+
             if ($depth !== 0) {
                 return;
             }
@@ -103,6 +122,8 @@ if (!class_exists('PreLaunch_Walker')) {
         public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
         {
             $depth = (int) $depth;
+
+            // Only support depth 0 and 1 (top + submenu items)
             if ($depth > 1) {
                 return;
             }
@@ -156,81 +177,97 @@ if (!class_exists('PreLaunch_Walker')) {
 
             $output .= $indent . '<li class="' . esc_attr($li_class_attr) . '"' . (($depth === 0 && $has_children) ? ' data-nav-item' : '') . '>';
 
-            // Wrapper: only for top-level items (link + toggle alignment)
+            // Wrapper: only for top-level items (keeps layout consistent)
             if ($depth === 0) {
                 $output .= '<div class="nav-item-inner">';
             }
 
-            // Link attributes
-            $atts = [];
-            $atts['href'] = !empty($item->url) ? $item->url : '';
-
-            if (!empty($item->attr_title)) {
-                $atts['title'] = $item->attr_title;
-            }
-            if (!empty($item->target)) {
-                $atts['target'] = $item->target;
-                if ($item->target === '_blank') {
-                    $atts['rel'] = 'noopener';
-                }
-            }
-            if (!empty($item->xfn)) {
-                $atts['rel'] = isset($atts['rel']) ? ($atts['rel'] . ' ' . $item->xfn) : $item->xfn;
-            }
-
-            // aria-current
-            $is_current =
-                !empty($item->current)
-                || in_array('current-menu-item', $raw_classes, true)
-                || in_array('current_page_item', $raw_classes, true);
-
-            if ($is_current) {
-                $atts['aria-current'] = 'page';
-            }
-
-            // Link class
-            $link_classes = [ ($depth === 0) ? 'nav-link' : 'nav-sublink' ];
-            if ($depth === 0 && $is_cta) {
-                $link_classes[] = 'nav-cta-link';
-            }
-            if ($depth === 0 && $has_icon) {
-                $link_classes[] = 'nav-link--icon';
-            }
-            $atts['class'] = implode(' ', array_unique(array_filter($link_classes)));
-
+            // Title
             $title = apply_filters('the_title', $item->title, $item_id);
 
-            $attributes = '';
-            foreach ($atts as $attr => $value) {
-                if ($value === '') {
-                    continue;
-                }
-                $value = ($attr === 'href') ? esc_url($value) : esc_attr($value);
-                $attributes .= ' ' . $attr . '="' . $value . '"';
-            }
-
-            $output .= '<a' . $attributes . '>' . esc_html($title) . '</a>';
-
-            // Toggle button for top-level items with children
+            /**
+             * Top-level item with children = DISCLOSURE BUTTON (NOT A LINK)
+             */
             if ($depth === 0 && $has_children) {
                 $submenu_id = 'submenu-' . $item_id;
                 $this->submenu_id_stack[0] = $submenu_id;
 
+                $btn_classes = ['nav-disclosure'];
+                if ($has_icon) {
+                    $btn_classes[] = 'nav-disclosure--icon';
+                }
+                $btn_class_attr = implode(' ', array_unique(array_filter($btn_classes)));
+
                 $toggle_label = sprintf(
-                    __('Open %s submenu', 'prelaunch-wp'),
+                    __('Toggle %s submenu', 'prelaunch-wp'),
                     wp_strip_all_tags($title)
                 );
 
                 $output .= '<button'
-                           . ' class="nav-toggle"'
+                           . ' class="' . esc_attr($btn_class_attr) . '"'
                            . ' type="button"'
                            . ' aria-expanded="false"'
                            . ' aria-controls="' . esc_attr($submenu_id) . '"'
                            . ' aria-label="' . esc_attr($toggle_label) . '"'
                            . ' data-nav-toggle'
                            . '>'
+                           . '<span class="nav-label">' . esc_html($title) . '</span>'
                            . '<span class="nav-toggle-icon" aria-hidden="true"></span>'
                            . '</button>';
+
+            } else {
+                /**
+                 * Otherwise = normal link (top-level items without children, and all submenu links)
+                 */
+                $atts = [];
+                $atts['href'] = !empty($item->url) ? $item->url : '';
+
+                if (!empty($item->attr_title)) {
+                    $atts['title'] = $item->attr_title;
+                }
+
+                if (!empty($item->target)) {
+                    $atts['target'] = $item->target;
+                    if ($item->target === '_blank') {
+                        $atts['rel'] = 'noopener';
+                    }
+                }
+
+                if (!empty($item->xfn)) {
+                    $atts['rel'] = isset($atts['rel']) ? ($atts['rel'] . ' ' . $item->xfn) : $item->xfn;
+                }
+
+                $is_current =
+                    !empty($item->current)
+                    || in_array('current-menu-item', $raw_classes, true)
+                    || in_array('current_page_item', $raw_classes, true);
+
+                if ($is_current) {
+                    $atts['aria-current'] = 'page';
+                }
+
+                $link_classes = [($depth === 0) ? 'nav-link' : 'nav-sublink'];
+
+                if ($depth === 0 && $is_cta) {
+                    $link_classes[] = 'nav-cta-link';
+                }
+
+                if ($depth === 0 && $has_icon) {
+                    $link_classes[] = 'nav-link--icon';
+                }
+
+                $atts['class'] = implode(' ', array_unique(array_filter($link_classes)));
+
+                $attributes = '';
+                foreach ($atts as $attr => $value) {
+                    if ($value === '') {
+                        continue;
+                    }
+                    $value = ($attr === 'href') ? esc_url($value) : esc_attr($value);
+                    $attributes .= ' ' . $attr . '="' . $value . '"';
+                }
+
+                $output .= '<a' . $attributes . '>' . esc_html($title) . '</a>';
             }
 
             if ($depth === 0) {
@@ -241,9 +278,11 @@ if (!class_exists('PreLaunch_Walker')) {
         public function end_el(&$output, $item, $depth = 0, $args = null)
         {
             $depth = (int) $depth;
+
             if ($depth > 1) {
                 return;
             }
+
             $output .= "</li>\n";
         }
     }
