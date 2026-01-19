@@ -93,6 +93,17 @@
 		@apply rounded-md px-4 py-2 font-semibold;
 	}
 
+	/* Disclosure button (top-level items that have submenus) */
+	.nav-disclosure {
+		@apply inline-flex w-full items-center justify-between px-3 py-2 text-sm font-medium;
+	}
+
+	/* Keep label + caret aligned nicely */
+	.nav-label {
+		@apply inline-flex items-center;
+	}
+
+
 	/* ---------- Submenus ---------- */
 	.nav-item.has-submenu {
 		@apply relative;
