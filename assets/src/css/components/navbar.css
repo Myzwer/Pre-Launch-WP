@@ -4,6 +4,7 @@
 	/* ---------- Shell ---------- */
 	.site-header {
 		@apply relative z-50;
+		@apply bg-secondary text-white;
 	}
 
 	.nav-shell {
@@ -15,7 +16,7 @@
 	}
 
 	.nav-brand-logo {
-		@apply h-10 w-auto;
+		@apply h-20 w-auto;
 	}
 
 	/* ---------- Hamburger ---------- */
@@ -86,16 +87,30 @@
 
 	/* ---------- Links ---------- */
 	.nav-link {
-		@apply inline-flex items-center px-3 py-2 text-sm font-medium;
+		@apply inline-flex items-center px-3 py-2 text-base font-medium;
+	 	/*	hover state */
+		@apply rounded-md transition;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
 
 	.nav-cta-link {
 		@apply rounded-md px-4 py-2 font-semibold;
 	}
 
+	.nav-link,
+	.nav-disclosure,
+	.nav-sublink {
+		@apply font-normal;
+	}
+
 	/* Disclosure button (top-level items that have submenus) */
 	.nav-disclosure {
-		@apply inline-flex w-full items-center justify-between px-3 py-2 text-sm font-medium;
+		@apply inline-flex w-full items-center justify-between px-3 py-2 text-base font-medium cursor-pointer;
+		/*	hover state */
+		@apply rounded-md transition;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
 
 	/* Keep label + caret aligned nicely */
@@ -110,12 +125,12 @@
 	}
 
 	.nav-toggle {
-		@apply inline-flex items-center justify-center p-2 text-sm;
+		@apply inline-flex items-center justify-center p-2 text-base;
 	}
 
 	/* Draw the caret/chevron (no glyphs needed in markup) */
 	.nav-toggle-icon {
-		@apply relative block h-2 w-2;
+		@apply relative block h-2 w-2 ml-3;
 	}
 
 	.nav-toggle-icon:before {
@@ -142,15 +157,18 @@
 	}
 
 	.nav-submenu-list {
-		@apply flex flex-col;
+		@apply flex flex-col bg-secondary;
 	}
 
-	/* Striping */
+	/* Striping by add 5% white opacity */
 	.nav-submenu-list > .nav-subitem:nth-child(odd) {
-		@apply bg-black/5;
+		@apply bg-white/5;
 	}
 
 	.nav-sublink {
-		@apply block px-4 py-2 text-sm;
+		@apply block px-4 py-2 text-base;
+		@apply rounded-none; /* optional: keep menus square */
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
 }
