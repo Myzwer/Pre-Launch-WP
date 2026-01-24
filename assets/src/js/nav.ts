@@ -85,6 +85,9 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		// styling hook (optional)
 		nav.classList.toggle("nav-panel-open", open);
 
+		// Bulletproof backdrop + scroll lock hook
+		document.body.classList.toggle("nav-open", open);
+
 		if (!open) closeAllSubmenus();
 	};
 
