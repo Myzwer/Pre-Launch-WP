@@ -1,38 +1,13 @@
 @reference "../tailwind.css";
 
-/*
-===============================================================================
-NAVBAR.CSS GOALS / HOUSE RULES (baseline theme contract)
--------------------------------------------------------------------------------
-1) Keep everything under the correct section header:
-   /* ---------- Panel ---------- * /, /* ---------- Links ---------- * /, etc.
-
-2) Clarity > cleverness:
-   - Avoid combo selectors for behavior (ex: ".a, .b, .c { @apply w-full; }")
-   - Prefer explicit rules per class so future debugging is straightforward.
-
-3) @apply ordering:
-   - Keep rough grouping by intent per selector:
-     layout/position → spacing → sizing → typography → colors/surface → interaction
-
-4) Media query discipline:
-   - Tag queries as "Desktop-only" or "Mobile-only"
-   - Place them at the bottom of the relevant section (they typically modify base/mobile-up rules)
-
-5) Comment only the important stuff:
-   - Anything "why is this here?" gets a 1-line note.
-   - Avoid comment fatigue; no docblocks for everything.
-
-TODO: Delete this whole comment section before final version is shipped, its only for my reference now.
-
- */
-
-
-/* A quick note: If you change the breakpoints on the site, you need to update nav.ts as well
-Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
+/* README:BREAKPOINT_SYNC
+   If you change the breakpoints in this file, you MUST update navbar.ts as well.
+   Search "README:BREAKPOINT_SYNC" in both files. */
 
 @layer components {
-	/* ---------- Shell ---------- */
+	/* ==========================================================================
+	   Shell
+	   ========================================================================== */
 	.site-header {
 		@apply relative z-50;
 		@apply bg-secondary text-white;
@@ -42,7 +17,8 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply flex items-center justify-between;
 		@apply gap-4 px-4;
 
-		/* This is where nav max width is controlled */
+		/* README:WIDTH_CLAMP
+		   This is where the max header width is controlled (default: clamped). */
 		@apply max-w-7xl mx-auto w-full;
 	}
 
@@ -51,11 +27,13 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	}
 
 	.nav-brand-logo {
-		/* Logo Height, and consequently the whole navbar height */
+		/* Logo height (drives overall header height) */
 		@apply h-20 w-auto;
 	}
 
-	/* ---------- Hamburger ---------- */
+	/* ==========================================================================
+	   Hamburger
+	   ========================================================================== */
 	.nav-hamburger {
 		@apply inline-flex items-center justify-center;
 		@apply rounded-md;
@@ -87,7 +65,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		width: 100%;
 	}
 
-	/* Middle bar (REAL ELEMENT, finally rounded) */
+	/* Middle bar (real element, rounded) */
 	.nav-hamburger-bar {
 		top: 50%;
 		left: 0;
@@ -131,10 +109,11 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		}
 	}
 
-
-	/* ---------- Panel ---------- */
+	/* ==========================================================================
+	   Panel
+	   ========================================================================== */
 	.nav {
-		/* Prevent mobile panel from sizing to the hamburger width */
+		/* Prevent mobile panel from sizing to hamburger width */
 		@apply static;
 	}
 
@@ -147,7 +126,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		/* @apply border-t border-white/10; */ /* optional top divider */
 		@apply shadow-lg;
 
-		/* Scroll safety */
+		/* Scroll safety (panel grows with content; body handles scroll lock) */
 		@apply max-h-none overflow-visible;
 	}
 
@@ -169,7 +148,9 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		}
 	}
 
-	/* ---------- Lists ---------- */
+	/* ==========================================================================
+	   Lists
+	   ========================================================================== */
 	.nav-list {
 		/* Reset default UL styling */
 		@apply m-0 p-0 list-none;
@@ -207,7 +188,9 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		}
 	}
 
-	/* ---------- Links ---------- */
+	/* ==========================================================================
+	   Links
+	   ========================================================================== */
 	.nav-link {
 		@apply inline-flex items-center;
 		@apply w-full;
@@ -239,53 +222,8 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
 
-	/*
-   Optional desktop-only "full height hover" mode.
-   Enable by adding: .nav-hover-full to .site-header
-	*/
-	@media (min-width: 1024px) {
-		.site-header.nav-hover-full .nav-shell {
-			/* allow children to stretch to header height */
-			align-items: stretch;
-		}
-
-		.site-header.nav-hover-full .nav {
-			/* let nav column stretch too */
-			align-self: stretch;
-		}
-
-		.site-header.nav-hover-full .nav-panel,
-		.site-header.nav-hover-full .nav-list,
-		.site-header.nav-hover-full .nav-item,
-		.site-header.nav-hover-full .nav-item-inner {
-			height: 100%;
-		}
-
-		/* Hover surface is the full row */
-		.site-header.nav-hover-full .nav-item-inner {
-			@apply rounded-none transition;
-		}
-
-		.site-header.nav-hover-full .nav-item-inner:hover {
-			@apply bg-white/10;
-		}
-
-		/* Make the clickable element fill height, but DON'T kill CTA styling */
-		.site-header.nav-hover-full .nav-link:not(.nav-cta-link),
-		.site-header.nav-hover-full .nav-disclosure {
-			@apply h-full items-center;
-			@apply rounded-none;
-
-			/* horizontal padding only; height now comes from the row */
-			@apply px-4 py-0;
-
-			/* remove pill hover only for non-CTA */
-			background: transparent !important;
-		}
-	}
-
 	/* Desktop-only: prevent long top-level labels from wrapping
-   Truncate instead of breaking the row layout. */
+	   Truncate instead of breaking the row layout. */
 	@media (min-width: 1024px) {
 		.nav-item-inner {
 			min-width: 0; /* required so truncation works inside flex */
@@ -303,9 +241,6 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		}
 	}
 
-
-
-
 	/* When .nav-item.is-open, tint the parent row background slightly */
 	.nav-item.is-open > .nav-item-inner .nav-disclosure {
 		@apply bg-white/10;
@@ -316,7 +251,9 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply inline-flex items-center;
 	}
 
-	/* ---------- Submenus ---------- */
+	/* ==========================================================================
+	   Submenus
+	   ========================================================================== */
 	.nav-item.has-submenu {
 		@apply relative;
 	}
@@ -342,7 +279,6 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply bg-secondary;
 	}
 
-
 	/* Desktop-only: submenu as dropdown surface */
 	@media (min-width: 1024px) {
 		.nav-submenu {
@@ -350,40 +286,36 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			@apply mt-2;
 			@apply min-w-[12rem];
 			@apply w-max;
+
+			/* README:SUBMENU_VIEWPORT_CLAMP
+			   Keep dropdowns inside the viewport on long labels / edge items. */
+			@apply max-w-[calc(100vw-2rem)];
 		}
 
-		/* restrict dropdown so it doens't run off screen. */
-		/* Placed inside destop query so it doesn't cause weird striping issues on mobile */
-		.nav-submenu,
 		.nav-submenu-list {
+			@apply rounded-md overflow-hidden;
+			@apply border border-white/10 shadow-lg;
+
+			/* Clamp the list too; avoids “edge-hugging” on very long labels. */
 			@apply max-w-[calc(100vw-2rem)];
 		}
 
 		/* Overflow safety: last items align dropdown to the right edge
-   		(+1 because CTA is always last) */
+		   (+1 because CTA is always last) */
 		.nav-item:nth-last-child(-n+3) > .nav-submenu {
 			left: auto;
 			right: 0;
-		}
-
-		/* Make desktop dropdown look like a component */
-		.nav-submenu-list {
-			@apply rounded-md overflow-hidden;
-			@apply border border-white/10 shadow-lg;
-			@apply max-w-[90vw]; /* clamp to viewport */
 		}
 
 		/* Desktop striping */
 		.nav-submenu-list > .nav-subitem:nth-child(odd) {
 			@apply bg-white/5;
 		}
-
 	}
 
 	/* Mobile-only: stripe the clickable link so rounding is visible */
 	@media (max-width: 1023px) {
 		.nav-submenu-list > .nav-subitem:nth-child(odd) > .nav-sublink {
-			/* Striping by adding 5% white opacity over the base surface */
 			@apply bg-white/5;
 		}
 	}
@@ -400,7 +332,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		overflow-wrap: anywhere;
 		word-break: break-word;
 
-		/* Indent submenu items without shrinking the stripe background */
+		/* Indent + consistent right padding */
 		@apply px-5;
 
 		/* hover state */
@@ -409,7 +341,9 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
 
-	/* ---------- CTA (menu item marked .is-cta / .nav-cta) ---------- */
+	/* ==========================================================================
+	   CTA (menu item marked .is-cta / .nav-cta)
+	   ========================================================================== */
 	.nav-cta-link {
 		/* Base: mirror btn_main feel without relying on the class */
 		@apply inline-flex items-center justify-center;
@@ -464,13 +398,10 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply brightness-90;
 	}
 
-	/* ---------- Mobile-only enhancements ---------- */
+	/* ==========================================================================
+	   Mobile-only enhancements
+	   ========================================================================== */
 	@media (max-width: 1023px) {
-		/* Optional: separators between top-level items */
-		.nav-list > .nav-item {
-			/* @apply border-t border-white/10; */
-		}
-
 		/* Backdrop when main mobile panel is open */
 		body.nav-open:before {
 			content: "";
@@ -494,16 +425,61 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		}
 	}
 
-	/* =========================================================
-   [TOGGLE] Center desktop navigation
-   Enable: add .nav-center-desktop to .site-header
-   Goal: brand left, menu centered, CTA right
-   Requires: CTA item is last and has .nav-cta
-========================================================= */
+	/* ==========================================================================
+	   README:TOGGLE_FULL_HEIGHT_HOVER
+	   Optional desktop-only full height hover mode
+	   Enable by adding: .nav-hover-full to .site-header
+	   ========================================================================== */
+	@media (min-width: 1024px) {
+		.site-header.nav-hover-full .nav-shell {
+			/* allow children to stretch to header height */
+			align-items: stretch;
+		}
 
+		.site-header.nav-hover-full .nav {
+			/* let nav column stretch too */
+			align-self: stretch;
+		}
+
+		.site-header.nav-hover-full .nav-panel,
+		.site-header.nav-hover-full .nav-list,
+		.site-header.nav-hover-full .nav-item,
+		.site-header.nav-hover-full .nav-item-inner {
+			height: 100%;
+		}
+
+		/* Hover surface is the full row */
+		.site-header.nav-hover-full .nav-item-inner {
+			@apply rounded-none transition;
+		}
+
+		.site-header.nav-hover-full .nav-item-inner:hover {
+			@apply bg-white/10;
+		}
+
+		/* Make the clickable element fill height, but DON'T kill CTA styling */
+		.site-header.nav-hover-full .nav-link:not(.nav-cta-link),
+		.site-header.nav-hover-full .nav-disclosure {
+			@apply h-full items-center;
+			@apply rounded-none;
+
+			/* horizontal padding only; height now comes from the row */
+			@apply px-4 py-0;
+
+			/* remove pill hover only for non-CTA */
+			background: transparent !important;
+		}
+	}
+
+	/* ==========================================================================
+	   README:TOGGLE_CENTER_NAV
+	   Center desktop navigation
+	   Enable: add .nav-center-desktop to .site-header
+	   Goal: brand left, menu centered, CTA right
+	   Requires: CTA item is last and has .nav-cta
+	   ========================================================================== */
 	@media (min-width: 1024px) {
 		.site-header.nav-center-desktop .nav-shell {
-			/* Stop pushing brand/nav apart; let nav consume remaining space */
 			@apply justify-start;
 		}
 
@@ -519,8 +495,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			@apply w-full;
 		}
 
-		/* IMPORTANT:
-		   Mobile-first rules make each li/link/button full-width.
+		/* Mobile-first rules make each li/link/button full-width.
 		   For centered desktop mode we want "content width" items. */
 		.site-header.nav-center-desktop .nav-list > .nav-item {
 			width: auto;
@@ -541,5 +516,4 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			margin-left: auto;
 		}
 	}
-
 }
