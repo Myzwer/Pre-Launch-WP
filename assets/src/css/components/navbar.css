@@ -41,6 +41,9 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	.nav-shell {
 		@apply flex items-center justify-between;
 		@apply gap-4 px-4;
+
+		/* This is where nav max width is controlled */
+		@apply max-w-7xl mx-auto w-full;
 	}
 
 	.nav-brand {
