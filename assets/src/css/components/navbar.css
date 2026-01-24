@@ -342,12 +342,6 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply bg-secondary;
 	}
 
-	/* restrict dropdown so it doens't run off screen. */
-	.nav-submenu,
-	.nav-submenu-list {
-		@apply max-w-[calc(100vw-2rem)];
-	}
-
 
 	/* Desktop-only: submenu as dropdown surface */
 	@media (min-width: 1024px) {
@@ -356,6 +350,13 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			@apply mt-2;
 			@apply min-w-[12rem];
 			@apply w-max;
+		}
+
+		/* restrict dropdown so it doens't run off screen. */
+		/* Placed inside destop query so it doesn't cause weird striping issues on mobile */
+		.nav-submenu,
+		.nav-submenu-list {
+			@apply max-w-[calc(100vw-2rem)];
 		}
 
 		/* Overflow safety: last items align dropdown to the right edge
