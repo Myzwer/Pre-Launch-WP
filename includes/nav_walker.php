@@ -199,7 +199,7 @@ if (!class_exists('PreLaunch_Walker')) {
                 $btn_class_attr = implode(' ', array_unique(array_filter($btn_classes)));
 
                 $toggle_label = sprintf(
-                    __('Toggle %s submenu', 'prelaunch-wp'),
+                    __('Toggle submenu for %s', 'prelaunch-wp'),
                     wp_strip_all_tags($title)
                 );
 
@@ -208,11 +208,12 @@ if (!class_exists('PreLaunch_Walker')) {
                            . ' type="button"'
                            . ' aria-expanded="false"'
                            . ' aria-controls="' . esc_attr($submenu_id) . '"'
+                           . ' aria-haspopup="true"'
                            . ' aria-label="' . esc_attr($toggle_label) . '"'
                            . ' data-nav-toggle'
                            . '>'
                            . '<span class="nav-label">' . esc_html($title) . '</span>'
-                           . '<span class="nav-toggle-icon" aria-hidden="true"></span>'
+                           . '<i class="fa-solid fa-caret-down nav-caret" aria-hidden="true"></i>'
                            . '</button>';
 
             } else {
