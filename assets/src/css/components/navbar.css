@@ -72,7 +72,6 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply bg-secondary text-white;
 		/* @apply border-t border-white/10; add border to top */
 		@apply shadow-lg;
-		@apply px-3;
 
 		/* Scroll safety */
 		@apply max-h-[calc(100vh-6rem)] overflow-y-auto;
@@ -99,7 +98,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	/* ---------- Lists ---------- */
 	.nav-list {
 		/* Reset default UL styling */
-		@apply m-0 p-0 pb-2 list-none;
+		@apply m-0 p-0 list-none;
 
 		/* Mobile layout */
 		@apply flex flex-col;
@@ -122,6 +121,11 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	/* Mobile behavior: full-width hit targets/rows */
 	.nav-item {
 		@apply w-full;
+	}
+
+	/* Apply padding to everything except the button so its full width on mobile */
+	.nav-item:not(.is-cta) {
+		@apply px-1;
 	}
 
 	.nav-subitem {
@@ -151,10 +155,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply font-normal; /* normalize default WP bolding */
 	}
 
-	.nav-cta-link {
-		@apply rounded-md;
-		@apply px-3 py-2; /* keep aligned with .nav-link (prevents tiny x-shift) */
-	}
+
 
 	/* Disclosure button (top-level items that have submenus) */
 	.nav-disclosure {
@@ -300,4 +301,53 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			z-index: 60;
 		}
 	}
+
+	/* ---------- CTA (menu item marked .is-cta / .nav-cta) ---------- */
+
+	/* Base: mirror btn_main feel without relying on the class */
+	.nav-cta-link {
+		@apply inline-flex items-center justify-center;
+		@apply rounded-md;
+		@apply px-5 py-3;
+		@apply font-semibold;
+		@apply leading-none;
+		@apply bg-primary text-black;
+		@apply shadow-md;
+		@apply border border-black/20;
+
+		/* Desktop hover/focus (mobile doesn't rely on hover) */
+		@apply transition;
+		@apply hover:brightness-95;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	/* Mobile-only: full-width, centered "bar" CTA inside the open panel */
+	@media (max-width: 1023px) {
+		.nav-cta-link {
+			@apply w-full;
+			@apply rounded-none;
+			@apply py-4;
+			@apply text-center;
+		}
+	}
+
+	/* Desktop-only: keep it button-sized and aligned in the row */
+	@media (min-width: 1024px) {
+		.nav-item.nav-cta {
+			@apply w-auto;
+		}
+
+		.nav-cta-link {
+			@apply w-auto;
+			@apply rounded-md;
+			@apply px-5 py-3;
+		}
+	}
+
+	.nav-link.nav-cta-link:hover,
+	.nav-link.nav-cta-link:focus-visible {
+		@apply brightness-90;
+		@apply bg-primary;
+	}
+
 }
