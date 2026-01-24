@@ -52,11 +52,15 @@
 
 	/* ---------- Panel ---------- */
 	.nav {
-		@apply relative;
+		@apply static;
 	}
 
 	.nav-panel {
-		@apply mt-3;
+		@apply absolute left-0 right-0 top-full;
+		@apply mt-0; /* important: no in-flow push */
+		@apply bg-secondary text-white; /* surface */
+		@apply border-t border-white/10 shadow-lg;
+		@apply max-h-[calc(100vh-6rem)] overflow-y-auto;
 	}
 
 	.nav-panel[hidden] {
@@ -65,7 +69,8 @@
 
 	@media (min-width: 1024px) {
 		.nav-panel {
-			@apply mt-0;
+			@apply static;
+			@apply p-0 border-0 shadow-none max-h-none overflow-visible;
 			display: block !important;
 		}
 	}
@@ -73,6 +78,7 @@
 	/* ---------- List ---------- */
 	.nav-list {
 		@apply flex flex-col gap-1;
+		@apply m-0 p-0 list-none;
 	}
 
 	@media (min-width: 1024px) {
@@ -95,7 +101,7 @@
 	}
 
 	.nav-cta-link {
-		@apply rounded-md px-4 py-2 font-semibold;
+		@apply rounded-md px-3 py-2 font-semibold;
 	}
 
 	.nav-link,
@@ -158,6 +164,7 @@
 
 	.nav-submenu-list {
 		@apply flex flex-col bg-secondary;
+		@apply m-0 p-0 list-none;
 	}
 
 	/* Striping by add 5% white opacity */
@@ -166,9 +173,64 @@
 	}
 
 	.nav-sublink {
-		@apply block px-4 py-2 text-base;
+		@apply block py-2 text-base;
 		@apply rounded-none; /* optional: keep menus square */
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
 }
+
+
+.nav-list,
+.nav-submenu-list {
+	@apply m-0 p-0 list-none;
+}
+
+.nav-item,
+.nav-subitem {
+	@apply w-full;
+}
+
+.nav-link,
+.nav-disclosure,
+.nav-sublink {
+	@apply w-full;
+}
+
+.nav-sublink {
+	@apply pl-5;
+}
+
+@media (max-width: 1023px) {
+	.nav-list > .nav-item {
+		@apply border-t border-white/10;
+	}
+}
+
+@media (max-width: 1023px) {
+	/* Backdrop when main mobile panel is open */
+	body.nav-open:before {
+		content: "";
+		@apply fixed inset-0 bg-black/40;
+		z-index: 40;
+	}
+
+	/* Ensure header + panel are above backdrop */
+	.site-header {
+		position: relative; /* already true */
+		z-index: 50;
+	}
+
+	.nav-panel {
+		z-index: 60;
+	}
+}
+
+@media (max-width: 1023px) {
+	body.nav-open {
+		overflow: hidden;
+	}
+}
+
+
+
