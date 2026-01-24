@@ -65,7 +65,9 @@ if (is_array($logo) && !empty($logo['url'])) : ?>
 				aria-controls="nav-panel"
 			>
 				<span class="sr-only">Menu</span>
-				<span class="nav-hamburger-icon" aria-hidden="true"></span>
+				<span class="nav-hamburger-icon" aria-hidden="true">
+					<span class="nav-hamburger-bar"></span>
+				</span>
 			</button>
 
 			<div class="nav-panel" id="nav-panel">

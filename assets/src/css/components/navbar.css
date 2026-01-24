@@ -52,62 +52,81 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	}
 
 	/* ---------- Hamburger ---------- */
-	/* Draw the hamburger (no glyphs needed in markup) */
 	.nav-hamburger {
 		@apply inline-flex items-center justify-center;
-		@apply rounded-md p-3; /* slightly larger tap target */
+		@apply rounded-md;
+		@apply p-4;
 	}
 
 	.nav-hamburger-icon {
-		@apply relative block;
-		@apply h-[18px] w-7;
-
-		/* Middle bar (staggered: shorter + right-aligned) */
-		background: linear-gradient(currentColor, currentColor) center / 70% 2px no-repeat;
-		background-position: right center;
+		position: relative;
+		width: 32px;
+		height: 22px;
 	}
 
+	/* Shared bar styles */
 	.nav-hamburger-icon:before,
-	.nav-hamburger-icon:after {
+	.nav-hamburger-icon:after,
+	.nav-hamburger-bar {
 		content: "";
-		@apply absolute;
-		@apply h-0.5 bg-current;
-		@apply transition-transform;
-		left: 0;
+		position: absolute;
+		height: 3px;
+		background-color: currentColor;
+		border-radius: 9999px;
+		transition: transform 0.2s ease, opacity 0.2s ease;
 	}
 
-	/* Top bar: full width */
+	/* Top bar */
 	.nav-hamburger-icon:before {
 		top: 0;
+		left: 0;
 		width: 100%;
 	}
 
-	/* Bottom bar: staggered (slightly shorter) */
-	.nav-hamburger-icon:after {
-		bottom: 0;
-		width: 85%;
+	/* Middle bar (REAL ELEMENT, finally rounded) */
+	.nav-hamburger-bar {
+		top: 50%;
+		left: 0;
+		width: 100%;
+		transform: translateY(-50%);
 	}
 
-	/* Open state: morph to an X (driven by aria-expanded on the button) */
-	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon {
-		background-size: 0 0; /* hide middle bar */
+	/* Bottom bar — shorter, right-aligned */
+	.nav-hamburger-icon:after {
+		bottom: 0;
+		right: 0;
+		width: 70%;
+	}
+
+	/* Open state → X */
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-bar {
+		opacity: 0;
+	}
+
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:before,
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:after {
+		top: 50%;
+		left: 0;
+		right: 0;
+		width: 100%;
+		transform-origin: 50% 50%;
 	}
 
 	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:before {
-		transform: translateY(8px) rotate(45deg);
+		transform: translateY(-50%) rotate(45deg);
 	}
 
 	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:after {
-		transform: translateY(-8px) rotate(-45deg);
-		width: 100%; /* make the X look balanced */
+		transform: translateY(-50%) rotate(-45deg);
 	}
 
 	/* Desktop-only: hide hamburger */
 	@media (min-width: 1024px) {
 		.nav-hamburger {
-			@apply hidden;
+			display: none;
 		}
 	}
+
 
 	/* ---------- Panel ---------- */
 	.nav {
