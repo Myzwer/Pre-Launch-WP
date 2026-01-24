@@ -1,7 +1,7 @@
 /**
  * Primary navigation behavior (2-level depth).
  *
- * Contract hooks:
+ * Contract hooks (markup / walker contract):
  * - .nav-hamburger (button) controls #nav-panel (div)
  * - li[data-nav-item] contains button[data-nav-toggle] + div[data-nav-submenu]
  *
@@ -19,9 +19,37 @@
  * @param {Document|HTMLElement} root - Root document or element used to scope navigation queries.
  */
 export function initPrimaryNav(root: Document | HTMLElement = document): void {
+	// ---------------------------------------------------------------------
+	// Config (clarity > cleverness)
+	// ---------------------------------------------------------------------
+
+	const SELECTORS = {
+		nav: ".nav",
+		hamburger: ".nav-hamburger",
+		brand: ".nav-brand",
+		topItem: "[data-nav-item]",
+		toggle: "[data-nav-toggle]",
+		submenu: "[data-nav-submenu]",
+		siteHeader: ".site-header",
+	} as const;
+
+	/**
+	 * README:BREAKPOINT_SYNC
+	 * If you change the desktop breakpoint in CSS, update DESKTOP_MEDIA_QUERY here too.
+	 */
+	const DESKTOP_MEDIA_QUERY = "(min-width: 1024px)";
+
+	// Animation tuning (only applies when motion is allowed and on mobile)
+	const ANIM_DURATION_MS = 220;
+	const ANIM_EASING = "cubic-bezier(0.2, 0, 0, 1)";
+
+	// ---------------------------------------------------------------------
+	// Setup / element discovery
+	// ---------------------------------------------------------------------
+
 	const nav =
-		(root instanceof Document ? root : root.ownerDocument)?.querySelector(".nav") ??
-		(root as HTMLElement).querySelector?.(".nav");
+		(root instanceof Document ? root : root.ownerDocument)?.querySelector(SELECTORS.nav) ??
+		(root as HTMLElement).querySelector?.(SELECTORS.nav);
 
 	if (!nav) return;
 
@@ -29,24 +57,41 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 	const win = doc.defaultView;
 	if (!win) return;
 
-	const hamburger = nav.querySelector<HTMLButtonElement>(".nav-hamburger");
+	const hamburger = nav.querySelector<HTMLButtonElement>(SELECTORS.hamburger);
 	const panelId = hamburger?.getAttribute("aria-controls") || "nav-panel";
 	const panel = nav.querySelector<HTMLElement>(`#${CSS.escape(panelId)}`);
 
-	const topItems = Array.from(nav.querySelectorAll<HTMLElement>("[data-nav-item]"));
+	const topItems = Array.from(nav.querySelectorAll<HTMLElement>(SELECTORS.topItem));
 
 	const prefersReducedMotion = win.matchMedia("(prefers-reduced-motion: reduce)").matches;
-	const desktopMql = win.matchMedia("(min-width: 1024px)"); // SEARCHME: keep in sync with CSS breakpoint
+	const desktopMql = win.matchMedia(DESKTOP_MEDIA_QUERY);
+
+	type NavItemParts = {
+		toggle: HTMLButtonElement | null;
+		submenu: HTMLElement | null;
+	};
 
 	// --- helpers -------------------------------------------------------------
 
-	const getItemParts = (item: HTMLElement) => {
-		const toggle = item.querySelector<HTMLButtonElement>("[data-nav-toggle]");
-		const submenu = item.querySelector<HTMLElement>("[data-nav-submenu]");
+	/**
+	 * Given a top-level nav item, return its disclosure toggle and submenu element.
+	 *
+	 * @param {HTMLElement} item - A top-level nav <li> element marked with [data-nav-item].
+	 * @return {NavItemParts} The associated toggle + submenu for that item.
+	 */
+	const getItemParts = (item: HTMLElement): NavItemParts => {
+		const toggle = item.querySelector<HTMLButtonElement>(SELECTORS.toggle);
+		const submenu = item.querySelector<HTMLElement>(SELECTORS.submenu);
 		return { toggle, submenu };
 	};
 
-	const setExpanded = (toggle: HTMLButtonElement, expanded: boolean) => {
+	/**
+	 * Set aria-expanded state on a disclosure button.
+	 *
+	 * @param {HTMLButtonElement} toggle - The disclosure button controlling a submenu.
+	 * @param {boolean} expanded - Expanded state.
+	 */
+	const setExpanded = (toggle: HTMLButtonElement, expanded: boolean): void => {
 		toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
 	};
 
@@ -56,7 +101,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 	 *
 	 * @param {HTMLElement} el - Element whose active navigation animation should be cancelled.
 	 */
-	const stopRunningAnimation = (el: HTMLElement) => {
+	const stopRunningAnimation = (el: HTMLElement): void => {
 		const running = (el as any).__navAnim as Animation | undefined;
 		if (!running) return;
 
@@ -111,8 +156,8 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		const anim = el.animate(
 			[{ height: `${startHeight}px` }, { height: `${endHeight}px` }],
 			{
-				duration: 220,
-				easing: "cubic-bezier(0.2, 0, 0, 1)",
+				duration: ANIM_DURATION_MS,
+				easing: ANIM_EASING,
 				fill: "forwards",
 			}
 		);
@@ -129,6 +174,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 			(el as any).__navAnim = undefined;
 
 			// CRITICAL: release WAAPI "forwards" effect so layout can return to height:auto
+			// README:WAAPI_CANCEL
 			try {
 				anim.cancel();
 			} catch {
@@ -146,6 +192,12 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		}
 	};
 
+	/**
+	 * Close a single top-level submenu item.
+	 *
+	 * @param {HTMLElement} item - The top-level nav item to close.
+	 * @return {Promise<void>} Resolves after any required animation completes.
+	 */
 	const closeItem = async (item: HTMLElement): Promise<void> => {
 		const { toggle, submenu } = getItemParts(item);
 		if (!toggle || !submenu) return;
@@ -162,6 +214,12 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		submenu.hidden = true;
 	};
 
+	/**
+	 * Open a single top-level submenu item (accordion behavior).
+	 *
+	 * @param {HTMLElement} item - The top-level nav item to open.
+	 * @return {Promise<void>} Resolves after any required animation completes.
+	 */
 	const openItem = async (item: HTMLElement): Promise<void> => {
 		const { toggle, submenu } = getItemParts(item);
 		if (!toggle || !submenu) return;
@@ -183,6 +241,12 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		await animateHeight(submenu, true);
 	};
 
+	/**
+	 * Toggle a single top-level submenu item open/closed.
+	 *
+	 * @param {HTMLElement} item - The top-level nav item to toggle.
+	 * @return {Promise<void>} Resolves after any required animation completes.
+	 */
 	const toggleItem = async (item: HTMLElement): Promise<void> => {
 		const { toggle } = getItemParts(item);
 		if (!toggle) return;
@@ -195,10 +259,21 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		}
 	};
 
+	/**
+	 * Close all open submenus.
+	 *
+	 * @return {Promise<void>} Resolves after all close operations complete.
+	 */
 	const closeAllSubmenus = async (): Promise<void> => {
 		await Promise.all(topItems.map(closeItem));
 	};
 
+	/**
+	 * Open or close the mobile panel.
+	 *
+	 * @param {boolean} open - Whether to open the panel.
+	 * @return {Promise<void>} Resolves after any required animation completes.
+	 */
 	const setPanelOpen = async (open: boolean): Promise<void> => {
 		if (!hamburger || !panel) return;
 
@@ -232,6 +307,8 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 	/**
 	 * Synchronous "hard close" used for navigation clicks (Safari repaint issue).
 	 * Avoids waiting for WAAPI animations so the UI updates immediately.
+	 *
+	 * @return {void}
 	 */
 	const hardCloseAllSubmenus = (): void => {
 		for (const item of topItems) {
@@ -250,6 +327,11 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		}
 	};
 
+	/**
+	 * Synchronous panel close used for navigation clicks.
+	 *
+	 * @return {void}
+	 */
 	const hardClosePanel = (): void => {
 		if (!hamburger || !panel) return;
 
@@ -264,10 +346,15 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		panel.hidden = true;
 	};
 
-	// Mobile-only: clicking the brand logo while the panel is open should close
-	// immediately (Safari may not repaint before navigation otherwise).
+	// ---------------------------------------------------------------------
+	// README:SAFARI_LOGO_NAV
+	// Mobile Safari may not repaint UI state changes before navigation.
+	// If the panel is open and the user taps the brand, force-close synchronously,
+	// then navigate explicitly so it never appears to "hang."
+	// ---------------------------------------------------------------------
+
 	const brandLink =
-		nav.closest(".site-header")?.querySelector<HTMLAnchorElement>(".nav-brand") ??
+		nav.closest(SELECTORS.siteHeader)?.querySelector<HTMLAnchorElement>(SELECTORS.brand) ??
 		null;
 
 	brandLink?.addEventListener("click", (e) => {
@@ -288,7 +375,6 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		// Navigate after UI update
 		win.location.assign(href);
 	});
-
 
 	// --- init ---------------------------------------------------------------
 
