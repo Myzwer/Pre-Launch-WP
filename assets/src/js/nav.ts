@@ -229,6 +229,67 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		}
 	};
 
+	/**
+	 * Synchronous "hard close" used for navigation clicks (Safari repaint issue).
+	 * Avoids waiting for WAAPI animations so the UI updates immediately.
+	 */
+	const hardCloseAllSubmenus = (): void => {
+		for (const item of topItems) {
+			const { toggle, submenu } = getItemParts(item);
+			if (!toggle || !submenu) continue;
+
+			setExpanded(toggle, false);
+			item.classList.remove("is-open");
+
+			// Stop any in-flight animations and reset layout styles.
+			submenu.getAnimations?.().forEach((a) => a.cancel());
+			submenu.style.removeProperty("height");
+			submenu.style.removeProperty("overflow");
+
+			submenu.hidden = true;
+		}
+	};
+
+	const hardClosePanel = (): void => {
+		if (!hamburger || !panel) return;
+
+		hamburger.setAttribute("aria-expanded", "false");
+		hamburger.classList.remove("is-open");
+		doc.body.classList.remove("nav-open");
+
+		panel.getAnimations?.().forEach((a) => a.cancel());
+		panel.style.removeProperty("height");
+		panel.style.removeProperty("overflow");
+
+		panel.hidden = true;
+	};
+
+	// Mobile-only: clicking the brand logo while the panel is open should close
+	// immediately (Safari may not repaint before navigation otherwise).
+	const brandLink =
+		nav.closest(".site-header")?.querySelector<HTMLAnchorElement>(".nav-brand") ??
+		null;
+
+	brandLink?.addEventListener("click", (e) => {
+		// Only care on mobile when the panel is currently open.
+		if (desktopMql.matches) return;
+
+		const panelOpen = hamburger?.getAttribute("aria-expanded") === "true";
+		if (!panelOpen) return;
+
+		const href = brandLink.getAttribute("href");
+		if (!href) return;
+
+		e.preventDefault();
+
+		hardCloseAllSubmenus();
+		hardClosePanel();
+
+		// Navigate after UI update
+		win.location.assign(href);
+	});
+
+
 	// --- init ---------------------------------------------------------------
 
 	if (hamburger && panel) {
