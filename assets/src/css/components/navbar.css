@@ -465,4 +465,53 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			z-index: 60;
 		}
 	}
+
+	/* =========================================================
+   [TOGGLE] Center desktop navigation
+   Enable: add .nav-center-desktop to .site-header
+   Goal: brand left, menu centered, CTA right
+   Requires: CTA item is last and has .nav-cta
+========================================================= */
+
+	@media (min-width: 1024px) {
+		.site-header.nav-center-desktop .nav-shell {
+			/* Stop pushing brand/nav apart; let nav consume remaining space */
+			@apply justify-start;
+		}
+
+		.site-header.nav-center-desktop .nav {
+			@apply flex-1;
+		}
+
+		.site-header.nav-center-desktop .nav-panel {
+			@apply w-full;
+		}
+
+		.site-header.nav-center-desktop .nav-list {
+			@apply w-full;
+		}
+
+		/* IMPORTANT:
+		   Mobile-first rules make each li/link/button full-width.
+		   For centered desktop mode we want "content width" items. */
+		.site-header.nav-center-desktop .nav-list > .nav-item {
+			width: auto;
+		}
+
+		.site-header.nav-center-desktop .nav-link,
+		.site-header.nav-center-desktop .nav-disclosure {
+			width: auto;
+		}
+
+		/* Center the non-CTA group by splitting free space */
+		.site-header.nav-center-desktop .nav-list > .nav-item:not(.nav-cta):first-child {
+			margin-left: auto;
+		}
+
+		/* Keep CTA pinned to the far right */
+		.site-header.nav-center-desktop .nav-item.nav-cta {
+			margin-left: auto;
+		}
+	}
+
 }

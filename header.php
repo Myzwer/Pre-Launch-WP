@@ -37,6 +37,7 @@
 
 <!-- Start Navbar -->
 <!-- Add 'nav-hover-full' to the header class for full height hover effects -->
+<!-- Add 'nav-center-desktop' to the header class for centered nav items (minus CTA)  -->
 <header class="site-header">
 	<div class="nav-shell">
 		<a class="nav-brand" href="<?php echo esc_url(home_url('/')); ?>">
