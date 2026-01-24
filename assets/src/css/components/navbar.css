@@ -8,7 +8,8 @@
 	}
 
 	.nav-shell {
-		@apply flex items-center justify-between gap-4 px-4;
+		@apply flex items-center justify-between;
+		@apply gap-4 px-4;
 	}
 
 	.nav-brand {
@@ -21,19 +22,22 @@
 
 	/* ---------- Hamburger ---------- */
 	.nav-hamburger {
-		@apply inline-flex items-center justify-center rounded-md p-2;
+		@apply inline-flex items-center justify-center;
+		@apply rounded-md p-2;
 	}
 
 	/* Draw the hamburger (no glyphs needed in markup) */
 	.nav-hamburger-icon {
-		@apply relative block h-4 w-6;
+		@apply relative block;
+		@apply h-4 w-6;
 		background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
 	}
 
 	.nav-hamburger-icon:before,
 	.nav-hamburger-icon:after {
 		content: "";
-		@apply absolute left-0 right-0 h-0.5 bg-current;
+		@apply absolute left-0 right-0;
+		@apply h-0.5 bg-current;
 	}
 
 	.nav-hamburger-icon:before {
@@ -44,6 +48,7 @@
 		bottom: 0;
 	}
 
+	/* Desktop behavior: hide hamburger */
 	@media (min-width: 1024px) {
 		.nav-hamburger {
 			@apply hidden;
@@ -52,14 +57,19 @@
 
 	/* ---------- Panel ---------- */
 	.nav {
+		/* Keep panel positioned relative to the header, not the nav (prevents "popover width") */
 		@apply static;
 	}
 
 	.nav-panel {
+		/* Mobile behavior: overlay sheet under the header */
 		@apply absolute left-0 right-0 top-full;
-		@apply mt-0; /* important: no in-flow push */
-		@apply bg-secondary text-white; /* surface */
+
+		/* Surface */
+		@apply bg-secondary text-white;
 		@apply border-t border-white/10 shadow-lg;
+
+		/* Scroll safety */
 		@apply max-h-[calc(100vh-6rem)] overflow-y-auto;
 	}
 
@@ -67,56 +77,93 @@
 		display: none;
 	}
 
+	/* Desktop behavior: panel always visible + back to normal flow */
 	@media (min-width: 1024px) {
 		.nav-panel {
 			@apply static;
-			@apply p-0 border-0 shadow-none max-h-none overflow-visible;
+
+			/* Reset mobile-only surface/scroll concerns */
+			@apply p-0;
+			@apply border-0 shadow-none;
+			@apply max-h-none overflow-visible;
+
 			display: block !important;
 		}
 	}
 
-	/* ---------- List ---------- */
+	/* ---------- Lists ---------- */
 	.nav-list {
-		@apply flex flex-col gap-1;
+		/* Reset default UL styling */
 		@apply m-0 p-0 list-none;
+
+		/* Mobile layout */
+		@apply flex flex-col;
+		@apply gap-1;
 	}
 
+	/* Desktop behavior: horizontal layout */
 	@media (min-width: 1024px) {
 		.nav-list {
-			@apply flex-row items-center gap-2;
+			@apply flex-row items-center;
+			@apply gap-2;
 		}
 	}
 
 	.nav-item-inner {
-		@apply flex items-center gap-1;
+		@apply flex items-center;
+		@apply gap-1;
+	}
+
+	/* Mobile behavior: full-width hit targets/rows */
+	.nav-item {
+		@apply w-full;
+	}
+
+	.nav-subitem {
+		@apply w-full;
 	}
 
 	/* ---------- Links ---------- */
 	.nav-link {
-		@apply inline-flex items-center px-3 py-2 text-base font-medium;
-	 	/*	hover state */
+		@apply inline-flex items-center;
+		@apply px-3 py-2;
+		@apply text-base;
+		@apply font-medium;
+
+		/* Mobile behavior: full-width rows */
+		@apply w-full;
+
+		/* hover state (desktop + devices that support hover) */
 		@apply rounded-md transition;
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+
+		@apply font-normal; /* normalize default WP bolding */
 	}
 
 	.nav-cta-link {
-		@apply rounded-md px-3 py-2 font-semibold;
-	}
-
-	.nav-link,
-	.nav-disclosure,
-	.nav-sublink {
-		@apply font-normal;
+		@apply rounded-md;
+		@apply px-3 py-2; /* keep aligned with .nav-link (prevents tiny x-shift) */
 	}
 
 	/* Disclosure button (top-level items that have submenus) */
 	.nav-disclosure {
-		@apply inline-flex w-full items-center justify-between px-3 py-2 text-base font-medium cursor-pointer;
-		/*	hover state */
+		@apply inline-flex items-center justify-between;
+		@apply w-full;
+		@apply px-3 py-2;
+		@apply text-base;
+		@apply font-medium;
+		@apply cursor-pointer;
+
+		/* Mobile behavior: full-width rows */
+		@apply w-full;
+
+		/* hover state (desktop + devices that support hover) */
 		@apply rounded-md transition;
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+
+		@apply font-normal; /* normalize default WP bolding */
 	}
 
 	/* Keep label + caret aligned nicely */
@@ -124,19 +171,22 @@
 		@apply inline-flex items-center;
 	}
 
-
 	/* ---------- Submenus ---------- */
 	.nav-item.has-submenu {
 		@apply relative;
 	}
 
 	.nav-toggle {
-		@apply inline-flex items-center justify-center p-2 text-base;
+		@apply inline-flex items-center justify-center;
+		@apply p-2;
+		@apply text-base;
 	}
 
 	/* Draw the caret/chevron (no glyphs needed in markup) */
 	.nav-toggle-icon {
-		@apply relative block h-2 w-2 ml-3;
+		@apply relative block;
+		@apply h-2 w-2;
+		@apply ml-3;
 	}
 
 	.nav-toggle-icon:before {
@@ -156,81 +206,73 @@
 		@apply mt-1;
 	}
 
+	/* Desktop behavior: submenu as dropdown surface */
 	@media (min-width: 1024px) {
 		.nav-submenu {
-			@apply absolute left-0 top-full mt-2 min-w-[12rem];
+			@apply absolute left-0 top-full;
+			@apply mt-2;
+			@apply min-w-[12rem];
 		}
 	}
 
 	.nav-submenu-list {
-		@apply flex flex-col bg-secondary;
+		/* Reset default UL styling + define submenu surface */
 		@apply m-0 p-0 list-none;
+		@apply flex flex-col;
+		@apply bg-secondary;
 	}
 
-	/* Striping by add 5% white opacity */
+	/* Striping by adding 5% white opacity over the base surface */
 	.nav-submenu-list > .nav-subitem:nth-child(odd) {
 		@apply bg-white/5;
 	}
 
 	.nav-sublink {
-		@apply block py-2 text-base;
+		@apply block;
+		@apply py-2;
+		@apply text-base;
+
+		/* Mobile behavior: full-width rows */
+		@apply w-full;
+
+		/* Indent submenu items without shrinking the stripe background */
+		@apply pl-5;
+
+		/* hover state (desktop + devices that support hover) */
 		@apply rounded-none; /* optional: keep menus square */
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
-	}
-}
 
-
-.nav-list,
-.nav-submenu-list {
-	@apply m-0 p-0 list-none;
-}
-
-.nav-item,
-.nav-subitem {
-	@apply w-full;
-}
-
-.nav-link,
-.nav-disclosure,
-.nav-sublink {
-	@apply w-full;
-}
-
-.nav-sublink {
-	@apply pl-5;
-}
-
-@media (max-width: 1023px) {
-	.nav-list > .nav-item {
-		@apply border-t border-white/10;
-	}
-}
-
-@media (max-width: 1023px) {
-	/* Backdrop when main mobile panel is open */
-	body.nav-open:before {
-		content: "";
-		@apply fixed inset-0 bg-black/40;
-		z-index: 40;
+		@apply font-normal; /* normalize default WP bolding */
 	}
 
-	/* Ensure header + panel are above backdrop */
-	.site-header {
-		position: relative; /* already true */
-		z-index: 50;
-	}
+	/* ---------- Mobile-only enhancements ---------- */
+	@media (max-width: 1023px) {
+		/* Visual separators between top-level items */
+		.nav-list > .nav-item {
+			@apply border-t border-white/10;
+		}
 
-	.nav-panel {
-		z-index: 60;
+		/* Backdrop when main mobile panel is open */
+		body.nav-open:before {
+			content: "";
+			@apply fixed inset-0 bg-black/40;
+			z-index: 40;
+		}
+
+		/* Prevent background scroll while menu is open */
+		body.nav-open {
+			overflow: hidden;
+		}
+
+		/* Ensure header + panel are above backdrop */
+		.site-header {
+			position: relative; /* already true, explicit for clarity */
+			z-index: 50;
+		}
+
+		.nav-panel {
+			z-index: 60;
+		}
 	}
 }
-
-@media (max-width: 1023px) {
-	body.nav-open {
-		overflow: hidden;
-	}
-}
-
-
-
