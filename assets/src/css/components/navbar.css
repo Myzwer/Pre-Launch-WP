@@ -52,33 +52,54 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	}
 
 	/* ---------- Hamburger ---------- */
+	/* Draw the hamburger (no glyphs needed in markup) */
 	.nav-hamburger {
 		@apply inline-flex items-center justify-center;
-		@apply rounded-md p-2;
+		@apply rounded-md p-3; /* slightly larger tap target */
 	}
 
-	/* Draw the hamburger (no glyphs needed in markup) */
 	.nav-hamburger-icon {
 		@apply relative block;
-		@apply h-4 w-6;
+		@apply h-[18px] w-7;
 
-		/* Uses currentColor so icon inherits text color automatically */
-		background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+		/* Middle bar (staggered: shorter + right-aligned) */
+		background: linear-gradient(currentColor, currentColor) center / 70% 2px no-repeat;
+		background-position: right center;
 	}
 
 	.nav-hamburger-icon:before,
 	.nav-hamburger-icon:after {
 		content: "";
-		@apply absolute left-0 right-0;
+		@apply absolute;
 		@apply h-0.5 bg-current;
+		@apply transition-transform;
+		left: 0;
 	}
 
+	/* Top bar: full width */
 	.nav-hamburger-icon:before {
 		top: 0;
+		width: 100%;
 	}
 
+	/* Bottom bar: staggered (slightly shorter) */
 	.nav-hamburger-icon:after {
 		bottom: 0;
+		width: 85%;
+	}
+
+	/* Open state: morph to an X (driven by aria-expanded on the button) */
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon {
+		background-size: 0 0; /* hide middle bar */
+	}
+
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:before {
+		transform: translateY(8px) rotate(45deg);
+	}
+
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:after {
+		transform: translateY(-8px) rotate(-45deg);
+		width: 100%; /* make the X look balanced */
 	}
 
 	/* Desktop-only: hide hamburger */
@@ -210,32 +231,14 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply relative;
 	}
 
-	.nav-toggle {
-		@apply inline-flex items-center justify-center;
-		@apply p-2;
-		@apply text-base;
+	.nav-caret {
+		@apply ml-3 shrink-0;
+		@apply transition-transform;
 	}
 
-	/* Draw the caret/chevron (no glyphs needed in markup) */
-	.nav-toggle-icon {
-		@apply relative block;
-		@apply h-2 w-2;
-		@apply ml-3;
-	}
-
-	.nav-toggle-icon:before {
-		content: "";
-		@apply absolute inset-0;
-
-		/* Uses currentColor so it inherits the label color */
-		border-right: 2px solid currentColor;
-		border-bottom: 2px solid currentColor;
-		transform: rotate(45deg);
-	}
-
-	/* Rotate caret when open (JS sets .is-open on the li) */
-	.nav-item.is-open .nav-toggle-icon:before {
-		transform: rotate(-135deg);
+	/* Flip caret when open (JS sets .is-open on the li) */
+	.nav-item.is-open .nav-caret {
+		transform: rotate(180deg);
 	}
 
 	.nav-submenu {
@@ -255,12 +258,21 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 			@apply absolute left-0 top-full;
 			@apply mt-2;
 			@apply min-w-[12rem];
+			@apply w-max;
+			@apply max-w-[90vw]; /* clamp to viewport */
+		}
+
+		/* Overflow safety: last items align dropdown to the right edge */
+		.nav-item:nth-last-child(-n+2) > .nav-submenu {
+			left: auto;
+			right: 0;
 		}
 
 		/* Make desktop dropdown look like a component */
 		.nav-submenu-list {
 			@apply rounded-md overflow-hidden;
 			@apply border border-white/10 shadow-lg;
+			@apply max-w-[90vw]; /* clamp to viewport */
 		}
 
 		/* Desktop striping */
@@ -286,6 +298,10 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply text-base;
 		@apply font-normal; /* normalize WP default bolding */
 
+		/* Long label safety */
+		overflow-wrap: anywhere;
+		word-break: break-word;
+
 		/* Indent submenu items without shrinking the stripe background */
 		@apply pl-5;
 
@@ -299,6 +315,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	.nav-cta-link {
 		/* Base: mirror btn_main feel without relying on the class */
 		@apply inline-flex items-center justify-center;
+		@apply gap-2;
 		@apply w-full;
 
 		@apply rounded-md;
@@ -313,6 +330,10 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply transition;
 		@apply hover:brightness-95;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	.nav-cta-icon {
+		@apply shrink-0;
 	}
 
 	/* Mobile-only: full-width, centered "bar" CTA inside the open panel */
