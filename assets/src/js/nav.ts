@@ -7,12 +7,16 @@
  *
  * Behavior:
  * - Mobile panel: hamburger toggles; starts collapsed on load.
- * - Desktop: panel is always visible (we unhide on init; CSS can also enforce).
+ * - Desktop: panel is always visible (CSS enforces too).
  * - Submenus: click-to-toggle (disclosure), accordion at top level.
- * - Escape closes open submenu first; then closes panel.
+ * - Escape closes open submenu first; then closes panel and returns focus to hamburger.
  * - Click outside closes everything.
  *
- *  @param {Document|HTMLElement} root - Root document or element used to scope navigation queries.
+ * Animations:
+ * - Uses Web Animations API for panel/submenu slide (height) when motion is allowed.
+ * - Hamburger + caret are styled via CSS based on aria-expanded / .is-open classes.
+ *
+ * @param {Document|HTMLElement} root - Root document or element used to scope navigation queries.
  */
 export function initPrimaryNav(root: Document | HTMLElement = document): void {
 	const nav =
@@ -22,12 +26,17 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 	if (!nav) return;
 
 	const doc = nav.ownerDocument;
+	const win = doc.defaultView;
+	if (!win) return;
 
 	const hamburger = nav.querySelector<HTMLButtonElement>(".nav-hamburger");
 	const panelId = hamburger?.getAttribute("aria-controls") || "nav-panel";
 	const panel = nav.querySelector<HTMLElement>(`#${CSS.escape(panelId)}`);
 
 	const topItems = Array.from(nav.querySelectorAll<HTMLElement>("[data-nav-item]"));
+
+	const prefersReducedMotion = win.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const desktopMql = win.matchMedia("(min-width: 1024px)"); // SEARCHME: keep in sync with CSS breakpoint
 
 	// --- helpers -------------------------------------------------------------
 
@@ -41,194 +50,238 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
 	};
 
-	const closeItem = (item: HTMLElement) => {
+	const stopRunningAnimation = (el: HTMLElement) => {
+		const running = (el as any).__navAnim as Animation | undefined;
+		if (running) {
+			try {
+				running.cancel();
+			} catch {
+				// ignore
+			}
+			(el as any).__navAnim = undefined;
+		}
+	};
+
+	const animateHeight = async (el: HTMLElement, open: boolean): Promise<void> => {
+		// Desktop doesn't animate (menus are always "present"); bail early.
+		if (desktopMql.matches) return;
+
+		// If reduced motion, do the instantaneous toggle.
+		if (prefersReducedMotion) return;
+
+		stopRunningAnimation(el);
+
+		// Ensure it can be measured.
+		const startingHidden = el.hidden;
+		if (open && startingHidden) el.hidden = false;
+
+		const startHeight = open ? 0 : el.getBoundingClientRect().height;
+		// If closing and already at 0, just finish.
+		if (!open && startHeight <= 0.5) return;
+
+		// Temporarily fix height for a clean animation.
+		el.style.overflow = "hidden";
+		el.style.height = `${startHeight}px`;
+
+		// Force reflow so the browser picks up the height before animating.
+		el.offsetHeight;
+
+		const endHeight = open ? el.scrollHeight : 0;
+
+		const anim = el.animate(
+			[{ height: `${startHeight}px` }, { height: `${endHeight}px` }],
+			{
+				duration: 220,
+				easing: "cubic-bezier(0.2, 0, 0, 1)",
+				fill: "forwards",
+			}
+		);
+
+		(el as any).__navAnim = anim;
+
+		try {
+			await anim.finished;
+		} catch {
+			// cancelled
+			return;
+		} finally {
+			(el as any).__navAnim = undefined;
+		}
+
+		el.style.removeProperty("height");
+		el.style.removeProperty("overflow");
+
+		if (!open) el.hidden = true;
+	};
+
+	const closeItem = async (item: HTMLElement): Promise<void> => {
 		const { toggle, submenu } = getItemParts(item);
 		if (!toggle || !submenu) return;
 
 		setExpanded(toggle, false);
-		submenu.hidden = true;
 		item.classList.remove("is-open");
+
+		if (submenu.hidden) return;
+
+		await animateHeight(submenu, false);
+		// If reduced motion, the animateHeight() no-ops, so do the state change.
+		if (prefersReducedMotion) submenu.hidden = true;
 	};
 
-	const openItem = (item: HTMLElement) => {
+	const openItem = async (item: HTMLElement): Promise<void> => {
 		const { toggle, submenu } = getItemParts(item);
 		if (!toggle || !submenu) return;
 
 		// Accordion: close other open items at this level.
-		topItems.forEach((other) => {
-			if (other !== item) closeItem(other);
-		});
+		await Promise.all(
+			topItems.map((other) => (other !== item ? closeItem(other) : Promise.resolve()))
+		);
 
 		setExpanded(toggle, true);
-		submenu.hidden = false;
 		item.classList.add("is-open");
+
+		if (!submenu.hidden) return;
+
+		submenu.hidden = false;
+		if (prefersReducedMotion) return;
+
+		await animateHeight(submenu, true);
 	};
 
-	const toggleItem = (item: HTMLElement) => {
-		const { toggle, submenu } = getItemParts(item);
-		if (!toggle || !submenu) return;
+	const toggleItem = async (item: HTMLElement): Promise<void> => {
+		const { toggle } = getItemParts(item);
+		if (!toggle) return;
 
 		const expanded = toggle.getAttribute("aria-expanded") === "true";
-		expanded ? closeItem(item) : openItem(item);
+		if (expanded) {
+			await closeItem(item);
+		} else {
+			await openItem(item);
+		}
 	};
 
-	const closeAllSubmenus = () => {
-		topItems.forEach(closeItem);
+	const closeAllSubmenus = async (): Promise<void> => {
+		await Promise.all(topItems.map(closeItem));
 	};
 
-	const setPanelOpen = (open: boolean) => {
+	const setPanelOpen = async (open: boolean): Promise<void> => {
 		if (!hamburger || !panel) return;
 
 		hamburger.setAttribute("aria-expanded", open ? "true" : "false");
-		panel.hidden = !open;
+		hamburger.classList.toggle("is-open", open);
 
-		// styling hook (optional)
-		nav.classList.toggle("nav-panel-open", open);
+		// Styling hook (optional)
+		doc.body.classList.toggle("nav-open", open);
 
-		// Bulletproof backdrop + scroll lock hook
-		document.body.classList.toggle("nav-open", open);
+		if (desktopMql.matches) {
+			// Desktop: panel is always visible, regardless of "open" state.
+			panel.hidden = false;
+			if (!open) await closeAllSubmenus();
+			return;
+		}
 
-		if (!open) closeAllSubmenus();
+		if (open) {
+			panel.hidden = false;
+			if (!prefersReducedMotion) {
+				await animateHeight(panel, true);
+			}
+		} else {
+			if (!prefersReducedMotion) {
+				await animateHeight(panel, false);
+			}
+			panel.hidden = true;
+			await closeAllSubmenus();
+		}
 	};
 
 	// --- init ---------------------------------------------------------------
 
-	console.log("[nav] init", {
-		foundNav: !!nav,
-		foundHamburger: !!hamburger,
-		panelId,
-		foundPanel: !!panel,
-		topItems: topItems.length,
-	});
-
-	// Initialize panel state:
-	// - Mobile: start collapsed
-	// - Desktop: start visible
 	if (hamburger && panel) {
-		const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-
-		if (isDesktop) {
+		if (desktopMql.matches) {
+			// Desktop starts "open" (panel visible), with all submenus closed.
 			hamburger.setAttribute("aria-expanded", "false");
+			hamburger.classList.remove("is-open");
 			panel.hidden = false;
-			nav.classList.remove("nav-panel-open");
-			closeAllSubmenus();
+			doc.body.classList.remove("nav-open");
+			void closeAllSubmenus();
 		} else {
-			setPanelOpen(false);
+			void setPanelOpen(false);
 		}
-
-		console.log("[nav] init panel", {
-			isDesktop,
-			panelHidden: panel.hidden,
-			hamburgerExpanded: hamburger.getAttribute("aria-expanded"),
-		});
 	}
 
-	// Keep state in sync when crossing the desktop breakpoint (resize / rotate)
-	// SEARCHME: IF YOU UPDATE THE BREAKPOINT ON THE SITE YOU HAVE TO UPDATE THIS TOO TO MATCH
-	if (hamburger && panel) {
-		const desktopMql = window.matchMedia("(min-width: 1024px)");
-
-		const syncNavToViewport = () => {
-			const isDesktop = desktopMql.matches;
-
-			if (isDesktop) {
-				// Desktop: panel must be visible; clear mobile-only open states
+	// Keep state sane when crossing breakpoint.
+	desktopMql.addEventListener("change", (e) => {
+		if (e.matches) {
+			// Entering desktop: force panel visible and reset open state.
+			if (panel) panel.hidden = false;
+			if (hamburger) {
 				hamburger.setAttribute("aria-expanded", "false");
-				panel.hidden = false;
-
-				nav.classList.remove("nav-panel-open");
-				document.body.classList.remove("nav-open");
-
-				closeAllSubmenus();
-			} else {
-				// Mobile: default to closed when entering mobile
-				setPanelOpen(false);
+				hamburger.classList.remove("is-open");
 			}
-
-			console.log("[nav] sync viewport", {
-				isDesktop,
-				panelHidden: panel.hidden,
-				hamburgerExpanded: hamburger.getAttribute("aria-expanded"),
-			});
-		};
-
-		desktopMql.addEventListener("change", syncNavToViewport);
-	}
-
+			doc.body.classList.remove("nav-open");
+			void closeAllSubmenus();
+		} else {
+			// Entering mobile: always start closed.
+			void setPanelOpen(false);
+		}
+	});
 
 	// --- events -------------------------------------------------------------
 
-	// Hamburger click
-	hamburger?.addEventListener("click", () => {
+	// Hamburger toggle (mobile)
+	hamburger?.addEventListener("click", async () => {
 		if (!hamburger || !panel) return;
 
 		const open = hamburger.getAttribute("aria-expanded") === "true";
-		setPanelOpen(!open);
-
-		console.log("[nav] hamburger", {
-			nextOpen: !open,
-			panelHidden: panel.hidden,
-		});
+		await setPanelOpen(!open);
 	});
 
-	// Submenu toggle clicks (event delegation)
-	nav.addEventListener("click", (e) => {
-		const target = e.target as HTMLElement | null;
-		if (!target) return;
-
-		const toggle = target.closest<HTMLButtonElement>("[data-nav-toggle]");
+	// Top-level submenu toggles
+	topItems.forEach((item) => {
+		const { toggle } = getItemParts(item);
 		if (!toggle) return;
 
-		const item = toggle.closest<HTMLElement>("[data-nav-item]");
-		if (!item) return;
-
-		e.preventDefault();
-
-		console.log("[nav] submenu toggle", {
-			controls: toggle.getAttribute("aria-controls"),
-			expandedBefore: toggle.getAttribute("aria-expanded"),
-		});
-
-		toggleItem(item);
-
-		console.log("[nav] submenu after", {
-			expandedAfter: toggle.getAttribute("aria-expanded"),
+		toggle.addEventListener("click", async () => {
+			// If the mobile panel is closed, open it first.
+			if (!desktopMql.matches && panel?.hidden) {
+				await setPanelOpen(true);
+			}
+			await toggleItem(item);
 		});
 	});
 
-	// Click outside closes
+	// Click outside closes (mobile: closes panel + submenus; desktop: closes submenus)
 	doc.addEventListener("click", (e) => {
 		const target = e.target as Node | null;
 		if (!target) return;
+
+		// Ignore clicks inside the nav.
 		if (nav.contains(target)) return;
 
-		closeAllSubmenus();
+		void closeAllSubmenus();
 
-		if (hamburger && panel && hamburger.getAttribute("aria-expanded") === "true") {
-			setPanelOpen(false);
-			console.log("[nav] outside click -> close panel");
+		if (!desktopMql.matches) {
+			const panelOpen = hamburger?.getAttribute("aria-expanded") === "true";
+			if (panelOpen) void setPanelOpen(false);
 		}
 	});
 
-	// Escape closes
+	// Escape closes submenus first; then panel.
 	doc.addEventListener("keydown", (e) => {
 		if (e.key !== "Escape") return;
 
-		const anyOpen = topItems.some((item) => item.classList.contains("is-open"));
-		const panelOpen = hamburger?.getAttribute("aria-expanded") === "true";
-
-		if (anyOpen) {
+		const openSubmenu = topItems.find((item) => item.classList.contains("is-open"));
+		if (openSubmenu) {
 			e.preventDefault();
-			closeAllSubmenus();
-			console.log("[nav] escape -> close submenus");
+			void closeAllSubmenus();
 			return;
 		}
 
-		if (panelOpen) {
+		const panelOpen = hamburger?.getAttribute("aria-expanded") === "true";
+		if (panelOpen && !desktopMql.matches) {
 			e.preventDefault();
-			setPanelOpen(false);
+			void setPanelOpen(false);
 			hamburger?.focus();
-			console.log("[nav] escape -> close panel");
 		}
 	});
 }
