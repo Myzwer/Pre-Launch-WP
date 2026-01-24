@@ -124,8 +124,9 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		if (submenu.hidden) return;
 
 		await animateHeight(submenu, false);
-		// If reduced motion, the animateHeight() no-ops, so do the state change.
-		if (prefersReducedMotion) submenu.hidden = true;
+		// Always hide after closing.
+		// (On desktop animateHeight() intentionally doesn't animate, so we must still hide.)
+		submenu.hidden = true;
 	};
 
 	const openItem = async (item: HTMLElement): Promise<void> => {
