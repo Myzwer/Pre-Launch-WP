@@ -1,5 +1,8 @@
 @reference "../tailwind.css";
 
+/* A quick note: If you change the breakpoints on the site, you need to update the nav.ts as well
+Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
+
 @layer components {
 	/* ---------- Shell ---------- */
 	.site-header {
@@ -67,7 +70,9 @@
 
 		/* Surface */
 		@apply bg-secondary text-white;
-		@apply border-t border-white/10 shadow-lg;
+		/* @apply border-t border-white/10; add border to top */
+		@apply shadow-lg;
+		@apply px-3;
 
 		/* Scroll safety */
 		@apply max-h-[calc(100vh-6rem)] overflow-y-auto;
@@ -94,7 +99,7 @@
 	/* ---------- Lists ---------- */
 	.nav-list {
 		/* Reset default UL styling */
-		@apply m-0 p-0 list-none;
+		@apply m-0 p-0 pb-2 list-none;
 
 		/* Mobile layout */
 		@apply flex flex-col;
@@ -121,6 +126,11 @@
 
 	.nav-subitem {
 		@apply w-full;
+	}
+
+	/* When .nav-item.is-open, tint the parent row background slightly */
+	.nav-item.is-open > .nav-item-inner .nav-disclosure {
+		@apply bg-white/10;
 	}
 
 	/* ---------- Links ---------- */
@@ -224,7 +234,22 @@
 
 	/* Striping by adding 5% white opacity over the base surface */
 	.nav-submenu-list > .nav-subitem:nth-child(odd) {
-		@apply bg-white/5;
+		@apply bg-transparent;
+	}
+
+	/* Make desktop dropdown look like a component */
+	@media (min-width: 1024px) {
+		.nav-submenu-list {
+			@apply rounded-md overflow-hidden;
+			@apply border border-white/10 shadow-lg;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		/* Mobile: stripe the clickable link so rounding is visible */
+		.nav-submenu-list > .nav-subitem:nth-child(odd) > .nav-sublink {
+			@apply bg-white/5;
+		}
 	}
 
 	.nav-sublink {
@@ -239,7 +264,7 @@
 		@apply pl-5;
 
 		/* hover state (desktop + devices that support hover) */
-		@apply rounded-none; /* optional: keep menus square */
+		@apply rounded-md; /* optional: keep menus square */
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 
@@ -248,9 +273,9 @@
 
 	/* ---------- Mobile-only enhancements ---------- */
 	@media (max-width: 1023px) {
-		/* Visual separators between top-level items */
+		/* Border between top-level items */
 		.nav-list > .nav-item {
-			@apply border-t border-white/10;
+			/* @apply border-t border-white/10; */
 		}
 
 		/* Backdrop when main mobile panel is open */
