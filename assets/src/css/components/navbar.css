@@ -144,7 +144,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply shadow-lg;
 
 		/* Scroll safety */
-		@apply max-h-[calc(100vh-6rem)] overflow-y-auto;
+		@apply max-h-none overflow-visible;
 	}
 
 	.nav-panel[hidden] {

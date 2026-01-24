@@ -50,18 +50,34 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
 	};
 
+	/**
+	 * Cancel any running Web Animations API animation on an element.
+	 * Used to prevent overlapping height animations and stale computed styles.
+	 *
+	 * @param {HTMLElement} el - Element whose active navigation animation should be cancelled.
+	 */
 	const stopRunningAnimation = (el: HTMLElement) => {
 		const running = (el as any).__navAnim as Animation | undefined;
-		if (running) {
-			try {
-				running.cancel();
-			} catch {
-				// ignore
-			}
+		if (!running) return;
+
+		try {
+			running.cancel();
+		} catch {
+			// ignore
+		} finally {
 			(el as any).__navAnim = undefined;
 		}
 	};
 
+	/**
+	 * Animate an element's height open or closed using the Web Animations API.
+	 * Automatically cleans up inline styles and cancels the animation to prevent
+	 * fill-mode artifacts that can freeze layout.
+	 *
+	 * @param {HTMLElement} el - The element whose height should be animated.
+	 * @param {boolean} open - Whether the element is opening (true) or closing (false).
+	 * @return {Promise<void>} Resolves when the animation cycle completes.
+	 */
 	const animateHeight = async (el: HTMLElement, open: boolean): Promise<void> => {
 		// Desktop doesn't animate (menus are always "present"); bail early.
 		if (desktopMql.matches) return;
@@ -72,12 +88,16 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		stopRunningAnimation(el);
 
 		// Ensure it can be measured.
-		const startingHidden = el.hidden;
-		if (open && startingHidden) el.hidden = false;
+		const wasHidden = el.hidden;
+		if (open && wasHidden) el.hidden = false;
 
 		const startHeight = open ? 0 : el.getBoundingClientRect().height;
+
 		// If closing and already at 0, just finish.
-		if (!open && startHeight <= 0.5) return;
+		if (!open && startHeight <= 0.5) {
+			el.hidden = true;
+			return;
+		}
 
 		// Temporarily fix height for a clean animation.
 		el.style.overflow = "hidden";
@@ -99,19 +119,31 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 
 		(el as any).__navAnim = anim;
 
+		let wasCancelled = false;
+
 		try {
 			await anim.finished;
 		} catch {
-			// cancelled
-			return;
+			wasCancelled = true;
 		} finally {
 			(el as any).__navAnim = undefined;
+
+			// CRITICAL: release WAAPI "forwards" effect so layout can return to height:auto
+			try {
+				anim.cancel();
+			} catch {
+				// ignore
+			}
+
+			// Release inline sizing so the element can grow naturally again.
+			el.style.removeProperty("height");
+			el.style.removeProperty("overflow");
+
+			// Only hide if we were closing and we weren't cancelled mid-flight.
+			if (!open && !wasCancelled) {
+				el.hidden = true;
+			}
 		}
-
-		el.style.removeProperty("height");
-		el.style.removeProperty("overflow");
-
-		if (!open) el.hidden = true;
 	};
 
 	const closeItem = async (item: HTMLElement): Promise<void> => {
@@ -124,6 +156,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		if (submenu.hidden) return;
 
 		await animateHeight(submenu, false);
+
 		// Always hide after closing.
 		// (On desktop animateHeight() intentionally doesn't animate, so we must still hide.)
 		submenu.hidden = true;
@@ -144,6 +177,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		if (!submenu.hidden) return;
 
 		submenu.hidden = false;
+
 		if (prefersReducedMotion) return;
 
 		await animateHeight(submenu, true);
@@ -171,7 +205,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		hamburger.setAttribute("aria-expanded", open ? "true" : "false");
 		hamburger.classList.toggle("is-open", open);
 
-		// Styling hook (optional)
+		// Styling hook (optional): used for backdrop + scroll lock in CSS.
 		doc.body.classList.toggle("nav-open", open);
 
 		if (desktopMql.matches) {
