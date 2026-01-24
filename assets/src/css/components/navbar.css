@@ -1,6 +1,34 @@
 @reference "../tailwind.css";
 
-/* A quick note: If you change the breakpoints on the site, you need to update the nav.ts as well
+/*
+===============================================================================
+NAVBAR.CSS GOALS / HOUSE RULES (baseline theme contract)
+-------------------------------------------------------------------------------
+1) Keep everything under the correct section header:
+   /* ---------- Panel ---------- * /, /* ---------- Links ---------- * /, etc.
+
+2) Clarity > cleverness:
+   - Avoid combo selectors for behavior (ex: ".a, .b, .c { @apply w-full; }")
+   - Prefer explicit rules per class so future debugging is straightforward.
+
+3) @apply ordering:
+   - Keep rough grouping by intent per selector:
+     layout/position → spacing → sizing → typography → colors/surface → interaction
+
+4) Media query discipline:
+   - Tag queries as "Desktop-only" or "Mobile-only"
+   - Place them at the bottom of the relevant section (they typically modify base/mobile-up rules)
+
+5) Comment only the important stuff:
+   - Anything "why is this here?" gets a 1-line note.
+   - Avoid comment fatigue; no docblocks for everything.
+
+TODO: Delete this whole comment section before final version is shipped, its only for my reference now.
+
+ */
+
+
+/* A quick note: If you change the breakpoints on the site, you need to update nav.ts as well
 Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 
 @layer components {
@@ -33,6 +61,8 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	.nav-hamburger-icon {
 		@apply relative block;
 		@apply h-4 w-6;
+
+		/* Uses currentColor so icon inherits text color automatically */
 		background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
 	}
 
@@ -51,7 +81,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		bottom: 0;
 	}
 
-	/* Desktop behavior: hide hamburger */
+	/* Desktop-only: hide hamburger */
 	@media (min-width: 1024px) {
 		.nav-hamburger {
 			@apply hidden;
@@ -60,7 +90,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 
 	/* ---------- Panel ---------- */
 	.nav {
-		/* Keep panel positioned relative to the header, not the nav (prevents "popover width") */
+		/* Prevent mobile panel from sizing to the hamburger width */
 		@apply static;
 	}
 
@@ -70,7 +100,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 
 		/* Surface */
 		@apply bg-secondary text-white;
-		/* @apply border-t border-white/10; add border to top */
+		/* @apply border-t border-white/10; */ /* optional top divider */
 		@apply shadow-lg;
 
 		/* Scroll safety */
@@ -81,7 +111,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		display: none;
 	}
 
-	/* Desktop behavior: panel always visible + back to normal flow */
+	/* Desktop-only: panel always visible + back to normal flow */
 	@media (min-width: 1024px) {
 		.nav-panel {
 			@apply static;
@@ -105,12 +135,14 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply gap-1;
 	}
 
-	/* Desktop behavior: horizontal layout */
-	@media (min-width: 1024px) {
-		.nav-list {
-			@apply flex-row items-center;
-			@apply gap-2;
-		}
+	.nav-item {
+		/* Mobile behavior: full-width rows */
+		@apply w-full;
+	}
+
+	/* Mobile-only: apply padding to everything except CTA so CTA can be full-bleed */
+	.nav-item:not(.is-cta) {
+		@apply px-1;
 	}
 
 	.nav-item-inner {
@@ -118,63 +150,54 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply gap-1;
 	}
 
-	/* Mobile behavior: full-width hit targets/rows */
-	.nav-item {
-		@apply w-full;
-	}
-
-	/* Apply padding to everything except the button so its full width on mobile */
-	.nav-item:not(.is-cta) {
-		@apply px-1;
-	}
-
 	.nav-subitem {
+		/* Submenu rows also full-width */
 		@apply w-full;
 	}
 
-	/* When .nav-item.is-open, tint the parent row background slightly */
-	.nav-item.is-open > .nav-item-inner .nav-disclosure {
-		@apply bg-white/10;
+	/* Desktop-only: horizontal layout */
+	@media (min-width: 1024px) {
+		.nav-list {
+			@apply flex-row items-center;
+			@apply gap-2;
+		}
 	}
 
 	/* ---------- Links ---------- */
 	.nav-link {
 		@apply inline-flex items-center;
-		@apply px-3 py-2;
-		@apply text-base;
-		@apply font-medium;
-
-		/* Mobile behavior: full-width rows */
 		@apply w-full;
 
-		/* hover state (desktop + devices that support hover) */
+		@apply px-3 py-2;
+		@apply text-base;
+		@apply font-normal; /* normalize WP default bolding */
+
+		/* hover state */
 		@apply rounded-md transition;
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
-
-		@apply font-normal; /* normalize default WP bolding */
 	}
-
-
 
 	/* Disclosure button (top-level items that have submenus) */
 	.nav-disclosure {
 		@apply inline-flex items-center justify-between;
 		@apply w-full;
+
 		@apply px-3 py-2;
 		@apply text-base;
-		@apply font-medium;
+		@apply font-normal; /* normalize WP default bolding */
+
 		@apply cursor-pointer;
 
-		/* Mobile behavior: full-width rows */
-		@apply w-full;
-
-		/* hover state (desktop + devices that support hover) */
+		/* hover state */
 		@apply rounded-md transition;
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
 
-		@apply font-normal; /* normalize default WP bolding */
+	/* When .nav-item.is-open, tint the parent row background slightly */
+	.nav-item.is-open > .nav-item-inner .nav-disclosure {
+		@apply bg-white/10;
 	}
 
 	/* Keep label + caret aligned nicely */
@@ -203,6 +226,8 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	.nav-toggle-icon:before {
 		content: "";
 		@apply absolute inset-0;
+
+		/* Uses currentColor so it inherits the label color */
 		border-right: 2px solid currentColor;
 		border-bottom: 2px solid currentColor;
 		transform: rotate(45deg);
@@ -217,15 +242,6 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply mt-1;
 	}
 
-	/* Desktop behavior: submenu as dropdown surface */
-	@media (min-width: 1024px) {
-		.nav-submenu {
-			@apply absolute left-0 top-full;
-			@apply mt-2;
-			@apply min-w-[12rem];
-		}
-	}
-
 	.nav-submenu-list {
 		/* Reset default UL styling + define submenu surface */
 		@apply m-0 p-0 list-none;
@@ -233,89 +249,67 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply bg-secondary;
 	}
 
-	/* Striping by adding 5% white opacity over the base surface */
-	.nav-submenu-list > .nav-subitem:nth-child(odd) {
-		@apply bg-transparent;
-	}
-
-	/* Make desktop dropdown look like a component */
+	/* Desktop-only: submenu as dropdown surface */
 	@media (min-width: 1024px) {
+		.nav-submenu {
+			@apply absolute left-0 top-full;
+			@apply mt-2;
+			@apply min-w-[12rem];
+		}
+
+		/* Make desktop dropdown look like a component */
 		.nav-submenu-list {
 			@apply rounded-md overflow-hidden;
 			@apply border border-white/10 shadow-lg;
 		}
+
+		/* Desktop striping */
+		.nav-submenu-list > .nav-subitem:nth-child(odd) {
+			@apply bg-white/5;
+		}
+
 	}
 
+	/* Mobile-only: stripe the clickable link so rounding is visible */
 	@media (max-width: 1023px) {
-		/* Mobile: stripe the clickable link so rounding is visible */
 		.nav-submenu-list > .nav-subitem:nth-child(odd) > .nav-sublink {
+			/* Striping by adding 5% white opacity over the base surface */
 			@apply bg-white/5;
 		}
 	}
 
 	.nav-sublink {
 		@apply block;
+		@apply w-full;
+
 		@apply py-2;
 		@apply text-base;
-
-		/* Mobile behavior: full-width rows */
-		@apply w-full;
+		@apply font-normal; /* normalize WP default bolding */
 
 		/* Indent submenu items without shrinking the stripe background */
 		@apply pl-5;
 
-		/* hover state (desktop + devices that support hover) */
-		@apply rounded-md; /* optional: keep menus square */
+		/* hover state */
+		@apply rounded-md;
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
-
-		@apply font-normal; /* normalize default WP bolding */
-	}
-
-	/* ---------- Mobile-only enhancements ---------- */
-	@media (max-width: 1023px) {
-		/* Border between top-level items */
-		.nav-list > .nav-item {
-			/* @apply border-t border-white/10; */
-		}
-
-		/* Backdrop when main mobile panel is open */
-		body.nav-open:before {
-			content: "";
-			@apply fixed inset-0 bg-black/40;
-			z-index: 40;
-		}
-
-		/* Prevent background scroll while menu is open */
-		body.nav-open {
-			overflow: hidden;
-		}
-
-		/* Ensure header + panel are above backdrop */
-		.site-header {
-			position: relative; /* already true, explicit for clarity */
-			z-index: 50;
-		}
-
-		.nav-panel {
-			z-index: 60;
-		}
 	}
 
 	/* ---------- CTA (menu item marked .is-cta / .nav-cta) ---------- */
-
-	/* Base: mirror btn_main feel without relying on the class */
 	.nav-cta-link {
+		/* Base: mirror btn_main feel without relying on the class */
 		@apply inline-flex items-center justify-center;
+		@apply w-full;
+
 		@apply rounded-md;
 		@apply px-5 py-3;
-		@apply font-semibold;
 		@apply leading-none;
-		@apply bg-primary text-black;
-		@apply shadow-md;
-		@apply border border-black/20;
+		@apply font-semibold;
 
-		/* Desktop hover/focus (mobile doesn't rely on hover) */
+		@apply bg-primary text-black;
+		@apply border border-black/20 shadow-md;
+
+		/* hover state */
 		@apply transition;
 		@apply hover:brightness-95;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
@@ -344,10 +338,40 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		}
 	}
 
+	/* CTA should not inherit the "glassy" hover background from .nav-link */
 	.nav-link.nav-cta-link:hover,
 	.nav-link.nav-cta-link:focus-visible {
-		@apply brightness-90;
 		@apply bg-primary;
+		@apply brightness-90;
 	}
 
+	/* ---------- Mobile-only enhancements ---------- */
+	@media (max-width: 1023px) {
+		/* Optional: separators between top-level items */
+		.nav-list > .nav-item {
+			/* @apply border-t border-white/10; */
+		}
+
+		/* Backdrop when main mobile panel is open */
+		body.nav-open:before {
+			content: "";
+			@apply fixed inset-0 bg-black/40;
+			z-index: 40;
+		}
+
+		/* Prevent background scroll while menu is open */
+		body.nav-open {
+			overflow: hidden;
+		}
+
+		/* Ensure header + panel are above backdrop */
+		.site-header {
+			position: relative; /* explicit for clarity */
+			z-index: 50;
+		}
+
+		.nav-panel {
+			z-index: 60;
+		}
+	}
 }
