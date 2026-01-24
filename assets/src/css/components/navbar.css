@@ -51,6 +51,7 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 	}
 
 	.nav-brand-logo {
+		/* Logo Height, and consequently the whole navbar height */
 		@apply h-20 w-auto;
 	}
 
@@ -237,6 +238,53 @@ Search "SEARCHME" and it'll be tagged to update it. Happy coding! */
 		@apply hover:bg-white/10;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
 	}
+
+	/*
+   Optional desktop-only "full height hover" mode.
+   Enable by adding: .nav-hover-full to .site-header
+	*/
+	@media (min-width: 1024px) {
+		.site-header.nav-hover-full .nav-shell {
+			/* allow children to stretch to header height */
+			align-items: stretch;
+		}
+
+		.site-header.nav-hover-full .nav {
+			/* let nav column stretch too */
+			align-self: stretch;
+		}
+
+		.site-header.nav-hover-full .nav-panel,
+		.site-header.nav-hover-full .nav-list,
+		.site-header.nav-hover-full .nav-item,
+		.site-header.nav-hover-full .nav-item-inner {
+			height: 100%;
+		}
+
+		/* Hover surface is the full row */
+		.site-header.nav-hover-full .nav-item-inner {
+			@apply rounded-none transition;
+		}
+
+		.site-header.nav-hover-full .nav-item-inner:hover {
+			@apply bg-white/10;
+		}
+
+		/* Make the clickable element fill height, but DON'T kill CTA styling */
+		.site-header.nav-hover-full .nav-link:not(.nav-cta-link),
+		.site-header.nav-hover-full .nav-disclosure {
+			@apply h-full items-center;
+			@apply rounded-none;
+
+			/* horizontal padding only; height now comes from the row */
+			@apply px-4 py-0;
+
+			/* remove pill hover only for non-CTA */
+			background: transparent !important;
+		}
+	}
+
+
 
 	/* When .nav-item.is-open, tint the parent row background slightly */
 	.nav-item.is-open > .nav-item-inner .nav-disclosure {

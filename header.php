@@ -36,6 +36,7 @@
 
 
 <!-- Start Navbar -->
+<!-- Add 'nav-hover-full' to the header class for full height hover effects -->
 <header class="site-header">
 	<div class="nav-shell">
 		<a class="nav-brand" href="<?php echo esc_url(home_url('/')); ?>">
@@ -72,14 +73,14 @@ if (is_array($logo) && !empty($logo['url'])) : ?>
 
 			<div class="nav-panel" id="nav-panel">
 				<?php
-    wp_nav_menu([
-        'theme_location' => 'header-menu',
-        'depth' => 2,
-        'container' => false,
-        'fallback_cb' => false,
-        'walker' => new PreLaunch_Walker(),
-        'items_wrap' => '<ul class="nav-list" role="list">%3$s</ul>',
-    ]);
+                wp_nav_menu([
+                    'theme_location' => 'header-menu',
+                    'depth' => 2,
+                    'container' => false,
+                    'fallback_cb' => false,
+                    'walker' => new PreLaunch_Walker(),
+                    'items_wrap' => '<ul class="nav-list" role="list">%3$s</ul>',
+                ]);
 ?>
 			</div>
 		</nav>
