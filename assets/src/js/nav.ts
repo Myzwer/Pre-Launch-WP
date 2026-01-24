@@ -123,6 +123,39 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		});
 	}
 
+	// Keep state in sync when crossing the desktop breakpoint (resize / rotate)
+	// SEARCHME: IF YOU UPDATE THE BREAKPOINT ON THE SITE YOU HAVE TO UPDATE THIS TOO TO MATCH
+	if (hamburger && panel) {
+		const desktopMql = window.matchMedia("(min-width: 1024px)");
+
+		const syncNavToViewport = () => {
+			const isDesktop = desktopMql.matches;
+
+			if (isDesktop) {
+				// Desktop: panel must be visible; clear mobile-only open states
+				hamburger.setAttribute("aria-expanded", "false");
+				panel.hidden = false;
+
+				nav.classList.remove("nav-panel-open");
+				document.body.classList.remove("nav-open");
+
+				closeAllSubmenus();
+			} else {
+				// Mobile: default to closed when entering mobile
+				setPanelOpen(false);
+			}
+
+			console.log("[nav] sync viewport", {
+				isDesktop,
+				panelHidden: panel.hidden,
+				hamburgerExpanded: hamburger.getAttribute("aria-expanded"),
+			});
+		};
+
+		desktopMql.addEventListener("change", syncNavToViewport);
+	}
+
+
 	// --- events -------------------------------------------------------------
 
 	// Hamburger click
