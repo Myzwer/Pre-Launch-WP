@@ -10,7 +10,8 @@
  *
  * Admin-controlled hooks:
  * - CTA: add class "nav-cta" OR "is-cta" OR "menu-cta" to the menu item in WP admin
- * - Icons: add "has-icon" + one or more "icon-*" classes to the menu item in WP admin
+ * - Icons: add "has-icon" + one or more "icon-*" classes to the menu item in WP admin (preserved hook)
+ * - Font Awesome: add any "fa-*" classes to the menu item in WP admin (supported now)
  * - Future mega hook: add "is-mega" to menu item class (not implemented yet)
  */
 
@@ -34,21 +35,74 @@ if (!class_exists('PreLaunch_Walker')) {
         private array $item_has_children = [];
 
         /**
+         * Extract Font Awesome classes from a menu item's admin "CSS Classes" field.
+         * Allows any class that starts with "fa-" (Font Awesome), and ensures a style prefix exists.
+         *
+         * Example admin classes:
+         * - fa-plane
+         * - fa-solid fa-arrow-right-long
+         * - fa-brands fa-github
+         *
+         * @param array $classes
+         * @return string|null
+         */
+        private function get_fa_icon_classes(array $classes): ?string
+        {
+            $fa_classes = [];
+
+            foreach ($classes as $class) {
+                if (!is_string($class)) {
+                    continue;
+                }
+
+                if (str_starts_with($class, 'fa-')) {
+                    $fa_classes[] = $class;
+                }
+            }
+
+            if (empty($fa_classes)) {
+                return null;
+            }
+
+            // Ensure at least one FA style prefix exists (Font Awesome 6+).
+            $has_style = false;
+            foreach ($fa_classes as $c) {
+                if (
+                    $c === 'fa-solid' ||
+                    $c === 'fa-regular' ||
+                    $c === 'fa-brands' ||
+                    $c === 'fa-light' ||
+                    $c === 'fa-thin' ||
+                    $c === 'fa-duotone' ||
+                    str_starts_with($c, 'fa-sharp')
+                ) {
+                    $has_style = true;
+                    break;
+                }
+            }
+
+            if (!$has_style) {
+                array_unshift($fa_classes, 'fa-solid');
+            }
+
+            return implode(' ', array_unique($fa_classes));
+        }
+
+        /**
          * Ensure $args->has_children is reliably set.
          */
-        public function display_element($element, &$children_elements, $max_depth, $depth = 0, $args = null, &$output = null)
+        public function display_element($element, &$children_elements, $max_depth, $depth, $args, &$output)
         {
             if (!$element) {
                 return;
             }
 
             $id_field = $this->db_fields['id'];
-            $element_id = $element->$id_field;
+            $id = $element->$id_field;
 
-            $has_children = !empty($children_elements[$element_id]);
-            $this->item_has_children[$element_id] = $has_children;
+            $has_children = !empty($children_elements[$id]);
+            $this->item_has_children[$id] = $has_children;
 
-            // WP passes $args as an array with the first element being the args object.
             if (is_array($args) && isset($args[0]) && is_object($args[0])) {
                 $args[0]->has_children = $has_children;
             } elseif (is_object($args)) {
@@ -59,57 +113,36 @@ if (!class_exists('PreLaunch_Walker')) {
         }
 
         /**
-         * Only keep intentional menu item classes (admin hooks) instead of WP's noisy defaults.
+         * Submenu wrapper (depth 1) open.
          */
-        private function filter_item_classes(array $classes): array
-        {
-            $classes = array_filter(array_map('sanitize_html_class', $classes));
-
-            $allowed = [];
-
-            foreach ($classes as $c) {
-                // CTA hooks (support your current conventions too)
-                if (in_array($c, ['nav-cta', 'is-cta', 'menu-cta'], true)) {
-                    $allowed[] = $c;
-                    continue;
-                }
-
-                // Icon hooks
-                if ($c === 'has-icon' || str_starts_with($c, 'icon-')) {
-                    $allowed[] = $c;
-                    continue;
-                }
-
-                // Mega hook
-                if ($c === 'is-mega') {
-                    $allowed[] = $c;
-                    continue;
-                }
-            }
-
-            return array_values(array_unique($allowed));
-        }
-
         public function start_lvl(&$output, $depth = 0, $args = null)
         {
             $depth = (int) $depth;
 
-            // Only one submenu level supported (top-level -> submenu).
+            // Only one submenu level supported (depth 1)
             if ($depth !== 0) {
                 return;
             }
 
             $indent = str_repeat("\t", $depth);
-            $submenu_id = $this->submenu_id_stack[$depth] ?? '';
 
-            $output .= "\n$indent<div class=\"nav-submenu\" id=\"" . esc_attr($submenu_id) . '" hidden data-nav-submenu>';
-            $output .= "\n$indent\t<ul class=\"nav-submenu-list\" role=\"list\">\n";
+            $submenu_id = $this->submenu_id_stack[0] ?? '';
+
+            $output .= "\n$indent<div class=\"nav-submenu\""
+                       . ($submenu_id ? ' id="' . esc_attr($submenu_id) . '"' : '')
+                       . " hidden data-nav-submenu>\n";
+
+            $output .= "$indent\t<ul class=\"nav-submenu-list\" role=\"list\">\n";
         }
 
+        /**
+         * Submenu wrapper (depth 1) close.
+         */
         public function end_lvl(&$output, $depth = 0, $args = null)
         {
             $depth = (int) $depth;
 
+            // Only one submenu level supported (depth 1)
             if ($depth !== 0) {
                 return;
             }
@@ -130,31 +163,37 @@ if (!class_exists('PreLaunch_Walker')) {
 
             $indent = ($depth) ? str_repeat("\t", $depth) : '';
 
-            $args = is_object($args) ? $args : (object) [];
             $item_id = (int) $item->ID;
 
-            // Reliable child detection
-            $has_children = $this->item_has_children[$item_id] ?? !empty($args->has_children);
+            // Admin classes (from WP menu item CSS Classes field)
+            $admin_classes = is_array($item->classes) ? array_filter($item->classes) : [];
 
-            $raw_classes = is_array($item->classes) ? $item->classes : [];
-            $admin_classes = $this->filter_item_classes($raw_classes);
-
-            $is_cta = in_array('nav-cta', $admin_classes, true) || in_array('is-cta', $admin_classes, true) || in_array('menu-cta', $admin_classes, true);
-            $is_mega = in_array('is-mega', $admin_classes, true);
-
-            $has_icon = in_array('has-icon', $admin_classes, true);
-            if (!$has_icon) {
-                foreach ($admin_classes as $c) {
-                    if (str_starts_with($c, 'icon-')) {
-                        $has_icon = true;
-                        break;
-                    }
+            // CTA normalization: nav-cta OR is-cta OR menu-cta
+            $is_cta = false;
+            foreach ($admin_classes as $c) {
+                if ($c === 'nav-cta' || $c === 'is-cta' || $c === 'menu-cta') {
+                    $is_cta = true;
+                    break;
                 }
             }
 
-            // LI classes: contract first, then admin hooks only
+            // Icon hooks (future / preserved)
+            $has_icon = in_array('has-icon', $admin_classes, true);
+
+            // Mega hook (future / preserved)
+            $is_mega = in_array('is-mega', $admin_classes, true);
+
+            // Child detection
+            $has_children = $this->item_has_children[$item_id] ?? false;
+
+            // Base LI classes
             $li_classes = [];
-            $li_classes[] = ($depth === 0) ? 'nav-item' : 'nav-subitem';
+
+            if ($depth === 0) {
+                $li_classes[] = 'nav-item';
+            } else {
+                $li_classes[] = 'nav-subitem';
+            }
 
             if ($depth === 0 && $has_children) {
                 $li_classes[] = 'has-submenu';
@@ -165,7 +204,7 @@ if (!class_exists('PreLaunch_Walker')) {
                 $li_classes[] = 'nav-cta';
             }
 
-            // Preserve admin hook classes (icon-* etc.)
+            // Preserve admin hook classes (icon-* etc. and fa-*)
             $li_classes = array_merge($li_classes, $admin_classes);
 
             // Future mega hook (no behavior now)
@@ -173,9 +212,10 @@ if (!class_exists('PreLaunch_Walker')) {
                 $li_classes[] = 'is-mega';
             }
 
-            $li_class_attr = implode(' ', array_unique(array_filter($li_classes)));
-
-            $output .= $indent . '<li class="' . esc_attr($li_class_attr) . '"' . (($depth === 0 && $has_children) ? ' data-nav-item' : '') . '>';
+            // Print LI open
+            $output .= $indent . '<li class="' . esc_attr(implode(' ', array_unique(array_filter($li_classes)))) . '"'
+                       . (($depth === 0 && $has_children) ? ' data-nav-item' : '')
+                       . '>';
 
             // Wrapper: only for top-level items (keeps layout consistent)
             if ($depth === 0) {
@@ -235,40 +275,42 @@ if (!class_exists('PreLaunch_Walker')) {
                 }
 
                 if (!empty($item->xfn)) {
-                    $atts['rel'] = isset($atts['rel']) ? ($atts['rel'] . ' ' . $item->xfn) : $item->xfn;
+                    $atts['rel'] = trim(($atts['rel'] ?? '') . ' ' . $item->xfn);
                 }
 
-                $is_current =
-                    !empty($item->current)
-                    || in_array('current-menu-item', $raw_classes, true)
-                    || in_array('current_page_item', $raw_classes, true);
+                $atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args, $depth);
 
-                if ($is_current) {
-                    $atts['aria-current'] = 'page';
-                }
-
+                // Classes for the anchor
                 $link_classes = [($depth === 0) ? 'nav-link' : 'nav-sublink'];
 
                 if ($depth === 0 && $is_cta) {
                     $link_classes[] = 'nav-cta-link';
                 }
 
-                if ($depth === 0 && $has_icon) {
-                    $link_classes[] = 'nav-link--icon';
-                }
-
                 $atts['class'] = implode(' ', array_unique(array_filter($link_classes)));
 
+                // Build attributes string
                 $attributes = '';
                 foreach ($atts as $attr => $value) {
-                    if ($value === '') {
-                        continue;
+                    if (is_scalar($value) && $value !== '') {
+                        $value = ($attr === 'href') ? esc_url($value) : esc_attr($value);
+                        $attributes .= ' ' . $attr . '="' . $value . '"';
                     }
-                    $value = ($attr === 'href') ? esc_url($value) : esc_attr($value);
-                    $attributes .= ' ' . $attr . '="' . $value . '"';
                 }
 
-                $output .= '<a' . $attributes . '>' . esc_html($title) . '</a>';
+                if ($depth === 0 && $is_cta) {
+                    $fa_icon_class = $this->get_fa_icon_classes($admin_classes);
+                    $cta_icon_html = $fa_icon_class
+                        ? '<i class="' . esc_attr($fa_icon_class) . ' nav-cta-icon" aria-hidden="true"></i>'
+                        : '';
+
+                    $output .= '<a' . $attributes . '>'
+                               . '<span class="nav-label">' . esc_html($title) . '</span>'
+                               . $cta_icon_html
+                               . '</a>';
+                } else {
+                    $output .= '<a' . $attributes . '>' . esc_html($title) . '</a>';
+                }
             }
 
             if ($depth === 0) {
@@ -280,10 +322,7 @@ if (!class_exists('PreLaunch_Walker')) {
         {
             $depth = (int) $depth;
 
-            if ($depth > 1) {
-                return;
-            }
-
+            // Close LI
             $output .= "</li>\n";
         }
     }
