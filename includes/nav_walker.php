@@ -35,57 +35,63 @@ if (!class_exists('PreLaunch_Walker')) {
         private array $item_has_children = [];
 
         /**
-         * Extract Font Awesome classes from a menu item's admin "CSS Classes" field.
-         * Allows any class that starts with "fa-" (Font Awesome), and ensures a style prefix exists.
+         * Extract and normalize Font Awesome classes from admin-defined menu classes.
          *
-         * Example admin classes:
-         * - fa-plane
-         * - fa-solid fa-arrow-right-long
-         * - fa-brands fa-github
+         * FA7 rules enforced:
+         * - Exactly ONE style prefix (fa-solid, fa-brands, fa-regular, etc.)
+         * - Exactly ONE icon glyph (fa-*)
+         * - If no style is provided, default to fa-solid
+         *
+         * README:CTA_ICON_PREFIX_DEFAULT
          *
          * @param array $classes
          * @return string|null
          */
         private function get_fa_icon_classes(array $classes): ?string
         {
-            $fa_classes = [];
+            $style_classes = [];
+            $icon_classes = [];
 
             foreach ($classes as $class) {
-                if (!is_string($class)) {
+                if (!is_string($class) || !str_starts_with($class, 'fa-')) {
                     continue;
                 }
 
-                if (str_starts_with($class, 'fa-')) {
-                    $fa_classes[] = $class;
+                // FA style prefixes (FA6 / FA7 compatible)
+                if (
+                    $class === 'fa-solid' ||
+                    $class === 'fa-regular' ||
+                    $class === 'fa-brands' ||
+                    $class === 'fa-light' ||
+                    $class === 'fa-thin' ||
+                    $class === 'fa-duotone' ||
+                    str_starts_with($class, 'fa-sharp')
+                ) {
+                    $style_classes[] = $class;
+                    continue;
                 }
+
+                // Everything else is treated as a glyph
+                $icon_classes[] = $class;
             }
 
-            if (empty($fa_classes)) {
+            // Must have at least one icon glyph
+            if (empty($icon_classes)) {
                 return null;
             }
 
-            // Ensure at least one FA style prefix exists (Font Awesome 6+).
-            $has_style = false;
-            foreach ($fa_classes as $c) {
-                if (
-                    $c === 'fa-solid' ||
-                    $c === 'fa-regular' ||
-                    $c === 'fa-brands' ||
-                    $c === 'fa-light' ||
-                    $c === 'fa-thin' ||
-                    $c === 'fa-duotone' ||
-                    str_starts_with($c, 'fa-sharp')
-                ) {
-                    $has_style = true;
-                    break;
-                }
+            // Enforce exactly one style prefix
+            if (!empty($style_classes)) {
+                $style = $style_classes[0]; // first wins
+            } else {
+                // Default style (documented + filterable)
+                $style = apply_filters('prelaunch_nav_fa_default_style', 'fa-solid');
             }
 
-            if (!$has_style) {
-                array_unshift($fa_classes, 'fa-solid');
-            }
+            // Enforce exactly one glyph (first wins)
+            $icon = $icon_classes[0];
 
-            return implode(' ', array_unique($fa_classes));
+            return esc_attr(trim($style . ' ' . $icon));
         }
 
         /**
@@ -204,8 +210,17 @@ if (!class_exists('PreLaunch_Walker')) {
                 $li_classes[] = 'nav-cta';
             }
 
-            // Preserve admin hook classes (icon-* etc. and fa-*)
-            $li_classes = array_merge($li_classes, $admin_classes);
+            // Preserve admin hook classes, BUT never output Font Awesome classes on the <li>.
+            // Font Awesome Kits (FA6/FA7) may scan fa-* on any element and mutate DOM/styles,
+            // which can break layout (e.g., CTA button).
+            //
+            // We still read fa-* from $admin_classes for the CTA <i>, we just don't print them on <li>.
+            $admin_classes_for_li = array_values(array_filter(
+                $admin_classes,
+                static fn ($c) => is_string($c) && !str_starts_with($c, 'fa-')
+            ));
+
+            $li_classes = array_merge($li_classes, $admin_classes_for_li);
 
             // Future mega hook (no behavior now)
             if ($depth === 0 && $has_children && $is_mega) {
@@ -304,10 +319,28 @@ if (!class_exists('PreLaunch_Walker')) {
                         ? '<i class="' . esc_attr($fa_icon_class) . ' nav-cta-icon" aria-hidden="true"></i>'
                         : '';
 
-                    $output .= '<a' . $attributes . '>'
-                               . '<span class="nav-label">' . esc_html($title) . '</span>'
-                               . $cta_icon_html
-                               . '</a>';
+                    /**
+                     * README:CTA_ICON_POSITION
+                     *
+                     * Default CTA markup order is:
+                     *   [Label] [Icon]
+                     *
+                     * If a future site needs the icon on the LEFT:
+                     *   - Swap the output order in the block below to:
+                     *     [Icon] [Label]
+                     *   - No CSS/JS changes required (CTA uses inline-flex + gap already).
+                     *   NOTE: Only keep ONE of the $output .= lines active.
+                     */
+                    $label_html = '<span class="nav-label">' . esc_html($title) . '</span>';
+
+                    // Default (icon on the right)
+                    $output .= '<a' . $attributes . '>' . $label_html . $cta_icon_html . '</a>';
+
+                    /*
+                     // Alternate (icon on the left)
+                     $output .= '<a' . $attributes . '>' . $cta_icon_html . $label_html . '</a>';
+                    */
+
                 } else {
                     $output .= '<a' . $attributes . '>' . esc_html($title) . '</a>';
                 }
