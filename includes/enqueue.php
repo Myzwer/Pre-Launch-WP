@@ -1,66 +1,87 @@
 <?php
 
 /**
- * Enqueue
+ * Asset loading
  *
- * This file contains the functions necessary to enqueue scripts and styles onto the site in the "Wordpress" way.
+ * Enqueues the theme’s compiled frontend assets (CSS/JS), plus optional vendor
+ * assets that are shipped with the theme (e.g., Font Awesome).
  *
- * Usage: Include this file in functions.php to load in scripts and styles into the site.
- * If you need to link an ENTIRE NEW file, that can be done here.
- * Additional partials should be linked into frontend js/css files, not given a new file.
+ * This theme assumes a single compiled bundle for CSS and JS:
+ * - /assets/public/css/frontend.css
+ * - /assets/public/js/frontend.js
  *
- * @link: https://www.wpbeginner.com/wp-tutorials/how-to-properly-add-javascripts-and-styles-in-wordpress/
+ * Versions use file modification times (filemtime) when available to reduce
+ * caching issues during development and after deployments.
  *
- * @package WordPress
- * @subpackage Pre_Launch_WP
- * @author Josh Forrester <josh@onefortyfivedesign.com>
- * @version 1.0.0
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/
+ * @link https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+ * @link https://developer.wordpress.org/reference/functions/wp_enqueue_style/
  */
-
-// Javascript Load In
-// Jquery is being loaded into this file via webpack
-function scripts_loadin()
-{
-    wp_enqueue_script('frontend', get_template_directory_uri() . '/assets/public/js/frontend.js');
-}
-
-add_action('wp_enqueue_scripts', 'scripts_loadin');
-
-function churchcenter_script()
-{
-    wp_enqueue_script('churchcenter-modal', 'https://js.churchcenter.com/modal/v1', [], null, true);
-}
-
-add_action('wp_enqueue_scripts', 'churchcenter_script');
-
-// Styles Load In
-function load_styles()
-{
-    wp_enqueue_style('frontend', get_template_directory_uri() . '/assets/public/css/frontend.css');
-}
-
-add_action('wp_enqueue_scripts', 'load_styles');
 
 /**
- * Font Awesome (global icon support)
- *
- * Uses Font Awesome Kit for:
- * - Navbar carets
- * - Menu item icons (via nav_walker.php)
- *
- * README:FONT_AWESOME
- * - Swap kit URL if needed
- * - If a client requires CSP compliance or no external scripts,
- *   replace this with a locally hosted subset or SVG sprite.
+ * Enqueue the theme’s compiled JS/CSS bundles.
  */
-function enqueue_font_awesome()
+function windpeak_enqueue_assets(): void
 {
+    $theme_version = wp_get_theme()->get('Version');
+
+    // ----- JS bundle -----
+    $js_rel_path = '/assets/public/js/frontend.js';
+    $js_file = get_theme_file_path($js_rel_path);
+    $js_ver = file_exists($js_file) ? (string) filemtime($js_file) : $theme_version;
+
     wp_enqueue_script(
-        'font-awesome',
-        'https://kit.fontawesome.com/fbeae66fcb.js',
+        'windpeak-frontend',
+        get_theme_file_uri($js_rel_path),
         [],
-        null,
-        false // load in <head> (icons may be needed during first paint)
+        $js_ver,
+        true // Load in footer for better performance / less render blocking.
+    );
+
+    // ----- CSS bundle -----
+    $css_rel_path = '/assets/public/css/frontend.css';
+    $css_file = get_theme_file_path($css_rel_path);
+    $css_ver = file_exists($css_file) ? (string) filemtime($css_file) : $theme_version;
+
+    wp_enqueue_style(
+        'windpeak-frontend',
+        get_theme_file_uri($css_rel_path),
+        [],
+        $css_ver
     );
 }
-add_action('wp_enqueue_scripts', 'enqueue_font_awesome');
+add_action('wp_enqueue_scripts', 'windpeak_enqueue_assets');
+
+/**
+ * Enqueue Font Awesome (self-hosted).
+ *
+ * This theme uses <i> tag classnames for icons (no SVG/JS runtime). To avoid
+ * Font Awesome Kit “late loading,” we ship the FA CSS + webfonts locally.
+ *
+ * Required output structure (relative paths matter):
+ * - /assets/public/vendor/fontawesome/css/all.min.css
+ * - /assets/public/vendor/fontawesome/webfonts/...
+ *
+ * In this project, Font Awesome is treated as a static vendor asset:
+ * it is copied 1:1 during the build step (not bundled into frontend.css).
+ *
+ * @link https://fontawesome.com/download
+ * @link https://fontawesome.com/docs/web/setup/host-yourself
+ */
+function windpeak_enqueue_font_awesome(): void
+{
+    $theme_version = wp_get_theme()->get('Version');
+
+    $rel_css = '/assets/public/vendor/fontawesome/css/all.min.css';
+    $path = get_theme_file_path($rel_css);
+    $ver = file_exists($path) ? (string) filemtime($path) : $theme_version;
+
+    wp_enqueue_style(
+        'windpeak-font-awesome',
+        get_theme_file_uri($rel_css),
+        [],
+        $ver
+    );
+}
+// Load FA early so icons/styles are available as soon as possible.
+add_action('wp_enqueue_scripts', 'windpeak_enqueue_font_awesome', 5);
