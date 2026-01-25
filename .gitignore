@@ -73,6 +73,15 @@ node_modules
 
 
 ###
+# Vendor Files
+# --------------------------------------------------
+# Vendor files that don't need to be tracked
+###
+
+assets/src/vendor/
+
+
+###
 # Package Manager / Tooling
 # --------------------------------------------------
 # Yarn Berry / PnP and related tooling artifacts.
