@@ -1,370 +1,519 @@
-@charset "UTF-8";
+@reference "../tailwind.css";
 
-/* ==========================================================================
-   Navbar Tokens + Quick Knobs
-   Tailwind provides brand tokens; navbar consumes them here.
-   Keep this list SHORT on purpose — everything else is commented inline below.
-   ========================================================================== */
-:root {
-	/* --------------------------------------------------------------------------
-	   COLORS (tokens)
-	   -------------------------------------------------------------------------- */
-	--nav-bg: var(--color-secondary);     /* Navbar background */
-	--nav-text: var(--color-white);       /* Link + hamburger color */
-	--nav-hover-bg: var(--color-primary); /* Hover + active dropdown background */
+/* README:BREAKPOINT_SYNC
+   If you change the breakpoints in this file, you MUST update navbar.ts as well.
+   Search "README:BREAKPOINT_SYNC" in both files. */
 
-	--nav-cta-bg: var(--color-primary);   /* CTA background */
-	--nav-cta-text: var(--color-black);   /* CTA text color */
-
-	/* Dropdown striping (component-local; not used anywhere else) */
-	--nav-dropdown-stripe-a: #27603C;     /* Dropdown stripe A */
-	--nav-dropdown-stripe-b: #1C6B3A;     /* Dropdown stripe B */
-
-	/* Misc */
-	--nav-hover-text: #eeeeee;               /* Hover text color on links */
-	--nav-shadow-color: rgba(0, 0, 0, 0.15); /* Desktop dropdown shadow tint */
-
-	/* --------------------------------------------------------------------------
-	   REAL-WORLD KNOBS (things you actually change)
-	   -------------------------------------------------------------------------- */
-	--nav-height: 85px; /* Change this when logo size changes (also update nav padding below) */
-
-	/* --------------------------------------------------------------------------
-	   DESKTOP ALIGNMENT KNOBS (safe)
-	   Default keeps current behavior.
-	   To push middle items toward the CTA:
-	     - set --nav-desktop-justify: flex-end;
-	     - set --nav-desktop-ul-reserve: 150px; (tweak for CTA width)
-	   -------------------------------------------------------------------------- */
-	--nav-desktop-justify: center; /* center (default) | flex-end */
-	--nav-desktop-ul-reserve: 0px; /* reserve space so UL doesn't sit under the absolute CTA */
-}
-
-/* --------------------------------------------------------------------------
-   QUICK NOTES
-   - Want a taller/shorter navbar? Change --nav-height, then also update:
-       nav { padding: <NAV HEIGHT> 0 0; }  (mobile menu top padding)
-
-   - Desktop: push menu items toward CTA (logo + CTA do NOT move):
-       --nav-desktop-justify: flex-end;
-       --nav-desktop-ul-reserve: 240px;  (adjust until last item sits near CTA)
-   -------------------------------------------------------------------------- */
-
-/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */
-
-/* ==========================================================================
-   Top Bar Wrapper
-   ========================================================================== */
-.navigation {
-	background: var(--nav-bg);
-	height: var(--nav-height); /* Navbar height */
-}
-
-.nav-container {
-	margin: 0 auto;
-	max-width: 2000px; /* Change overall nav container width */
-}
-
-/* ==========================================================================
-   Brand (Logo / Site Title)
-   ========================================================================== */
-.brand {
-	float: left;
-	padding-left: 10px; /* Brand left padding */
-	position: absolute;
-	text-transform: uppercase;
-	z-index: 15; /* Keep brand above nav panel on mobile */
-}
-
-.brand a,
-.brand a:visited {
-	color: var(--nav-text);
-	text-decoration: none;
-}
-
-.brand img {
-	height: 75px;       /* Logo height (often changes along with --nav-height) */
-	padding-right: 15px;
-	padding-top: 10px;
-}
-
-/* ==========================================================================
-   Dropdown State (used by JS)
-   ========================================================================== */
-.active-dropdown {
-	background-color: var(--nav-hover-bg); /* JS sets this class on active dropdown parent */
-}
-
-.nav-dropdown {
-	position: static; /* Mobile: dropdowns flow in document */
-}
-
-/* ==========================================================================
-   Mobile Toggle Area (hamburger container)
-   ========================================================================== */
-.nav-mobile {
-	background: var(--nav-bg);
-	height: var(--nav-height);
-	position: absolute;
-	right: 0;
-	top: 0;
-	width: 85px; /* Width of the clickable hamburger area */
-}
-
-/* ==========================================================================
-   Mobile Nav Panel + Base Nav Styles
-   ========================================================================== */
-nav {
-	align-items: center;
-	background-color: var(--nav-bg);
-	display: block;
-	float: none;
-	justify-content: center;
-	padding: 85px 0 0; /* Mobile panel top padding (keep in sync with --nav-height) */
-	position: absolute;
-	width: 100%;
-	z-index: 10; /* Nav panel stacking */
-}
-
-nav ul {
-	display: none; /* JS toggles this open/closed */
-}
-
-nav ul li {
-	float: none;
-	position: relative;
-	text-transform: uppercase;
-}
-
-/* Links */
-nav ul li a,
-nav ul li a:visited {
-	color: var(--nav-text);
-	display: block;
-	line-height: 20px;
-	padding: 15px; /* Mobile link padding */
-	text-decoration: none;
-}
-
-/* Hover */
-nav ul li a:hover,
-nav ul li a:visited:hover {
-	background: var(--nav-hover-bg);
-	color: var(--nav-hover-text);
-}
-
-/* Dropdown caret */
-nav ul li a:not(:only-child):after,
-nav ul li a:visited:not(:only-child):after {
-	content: " ▾";
-	padding-left: 4px;
-}
-
-/* Dropdown sizing */
-nav ul li ul li {
-	min-width: 190px; /* Dropdown min width */
-}
-
-nav ul li ul li a {
-	line-height: 20px;
-	padding-left: 30px; /* Indent dropdown items on mobile */
-}
-
-/* ==========================================================================
-   Dropdown Striping (component-local colors)
-   ========================================================================== */
-nav ul li li:nth-child(even) {
-	background-color: var(--nav-dropdown-stripe-b);
-}
-
-nav ul li li:nth-child(odd) {
-	background-color: var(--nav-dropdown-stripe-a);
-}
-
-/* ==========================================================================
-   Hamburger Icon
-   ========================================================================== */
-#nav-toggle {
-	cursor: pointer;
-	left: 18px;                 /* Hamburger horizontal position */
-	padding: 10px 35px 16px 0;  /* Hamburger click target padding */
-	position: absolute;
-	top: 28px;                  /* Hamburger vertical position */
-}
-
-#nav-toggle span,
-#nav-toggle span:before,
-#nav-toggle span:after {
-	background: var(--nav-text);
-	border-radius: 1px; /* Bar corner rounding */
-	content: "";
-	cursor: pointer;
-	display: block;
-	height: 3px; /* Bar thickness */
-	position: absolute;
-	transition: all 0.3s ease-in-out;
-	width: 35px; /* Bar width */
-}
-
-#nav-toggle span:after {
-	margin-left: 10px; /* Offset the bottom bar for style */
-	width: 25px;       /* Shorter bottom bar */
-}
-
-#nav-toggle span:before {
-	top: -10px; /* Top bar offset */
-}
-
-#nav-toggle span:after {
-	bottom: -10px; /* Bottom bar offset */
-}
-
-#nav-toggle.active span {
-	background-color: transparent;
-}
-
-#nav-toggle.active span:before,
-#nav-toggle.active span:after {
-	top: 0;
-}
-
-#nav-toggle.active span:before {
-	transform: rotate(45deg);
-}
-
-#nav-toggle.active span:after {
-	margin: 0;
-	transform: rotate(-45deg);
-	width: 35px;
-}
-
-/* ==========================================================================
-   Desktop Overrides
-   ========================================================================== */
-@media screen and (min-width: 1101px) { /* Desktop breakpoint */
-	.nav-mobile {
-		display: none;
+@layer components {
+	/* ==========================================================================
+	   Shell
+	   ========================================================================== */
+	.site-header {
+		@apply relative z-50;
+		@apply bg-secondary text-white;
 	}
 
-	.nav-list {
-		display: block !important;
-		z-index: 10;
+	.nav-shell {
+		@apply flex items-center justify-between;
+		@apply gap-4 px-4;
+
+		/* README:WIDTH_CLAMP
+		   This is where the max header width is controlled (default: clamped). */
+		@apply max-w-7xl mx-auto w-full;
 	}
 
-	nav {
+	.nav-brand {
+		@apply shrink-0;
+	}
+
+	.nav-brand-logo {
+		/* Logo height (drives overall header height) */
+		@apply h-20 w-auto;
+	}
+
+	/* ==========================================================================
+	   Hamburger
+	   ========================================================================== */
+	.nav-hamburger {
+		@apply inline-flex items-center justify-center;
+		@apply rounded-md;
+		@apply p-4;
+	}
+
+	.nav-hamburger-icon {
 		position: relative;
+		width: 32px;
+		height: 22px;
 	}
 
-	/* Dropdown container on desktop */
-	.nav-dropdown {
-		box-shadow: 0 3px 12px var(--nav-shadow-color); /* Dropdown shadow */
-		display: none;
+	/* Shared bar styles */
+	.nav-hamburger-icon:before,
+	.nav-hamburger-icon:after,
+	.nav-hamburger-bar {
+		content: "";
 		position: absolute;
-		z-index: 1;
+		height: 3px;
+		background-color: currentColor;
+		border-radius: 9999px;
+		transition: transform 0.2s ease, opacity 0.2s ease;
 	}
 
-	/* Desktop nav layout */
-	nav {
-		display: flex;
-		padding: 0;
-		position: relative;
-
-		/* SAFE alignment toggle (matches your SCSS comment) */
-		justify-content: var(--nav-desktop-justify);
+	/* Top bar */
+	.nav-hamburger-icon:before {
+		top: 0;
+		left: 0;
+		width: 100%;
 	}
 
-	nav ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-
-		/* Reserve space so the UL doesn't drift under the absolute CTA */
-		margin-right: var(--nav-desktop-ul-reserve);
+	/* Middle bar (real element, rounded) */
+	.nav-hamburger-bar {
+		top: 50%;
+		left: 0;
+		width: 100%;
+		transform: translateY(-50%);
 	}
 
-	nav ul li {
-		float: left;
-	}
-
-	nav ul li a,
-	nav ul li a:visited {
-		line-height: var(--nav-height); /* Match navbar height */
-		padding: 0 20px; /* Desktop link horizontal padding */
-	}
-
-	nav ul li a:not(:only-child):after,
-	nav ul li a:visited:not(:only-child):after {
-		content: " ▾";
-		padding-left: 4px;
-	}
-
-	nav ul li ul li a {
-		padding: 15px; /* Dropdown link padding on desktop */
-	}
-}
-
-/* ==========================================================================
-   CTA / "Last Item" Button Styles
-   NOTE: This uses :last-of-type because WordPress menu output is inconsistent.
-   ========================================================================== */
-.nav-list > li:last-of-type {
-	align-self: center;
-	background-color: var(--nav-cta-bg);
-	color: var(--nav-cta-text);
-	cursor: pointer;
-	letter-spacing: 1px;
-	text-align: center;
-	text-transform: uppercase;
-	transition: all 0.1s ease-in-out;
-}
-
-.nav-list > li:last-of-type a {
-	background-color: transparent;
-	color: var(--nav-cta-text);
-	font-weight: 600;
-	padding: 8px 20px 15px; /* CTA padding on mobile */
-}
-
-.nav-list > li:last-of-type i {
-	font-size: 1.6em;
-	position: relative;
-	top: 3px;
-}
-
-/* CTA hover */
-.nav-list > li:last-of-type:hover a {
-	background-color: transparent;
-	color: var(--nav-cta-text);
-}
-
-.nav-list > li:last-of-type:hover {
-	background: var(--nav-cta-bg); /* CTA hover background */
-}
-
-.nav-list > li:last-of-type:active {
-	transform: scale(1.025);
-}
-
-/* Desktop CTA positioning */
-@media screen and (min-width: 1101px) {
-	.nav-list > li:last-of-type {
-		border-radius: 20px; /* CTA pill radius (desktop) */
-		margin-left: 6px;
-		margin-right: 10px;
-		margin-top: 82px; /* Move CTA down on desktop */
-		position: absolute;
+	/* Bottom bar — shorter, right-aligned */
+	.nav-hamburger-icon:after {
+		bottom: 0;
 		right: 0;
+		width: 70%;
 	}
 
-	.nav-list > li:last-of-type:hover a {
-		background-color: transparent;
+	/* Open state → X */
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-bar {
+		opacity: 0;
 	}
 
-	.nav-list > li:last-of-type a,
-	.nav-list > li:last-of-type a:visited {
-		line-height: 8px;      /* CTA text line height (desktop) */
-		padding: 15px 20px;    /* CTA padding (desktop) */
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:before,
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:after {
+		top: 50%;
+		left: 0;
+		right: 0;
+		width: 100%;
+		transform-origin: 50% 50%;
+	}
+
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:before {
+		transform: translateY(-50%) rotate(45deg);
+	}
+
+	.nav-hamburger[aria-expanded="true"] .nav-hamburger-icon:after {
+		transform: translateY(-50%) rotate(-45deg);
+	}
+
+	/* Desktop-only: hide hamburger */
+	@media (min-width: 1024px) {
+		.nav-hamburger {
+			display: none;
+		}
+	}
+
+	/* ==========================================================================
+	   Panel
+	   ========================================================================== */
+	.nav {
+		/* Prevent mobile panel from sizing to hamburger width */
+		@apply static;
+	}
+
+	.nav-panel {
+		/* Mobile behavior: overlay sheet under the header */
+		@apply absolute left-0 right-0 top-full;
+
+		/* Surface */
+		@apply bg-secondary text-white;
+		/* @apply border-t border-white/10; */ /* optional top divider */
+		@apply shadow-lg;
+
+		/* Scroll safety (panel grows with content; body handles scroll lock) */
+		@apply max-h-none overflow-visible;
+	}
+
+	.nav-panel[hidden] {
+		display: none;
+	}
+
+	/* Desktop-only: panel always visible + back to normal flow */
+	@media (min-width: 1024px) {
+		.nav-panel {
+			@apply static;
+
+			/* Reset mobile-only surface/scroll concerns */
+			@apply p-0;
+			@apply border-0 shadow-none;
+			@apply max-h-none overflow-visible;
+
+			display: block !important;
+		}
+	}
+
+	/* ==========================================================================
+	   Lists
+	   ========================================================================== */
+	.nav-list {
+		/* Reset default UL styling */
+		@apply m-0 p-0 list-none;
+
+		/* Mobile layout */
+		@apply flex flex-col;
+		@apply gap-1;
+	}
+
+	.nav-item {
+		/* Mobile behavior: full-width rows */
+		@apply w-full;
+	}
+
+	/* Mobile-only: apply padding to everything except CTA so CTA can be full-bleed */
+	.nav-item:not(.is-cta) {
+		@apply px-1;
+	}
+
+	.nav-item-inner {
+		@apply flex items-center;
+		@apply gap-1;
+	}
+
+	.nav-subitem {
+		/* Submenu rows also full-width */
+		@apply w-full;
+	}
+
+	/* Desktop-only: horizontal layout */
+	@media (min-width: 1024px) {
+		.nav-list {
+			@apply flex-row items-center;
+			@apply gap-2;
+		}
+	}
+
+	/* ==========================================================================
+	   Links
+	   ========================================================================== */
+	.nav-link {
+		@apply inline-flex items-center;
+		@apply w-full;
+
+		@apply px-3 py-2;
+		@apply text-base;
+		@apply font-normal; /* normalize WP default bolding */
+
+		/* hover state */
+		@apply rounded-md transition;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	/* Disclosure button (top-level items that have submenus) */
+	.nav-disclosure {
+		@apply inline-flex items-center justify-between;
+		@apply w-full;
+
+		@apply px-3 py-2;
+		@apply text-base;
+		@apply font-normal; /* normalize WP default bolding */
+
+		@apply cursor-pointer;
+
+		/* hover state */
+		@apply rounded-md transition;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	/* Desktop-only: prevent long top-level labels from wrapping
+	   Truncate instead of breaking the row layout. */
+	@media (min-width: 1024px) {
+		.nav-item-inner {
+			min-width: 0; /* required so truncation works inside flex */
+		}
+
+		.nav-link,
+		.nav-disclosure {
+			min-width: 0;
+			@apply whitespace-nowrap overflow-hidden text-ellipsis;
+		}
+
+		/* Disclosure labels live inside .nav-label */
+		.nav-disclosure .nav-label {
+			@apply whitespace-nowrap overflow-hidden text-ellipsis;
+		}
+	}
+
+	/* When .nav-item.is-open, tint the parent row background slightly */
+	.nav-item.is-open > .nav-item-inner .nav-disclosure {
+		@apply bg-white/10;
+	}
+
+	/* Keep label + caret aligned nicely */
+	.nav-label {
+		@apply inline-flex items-center;
+	}
+
+	/* ==========================================================================
+	   Submenus
+	   ========================================================================== */
+	.nav-item.has-submenu {
+		@apply relative;
+	}
+
+	.nav-caret {
+		@apply ml-3 shrink-0;
+		@apply transition-transform;
+	}
+
+	/* Flip caret when open (JS sets .is-open on the li) */
+	.nav-item.is-open .nav-caret {
+		transform: rotate(180deg);
+	}
+
+	.nav-submenu {
+		@apply mt-1;
+	}
+
+	.nav-submenu-list {
+		/* Reset default UL styling + define submenu surface */
+		@apply m-0 p-0 list-none;
+		@apply flex flex-col;
+		@apply bg-secondary;
+	}
+
+	/* Desktop-only: submenu as dropdown surface */
+	@media (min-width: 1024px) {
+		.nav-submenu {
+			@apply absolute left-0 top-full;
+			@apply mt-2;
+			@apply min-w-[12rem];
+			@apply w-max;
+
+			/* README:SUBMENU_VIEWPORT_CLAMP
+			   Keep dropdowns inside the viewport on long labels / edge items. */
+			@apply max-w-[calc(100vw-2rem)];
+		}
+
+		.nav-submenu-list {
+			@apply rounded-md overflow-hidden;
+			@apply border border-white/10 shadow-lg;
+
+			/* Clamp the list too; avoids “edge-hugging” on very long labels. */
+			@apply max-w-[calc(100vw-2rem)];
+		}
+
+		/* Overflow safety: last items align dropdown to the right edge
+		   (+1 because CTA is always last) */
+		.nav-item:nth-last-child(-n+3) > .nav-submenu {
+			left: auto;
+			right: 0;
+		}
+
+		/* Desktop striping */
+		.nav-submenu-list > .nav-subitem:nth-child(odd) {
+			@apply bg-white/5;
+		}
+	}
+
+	/* Mobile-only: stripe the clickable link so rounding is visible */
+	@media (max-width: 1023px) {
+		.nav-submenu-list > .nav-subitem:nth-child(odd) > .nav-sublink {
+			@apply bg-white/5;
+		}
+	}
+
+	.nav-sublink {
+		@apply block;
+		@apply w-full;
+
+		@apply py-2;
+		@apply text-base;
+		@apply font-normal; /* normalize WP default bolding */
+
+		/* Long label safety */
+		overflow-wrap: anywhere;
+		word-break: break-word;
+
+		/* Indent + consistent right padding */
+		@apply px-5;
+
+		/* hover state */
+		@apply rounded-md;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	/* ==========================================================================
+	   CTA (menu item marked .is-cta / .nav-cta)
+	   ========================================================================== */
+	.nav-cta-link {
+		/* Base: mirror btn_main feel without relying on the class */
+		@apply inline-flex items-center justify-center;
+		@apply gap-2;
+		@apply w-full;
+
+		@apply rounded-md;
+		@apply px-5 py-3;
+		@apply leading-none;
+		@apply font-semibold;
+
+		@apply bg-primary text-black;
+		@apply border border-black/20 shadow-md;
+
+		/* hover state */
+		@apply transition;
+		@apply hover:brightness-95;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	.nav-cta-icon {
+		@apply shrink-0;
+	}
+
+	/* Mobile-only: full-width, centered "bar" CTA inside the open panel */
+	@media (max-width: 1023px) {
+		.nav-cta-link {
+			@apply w-full;
+			@apply rounded-none;
+			@apply py-4;
+			@apply text-center;
+		}
+	}
+
+	/* Desktop-only: keep it button-sized and aligned in the row */
+	@media (min-width: 1024px) {
+		.nav-item.nav-cta {
+			@apply w-auto;
+		}
+
+		.nav-cta-link {
+			@apply w-auto;
+			@apply rounded-md;
+			@apply px-5 py-3;
+		}
+	}
+
+	/* CTA should not inherit the "glassy" hover background from .nav-link */
+	.nav-link.nav-cta-link:hover,
+	.nav-link.nav-cta-link:focus-visible {
+		@apply bg-primary;
+		@apply brightness-90;
+	}
+
+	/* ==========================================================================
+	   Mobile-only enhancements
+	   ========================================================================== */
+	@media (max-width: 1023px) {
+		/* Backdrop when main mobile panel is open */
+		body.nav-open:before {
+			content: "";
+			@apply fixed inset-0 bg-black/40;
+			z-index: 40;
+		}
+
+		/* Prevent background scroll while menu is open */
+		body.nav-open {
+			overflow: hidden;
+		}
+
+		/* Ensure header + panel are above backdrop */
+		.site-header {
+			position: relative; /* explicit for clarity */
+			z-index: 50;
+		}
+
+		.nav-panel {
+			z-index: 60;
+		}
+	}
+
+	/* ==========================================================================
+	   README:TOGGLE_FULL_HEIGHT_HOVER
+	   Optional desktop-only full height hover mode
+	   Enable by adding: .nav-hover-full to .site-header
+	   ========================================================================== */
+	@media (min-width: 1024px) {
+		.site-header.nav-hover-full .nav-shell {
+			/* allow children to stretch to header height */
+			align-items: stretch;
+		}
+
+		.site-header.nav-hover-full .nav {
+			/* let nav column stretch too */
+			align-self: stretch;
+		}
+
+		.site-header.nav-hover-full .nav-panel,
+		.site-header.nav-hover-full .nav-list,
+		.site-header.nav-hover-full .nav-item,
+		.site-header.nav-hover-full .nav-item-inner {
+			height: 100%;
+		}
+
+		/* Hover surface is the full row */
+		.site-header.nav-hover-full .nav-item-inner {
+			@apply rounded-none transition;
+		}
+
+		.site-header.nav-hover-full .nav-item-inner:hover {
+			@apply bg-white/10;
+		}
+
+		/* Make the clickable element fill height, but DON'T kill CTA styling */
+		.site-header.nav-hover-full .nav-link:not(.nav-cta-link),
+		.site-header.nav-hover-full .nav-disclosure {
+			@apply h-full items-center;
+			@apply rounded-none;
+
+			/* horizontal padding only; height now comes from the row */
+			@apply px-4 py-0;
+
+			/* remove pill hover only for non-CTA */
+			background: transparent !important;
+		}
+	}
+
+	/* ==========================================================================
+	   README:TOGGLE_CENTER_NAV
+	   Center desktop navigation
+	   Enable: add .nav-center-desktop to .site-header
+	   Goal: brand left, menu centered, CTA right
+	   Requires: CTA item is last and has .nav-cta
+	   ========================================================================== */
+	@media (min-width: 1024px) {
+		.site-header.nav-center-desktop .nav-shell {
+			@apply justify-start;
+		}
+
+		.site-header.nav-center-desktop .nav {
+			@apply flex-1;
+		}
+
+		.site-header.nav-center-desktop .nav-panel {
+			@apply w-full;
+		}
+
+		.site-header.nav-center-desktop .nav-list {
+			@apply w-full;
+		}
+
+		/* Mobile-first rules make each li/link/button full-width.
+		   For centered desktop mode we want "content width" items. */
+		.site-header.nav-center-desktop .nav-list > .nav-item {
+			width: auto;
+		}
+
+		.site-header.nav-center-desktop .nav-link,
+		.site-header.nav-center-desktop .nav-disclosure {
+			width: auto;
+		}
+
+		/* Center the non-CTA group by splitting free space */
+		.site-header.nav-center-desktop .nav-list > .nav-item:not(.nav-cta):first-child {
+			margin-left: auto;
+		}
+
+		/* Keep CTA pinned to the far right */
+		.site-header.nav-center-desktop .nav-item.nav-cta {
+			margin-left: auto;
+		}
 	}
 }
-
-/* stylelint-enable max-nesting-depth, selector-max-compound-selectors, selector-max-id, no-duplicate-selectors */

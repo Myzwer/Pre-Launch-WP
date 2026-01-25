@@ -40,3 +40,27 @@ function load_styles()
 }
 
 add_action('wp_enqueue_scripts', 'load_styles');
+
+/**
+ * Font Awesome (global icon support)
+ *
+ * Uses Font Awesome Kit for:
+ * - Navbar carets
+ * - Menu item icons (via nav_walker.php)
+ *
+ * README:FONT_AWESOME
+ * - Swap kit URL if needed
+ * - If a client requires CSP compliance or no external scripts,
+ *   replace this with a locally hosted subset or SVG sprite.
+ */
+function enqueue_font_awesome()
+{
+    wp_enqueue_script(
+        'font-awesome',
+        'https://kit.fontawesome.com/fbeae66fcb.js',
+        [],
+        null,
+        false // load in <head> (icons may be needed during first paint)
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_font_awesome');

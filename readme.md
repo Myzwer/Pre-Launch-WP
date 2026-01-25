@@ -489,85 +489,379 @@ Equivalent to:
 - **Prose width wrong?** → add `max-w-*` yourself
 - **Colors not applying?** → check token names, not utilities
 
-# Navbar - Header.php
+# Navbar
 
-<img src = "https://i.imgflip.com/5ku7z5.jpg" width= 50%; alt = "What the hell happened here?">
+This project includes a **fully custom primary navigation system** designed to be reused across all client sites.
 
-So if you've never had the pleasure of creating a navbar before, it's a tossup between creating one and getting waterboarded for me. They are miserable to deal with for a couple reasons. They are already finicky enough without introducing wordpress into the mixture.
+It is **not** a generic WordPress menu.
+It is a **contract-based component** with strict assumptions shared between:
 
-Wait, what do you mean "in wordpress"? I mean that your navbar isn't much good if the URL's are only work on local or production, but not both. Or if the user can't go in and edit a link like they wanted to. So we build it In wordpress, meaning we use php to generate the navbar code on the server side, rather than a whole bunch of HTML. However, wordpress has a very specific way of outputing code, and it is without fail NEVER the code you needed it to be. So we use a custom navwalker to fix this.
+- PHP (markup generation)
+- CSS (layout + visuals)
+- JS/TS (interaction, accessibility, state)
 
-That sounds complicated. It was, luckily it's done for you. The navbar is plug and play as is, right now.
+If something looks a little “extra” in the walker, there is probably a reason.
+If it works and is documented — **leave it alone**.
 
-**_ IMPORTANT NOTE: THIS NAVBAR DOES NOT USE TAILWIND SO REMOVING TAILWIND FROM THE PROJECT WILL NOT EFFECT IT. _**
+---
 
-### **I just want to use the navbar as is.**
+## High-Level Architecture
 
-Great! You can swap the logo out in `header.php` and edit the links in WP admin. Happy coding!
+**Responsibility split:**
 
-### **Ok so I like it, but I wanna tweak some things.**
+| Layer    | File                                   | Responsibility                           |
+| -------- | -------------------------------------- | ---------------------------------------- |
+| Markup   | `header.php`                           | Shell, brand, hamburger, menu mount      |
+| Menu DOM | `nav_walker.php`                       | Exact HTML structure & classes           |
+| Styles   | `assets/src/css/components/navbar.css` | Layout, hover, dropdowns, CTA styling    |
+| Behavior | `assets/src/js/navbar.ts`              | Toggle logic, ARIA state, focus handling |
 
-Well, head over to `/assets/src/sass/components/_navbar.scss`. Notice at the top there's some SCSS variables with comments. These are some "hotfix" style things you can edit such as width, height, breakpoint, colors, etc. If you can't accomplish what you are looking to do via those, you'll need to jump into the code to make your changes. I've commented as well as I can for you. Happy Coding!
+No layer should “fix” another layer’s problems.
 
-### **Nah I've got my own navbar, can I use that?**
+---
 
-Sure. It's your project and I didn't include malware with this install to tell me whether you tampered with the navbar or not. To get rid of it and add your own:
+## DOM Contract (Read This Before Touching Anything)
 
-1. Delete everything out of `/assets/src/sass/components/_navbar.scss`. I don't see a reason why you wouldn't just replace it with your new css, but if you want to delete the file you can.
-2. Delete all the code in `header.php` FROM `<section class="navigation">` through `</section>`. Leave the rest alone.
-3. You might need to edit functions.php as well, depending on to what extext you are pruging the navbar.
+The navbar relies on a **stable HTML contract**.
 
-Good luck with your own navbar! I'd recommend you follow this pattern but it really up to you. Again, malware free over here.
+### Header Structure
 
-1. Get the navbar working independent of your project, in codepen or something. Eliminates a lot of "is this not working because the code is wrong or because the project is messing it up?"
-2. Import it in, and get it working static. meaning no php, none of that. Once you see that the navbar is working perfectly...
-3. Convert it to wordpress. How to do that is beyond the scope of this readme, but there are plenty of resources online to help. Don't fall into the trap of saying you don't need to convert it. You do. It'll save you and your clients a headache in the future.
+```html
+<header class="site-header">
+	<div class="nav-shell">
+		<a class="nav-brand">...</a>
 
-- https://www.wpbeginner.com/beginners-guide/how-to-add-navigation-menu-in-wordpress-beginners-guide/
-- https://css-tricks.com/the-wordpress-nav-walker-class-a-guided-var_dump/
-  Happy coding!
+		<nav class="nav" aria-label="Primary">
+			<button
+				class="nav-hamburger"
+				aria-controls="nav-panel"
+				aria-expanded="false"
+			></button>
 
-# Footer - Footer.php
+			<div class="nav-panel" id="nav-panel">
+				<ul class="nav-list" role="list">
+					<!-- Menu items -->
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>
+```
 
-Footers. Are they as bad as navbars? No. Are they at least easy to work with? Also no. Much like headers, they are already finicky enough without creating them in wordpress.
+This structure is assumed by both CSS and JS.
 
-Wait, what do you mean "in wordpress"? I mean instead of a bunch of HTML that probably consists of `<footer>` and `<ul>` and such, you have a block of php that renders out some of the footer. Unlike the navbar, only part of the footer will be generated by Wordpress, namely because there is more to a footer than links. However, the links will be generated from Wordpress. We do it this way for a few reasons:
+---
 
-1. Your footer isn't much good if the URL's are only work on local or production, but not both. When PHP can't change them dynamically, you have to pick one or the other.
-2. Ideally your end user (client) would be able to change thier own footer and not need you to update it for them right? And even if they don't want to do that, it'll be a quick change. Like that magic act.
+### Menu Item Rules
 
-So when we build this in wordpress, it is giong to generate some classes. However, unlike the navbar, we can use the CSS to work with these, as I've done here. The footer is set up and ready to go. It will need edited to make sure it looks the way you like, and adjustments for size will need to be made.
+- Exactly **2 levels only**
+    - Depth 0 → top-level
+    - Depth 1 → submenu
+- No third level support (by design)
 
-**IMPORTANT NOTE: THIS NAVBAR DOES NOT USE TAILWIND SO REMOVING TAILWIND FROM THE PROJECT WILL NOT EFFECT IT.**
+#### Top-level item without children
 
-### **I just want to use the footer as is.**
+```html
+<li class="nav-item">
+	<div class="nav-item-inner">
+		<a class="nav-link">Label</a>
+	</div>
+</li>
+```
 
-Good. She's a beaut, Clark. You'll need to make a few adjustments.
+#### Top-level item with children (not a link)
 
-1. Go to footer.php.
-2. Update the logo, then adjust the scss to make the image look good and feel spaced right.
-3. Update the phone number and name.
-4. Change the links in WP admin.
-5. Update the company text and copyright
-6. Change the socials and add / remove any ones you do / don't need.
-7. Don't change anything else, you'll break stuff you don't mean to.
+```html
+<li class="nav-item has-submenu" data-nav-item>
+	<div class="nav-item-inner">
+		<button
+			class="nav-disclosure"
+			aria-expanded="false"
+			aria-controls="submenu-123"
+			data-nav-toggle
+		>
+			<span class="nav-label">Label</span>
+			<i class="fa-solid fa-caret-down nav-caret"></i>
+		</button>
+	</div>
 
-### **Ok so I like it, but I wanna tweak some things.**
+	<div class="nav-submenu" id="submenu-123" hidden data-nav-submenu>
+		<ul class="nav-submenu-list" role="list">
+			<li class="nav-subitem">
+				<a class="nav-sublink">Sub Item</a>
+			</li>
+		</ul>
+	</div>
+</li>
+```
 
-Doesn't surprise me. The nature of the way it was built means that you'll probably have to do some light editing even if you want to keep it the same. Anyway to edit it just navigate to `/assets/src/sass/components/_footer.scss` and start changing things. I've commented as well as I can. Good luck and Happy Coding!
+Key points:
 
-### **Nah I've got my own footer, can I use that?**
+- Dropdown parents are **buttons**, not links
+- Submenus are controlled via:
+    - `aria-expanded`
+    - `aria-controls`
+    - `[hidden]`
+- JS depends on `data-nav-item`, `data-nav-toggle`, `data-nav-submenu`
 
-Figures 🙄. Do what you must.
+---
 
-1. Delete everything out of `/assets/src/sass/components/_navbar.scss`. I don't see a reason why you wouldn't just replace it with your new css, but if you want to delete the file you can.
-2. Delete all the code in `footer.php` FROM the end of the opening php on line 12 to `<?php wp_footer(); ?>`. MAKE SURE YOU DON'T DELETE THAT, WORDPRESS NEEDS IT TO WORK.
-3. You might need to edit functions.php as well (the menus section), depending on to what extent you are purging the navbar.
+## CTA Behavior
 
-Good luck with your own footer! I'd recommend you follow this pattern but it really up to you.
+CTA items are **special-cased** and expected to be the **last menu item**.
 
-1. Get the footer working independent of your project, in codepen or something. Eliminates a lot of "is this not working because the code is wrong or because the project is messing it up?"
-2. Import it in, and get it working static. meaning no php, none of that. Once you see that the navbar is working perfectly...
-3. Convert it to wordpress. How to do that is beyond the scope of this readme, but there are plenty of resources online to help. Don't fall into the trap of saying you don't need to convert it. You do. It'll save you and your clients a headache in the future.
+### How to mark a CTA (WP Admin)
 
-Happy coding!
+Use **one** of the following menu item classes:
+
+```
+nav-cta
+is-cta
+menu-cta
+```
+
+They are normalized to `.nav-cta` on the `<li>`.
+
+### CTA Output Contract
+
+```html
+<li class="nav-item nav-cta">
+	<div class="nav-item-inner">
+		<a class="nav-link nav-cta-link">
+			<span class="nav-label">Contact</span>
+			<i class="fa-solid fa-arrow-right nav-cta-icon"></i>
+		</a>
+	</div>
+</li>
+```
+
+CSS assumes:
+
+- `.nav-cta` exists on the `<li>`
+- `.nav-cta-link` exists on the `<a>`
+- CTA is last (hover + spacing rules depend on this)
+
+---
+
+## Font Awesome Rules (FA6 / FA7)
+
+Icons are defined **only** via menu item classes.
+
+Examples:
+
+```
+is-cta fa-arrow-right
+is-cta fa-brands fa-facebook
+```
+
+### README:CTA_ICON_PREFIX_DEFAULT
+
+**What it does:**  
+Sets the default FA style prefix if none is provided.
+
+**Default:**
+
+```
+fa-solid
+```
+
+**Where to change:**  
+Search for `README:CTA_ICON_PREFIX_DEFAULT` in `nav_walker.php`.
+
+---
+
+### README:FA_CLASSES_ON_LI
+
+**What it does:**  
+Explains why `fa-*` classes are **not rendered on `<li>` elements**.
+
+**Why:**  
+FA Kits may scan any element with `fa-*` and inject SVG markup, which can break layout.  
+FA classes are read from admin but rendered **only on `<i>`**.
+
+---
+
+## Layout Toggles
+
+### README:TOGGLE_CENTER_NAV
+
+**Want to center the desktop navigation?**
+
+**Search:**  
+`README:TOGGLE_CENTER_NAV`
+
+**File:**  
+`header.php`
+
+**What this does:**  
+Centers the primary nav items on desktop while keeping the CTA aligned to the right edge.
+
+**How to enable:**  
+Add the following class to the `<header class="site-header">` element:
+
+```
+nav-center-desktop
+```
+
+**Notes:**
+
+- Desktop-only behavior
+- No JS changes required
+- CTA positioning is preserved intentionally
+
+---
+
+### README:TOGGLE_FULL_HEIGHT_HOVER
+
+**Want nav items to hover the full header height?**
+
+**Search:**  
+`README:TOGGLE_FULL_HEIGHT_HOVER`
+
+**File:**  
+`header.php`
+
+**What this does:**  
+Expands the hover and focus area of top-level nav items to match the full header height (desktop only).
+
+**How to enable:**  
+Add the following class to the `<header class="site-header">` element:
+
+```
+nav-hover-full
+```
+
+**Notes:**
+
+- Improves usability on taller headers
+- Does not affect mobile behavior
+- No JS changes required
+
+---
+
+### README:CTA_ICON_POSITION
+
+**Want the CTA icon on the left instead of the right?**
+
+**Search:**  
+`README:CTA_ICON_POSITION`
+
+**File:**  
+`nav_walker.php`
+
+**What this controls:**  
+The visual order of the label and icon inside the CTA button.
+
+**Default output:**
+
+```
+[Label] [Icon]
+```
+
+**Alternate output:**
+
+```
+[Icon] [Label]
+```
+
+**How to change:**  
+Inside the CTA `<a>` rendering block:
+
+- Comment out the default output line
+- Uncomment the alternate output line directly below it
+
+**Notes:**
+
+- This is a manual, documented swap by design
+- No CSS or JS changes should be required
+
+---
+
+### README:CTA_ICON_PREFIX_DEFAULT
+
+**Want to change the default Font Awesome style?**
+
+**Search:**  
+`README:CTA_ICON_PREFIX_DEFAULT`
+
+**File:**  
+`nav_walker.php`
+
+**What this does:**  
+Controls which Font Awesome style prefix is used when a CTA icon is provided **without** an explicit style.
+
+**Default:**
+
+```
+fa-solid
+```
+
+**How to change:**  
+Update the default value passed to the filter in the walker.
+
+**Notes:**
+
+- Only applies when no `fa-brands`, `fa-regular`, etc. is provided
+- Prevents broken or missing icons
+
+---
+
+### README:FA_CLASSES_ON_LI
+
+**Seeing weird layout issues with CTA icons?**
+
+**Search:**  
+`README:FA_CLASSES_ON_LI`
+
+**File:**  
+`nav_walker.php`
+
+**What this explains:**  
+Why `fa-*` classes are intentionally **not printed on `<li>` elements**.
+
+**Why this matters:**  
+Font Awesome Kits (FA6 / FA7) may scan _any_ element with `fa-*` and inject SVG markup.  
+If `fa-*` appears on a `<li>`, this can break sizing and layout (especially CTAs).
+
+**Important detail:**
+
+- FA classes are still read from WP admin
+- FA classes are rendered **only** on the `<i>` element
+
+---
+
+### README:BREAKPOINT_SYNC
+
+**Navbar behaving differently between mobile and desktop?**
+
+**Search:**  
+`README:BREAKPOINT_SYNC`
+
+**Files:**
+
+- `assets/src/css/components/navbar.css`
+- `assets/src/js/navbar.ts`
+
+**What this means:**  
+Navbar breakpoints must be kept in sync between CSS and JS.
+
+**If you change one:**  
+You must update the other.
+
+**Notes:**
+
+- Desync can cause scroll lock, stuck menus, or broken animations
+- This is one of the easiest ways to accidentally break the navbar
+
+---
+
+## Common Gotchas
+
+- **Dropdowns not opening?** → check `data-nav-item`, `data-nav-toggle`, `data-nav-submenu`
+- **CTA layout broken?** → ensure CTA is last menu item
+- **Icons rendering weirdly?** → make sure `fa-*` classes are NOT on `<li>`
+- **Mobile menu scroll-lock broken?** → breakpoint mismatch between CSS and JS
+- **Hover feels off on desktop?** → check `nav-hover-full` toggle
+- **Centering not working?** → missing `nav-center-desktop` on header
+
+If behavior is odd, verify the DOM contract before touching CSS or JS.
