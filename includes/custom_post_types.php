@@ -3,16 +3,17 @@
 /**
  * Custom Post Types
  *
- * Defines custom post types and taxonomies for the site.
- * - Custom Post Type Name
+ * This file is reserved for registering custom post types (CPTs)
+ * used by the theme. It is intentionally empty in the starter
+ * template, as required post types will vary by project.
  *
- * Usage: These custom post types are linked in functions.php and used in WP_Admin.
- * Their specifics are controlled via ACF.
+ * Keeping CPT registration isolated here allows future projects
+ * to add or remove post types without modifying core theme files.
  *
- * @package WordPress
- * @subpackage Pre_Launch_WP
- * @author Josh Forrester <josh@onefortyfivedesign.com>
- * @version 1.0.0
+ * @link https://developer.wordpress.org/plugins/post-types/registering-custom-post-types/
  */
 
-//**************** Custom Post Type Title ******************
+declare(strict_types=1);
+
+// Custom post types will be registered here using `register_post_type()`.
+// Example implementations should be added on the `init` hook when needed.
