@@ -1,0 +1,3 @@
+assets/src/vendor/**
+assets/public/**
+node_modules/**
