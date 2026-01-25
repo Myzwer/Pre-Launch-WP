@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // ***** SET BUILD MODE *****
 // Defaults to development; production is enabled via NODE_ENV=production.
@@ -155,12 +156,25 @@ module.exports = {
 					files: BS_FILES,
 					reload: true,
 				}),
-				new StylelintPlugin(),
+				new StylelintPlugin({
+					files: ["assets/src/css/**/*.css"],
+					exclude: ["assets/src/vendor/**", "**/node_modules/**"],
+				}),
 			]
 			: []),
 
 		new MiniCssExtractPlugin({
 			filename: "../css/frontend.css",
+		}),
+
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: "assets/src/vendor/fontawesome",
+					to: "../vendor/fontawesome",
+					noErrorOnMissing: true,
+				},
+			],
 		}),
 	],
 };
