@@ -6,8 +6,8 @@
  * Contract-based primary navigation walker (depth 2 only).
  *
  * This walker intentionally outputs a stable, minimal DOM. CSS/JS assume this structure.
- * Avoid changing markup (nesting/classes/data attributes) unless the DOM contract is being
- * updated intentionally and tested across breakpoints and input methods.
+ * Do not change markup (nesting, class names, data attributes, submenu wrappers, depth handling)
+ * unless the DOM contract is being updated intentionally and re-tested.
  *
  * DOM contract summary:
  * - Exactly 2 levels: top-level (depth 0) + one submenu level (depth 1).
@@ -25,7 +25,7 @@
  * README flags:
  * - README:CTA_ICON_PREFIX_DEFAULT  Default FA style prefix when none is provided.
  * - README:CTA_ICON_POSITION        CTA icon label/icon order (documented swap only).
- * - README:FA_CLASSES_ON_LI         Why `fa-*` is not printed on <li>.
+ * - README:FA_CLASSES_ON_LI         Reason FA classes are not printed on <li>.
  */
 
 if (!defined('ABSPATH')) {
@@ -48,16 +48,14 @@ if (!class_exists('PreLaunch_Walker')) {
         private array $item_has_children = [];
 
         /**
-         * Extract and normalize Font Awesome classes from a menu item's admin-defined classes.
+         * Extract and normalize Font Awesome classes from admin-defined menu classes.
          *
-         * This method supports Font Awesome 6/7 style prefixes. It enforces:
-         * - Exactly one style prefix (fa-solid, fa-brands, fa-regular, etc.)
-         * - Exactly one glyph class (fa-*)
-         * - A default style prefix when none is provided
+         * FA7 rules enforced:
+         * - Exactly ONE style prefix (fa-solid, fa-brands, fa-regular, etc.)
+         * - Exactly ONE icon glyph (fa-*)
+         * - If no style is provided, default to fa-solid
          *
          * README:CTA_ICON_PREFIX_DEFAULT
-         * Default style prefix is filterable via:
-         *   prelaunch_nav_fa_default_style
          *
          * @param array $classes
          * @return string|null
@@ -72,7 +70,7 @@ if (!class_exists('PreLaunch_Walker')) {
                     continue;
                 }
 
-                // FA style prefixes (FA6/FA7 compatible)
+                // FA style prefixes (FA6 / FA7 compatible)
                 if (
                     $class === 'fa-solid' ||
                     $class === 'fa-regular' ||
@@ -86,24 +84,24 @@ if (!class_exists('PreLaunch_Walker')) {
                     continue;
                 }
 
-                // Everything else is treated as a glyph class.
+                // Everything else is treated as a glyph
                 $icon_classes[] = $class;
             }
 
-            // Must have at least one glyph class.
+            // Must have at least one icon glyph
             if (empty($icon_classes)) {
                 return null;
             }
 
-            // Enforce exactly one style prefix (first one wins).
+            // Enforce exactly one style prefix
             if (!empty($style_classes)) {
-                $style = $style_classes[0];
+                $style = $style_classes[0]; // first wins
             } else {
-                // Default style prefix (documented + filterable).
+                // Default style (documented + filterable)
                 $style = apply_filters('prelaunch_nav_fa_default_style', 'fa-solid');
             }
 
-            // Enforce exactly one glyph class (first one wins).
+            // Enforce exactly one glyph (first wins)
             $icon = $icon_classes[0];
 
             return esc_attr(trim($style . ' ' . $icon));
@@ -111,9 +109,6 @@ if (!class_exists('PreLaunch_Walker')) {
 
         /**
          * Ensure $args->has_children is reliably set.
-         *
-         * WP core can be inconsistent about has_children depending on context and filters.
-         * This method normalizes child detection into $this->item_has_children and $args->has_children.
          */
         public function display_element($element, &$children_elements, $max_depth, $depth, $args, &$output)
         {
@@ -137,17 +132,13 @@ if (!class_exists('PreLaunch_Walker')) {
         }
 
         /**
-         * Submenu wrapper open (depth 1).
-         *
-         * Contract output:
-         *   <div class="nav-submenu" id="submenu-{ID}" hidden data-nav-submenu>
-         *     <ul class="nav-submenu-list" role="list">
+         * Submenu wrapper (depth 1) open.
          */
         public function start_lvl(&$output, $depth = 0, $args = null)
         {
             $depth = (int) $depth;
 
-            // Only one submenu level supported.
+            // Only one submenu level supported (depth 1)
             if ($depth !== 0) {
                 return;
             }
@@ -164,17 +155,13 @@ if (!class_exists('PreLaunch_Walker')) {
         }
 
         /**
-         * Submenu wrapper close (depth 1).
-         *
-         * Contract output:
-         *     </ul>
-         *   </div>
+         * Submenu wrapper (depth 1) close.
          */
         public function end_lvl(&$output, $depth = 0, $args = null)
         {
             $depth = (int) $depth;
 
-            // Only one submenu level supported.
+            // Only one submenu level supported (depth 1)
             if ($depth !== 0) {
                 return;
             }
@@ -188,7 +175,7 @@ if (!class_exists('PreLaunch_Walker')) {
         {
             $depth = (int) $depth;
 
-            // Only depth 0 and 1 are supported (top-level + submenu).
+            // Only support depth 0 and 1 (top + submenu items)
             if ($depth > 1) {
                 return;
             }
@@ -197,51 +184,42 @@ if (!class_exists('PreLaunch_Walker')) {
 
             $item_id = (int) $item->ID;
 
-            // Admin classes (WP menu item “CSS Classes” field).
+            // Admin classes (from WP menu item CSS Classes field)
             $admin_classes = is_array($item->classes) ? array_filter($item->classes) : [];
 
             // CTA detection (supported admin hooks: nav-cta | is-cta | menu-cta).
-            $is_cta = false;
-            foreach ($admin_classes as $c) {
-                if ($c === 'nav-cta' || $c === 'is-cta' || $c === 'menu-cta') {
-                    $is_cta = true;
-                    break;
-                }
-            }
+            $is_cta = (
+                in_array('nav-cta', $admin_classes, true) ||
+                in_array('is-cta', $admin_classes, true) ||
+                in_array('menu-cta', $admin_classes, true)
+            );
 
-            // Reserved hook: "has-icon" (no behavior in this walker; preserved for future use).
+            // Icon hooks (future / preserved)
             $has_icon = in_array('has-icon', $admin_classes, true);
 
-            // Reserved hook: "is-mega" (no behavior in this walker; preserved for future use).
+            // Future mega hook (preserved)
             $is_mega = in_array('is-mega', $admin_classes, true);
 
-            // Child detection set by display_element().
+            // Reliable has-children flag set in display_element()
             $has_children = $this->item_has_children[$item_id] ?? false;
 
-            // <li> base classes differ for top-level vs submenu rows.
-            $li_classes = [];
-
-            if ($depth === 0) {
-                $li_classes[] = 'nav-item';
-            } else {
-                $li_classes[] = 'nav-subitem';
-            }
+            // Classes for the LI
+            $li_classes = [($depth === 0) ? 'nav-item' : 'nav-subitem'];
 
             if ($depth === 0 && $has_children) {
                 $li_classes[] = 'has-submenu';
             }
 
-            // Normalize CTA to a single stable class used by CSS: .nav-cta.
             if ($is_cta) {
                 $li_classes[] = 'nav-cta';
             }
 
-            // Preserve admin hook classes, but do not print Font Awesome classes on the <li>.
+            // Preserve admin hook classes on the <li>, excluding any Font Awesome classes.
             //
             // README:FA_CLASSES_ON_LI
-            // Font Awesome Kits may scan `fa-*` classes on any element (not only <i>) and inject/modify DOM.
-            // Printing `fa-*` on <li> can cause layout side effects (e.g., CTA button rendering issues).
-            // Font Awesome classes are still read from admin classes to render the CTA icon (<i>).
+            // Font Awesome Kits (FA6/FA7) can scan for `fa-*` classes on non-<i> elements and inject SVG markup.
+            // If `fa-*` classes are printed on the <li>, this can create layout side effects (notably breaking CTA button sizing).
+            // Font Awesome classes remain available via $admin_classes for CTA icon rendering on the <i>.
             $admin_classes_for_li = array_values(array_filter(
                 $admin_classes,
                 static fn ($c) => is_string($c) && !str_starts_with($c, 'fa-')
@@ -249,46 +227,31 @@ if (!class_exists('PreLaunch_Walker')) {
 
             $li_classes = array_merge($li_classes, $admin_classes_for_li);
 
-            // Reserved hook: "is-mega" (no behavior; preserved as a stable selector hook).
+            // Future mega hook (no behavior now)
             if ($depth === 0 && $has_children && $is_mega) {
                 $li_classes[] = 'is-mega';
             }
 
-            /**
-             * Open <li>.
-             *
-             * JS contract:
-             * - data-nav-item exists on top-level dropdown parents (depth 0 with children).
-             */
+            // Print LI open
             $output .= $indent . '<li class="' . esc_attr(implode(' ', array_unique(array_filter($li_classes)))) . '"'
                        . (($depth === 0 && $has_children) ? ' data-nav-item' : '')
                        . '>';
 
-            // Wrapper for top-level rows only (keeps flex layout stable at depth 0).
             if ($depth === 0) {
                 $output .= '<div class="nav-item-inner">';
             }
 
-            // Label text (parity with WP core behavior).
             $title = apply_filters('the_title', $item->title, $item_id);
 
-            /**
-             * Top-level items with children render as a disclosure button (not a link).
-             *
-             * Accessibility contract:
-             * - aria-expanded is managed by JS.
-             * - aria-controls points at div.nav-submenu#submenu-{ID}.
-             * - Submenu visibility is controlled via the [hidden] attribute.
-             */
             if ($depth === 0 && $has_children) {
                 $submenu_id = 'submenu-' . $item_id;
                 $this->submenu_id_stack[0] = $submenu_id;
 
+                // Disclosure button (top-level items that have submenus)
                 $btn_classes = ['nav-disclosure'];
                 if ($has_icon) {
                     $btn_classes[] = 'nav-disclosure--icon';
                 }
-                $btn_class_attr = implode(' ', array_unique(array_filter($btn_classes)));
 
                 $toggle_label = sprintf(
                     __('Toggle submenu for %s', 'prelaunch-wp'),
@@ -296,7 +259,7 @@ if (!class_exists('PreLaunch_Walker')) {
                 );
 
                 $output .= '<button'
-                           . ' class="' . esc_attr($btn_class_attr) . '"'
+                           . ' class="' . esc_attr(implode(' ', array_unique(array_filter($btn_classes)))) . '"'
                            . ' type="button"'
                            . ' aria-expanded="false"'
                            . ' aria-controls="' . esc_attr($submenu_id) . '"'
@@ -309,13 +272,8 @@ if (!class_exists('PreLaunch_Walker')) {
                            . '</button>';
 
             } else {
-
                 /**
-                 * Normal link output.
-                 *
-                 * Cases:
-                 * - Top-level items without children (depth 0)
-                 * - Submenu links (depth 1)
+                 * Normal link output (top-level items without children, and all submenu links)
                  */
                 $atts = [];
                 $atts['href'] = !empty($item->url) ? $item->url : '';
@@ -337,33 +295,16 @@ if (!class_exists('PreLaunch_Walker')) {
 
                 $atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args, $depth);
 
-                // Anchor classes (top-level uses .nav-link, submenu uses .nav-sublink).
+                // Classes for the anchor
                 $link_classes = [($depth === 0) ? 'nav-link' : 'nav-sublink'];
 
                 if ($depth === 0 && $is_cta) {
-                    /**
-                     * README:CTA_ICON_POSITION
-                     *
-                     * Default CTA markup order is:
-                     *   [Label] [Icon]
-                     *
-                     * If a future site needs icon-first:
-                     * - Swap the output order in the CTA <a> block to:
-                     *     [Icon] [Label]
-                     * - No CSS/JS changes are expected (CTA uses inline-flex + gap).
-                     *
-                     * Safe swap reference (leave only one line active):
-                     *   // Current (suffix): label then icon
-                     *   // $output .= '<a' . $attributes . '>' . $label_html . $cta_icon_html . '</a>';
-                     *   // Alternate (prefix): icon then label
-                     *   // $output .= '<a' . $attributes . '>' . $cta_icon_html . $label_html . '</a>';
-                     */
                     $link_classes[] = 'nav-cta-link';
                 }
 
                 $atts['class'] = implode(' ', array_unique(array_filter($link_classes)));
 
-                // Serialize attributes into an HTML attribute string.
+                // Build attributes string
                 $attributes = '';
                 foreach ($atts as $attr => $value) {
                     if (is_scalar($value) && $value !== '') {
@@ -379,9 +320,21 @@ if (!class_exists('PreLaunch_Walker')) {
                         : '';
 
                     /**
-                     * CTA content is assembled from two stable pieces:
-                     * - Label HTML (always present)
-                     * - Optional icon HTML (present only when admin classes include a valid FA glyph)
+                     * README:CTA_ICON_POSITION
+                     *
+                     * Default CTA markup order is:
+                     *   [Label] [Icon]
+                     *
+                     * If a future site needs icon-first:
+                     * - Swap the output order in the block below to:
+                     *     [Icon] [Label]
+                     * - No CSS/JS changes are expected (CTA uses inline-flex + gap).
+                     *
+                     * Safe swap reference (leave only one line active):
+                     *   // Current (suffix): label then icon
+                     *   // $output .= '<a' . $attributes . '>' . $label_html . $cta_icon_html . '</a>';
+                     *   // Alternate (prefix): icon then label
+                     *   // $output .= '<a' . $attributes . '>' . $cta_icon_html . $label_html . '</a>';
                      */
                     $label_html = '<span class="nav-label">' . esc_html($title) . '</span>';
 
@@ -402,11 +355,9 @@ if (!class_exists('PreLaunch_Walker')) {
             }
         }
 
-        /**
-         * Close the current menu item.
-         */
         public function end_el(&$output, $item, $depth = 0, $args = null)
         {
+            // Close LI
             $output .= "</li>\n";
         }
     }
