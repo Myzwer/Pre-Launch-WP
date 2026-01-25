@@ -31,7 +31,7 @@
      * WP standard: prefer theme support for title-tag (outputs via wp_head()).
      * If theme support is not enabled, provide a safe fallback <title>.
      */
-    if (!current_theme_supports('title-tag')) : ?>
+    if (! current_theme_supports('title-tag')) : ?>
 		<title><?php echo esc_html(wp_get_document_title()); ?></title>
 	<?php endif; ?>
 
@@ -64,11 +64,11 @@
 			<?php
             $logo = function_exists('get_field') ? get_field('site_nav_logo', 'option') : null;
 
-if (is_array($logo) && !empty($logo['url'])) : ?>
+if (is_array($logo) && ! empty($logo['url'])) : ?>
 				<img
 					class="nav-brand-logo"
 					src="<?php echo esc_url($logo['url']); ?>"
-					alt="<?php echo esc_attr(!empty($logo['alt']) ? $logo['alt'] : get_bloginfo('name')); ?>"
+					alt="<?php echo esc_attr(! empty($logo['alt']) ? $logo['alt'] : get_bloginfo('name')); ?>"
 					loading="eager"
 					decoding="async"
 				/>
@@ -76,7 +76,6 @@ if (is_array($logo) && !empty($logo['url'])) : ?>
 				<span class="nav-brand-text"><?php echo esc_html(get_bloginfo('name')); ?></span>
 			<?php endif; ?>
 		</a>
-
 
 
 		<nav class="nav" aria-label="Primary">
@@ -95,7 +94,7 @@ if (is_array($logo) && !empty($logo['url'])) : ?>
 			<div class="nav-panel" id="nav-panel">
 				<?php
     wp_nav_menu([
-        'theme_location' => 'header-menu',
+        'theme_location' => 'primary-nav',
         'depth' => 2,
         'container' => false,
         'fallback_cb' => false,
