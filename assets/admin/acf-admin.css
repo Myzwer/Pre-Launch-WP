@@ -1,0 +1,90 @@
+/**
+ * WP-Admin ACF Styling
+ * --------------------
+ * Admin-only styling for ACF field UI to improve clarity for Flex-driven builds.
+ *
+ * Flexible Content fields are presented as visual "panels" so major page
+ * sections (Header, Body, etc.) are easier to understand at a glance.
+ */
+
+/* =========================
+   Flexible Content Wrapper
+   ========================= */
+
+.acf-field-flexible-content {
+	margin: 18px 0 26px;
+}
+
+/* =========================
+   Label + Instructions
+   ========================= */
+
+/* Flex field title */
+.acf-field-flexible-content > .acf-label label {
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.3;
+	margin-bottom: 4px;
+}
+
+/* Instruction text under title */
+.acf-field-flexible-content > .acf-label .description {
+	font-size: 13px;
+	color: #646970;
+	margin-bottom: 8px;
+}
+
+/* Pull label visually closer to the panel */
+.acf-field-flexible-content > .acf-label {
+	margin-bottom: 6px;
+}
+
+/* =========================
+   Panel Styling (Input Area)
+   ========================= */
+
+.acf-field-flexible-content > .acf-input {
+	background: #f6f7f7; /* WP light gray */
+	border: 1px solid #c3c4c7;
+	border-radius: 10px;
+	padding: 16px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Space inside the panel for controls */
+.acf-field-flexible-content > .acf-input .acf-actions {
+	margin-top: 10px;
+}
+
+/* =========================
+   Layout Rows
+   ========================= */
+
+/* Individual layout cards */
+.acf-field-flexible-content > .acf-input .acf-fc-layout {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+/* Layout header bar */
+/* Layout header bar: keep it visually consistent (no split-tone) */
+.acf-field-flexible-content > .acf-input .acf-fc-layout-actions-wrap {
+	background: #fff;
+}
+
+/* Handle should NOT set its own background (prevents white-on-white active state) */
+.acf-field-flexible-content > .acf-input .acf-fc-layout-handle {
+	background: transparent;
+	font-weight: 600;
+}
+
+/* When ACF marks a layout active/selected, ensure text stays readable */
+.acf-field-flexible-content > .acf-input .acf-fc-layout-handle,
+.acf-field-flexible-content > .acf-input .acf-fc-layout-handle {
+	color: inherit;
+}
+
+/* Empty state text */
+.acf-field-flexible-content > .acf-input .acf-fc-empty {
+	color: #646970;
+}
