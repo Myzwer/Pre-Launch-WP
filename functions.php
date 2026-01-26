@@ -40,3 +40,6 @@ require_once get_template_directory() . '/includes/shortcodes.php';
 
 // Include SEO
 require_once get_template_directory() . '/includes/seo.php';
+
+// Include Editor Tools (TinyMCE)
+require_once get_template_directory() . '/includes/editor_tools.php';
