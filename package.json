@@ -68,7 +68,8 @@
 			"./vendor/**/**/*.css",
 			"./node_modules/**/**/*.css",
 			"./tests/**/**/*.css",
-			"./readme.md"
+			"./readme.md",
+			"./assets/admin/*.css"
 		],
 		"extends": [
 			"./webpack/.stylelintrc.js"
