@@ -69,7 +69,7 @@
 			"./node_modules/**/**/*.css",
 			"./tests/**/**/*.css",
 			"./readme.md",
-			"./assets/admin/*.css"
+			"./assets/admin/**/*.css"
 		],
 		"extends": [
 			"./webpack/.stylelintrc.js"
