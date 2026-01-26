@@ -18,7 +18,7 @@
 
 <div class="p-5 mx-auto max-w-screen-2xl xl:p-5 xl:w-8/12">
     <div class="grid grid-cols-12 gap-4 md:gap-4">
-        <div class="col-span-12 py-5 max-w-none prose">
+        <div class="col-span-12 py-5 max-w-none prose-theme">
 			<?php the_sub_field( "text_editor" ); ?>
         </div>
     </div>
