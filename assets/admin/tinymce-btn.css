@@ -1,0 +1,100 @@
+/**
+ * TinyMCE Button Generator – Admin Styles
+ * ---------------------------------------
+ * Admin-only CSS for the custom TinyMCE "Button" toolbar control and modal UI.
+ *
+ * Purpose:
+ * - Make the custom editor tooling feel native to WordPress.
+ * - Fix default TinyMCE modal issues (narrow width, misaligned checkboxes,
+ *   clipped dropdown menus).
+ *
+ * What this styles:
+ * - The TinyMCE toolbar button (uses WP default blue for familiarity).
+ * - The "Insert Button" modal window:
+ *   - Increased width for readability.
+ *   - Improved spacing and label hierarchy.
+ *   - Better checkbox alignment.
+ *   - Dropdown menus that are fully visible and scrollable.
+ *
+ * Important notes:
+ * - This file is loaded ONLY in wp-admin.
+ * - It intentionally does NOT use Tailwind or frontend styles.
+ * - Styling targets TinyMCE 4 DOM structure used by ACF WYSIWYG fields.
+ *
+ * If something looks broken:
+ * - Inspect the TinyMCE markup first — class names can differ between
+ *   TinyMCE versions.
+ * - Avoid over-scoping selectors; wp-admin styles are shared globally.
+ */
+.mce-container .mce-toolbar .mce-btn.mce-wpk_btn button {
+	background: #2271b1 !important; /* WP blue */
+	border-color: #2271b1 !important;
+}
+
+.mce-container .mce-toolbar .mce-btn.mce-wpk_btn span {
+	color: #ffffff !important;
+}
+
+/* =========
+   Modal Layout Improvements
+   ========= */
+
+.mce-window {
+	width: 460px !important;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.mce-window .mce-container-body {
+	padding: 12px 16px;
+}
+
+.mce-window .mce-formitem {
+	margin-bottom: 12px;
+}
+
+.mce-window label {
+	font-weight: 600;
+	margin-bottom: 4px;
+	display: block;
+}
+
+.mce-window .mce-textbox,
+.mce-window select {
+	width: 100%;
+}
+
+/* Helper text */
+.mce-window .mce-label {
+	font-size: 12px;
+	color: #646970;
+	margin-top: -6px;
+}
+
+/* Checkbox alignment */
+.mce-window .mce-checkbox {
+	display: flex;
+	align-items: center;
+}
+
+.mce-window .mce-checkbox label {
+	margin-left: 6px;
+	font-weight: 500;
+}
+
+/* Prevent dropdown clipping */
+.mce-menu {
+	max-height: 240px !important;
+	overflow-y: auto !important;
+}
+
+/* Footer buttons */
+.mce-window .mce-foot button {
+	background: #2271b1 !important;
+	border-color: #2271b1 !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.mce-window .mce-foot button:hover {
+	filter: brightness(1.05);
+}
