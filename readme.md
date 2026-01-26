@@ -865,3 +865,236 @@ You must update the other.
 - **Centering not working?** → missing `nav-center-desktop` on header
 
 If behavior is odd, verify the DOM contract before touching CSS or JS.
+
+# Editor Tooling: Button & Social Shortcodes
+
+This theme includes a small amount of **custom editor tooling** designed to make
+working with WYSIWYG content safer and less frustrating for non-technical users.
+
+The goal is **quality of life**, not feature expansion:
+
+- Reduce shortcode syntax errors
+- Avoid “code-y” experiences in the editor
+- Keep frontend rendering logic simple and predictable
+
+---
+
+## TinyMCE Button Generator (ACF WYSIWYG)
+
+A custom **TinyMCE toolbar button** labeled **“Button”** is available in all
+ACF WYSIWYG fields (Classic editor engine).
+
+### What this does
+
+- Adds a toolbar button to the main formatting row
+- Opens a modal UI to configure a button
+- Inserts a properly formatted `[btn]` shortcode at the cursor
+- Prevents common mistakes (missing attributes, malformed markup)
+
+This tool **only inserts shortcodes**.  
+It does _not_ control how buttons render on the frontend.
+
+### Where this lives
+
+- Logic: `assets/admin/tinymce-btn.js`
+- Styling: `assets/admin/tinymce-btn.css`
+- Registration / hooks: `includes/editor_tools.php`
+
+If the button is missing or broken, check those files first.
+
+---
+
+## If the Editor Tool Looks Broken
+
+Before debugging frontend code, check these common issues:
+
+- **Dropdowns show no text**  
+  → TinyMCE 4 requires listbox options to use `text`, not `label`.
+
+- **Modal is too narrow / dropdowns clipped**  
+  → Check `tinymce-btn.css` for modal width and menu overflow rules.
+
+- **Button appears but does nothing**  
+  → Check browser console for JS errors in `tinymce-btn.js`.
+
+- **Styling looks “off”**  
+  → Remember this is admin-only CSS. Frontend Tailwind styles do not apply here.
+
+---
+
+## Button Shortcode Reference
+
+Buttons are rendered using a shortcode so they can be safely inserted into
+WYSIWYG content and styled consistently.
+
+### Basic Usage
+
+[btn text="Contact Us" url="/contact"]
+
+### Required Attributes
+
+- `text` – Button label
+- `url` – Destination URL (relative or absolute)
+
+### Optional Attributes
+
+#### Style / Variant
+
+variant="main"
+
+Available options:
+
+- main (default)
+- secondary
+- light
+- dark
+- ghost_white
+- ghost_black
+
+Example:
+
+[btn text="Learn More" url="/about" variant="secondary"]
+
+---
+
+#### Icon
+
+icon="arrow"
+
+Available options:
+
+- none (default)
+- arrow
+- external
+- download
+- phone
+- email
+
+Icon position defaults to the right.
+
+icon_pos="left" | "right"
+
+Example:
+
+[btn text="Email Us" url="mailto:hello@example.com" icon="email" icon_pos="left"]
+
+---
+
+#### New Tab
+
+tab="Y"
+
+Opens link in a new tab.
+
+Example:
+
+[btn text="External Site" url="https://example.com" tab="Y"]
+
+---
+
+#### Centering
+
+center="Y"
+
+Centers the button within its container.
+
+Example:
+
+[btn text="Book Now" url="/book" center="Y"]
+
+---
+
+### Notes
+
+- Buttons automatically wrap themselves in `not-prose` to avoid
+  Tailwind Typography side effects.
+- Only non-default attributes are rendered to keep markup clean.
+
+---
+
+## Social Icon Shortcode Reference
+
+Social icons are intentionally **opinionated and minimal**.
+
+They are most often used in footers, headers, or global sections.
+
+URLs are pulled from the **ACF Options page** by default.
+
+### Basic Usage
+
+[social network="facebook"]
+
+### Required Attribute
+
+- `network` – which social platform to render
+
+Available networks:
+
+- facebook
+- instagram
+- x
+- youtube
+- pinterest
+- linkedin
+- tiktok
+- threads
+- github
+- website
+- email
+- phone
+
+---
+
+### Size
+
+size="md"
+
+Options:
+
+- sm
+- md (default)
+- lg
+- xl
+- 2xl
+
+---
+
+### Shape & Color Rules (Important)
+
+shape="none" | "circle" | "square"
+
+#### If shape = none (default)
+
+- Icon inherits text color
+- Optional `color` applies
+
+color="current" | "primary" | "black" | "white"
+
+#### If shape = circle or square
+
+- Background is **always** bg-primary
+- Foreground controlled via:
+
+fg="white" | "black"
+
+This constraint is intentional.
+
+Example:
+
+[social network="instagram" shape="circle" fg="white"]
+
+---
+
+### New Tab
+
+tab="Y"
+
+Opens link in a new tab.
+
+---
+
+### Notes
+
+- Social output is wrapped in `not-prose` automatically.
+- URLs come from ACF Options (Globals) unless overridden.
+- Designed for predictability, not infinite variation.
