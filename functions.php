@@ -49,3 +49,6 @@ require_once get_template_directory() . '/includes/admin_editor_cleanup.php';
 
 // Include Admin Dashboard Cleanup
 require_once get_template_directory() . '/includes/admin_dashboard.php';
+
+// Include Token Widget to Admin Dashboard
+require_once get_template_directory() . '/includes/admin_tokens_widget.php';
