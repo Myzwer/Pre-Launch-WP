@@ -46,3 +46,6 @@ require_once get_template_directory() . '/includes/editor_tools.php';
 
 // Include Admin Cleanup
 require_once get_template_directory() . '/includes/admin_editor_cleanup.php';
+
+// Include Admin Dashboard Cleanup
+require_once get_template_directory() . '/includes/admin_dashboard.php';
