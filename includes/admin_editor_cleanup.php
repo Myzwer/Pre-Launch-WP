@@ -18,6 +18,34 @@
 defined('ABSPATH') || exit;
 
 /**
+ * True when we're on a post editing screen for a non-post type (pages + CPTs).
+ * This intentionally excludes ACF Options pages and blog posts.
+ */
+function wpk_is_acf_driven_edit_screen(): bool
+{
+    if (!is_admin()) {
+        return false;
+    }
+
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    if (!$screen) {
+        return false;
+    }
+
+    // Only run on edit screens like post.php / post-new.php
+    if ($screen->base !== 'post') {
+        return false;
+    }
+
+    // Leave blog posts alone
+    if ($screen->post_type === 'post') {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Disable the Block Editor (Gutenberg) for all post types except `post`.
  */
 function wpk_disable_gutenberg_for_acf_types(bool $use_block_editor, string $post_type): bool
@@ -67,6 +95,10 @@ add_action('init', 'wpk_remove_editor_for_acf_types', 20);
  */
 function wpk_acf_position_field_groups_after_title(array $field_group): array
 {
+    if (!wpk_is_acf_driven_edit_screen()) {
+        return $field_group;
+    }
+
     $field_group['position'] = 'acf_after_title';
     return $field_group;
 }
@@ -77,6 +109,10 @@ add_filter('acf/get_field_group', 'wpk_acf_position_field_groups_after_title', 2
  */
 function wpk_acf_use_seamless_field_group_style(array $field_group): array
 {
+    if (!wpk_is_acf_driven_edit_screen()) {
+        return $field_group;
+    }
+
     $field_group['style'] = 'seamless';
     return $field_group;
 }
@@ -110,7 +146,7 @@ add_action('edit_form_after_title', 'wpk_acf_editor_admin_note');
  */
 function wpk_admin_enqueue_acf_admin_css(): void
 {
-    if (!is_admin()) {
+    if (!wpk_is_acf_driven_edit_screen()) {
         return;
     }
 
@@ -145,6 +181,10 @@ add_action('admin_enqueue_scripts', 'wpk_admin_enqueue_acf_admin_css');
  */
 function wpk_acf_flexible_content_notes(array $field): void
 {
+    if (!wpk_is_acf_driven_edit_screen()) {
+        return;
+    }
+
     if (($field['type'] ?? '') !== 'flexible_content') {
         return;
     }
@@ -155,3 +195,4 @@ function wpk_acf_flexible_content_notes(array $field): void
 		</div>';
     }
 }
+add_action('acf/render_field/type=flexible_content', 'wpk_acf_flexible_content_notes', 5);
