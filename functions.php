@@ -21,9 +21,6 @@ require_once get_theme_file_path('includes/wordpress/enqueue.php');
 require_once get_theme_file_path('includes/wordpress/menus.php');
 require_once get_theme_file_path('includes/wordpress/shortcodes.php');
 
-/* Blog legacy helpers (to be removed once migrated into /includes/posts/*) */
-require_once get_theme_file_path('includes/posts/wpposts.php');
-
 /* Plugins / integrations */
 require_once get_theme_file_path('includes/plugins/acf.php');
 require_once get_theme_file_path('includes/plugins/seo.php');
