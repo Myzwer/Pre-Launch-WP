@@ -1,54 +1,38 @@
 <?php
 
 /**
- * Functions and definitions
+ * Theme bootstrap
  *
- * The primary functions file for the theme. It includes various modular files
- * responsible for handling script and style enqueue, Advanced Custom Fields (ACF) configurations,
- * quick utility functions, WordPress menu setups, post-related functions and pagination,
- * custom post type registrations, and shortcodes.
+ * Loads modular theme files from /includes. This file will stay lean and act as an
+ * include map + load-order reference for theme functionality.
  *
- *
- * Usage: Wordpress defaults to use this file.
- *
- * @package WordPress
- * @subpackage Pre_Launch_WP
- * @author Josh Forrester <josh@onefortyfivedesign.com>
- * @version 1.0.0
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ * @link https://developer.wordpress.org/reference/functions/get_theme_file_path/
  */
 
-// Include Scripts and Styles
-require_once get_template_directory() . '/includes/enqueue.php';
+/* Posts / content system (blog now, CPT-ready utilities later) */
+require_once get_theme_file_path('includes/posts/setup.php');
+require_once get_theme_file_path('includes/posts/content.php');
+require_once get_theme_file_path('includes/posts/queries.php');
+require_once get_theme_file_path('includes/posts/template-tags.php');
 
-// Include ACF Functions
-require_once get_template_directory() . '/includes/acf.php';
+/* WordPress theme features (menus, assets, shortcodes, etc.) */
+require_once get_theme_file_path('includes/wordpress/enqueue.php');
+require_once get_theme_file_path('includes/wordpress/menus.php');
+require_once get_theme_file_path('includes/wordpress/shortcodes.php');
 
-// Include Quick Functions
-require_once get_template_directory() . '/includes/quick_functions.php';
+/* Blog legacy helpers (to be removed once migrated into /includes/posts/*) */
+require_once get_theme_file_path('includes/posts/wpposts.php');
 
-// Include WP Menus (Header and Footer)
-require_once get_template_directory() . '/includes/menus.php';
+/* Plugins / integrations */
+require_once get_theme_file_path('includes/plugins/acf.php');
+require_once get_theme_file_path('includes/plugins/seo.php');
 
-// Include Posts (Post Functions + Pagination)
-require_once get_template_directory() . '/includes/wpposts.php';
+/* Utility functions */
+require_once get_theme_file_path('includes/utility/quick_functions.php');
 
-// Include Custom Post Types
-require_once get_template_directory() . '/includes/custom_post_types.php';
-
-// Include Shortcodes
-require_once get_template_directory() . '/includes/shortcodes.php';
-
-// Include SEO
-require_once get_template_directory() . '/includes/seo.php';
-
-// Include Editor Tools (TinyMCE)
-require_once get_template_directory() . '/includes/editor_tools.php';
-
-// Include Admin Cleanup
-require_once get_template_directory() . '/includes/admin_editor_cleanup.php';
-
-// Include Admin Dashboard Cleanup
-require_once get_template_directory() . '/includes/admin_dashboard.php';
-
-// Include Token Widget to Admin Dashboard
-require_once get_template_directory() . '/includes/admin_tokens_widget.php';
+/* Admin */
+require_once get_theme_file_path('includes/admin/editor_tools.php');
+require_once get_theme_file_path('includes/admin/admin_editor_cleanup.php');
+require_once get_theme_file_path('includes/admin/admin_dashboard.php');
+require_once get_theme_file_path('includes/admin/admin_tokens_widget.php');
