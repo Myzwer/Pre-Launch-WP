@@ -177,3 +177,163 @@ function prelaunch_get_reading_time($post = null, $args = [])
         $args['suffix']
     );
 }
+
+/**
+ * Get a WP_Query of related posts for a given post.
+ *
+ * Related order:
+ * 1) Same categories
+ * 2) Same tags
+ * 3) Recent posts fallback
+ *
+ * @param int|\WP_Post|null $post Post ID or object. Defaults to current post.
+ * @param array            $args Optional args.
+ * @return WP_Query
+ */
+function prelaunch_get_related_posts_query($post = null, $args = [])
+{
+    $post = get_post($post);
+
+    $defaults = [
+        'posts_per_page' => 3,
+        'category_first' => true,
+        'tag_fallback' => true,
+        'recent_fallback' => true,
+        'ignore_sticky' => true,
+    ];
+    $args = array_merge($defaults, $args);
+
+    // Always return a WP_Query object, even if empty.
+    if (! $post instanceof WP_Post) {
+        return new WP_Query([ 'post_type' => 'post', 'posts_per_page' => 0 ]);
+    }
+
+    $base_query_args = [
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => max(1, (int) $args['posts_per_page']),
+        'post__not_in' => [ (int) $post->ID ],
+        'ignore_sticky_posts' => ! empty($args['ignore_sticky']),
+        'no_found_rows' => true,
+    ];
+
+    // 1) Categories.
+    if (! empty($args['category_first'])) {
+        $cat_ids = wp_get_post_terms($post->ID, 'category', [ 'fields' => 'ids' ]);
+
+        if (! is_wp_error($cat_ids) && ! empty($cat_ids)) {
+            $q = new WP_Query(
+                array_merge(
+                    $base_query_args,
+                    [
+                        'tax_query' => [
+                            [
+                                'taxonomy' => 'category',
+                                'field' => 'term_id',
+                                'terms' => array_map('absint', $cat_ids),
+                            ],
+                        ],
+                    ]
+                )
+            );
+
+            if ($q->have_posts()) {
+                return $q;
+            }
+        }
+    }
+
+    // 2) Tags fallback.
+    if (! empty($args['tag_fallback'])) {
+        $tag_ids = wp_get_post_terms($post->ID, 'post_tag', [ 'fields' => 'ids' ]);
+
+        if (! is_wp_error($tag_ids) && ! empty($tag_ids)) {
+            $q = new WP_Query(
+                array_merge(
+                    $base_query_args,
+                    [
+                        'tax_query' => [
+                            [
+                                'taxonomy' => 'post_tag',
+                                'field' => 'term_id',
+                                'terms' => array_map('absint', $tag_ids),
+                            ],
+                        ],
+                    ]
+                )
+            );
+
+            if ($q->have_posts()) {
+                return $q;
+            }
+        }
+    }
+
+    // 3) Recent fallback.
+    if (! empty($args['recent_fallback'])) {
+        return new WP_Query(
+            array_merge(
+                $base_query_args,
+                [
+                    'orderby' => 'date',
+                    'order' => 'DESC',
+                ]
+            )
+        );
+    }
+
+    return new WP_Query([ 'post_type' => 'post', 'posts_per_page' => 0 ]);
+}
+
+/**
+ * Output a minimal related posts section.
+ *
+ * This prints basic markup only. Styling is handled by your theme classes.
+ *
+ * @param int|\WP_Post|null $post Post ID or object. Defaults to current post.
+ * @param array            $args Optional args.
+ * @return void
+ */
+function prelaunch_related_posts($post = null, $args = [])
+{
+    $defaults = [
+        'title' => __('Related posts', 'prelaunch-wp'),
+        'posts_per_page' => 3,
+    ];
+    $args = array_merge($defaults, $args);
+
+    $q = prelaunch_get_related_posts_query(
+        $post,
+        [
+            'posts_per_page' => (int) $args['posts_per_page'],
+        ]
+    );
+
+    if (! $q->have_posts()) {
+        return;
+    }
+
+    echo '<section class="related-posts" aria-label="' . esc_attr__('Related posts', 'prelaunch-wp') . '">';
+    echo '<h2 class="related-posts__title">' . esc_html($args['title']) . '</h2>';
+    echo '<div class="related-posts__list">';
+
+    while ($q->have_posts()) {
+        $q->the_post();
+
+        echo '<article class="related-posts__item">';
+        echo '<h3 class="related-posts__item-title"><a href="' . esc_url(get_permalink()) . '">';
+        the_title();
+        echo '</a></h3>';
+
+        if (function_exists('prelaunch_posted_on')) {
+            prelaunch_posted_on();
+        }
+
+        echo '</article>';
+    }
+
+    echo '</div>';
+    echo '</section>';
+
+    wp_reset_postdata();
+}

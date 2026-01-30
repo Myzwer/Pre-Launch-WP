@@ -68,21 +68,10 @@ $posts_page_txt = $posts_page_id ? get_the_title($posts_page_id) : __('Blog', 'p
                     ?>
 						</footer>
 
-						<nav class="post-nav" aria-label="<?php esc_attr_e('Post navigation', 'prelaunch-wp'); ?>">
-							<div class="post-nav__prev">
-								<?php previous_post_link('%link', esc_html__('Previous', 'prelaunch-wp')); ?>
-							</div>
+						<?php if (function_exists('prelaunch_related_posts')) : ?>
+							<?php prelaunch_related_posts(); ?>
+						<?php endif; ?>
 
-							<div class="post-nav__all">
-								<a href="<?php echo esc_url($posts_page_url); ?>">
-									<?php echo esc_html($posts_page_txt); ?>
-								</a>
-							</div>
-
-							<div class="post-nav__next">
-								<?php next_post_link('%link', esc_html__('Next', 'prelaunch-wp')); ?>
-							</div>
-						</nav>
 					</article>
 				<?php
                 endwhile;
