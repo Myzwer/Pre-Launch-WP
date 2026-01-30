@@ -31,7 +31,8 @@ $page_title = $posts_page_id ? get_the_title($posts_page_id) : __('Blog', 'prela
                         ?>
 						<article <?php post_class('c-card c-card--post'); ?>>
 							<?php if (has_post_thumbnail()) : ?>
-								<a class="c-card__media" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
+								<a class="c-card__media" href="<?php the_permalink(); ?>"
+								   aria-label="<?php the_title_attribute(); ?>">
 									<?php the_post_thumbnail('large'); ?>
 								</a>
 							<?php endif; ?>
@@ -39,7 +40,9 @@ $page_title = $posts_page_id ? get_the_title($posts_page_id) : __('Blog', 'prela
 							<div class="c-card__body">
 								<div class="c-card__meta">
 									<?php prelaunch_posted_on(); ?>
-									<?php prelaunch_post_terms('category', [ 'class' => 'post-terms post-terms--categories', 'separator' => ', ' ]); ?>
+									<?php prelaunch_post_terms('category', [ 'class' => 'post-terms post-terms--categories',
+                                                                              'separator' => ', ',
+                                    ]); ?>
 								</div>
 
 								<h2 class="c-card__title">
@@ -47,6 +50,10 @@ $page_title = $posts_page_id ? get_the_title($posts_page_id) : __('Blog', 'prela
 										<?php the_title(); ?>
 									</a>
 								</h2>
+
+								<span class="post-reading-time">
+									<?php echo esc_html(prelaunch_get_reading_time()); ?>
+								</span>
 
 								<div class="c-card__excerpt">
 									<?php echo wp_kses_post(prelaunch_get_excerpt()); ?>

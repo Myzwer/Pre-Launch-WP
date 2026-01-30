@@ -128,3 +128,52 @@ function prelaunch_get_excerpt($post = null)
     // get_the_excerpt() will generate from content when no manual excerpt exists.
     return get_the_excerpt($post);
 }
+
+/**
+ * Return estimated reading time for a post.
+ *
+ * Calculates reading time based on word count of post content.
+ * Defaults to 200 words per minute.
+ *
+ * @param int|\WP_Post|null $post Post ID or object. Defaults to current post.
+ * @param array            $args Optional arguments.
+ * @return string
+ */
+function prelaunch_get_reading_time($post = null, $args = [])
+{
+    $post = get_post($post);
+
+    if (! $post instanceof WP_Post) {
+        return '';
+    }
+
+    $defaults = [
+        'words_per_minute' => 200,
+        'suffix' => __('min read', 'prelaunch-wp'),
+    ];
+    $args = array_merge($defaults, $args);
+
+    $content = get_post_field('post_content', $post->ID);
+
+    if (empty($content)) {
+        return '';
+    }
+
+    // Strip block comments and HTML.
+    $content = wp_strip_all_tags($content);
+
+    $word_count = str_word_count($content);
+
+    if ($word_count === 0) {
+        return '';
+    }
+
+    $minutes = (int) ceil($word_count / max(1, (int) $args['words_per_minute']));
+
+    return sprintf(
+        /* translators: %d: reading time in minutes */
+        esc_html__('%d %s', 'prelaunch-wp'),
+        $minutes,
+        $args['suffix']
+    );
+}
