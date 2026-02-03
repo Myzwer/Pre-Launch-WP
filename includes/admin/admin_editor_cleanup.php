@@ -3,87 +3,92 @@
 /**
  * Admin Editor Cleanup (ACF-First Workflow)
  *
- * This file enforces an ACF-first editing experience for this starter theme.
+ * Enforces an ACF-first editing experience for selected post types (pages + CPTs),
+ * while leaving WordPress internal post types (wp_*) untouched.
  *
- * Behavior:
- * - Disable Gutenberg for all post types except `post`
- * - Remove the classic content editor UI for all post types except `post`
- * - Force ACF field groups to render directly after the title
- * - Apply ACF “seamless” styling to reduce meta-box chrome
- * - Display a small admin note clarifying where page content is built
- * - Add lightweight guidance notes for Flexible Content usage
+ * Behavior (for ACF-driven types):
+ * - Disable Gutenberg
+ * - Remove the classic content editor UI
+ * - Force ACF field groups to render after the title
+ * - Apply ACF “seamless” styling
+ * - Display a small admin note
  * - Enqueue admin-only CSS for ACF UI improvements
  */
 
 defined('ABSPATH') || exit;
 
 /**
- * True when we're on a post editing screen for a non-post type (pages + CPTs).
- * This intentionally excludes ACF Options pages and blog posts.
+ * Post types that should be ACF-driven (no Gutenberg + no content editor).
+ *
+ * Add CPT slugs here (e.g. 'agents', 'staff', 'sermons').
  */
-function wpk_is_acf_driven_edit_screen(): bool
+function wpk_acf_driven_post_types(): array
 {
-    if (!is_admin()) {
-        return false;
-    }
-
-    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-    if (!$screen) {
-        return false;
-    }
-
-    // Only run on edit screens like post.php / post-new.php
-    if ($screen->base !== 'post') {
-        return false;
-    }
-
-    // Leave blog posts alone
-    if ($screen->post_type === 'post') {
-        return false;
-    }
-
-    return true;
+    return [
+        'page',
+        // 'agents',
+        // 'staff',
+        // 'sermons',
+    ];
 }
 
 /**
- * Disable the Block Editor (Gutenberg) for all post types except `post`.
+ * True when we're on a post edit screen for an ACF-driven post type.
+ */
+function wpk_is_acf_driven_edit_screen(): bool
+{
+    if (! is_admin()) {
+        return false;
+    }
+
+    if (! function_exists('get_current_screen')) {
+        return false;
+    }
+
+    $screen = get_current_screen();
+    if (! $screen || $screen->base !== 'post') {
+        return false;
+    }
+
+    $post_type = (string) $screen->post_type;
+
+    // Only apply to explicitly ACF-driven types (and never to internal wp_* types).
+    if (str_starts_with($post_type, 'wp_')) {
+        return false;
+    }
+
+    return in_array($post_type, wpk_acf_driven_post_types(), true);
+}
+
+/**
+ * Disable the Block Editor (Gutenberg) for ACF-driven post types only.
+ *
+ * Important: do NOT disable for wp_* internal types.
  */
 function wpk_disable_gutenberg_for_acf_types(bool $use_block_editor, string $post_type): bool
 {
-    $allow_gutenberg = [
-        'post',
-        // 'example_cpt',
-    ];
-
-    if (in_array($post_type, $allow_gutenberg, true)) {
+    if (str_starts_with($post_type, 'wp_')) {
         return $use_block_editor;
     }
 
-    return false;
+    if (in_array($post_type, wpk_acf_driven_post_types(), true)) {
+        return false;
+    }
+
+    return $use_block_editor;
 }
 add_filter('use_block_editor_for_post_type', 'wpk_disable_gutenberg_for_acf_types', 10, 2);
 
 /**
- * Remove the classic content editor support for ACF-driven post types.
+ * Remove the classic content editor support for ACF-driven post types only.
  *
- * This hides the large editor panel on Pages and CPTs so users aren’t tempted
- * to type content into an area that is not used.
+ * Important: do NOT iterate all post types and remove editor support globally.
  */
 function wpk_remove_editor_for_acf_types(): void
 {
-    $allow_editor = [
-        'post',
-        // 'example_cpt',
-    ];
-
-    $post_types = get_post_types([], 'names');
-
-    foreach ($post_types as $post_type) {
-        if (in_array($post_type, ['attachment', 'revision', 'nav_menu_item'], true)) {
-            continue;
-        }
-
-        if (!in_array($post_type, $allow_editor, true)) {
+    foreach (wpk_acf_driven_post_types() as $post_type) {
+        // Only remove editor support if the post type exists.
+        if (post_type_exists($post_type)) {
             remove_post_type_support($post_type, 'editor');
         }
     }
@@ -95,7 +100,7 @@ add_action('init', 'wpk_remove_editor_for_acf_types', 20);
  */
 function wpk_acf_position_field_groups_after_title(array $field_group): array
 {
-    if (!wpk_is_acf_driven_edit_screen()) {
+    if (! wpk_is_acf_driven_edit_screen()) {
         return $field_group;
     }
 
@@ -109,7 +114,7 @@ add_filter('acf/get_field_group', 'wpk_acf_position_field_groups_after_title', 2
  */
 function wpk_acf_use_seamless_field_group_style(array $field_group): array
 {
-    if (!wpk_is_acf_driven_edit_screen()) {
+    if (! wpk_is_acf_driven_edit_screen()) {
         return $field_group;
     }
 
@@ -123,13 +128,7 @@ add_filter('acf/get_field_group', 'wpk_acf_use_seamless_field_group_style', 20);
  */
 function wpk_acf_editor_admin_note(): void
 {
-    $screen = get_current_screen();
-
-    if (!$screen || $screen->base !== 'post') {
-        return;
-    }
-
-    if ($screen->post_type === 'post') {
+    if (! wpk_is_acf_driven_edit_screen()) {
         return;
     }
 
@@ -141,12 +140,10 @@ add_action('edit_form_after_title', 'wpk_acf_editor_admin_note');
 
 /**
  * Enqueue admin-only CSS for ACF UI improvements.
- *
- * This is intentionally not bundled with the frontend build pipeline.
  */
 function wpk_admin_enqueue_acf_admin_css(): void
 {
-    if (!wpk_is_acf_driven_edit_screen()) {
+    if (! wpk_is_acf_driven_edit_screen()) {
         return;
     }
 
@@ -160,28 +157,13 @@ function wpk_admin_enqueue_acf_admin_css(): void
 add_action('admin_enqueue_scripts', 'wpk_admin_enqueue_acf_admin_css');
 
 /**
- * Flexible Content guidance notes (ACF-only screens).
- *
- * - All Flexible Content fields: remind that section order matters.
- * - Header field only (header_select): remind it should be limited to 1.
- *
- * This is guidance, not enforcement. It keeps the starter theme flexible
- * while preventing common client mistakes.
- *
- * Field names used here:
- * - header_select
- * - body_sections
- */
-/**
  * Flexible Content guidance notes (minimal).
  *
  * - Header field only (header_select): remind it should be limited to 1.
- *
- * This is guidance, not enforcement.
  */
 function wpk_acf_flexible_content_notes(array $field): void
 {
-    if (!wpk_is_acf_driven_edit_screen()) {
+    if (! wpk_is_acf_driven_edit_screen()) {
         return;
     }
 
