@@ -43,7 +43,7 @@ printf(
 					</div>
 				</div>
 
-				<hr class="mt-6" />
+				<hr class="mt-6"/>
 			</header>
 
 			<?php if (have_posts()) : ?>
@@ -55,17 +55,17 @@ printf(
 						<article <?php post_class('c-card c-card--post overflow-hidden rounded-xl border'); ?>>
 							<div class="flex flex-col h-full">
 								<?php if (has_post_thumbnail()) : ?>
-									<a class="block c-card__media" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
+									<a class="block c-card__media" href="<?php the_permalink(); ?>"
+									   aria-label="<?php the_title_attribute(); ?>">
 										<?php the_post_thumbnail('large', [ 'class' => 'h-auto w-full' ]); ?>
 									</a>
 								<?php endif; ?>
 
-								<div class="flex flex-col flex-1 gap-3 p-5 c-card__body">
-									<div class="flex flex-wrap gap-y-1 gap-x-3 items-center text-sm c-card__meta">
-										<?php
-                                        if (function_exists('prelaunch_posted_on')) {
-                                            prelaunch_posted_on();
-                                        }
+								<div class="flex flex-wrap gap-y-1 gap-x-3 items-center text-sm c-card__meta">
+									<?php
+                                    if (function_exists('prelaunch_posted_on')) {
+                                        prelaunch_posted_on();
+                                    }
 
                         if (function_exists('prelaunch_post_terms')) {
                             prelaunch_post_terms(
@@ -76,10 +76,19 @@ printf(
                                 ]
                             );
                         }
-                        ?>
-									</div>
 
-									<h2 class="text-lg font-semibold leading-snug c-card__title">
+                        if (function_exists('prelaunch_get_reading_time')) {
+                            $reading_time = prelaunch_get_reading_time(get_the_ID());
+                            if ($reading_time) {
+                                echo '<span class="post-reading-time">' . esc_html($reading_time) . '</span>';
+                            }
+                        }
+                        ?>
+								</div>
+
+
+
+								<h2 class="text-lg font-semibold leading-snug c-card__title">
 										<a class="hover:underline underline-offset-4" href="<?php the_permalink(); ?>">
 											<?php the_title(); ?>
 										</a>
@@ -87,16 +96,17 @@ printf(
 
 									<div class="text-sm leading-relaxed c-card__excerpt">
 										<?php
-                        if (function_exists('prelaunch_get_excerpt')) {
-                            echo wp_kses_post(prelaunch_get_excerpt());
-                        } else {
-                            the_excerpt();
-                        }
+                            if (function_exists('prelaunch_get_excerpt')) {
+                                echo wp_kses_post(prelaunch_get_excerpt());
+                            } else {
+                                the_excerpt();
+                            }
                         ?>
 									</div>
 
 									<div class="pt-2 mt-auto">
-										<a class="text-sm hover:underline underline-offset-4" href="<?php the_permalink(); ?>">
+										<a class="text-sm hover:underline underline-offset-4"
+										   href="<?php the_permalink(); ?>">
 											<?php esc_html_e('Read more', 'prelaunch-wp'); ?>
 										</a>
 									</div>

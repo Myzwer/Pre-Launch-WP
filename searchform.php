@@ -18,7 +18,7 @@
 			type="search"
 			class="search-form__input"
 			placeholder="<?php echo esc_attr_x('Search…', 'placeholder', 'prelaunch-wp'); ?>"
-			value="<?php echo get_search_query(); ?>"
+			value="<?php echo esc_attr(get_search_query()); ?>"
 			name="s"
 		/>
 	</label>

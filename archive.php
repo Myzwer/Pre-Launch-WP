@@ -59,6 +59,10 @@ get_header();
                                 ]
                             );
                         }
+                        if (function_exists('prelaunch_get_reading_time')) {
+                            echo '<span class="post-reading-time">' . esc_html(prelaunch_get_reading_time()) . '</span>';
+                        }
+
                         ?>
 									</div>
 

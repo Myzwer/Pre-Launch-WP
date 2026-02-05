@@ -36,11 +36,6 @@ function prelaunch_posted_on($post = null, $args = [])
     $published_w3c = get_the_date(DATE_W3C, $post);
     $published_hum = get_the_date('', $post);
 
-    $modified_w3c = get_the_modified_date(DATE_W3C, $post);
-    $modified_hum = get_the_modified_date('', $post);
-
-    $is_modified = ($published_w3c !== $modified_w3c);
-
     echo '<span class="' . esc_attr($args['class']) . '">';
 
     // Published date (linked to the post).
@@ -49,13 +44,6 @@ function prelaunch_posted_on($post = null, $args = [])
     echo esc_html($published_hum);
     echo '</time>';
     echo '</a>';
-
-    // Modified date (not linked).
-    if ($is_modified) {
-        echo ' <time class="updated" datetime="' . esc_attr($modified_w3c) . '">';
-        echo esc_html($modified_hum);
-        echo '</time>';
-    }
 
     echo '</span>';
 }
