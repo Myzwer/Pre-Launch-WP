@@ -1,0 +1,66 @@
+@import "./../tailwind.css";
+
+@layer components {
+
+	/* =====================================================
+	   Card Component
+	   -----------------------------------------------------
+	   Pattern:
+	   - .card        → base card surface & containment
+	   - .card__*     → named internal parts (shared defaults)
+	   - .card--*     → usage / context variants (differences only)
+	   ===================================================== */
+
+
+	/* -----------------------------------------------------
+	   Base card
+	   -----------------------------------------------------
+	   Structural rules that apply to ALL cards site-wide.
+	   No color or context-specific styling lives here.
+	   ----------------------------------------------------- */
+	.card {
+		@apply border-1 shadow-xl rounded-xl overflow-hidden;
+	}
+
+
+	/* -----------------------------------------------------
+	   Card parts (shared defaults)
+	   -----------------------------------------------------
+	   These define the "normal" card layout and rhythm.
+	   Variants should only override these when necessary.
+	   ----------------------------------------------------- */
+
+	.card .card__body {
+		@apply p-4;
+	}
+
+	.card .card__meta {
+		@apply pb-3;
+	}
+
+	.card .card__title {
+		@apply text-xl font-bold pb-2;
+	}
+
+	.card .card__content {
+		@apply pb-5;
+	}
+
+	.card .card__cta {
+		@apply hover:underline;
+	}
+
+
+	/* -----------------------------------------------------
+	   Blog card variant
+	   -----------------------------------------------------
+	   Contextual differences for blog usage only.
+	   Keep this section minimal — override, don’t rewrite.
+	   ----------------------------------------------------- */
+
+	.card--blog .card__body {
+		@apply bg-white;
+	}
+
+
+}
