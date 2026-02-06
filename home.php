@@ -81,22 +81,42 @@ $tags = get_tags(
 					</div>
 
 					<div class="col-span-8">
-						<div class="grid-12">
-							<?php if (have_posts()) :
-							    while (have_posts()) :
-							        the_post();
-							        ?>
+
+						<?php if (have_posts()) : ?>
+
+							<div class="grid-12">
+								<?php
+						        while (have_posts()) :
+						            the_post();
+						            ?>
 									<div class="col-span-6">
-									<?php get_template_part('template-parts/blog/card'); ?>
+										<?php get_template_part('template-parts/blog/card'); ?>
 									</div>
 								<?php
-							    endwhile;
-							endif; ?>
-						</div>
+						        endwhile;
+						    ?>
+							</div>
+
+							<div class="mt-8">
+								<?php
+						    // Outputs pagination for the main query (helper should handle 1-page cases).
+						    if (function_exists('prelaunch_pagination')) {
+						        prelaunch_pagination();
+						    } else {
+						        the_posts_pagination();
+						    }
+?>
+							</div>
+
+						<?php else : ?>
+
+							<p class="mt-2">
+								<?php esc_html_e("We couldn't find any posts.", 'prelaunch-wp'); ?>
+							</p>
+						<?php endif; ?>
+
 					</div>
 				</div>
-
-			</div>
 		</section>
 	</main>
 
