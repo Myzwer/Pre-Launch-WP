@@ -1,9 +1,17 @@
 <?php
 /**
- * Blog index template (Posts page).
+ *  Blog index template (Posts page).
  *
- * Renders a filter sidebar (search + taxonomy filters) and a post list.
- * Filters submit via GET and are applied to the main query in includes/posts/queries.php.
+ *  Renders the main blog listing with:
+ *  - sidebar filters (search, categories, tags)
+ *  - post card grid
+ *  - pagination
+ *
+ *  Notes:
+ *  - Filtering logic is prepared inline at the top of this file and passed
+ *    into template parts via `get_template_part( ..., $args )`.
+ *  - This template is intentionally verbose to keep all blog query state
+ *    visible in one place.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#home-php
  * @link https://developer.wordpress.org/themes/basics/the-loop/
@@ -57,87 +65,20 @@ $tags = get_tags(
 
 				<div class="grid-12">
 					<div class="col-span-4">
-						<aside class = "card">
-							<div class="card__body">
-								<form method="get" action="<?php echo esc_url($posts_page_url); ?>" class="grid gap-6">
-									<div class="grid gap-2">
-										<label class="text-sm font-semibold" for="pl-search">
-											<?php esc_html_e('Search', 'prelaunch-wp'); ?>
-										</label>
-										<input
-											id="pl-search"
-											type="search"
-											name="s"
-											value="<?php echo esc_attr($search_query); ?>"
-											class="py-2 px-3 w-full rounded-lg border"
-											placeholder="<?php echo esc_attr_x('Search posts…', 'placeholder', 'prelaunch-wp'); ?>"
-										/>
-									</div>
-
-									<?php if (! empty($categories)) : ?>
-										<fieldset class="grid gap-3">
-											<legend class="text-sm font-semibold">
-												<?php esc_html_e('Categories', 'prelaunch-wp'); ?>
-											</legend>
-
-											<div class="grid gap-2">
-												<?php foreach ($categories as $cat) : ?>
-													<label class="grid gap-2 items-start text-sm grid-cols-[auto_1fr]">
-														<input
-															type="checkbox"
-															name="pl_cat[]"
-															value="<?php echo esc_attr((int) $cat->term_id); ?>"
-															<?php checked(in_array((int) $cat->term_id, $selected_cats, true)); ?>
-															class="mt-1"
-														/>
-														<span>
-													<?php echo esc_html($cat->name); ?>
-												</span>
-													</label>
-												<?php endforeach; ?>
-											</div>
-										</fieldset>
-									<?php endif; ?>
-
-									<?php if (! empty($tags)) : ?>
-										<fieldset class="grid gap-3">
-											<legend class="text-sm font-semibold">
-												<?php esc_html_e('Tags', 'prelaunch-wp'); ?>
-											</legend>
-
-											<div class="grid gap-2">
-												<?php foreach ($tags as $tag) : ?>
-													<label class="grid gap-2 items-start text-sm grid-cols-[auto_1fr]">
-														<input
-															type="checkbox"
-															name="pl_tag[]"
-															value="<?php echo esc_attr((int) $tag->term_id); ?>"
-															<?php checked(in_array((int) $tag->term_id, $selected_tags, true)); ?>
-															class="mt-1"
-														/>
-														<span>
-													<?php echo esc_html($tag->name); ?>
-												</span>
-													</label>
-												<?php endforeach; ?>
-											</div>
-										</fieldset>
-									<?php endif; ?>
-
-									<div class="grid gap-3">
-										<button type="submit" class="justify-center w-full cursor-pointer btn_main">
-											<?php esc_html_e('Apply filters', 'prelaunch-wp'); ?>
-										</button>
-
-										<a class="justify-center w-full text-center btn_ghost_black" href="<?php echo esc_url($clear_url); ?>">
-											<?php esc_html_e('Clear', 'prelaunch-wp'); ?>
-										</a>
-									</div>
-								</form>
-							</div>
-						</aside>
+						<?php get_template_part(
+						    'template-parts/blog/filters',
+						    null,
+						    [
+						        'posts_page_url' => $posts_page_url,
+						        'categories' => $categories,
+						        'tags' => $tags,
+						        'selected_cats' => $selected_cats,
+						        'selected_tags' => $selected_tags,
+						        'search_query' => $search_query,
+						        'clear_url' => $clear_url,
+						    ]
+						); ?>
 					</div>
-
 
 					<div class="col-span-8">
 						<div class="grid-12">
@@ -146,60 +87,12 @@ $tags = get_tags(
 							        the_post();
 							        ?>
 									<div class="col-span-6">
-										<article class="card card--blog">
-											<?php if (has_post_thumbnail()) : ?>
-												<a class="card--media" href="<?php the_permalink(); ?>"
-												   aria-label="<?php the_title_attribute(); ?>">
-													<?php the_post_thumbnail('large', [ 'class' => 'h-auto w-full' ]); ?>
-												</a>
-											<?php endif; ?>
-
-											<div class="card__body">
-												<div class="card__meta">
-													<?php
-							                        if (function_exists('prelaunch_posted_on')) {
-							                            prelaunch_posted_on();
-							                        }
-
-							        echo ' - ';
-
-							        if (function_exists('prelaunch_get_reading_time')) {
-							            echo '<span class="post-reading-time">' . esc_html(prelaunch_get_reading_time()) . '</span>';
-							        }
-
-							        echo ' - ';
-
-							        if (function_exists('prelaunch_post_terms')) {
-							            prelaunch_post_terms('category', [ 'class' => 'post-terms post-terms--categories', 'separator' => ', ' ]);
-							        }
-							        ?>
-												</div>
-
-												<h2 class="card__title">
-													<a href="<?php the_permalink(); ?>">
-														<?php the_title(); ?>
-													</a>
-												</h2>
-
-												<div class="card__content">
-													<?php echo wp_kses_post(function_exists('prelaunch_get_excerpt') ? prelaunch_get_excerpt() : get_the_excerpt()); ?>
-												</div>
-
-												<div class="">
-													<a class = "card__cta" href="<?php the_permalink(); ?>">
-														<?php esc_html_e('Read more', 'prelaunch-wp'); ?>
-													</a>
-												</div>
-										</article>
-
+									<?php get_template_part('template-parts/blog/card'); ?>
 									</div>
 								<?php
 							    endwhile;
-							endif;
-?>
+							endif; ?>
 						</div>
-
-
 					</div>
 				</div>
 
