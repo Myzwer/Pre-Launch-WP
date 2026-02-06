@@ -53,7 +53,7 @@ $tags = get_tags(
 );
 ?>
 
-	<main class="site-main">
+	<main>
 		<section class="section">
 			<div class="py-10 wrap">
 
@@ -64,7 +64,7 @@ $tags = get_tags(
 				</header>
 
 				<div class="grid-12">
-					<div class="col-span-4">
+					<div class="col-span-12 mb-10 md:col-span-4">
 						<?php get_template_part(
 						    'template-parts/blog/filters',
 						    null,
@@ -80,7 +80,7 @@ $tags = get_tags(
 						); ?>
 					</div>
 
-					<div class="col-span-8">
+					<div class="col-span-12 md:col-span-8">
 
 						<?php if (have_posts()) : ?>
 
@@ -89,7 +89,7 @@ $tags = get_tags(
 						        while (have_posts()) :
 						            the_post();
 						            ?>
-									<div class="col-span-6">
+									<div class="col-span-12 md:col-span-6">
 										<?php get_template_part('template-parts/blog/card'); ?>
 									</div>
 								<?php
