@@ -167,6 +167,54 @@ function prelaunch_get_reading_time($post = null, $args = [])
 }
 
 /**
+ * Displays a human-readable post date.
+ *
+ * - Shows "Just now" for posts under 1 hour old
+ * - Shows "X hours ago" for posts under 24 hours old
+ * - Shows "X days ago" for posts under 7 days old
+ * - Falls back to WordPress formatted date for older posts
+ *
+ * @param string $format Optional. PHP date format passed to get_the_date().
+ *                       Default empty string uses WordPress date settings.
+ *
+ * @return string Human-readable date string.
+ */
+function prelaunch_display_date(string $format = ''): string
+{
+
+    $post_time = get_the_time('U');            // publish timestamp
+    $current_time = current_time('timestamp');     // WP "now" timestamp
+    $seconds = $current_time - $post_time;
+
+    // If future-dated (scheduled) or something weird, show normal date
+    if ($seconds < 0) {
+        return get_the_date($format);
+    }
+
+    $hours = floor($seconds / 3600);
+
+    // Less than 1 hour
+    if ($hours < 1) {
+        return 'Just now';
+    }
+
+    // Less than 24 hours
+    if ($hours < 24) {
+        return ($hours === 1) ? '1 hour ago' : $hours . ' hours ago';
+    }
+
+    $days = floor($seconds / 86400);
+
+    // Less than 7 days
+    if ($days < 7) {
+        return ($days === 1) ? '1 day ago' : $days . ' days ago';
+    }
+
+    // 7+ days old: normal date (optionally formatted)
+    return get_the_date($format);
+}
+
+/**
  * Get a WP_Query of related posts for a given post.
  *
  * Related order:
