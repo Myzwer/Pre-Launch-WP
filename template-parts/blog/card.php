@@ -32,9 +32,7 @@
 	<div class="card__body">
 		<div class="card__meta">
 			<?php
-			if (function_exists('prelaunch_posted_on')) {
-				prelaunch_posted_on();
-			}
+			echo prelaunch_display_date();
 
 			echo ' - ';
 
