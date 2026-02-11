@@ -43,7 +43,6 @@ function prelaunch_posts_setup()
      * Editor-related supports (Gutenberg compatibility).
      *
      * These are safe defaults for a starter theme even if most pages use ACF.
-     * If you decide to keep the editor "unstyled," we can remove editor-styles later.
      *
      * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/
      */
