@@ -10,11 +10,12 @@
  * @link https://developer.wordpress.org/reference/functions/get_theme_file_path/
  */
 
-/* Posts / content system (blog now, CPT-ready utilities later) */
+/* Posts / content system */
 require_once get_theme_file_path('includes/posts/setup.php');
 require_once get_theme_file_path('includes/posts/content.php');
 require_once get_theme_file_path('includes/posts/queries.php');
 require_once get_theme_file_path('includes/posts/template-tags.php');
+require_once get_theme_file_path('includes/posts/editor.php');
 
 /* WordPress theme features (menus, assets, shortcodes, etc.) */
 require_once get_theme_file_path('includes/wordpress/enqueue.php');
