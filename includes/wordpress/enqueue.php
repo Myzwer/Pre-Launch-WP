@@ -85,3 +85,13 @@ function windpeak_enqueue_font_awesome(): void
 }
 // Load FA early so icons/styles are available as soon as possible.
 add_action('wp_enqueue_scripts', 'windpeak_enqueue_font_awesome', 5);
+
+add_action('enqueue_block_editor_assets', function () {
+    wp_enqueue_script(
+        'prelaunch-editor-block-styles',
+        get_theme_file_uri('/assets/admin/editor-block-styles.js'),
+        ['wp-blocks', 'wp-dom-ready', 'wp-edit-post'],
+        null,
+        true
+    );
+});
