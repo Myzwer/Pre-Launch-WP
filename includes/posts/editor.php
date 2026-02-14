@@ -118,9 +118,7 @@ add_filter('allowed_block_types_all', function ($allowed_block_types, $editor_co
         'core/button',
 
         // Embeds (strict allowlist)
-        // We intentionally do NOT allow core/embed or broad providers.
-        'core-embed/youtube',
-        'core-embed/vimeo',
+        'core/embed',
 
         // Gravity Forms (must remain usable)
         'gravityforms/form',

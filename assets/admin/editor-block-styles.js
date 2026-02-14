@@ -1,29 +1,61 @@
 /**
- * Gutenberg Button Style Controls (Editor Only)
- * ----------------------------------------------
- * This script modifies the core Button block style options
- * inside the block editor.
+ * Gutenberg Editor Controls (Editor Only)
+ * ========================================
  *
- * Purpose:
- * - Remove WordPress default button styles ("Fill" and "Outline").
- * - Prevent editors from selecting unstyled core variants.
- * - Keep only theme-defined button style variations available.
+ * Responsibility
+ * --------------
+ * Applies editor-level constraints to core Gutenberg blocks
+ * to enforce alignment with the theme design system.
  *
- * What it does:
- * - Runs on wp.domReady.
- * - Unregisters core/button styles: "fill" and "outline".
+ * Scope
+ * -----
+ * - Executes in the block editor only.
+ * - Does not affect frontend rendering.
  *
- * Important notes:
- * - This affects the block editor UI only.
- * - It does not change frontend rendering.
- * - Custom button styles are registered in PHP via register_block_style().
+ * Behavior
+ * --------
+ * 1) Button Style Restrictions
+ *    - Removes core Button block default styles ("fill", "outline").
+ *    - Ensures only theme-defined style variations are available.
  *
- * Related files:
- * - /includes/posts/editor.php → registers custom block styles
- * - /assets/src/css/tailwind.css → defines frontend button styling
+ * 2) Embed Provider Restrictions
+ *    - Allows the core/embed block.
+ *    - Removes all provider variations except YouTube and Vimeo.
+ *
+ * Rationale
+ * ---------
+ * - Prevents editors from selecting styles that conflict with the design system.
+ * - Limits embed providers to a controlled, article-safe subset.
+ * - Maintains a predictable authoring surface across all sites using this starter theme.
+ *
+ * Dependencies
+ * ------------
+ * - Custom button styles are registered server-side via register_block_style().
+ * - Visual styling is handled by blocks.css (Gutenberg bridge layer).
+ *
+ * Related Files
+ * -------------
+ * - /includes/posts/editor.php     → block allowlist + style registration
+ * - /assets/src/css/blocks.css     → Gutenberg-to-design-system mappings
+ * - /assets/public/css/blocks.css  → compiled bridge stylesheet
  */
 wp.domReady(() => {
-	// Remove core defaults so editors can't choose them.
-	wp.blocks.unregisterBlockStyle('core/button', 'fill');
-	wp.blocks.unregisterBlockStyle('core/button', 'outline');
+	// ---------------------------------------------------------------------
+	// Button: remove core default styles
+	// ---------------------------------------------------------------------
+	wp.blocks.unregisterBlockStyle("core/button", "fill");
+	wp.blocks.unregisterBlockStyle("core/button", "outline");
+
+	// ---------------------------------------------------------------------
+	// Embed: restrict provider variations
+	// ---------------------------------------------------------------------
+	const allowed = new Set(["youtube", "vimeo"]);
+
+	const variations = wp.blocks.getBlockVariations("core/embed") || [];
+
+	variations.forEach((variation) => {
+		if (variation?.name && !allowed.has(variation.name)) {
+			wp.blocks.unregisterBlockVariation("core/embed", variation.name);
+		}
+	});
 });
