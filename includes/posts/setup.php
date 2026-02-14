@@ -10,25 +10,15 @@
  * @link https://developer.wordpress.org/reference/functions/add_theme_support/
  */
 
-function prelaunch_posts_setup()
-{
-    /**
-     * Featured images (post thumbnails).
-     *
-     * Used by blog posts and commonly reused by CPTs later.
-     *
-     * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-     */
-    add_theme_support('post-thumbnails');
+if (! function_exists('prelaunch_posts_setup')) {
+    function prelaunch_posts_setup(): void
+    {
+        // FEATURE: Featured images (post thumbnails).
+        add_theme_support('post-thumbnails');
 
-    /**
-     * Use valid HTML5 markup for core templates.
-     *
-     * @link https://developer.wordpress.org/reference/functions/add_theme_support/#html5
-     */
-    add_theme_support(
-        'html5',
-        [
+        // FEATURE: Use valid HTML5 markup for core templates.
+        // @link https://developer.wordpress.org/reference/functions/add_theme_support/#html5
+        add_theme_support('html5', [
             'search-form',
             'comment-form',
             'comment-list',
@@ -36,28 +26,19 @@ function prelaunch_posts_setup()
             'caption',
             'style',
             'script',
-        ]
-    );
+        ]);
 
-    /**
-     * Editor-related supports (Gutenberg compatibility).
-     *
-     * These are safe defaults for a starter theme even if most pages use ACF.
-     *
-     * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/
-     */
-    add_theme_support('wp-block-styles');
-    add_theme_support('editor-styles');
+        // EDITOR: Gutenberg compatibility defaults.
+        // @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/
+        add_theme_support('wp-block-styles');
+        add_theme_support('editor-styles');
 
-    /**
-     * Allow wide/full alignments for blocks.
-     * Optional, but commonly expected for blog content.
-     */
-    add_theme_support('align-wide');
+        // EDITOR: Allow wide/full alignments for blocks.
+        add_theme_support('align-wide');
 
-    /**
-     * Responsive embeds for oEmbed content.
-     */
-    add_theme_support('responsive-embeds');
+        // FEATURE: Responsive embeds for oEmbed content.
+        add_theme_support('responsive-embeds');
+    }
 }
+
 add_action('after_setup_theme', 'prelaunch_posts_setup');
