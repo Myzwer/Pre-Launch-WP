@@ -1,34 +1,71 @@
 /**
  * Pagination
  * =================================
- * This controls what the pagionation buttons at the bottom of the blog page look like
- *
- *
- *
- *
- *
+ * Styles WordPress paginate_links() output:
+ * <nav class="pagination">
+ *   <ul class="page-numbers">
+ *     <li><a class="prev page-numbers">...</a></li>
+ *     <li><a class="page-numbers">2</a></li>
+ *     <li><span class="page-numbers dots">…</span></li>
+ *     <li><span class="page-numbers current">5</span></li>
+ *     ...
+ *   </ul>
+ * </nav>
  */
-/* stylelint-disable selector-no-qualifying-type */
-.pagination ul {
-  margin-top: 40px;
-}
-.pagination li {
-  display: inline;
-}
-.pagination li a,
-.pagination li a:hover,
-.pagination li.active a,
-.pagination li.disabled {
-  background-color: #333333;
-  border-radius: 3px;
-  color: #dddddd;
-  cursor: pointer;
-  padding: 0.75em;
-  text-decoration: none;
-}
-.pagination li a:hover,
-.pagination li.active a {
-  background-color: #000000;
-}
 
-/* stylelint-enable selector-no-qualifying-type */
+@import "./../tailwind.css";
+
+@layer components {
+	.pagination {
+		@apply mt-12;
+	}
+
+	.pagination .page-numbers {
+		@apply flex items-center justify-center gap-2;
+	}
+
+	/* Base: all pagination items */
+	.pagination .page-numbers a,
+	.pagination .page-numbers span {
+		@apply inline-flex items-center justify-center
+		h-10 min-w-10 px-3
+		rounded-md
+		font-semibold
+		text-black
+		transition
+		focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+	}
+
+	/* Number links (default state) */
+	.pagination .page-numbers a.page-numbers:not(.prev):not(.next) {
+		@apply bg-transparent;
+	}
+	.pagination .page-numbers a.page-numbers:not(.prev):not(.next):hover {
+		@apply bg-soft-1;
+	}
+
+	/* Current page (the highlighted button in your screenshot) */
+	.pagination .page-numbers .current {
+		@apply bg-primary text-black;
+	}
+
+	/* Ellipsis */
+	.pagination .page-numbers .dots {
+		@apply bg-transparent px-2 opacity-60 cursor-default;
+	}
+
+	/* Prev / Next icon buttons */
+	.pagination .page-numbers a.prev,
+	.pagination .page-numbers a.next {
+		@apply bg-primary text-black px-0 w-10;
+	}
+	.pagination .page-numbers a.prev:hover,
+	.pagination .page-numbers a.next:hover {
+		@apply brightness-95;
+	}
+
+	/* Keep FA icons centered */
+	.pagination .page-numbers i {
+		@apply leading-none;
+	}
+}

@@ -71,9 +71,12 @@ function prelaunch_pagination($query = null, $args = [])
         'current' => $current,
         'mid_size' => 2,
         'end_size' => 1,
-        'prev_text' => __('Previous', 'prelaunch-wp'),
-        'next_text' => __('Next', 'prelaunch-wp'),
-        'type' => 'list', // outputs <ul class="page-numbers">…</ul>
+
+        // Swap text for FA icons (+ screen reader text)
+        'prev_text' => '<span class="sr-only">' . esc_html__('Previous', 'prelaunch-wp') . '</span><i class="fa-solid fa-angle-left" aria-hidden="true"></i>',
+        'next_text' => '<span class="sr-only">' . esc_html__('Next', 'prelaunch-wp') . '</span><i class="fa-solid fa-angle-right" aria-hidden="true"></i>',
+
+        'type' => 'list',
     ];
 
     $links = paginate_links(array_merge($defaults, $args));
