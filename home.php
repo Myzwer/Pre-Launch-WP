@@ -1,17 +1,20 @@
 <?php
 /**
- *  Blog index template (Posts page).
+ * Blog index (Posts page)
  *
- *  Renders the main blog listing with:
- *  - sidebar filters (search, categories, tags)
- *  - post card grid
- *  - pagination
+ * Renders the main blog archive including:
+ * - Sidebar filters (categories, tags, search)
+ * - Post loop
+ * - Pagination
  *
- *  Notes:
- *  - Filtering logic is prepared inline at the top of this file and passed
- *    into template parts via `get_template_part( ..., $args )`.
- *  - This template is intentionally verbose to keep all blog query state
- *    visible in one place.
+ * Notes:
+ * - Filtering behavior is handled in queries.php (pre_get_posts).
+ * - This file prepares selected filter state for the UI.
+ *
+ * Related:
+ * - template-parts/blog/filters.php
+ * - template-parts/blog/card.php
+ * - queries.php
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#home-php
  * @link https://developer.wordpress.org/themes/basics/the-loop/
@@ -24,18 +27,30 @@ $posts_page_url = $posts_page_id ? get_permalink($posts_page_id) : home_url('/')
 $page_title = $posts_page_id ? get_the_title($posts_page_id) : __('Blog', 'prelaunch-wp');
 
 // Preserve Filter State
-$parse_id_list = static function ($value): array {
-    if (is_string($value)) {
-        $value = preg_split('/\s*,\s*/', $value, -1, PREG_SPLIT_NO_EMPTY);
-    }
-    if (! is_array($value)) {
-        return [];
-    }
-    return array_values(array_filter(array_map('absint', $value)));
-};
+// STATE: Normalize selected filters from URL.
+if (function_exists('prelaunch_parse_id_list')) {
+    $selected_cats = prelaunch_parse_id_list(
+        isset($_GET['pl_cat']) ? wp_unslash($_GET['pl_cat']) : []
+    );
 
-$selected_cats = $parse_id_list(isset($_GET['pl_cat']) ? wp_unslash($_GET['pl_cat']) : []);
-$selected_tags = $parse_id_list(isset($_GET['pl_tag']) ? wp_unslash($_GET['pl_tag']) : []);
+    $selected_tags = prelaunch_parse_id_list(
+        isset($_GET['pl_tag']) ? wp_unslash($_GET['pl_tag']) : []
+    );
+} else {
+    // Fallback (should not normally run).
+    $parse_id_list = static function ($value): array {
+        if (is_string($value)) {
+            $value = preg_split('/\s*,\s*/', $value, -1, PREG_SPLIT_NO_EMPTY);
+        }
+        if (! is_array($value)) {
+            return [];
+        }
+        return array_values(array_filter(array_map('absint', $value)));
+    };
+
+    $selected_cats = $parse_id_list(isset($_GET['pl_cat']) ? wp_unslash($_GET['pl_cat']) : []);
+    $selected_tags = $parse_id_list(isset($_GET['pl_tag']) ? wp_unslash($_GET['pl_tag']) : []);
+}
 
 $search_query = get_search_query();
 
