@@ -1,0 +1,102 @@
+/**
+ * Blocks Bridge Stylesheet
+ * =========================
+ *
+ * Responsibility
+ * --------------
+ * Provides a styling bridge between core Gutenberg block markup
+ * (.wp-block-*) and the theme design system.
+ *
+ * This file intentionally contains only block-specific selectors.
+ * It does not define design tokens or core component styles.
+ *
+ * Architecture
+ * ------------
+ * - frontend.css → design system (tokens, utilities, components)
+ * - blocks.css   → maps Gutenberg output to that system
+ *
+ * Load Order Requirements
+ * -----------------------
+ * Must load AFTER:
+ * - wp-block-library (core block styles)
+ * - windpeak-frontend (theme design system)
+ *
+ * Editor Support
+ * --------------
+ * Selectors are scoped to:
+ * - Frontend markup
+ * - .editor-styles-wrapper (block editor canvas)
+ *
+ * This allows a single stylesheet to power both frontend rendering
+ * and editor preview without loading the entire design system into wp-admin.
+ */
+
+
+/* Frontend + Editor scope */
+.wp-block-button .wp-block-button__link.wp-element-button,
+.editor-styles-wrapper .wp-block-button .wp-block-button__link.wp-element-button {
+	/* “Main CTA” baseline */
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+
+	padding: 0.75rem 1.25rem;
+	border-radius: 0.5rem;
+
+	font-weight: 600;
+	text-decoration: none;
+
+	border: 0;
+	background-color: var(--color-primary, #63C1E9);
+	color: var(--color-black, #0F172A);
+
+	transition: filter 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.wp-block-button .wp-block-button__link.wp-element-button:hover,
+.editor-styles-wrapper .wp-block-button .wp-block-button__link.wp-element-button:hover {
+	filter: brightness(0.95);
+}
+
+/* Secondary */
+.wp-block-button.is-style-btn-secondary .wp-block-button__link.wp-element-button,
+.editor-styles-wrapper .wp-block-button.is-style-btn-secondary .wp-block-button__link.wp-element-button {
+	background-color: var(--color-secondary, #397B52);
+	color: var(--color-black, #0F172A);
+}
+
+/* Light */
+.wp-block-button.is-style-btn-light .wp-block-button__link.wp-element-button,
+.editor-styles-wrapper .wp-block-button.is-style-btn-light .wp-block-button__link.wp-element-button {
+	background-color: var(--color-white, #F8FAFC);
+	color: var(--color-black, #0F172A);
+	border: 1px solid var(--color-black, #0F172A);
+	filter: none;
+}
+
+/* Dark */
+.wp-block-button.is-style-btn-dark .wp-block-button__link.wp-element-button,
+.editor-styles-wrapper .wp-block-button.is-style-btn-dark .wp-block-button__link.wp-element-button {
+	background-color: var(--color-black, #0F172A);
+	color: var(--color-white, #F8FAFC);
+	filter: none;
+}
+
+/* Ghost (White) */
+.wp-block-button.is-style-btn-ghost-white .wp-block-button__link.wp-element-button,
+.editor-styles-wrapper .wp-block-button.is-style-btn-ghost-white .wp-block-button__link.wp-element-button {
+	background-color: transparent;
+	color: var(--color-white, #F8FAFC);
+	border: 1px solid var(--color-white, #F8FAFC);
+	filter: none;
+}
+
+/* Ghost (Black) */
+.wp-block-button.is-style-btn-ghost-black .wp-block-button__link.wp-element-button,
+.editor-styles-wrapper .wp-block-button.is-style-btn-ghost-black .wp-block-button__link.wp-element-button {
+	background-color: transparent;
+	color: var(--color-black, #0F172A);
+	border: 1px solid var(--color-black, #0F172A);
+	filter: none;
+}

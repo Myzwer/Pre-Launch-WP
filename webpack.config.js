@@ -133,9 +133,12 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
 	},
 
-	entry: "./assets/src/js/frontend.ts",
+	entry: {
+		frontend: "./assets/src/js/frontend.ts",
+		blocks: "./assets/src/js/blocks.ts",
+	},
 	output: {
-		filename: "frontend.js",
+		filename: "[name].js",
 		path: path.resolve(__dirname, "assets/public/js"),
 	},
 
@@ -164,7 +167,7 @@ module.exports = {
 			: []),
 
 		new MiniCssExtractPlugin({
-			filename: "../css/frontend.css",
+			filename: "../css/[name].css",
 		}),
 
 		new CopyWebpackPlugin({

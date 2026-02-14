@@ -1,16 +1,26 @@
 <?php
 
 /**
- * Asset loading
+ * Asset Loading Strategy
+ * ======================
  *
- * Enqueues the theme’s compiled frontend assets (CSS/JS), plus optional vendor
- * assets that are shipped with the theme (e.g., Font Awesome).
+ * This theme intentionally separates styling into two layers:
  *
- * This theme assumes a single compiled bundle for CSS and JS:
- * - /assets/public/css/frontend.css
- * - /assets/public/js/frontend.js
+ * 1) frontend.css / frontend.js
+ *    - Core design system + runtime JS.
+ *    - Tokens, utilities, components, site-wide UI patterns.
  *
- * Versions use file modification times (filemtime) when available to reduce
+ * 2) blocks.css
+ *    - Gutenberg bridge layer.
+ *    - Maps core block markup (.wp-block-*) to the design system.
+ *
+ * blocks.css is loaded:
+ * - On the frontend (after wp-block-library + frontend.css), so theme styles can
+ *   override core block defaults.
+ * - In the block editor (scoped via .editor-styles-wrapper selectors inside
+ *   blocks.css) for preview parity without styling wp-admin chrome.
+ *
+ * Versioning uses file modification times (filemtime) when available to reduce
  * caching issues during development and after deployments.
  *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/
@@ -53,10 +63,43 @@ function windpeak_enqueue_assets(): void
 add_action('wp_enqueue_scripts', 'windpeak_enqueue_assets');
 
 /**
+ * Enqueue Gutenberg bridge stylesheet (frontend).
+ *
+ * Responsibility:
+ * - Maps core block markup (.wp-block-*) to theme styles.
+ *
+ * Load Order Requirement:
+ * - Must load after wp-block-library so theme styles override core block styles.
+ * - Must load after windpeak-frontend so design tokens/variables are available.
+ *
+ * Policy:
+ * - Loaded globally. If block markup exists anywhere, it should render correctly.
+ */
+function windpeak_enqueue_blocks_bridge_css(): void
+{
+    $theme_version = wp_get_theme()->get('Version');
+
+    $rel_path = '/assets/public/css/blocks.css';
+    $file = get_theme_file_path($rel_path);
+    $ver = file_exists($file) ? (string) filemtime($file) : $theme_version;
+
+    wp_enqueue_style(
+        'windpeak-blocks',
+        get_theme_file_uri($rel_path),
+        [
+            'wp-block-library',
+            'windpeak-frontend',
+        ],
+        $ver
+    );
+}
+add_action('wp_enqueue_scripts', 'windpeak_enqueue_blocks_bridge_css');
+
+/**
  * Enqueue Font Awesome (self-hosted).
  *
  * This theme uses <i> tag classnames for icons (no SVG/JS runtime). To avoid
- * Font Awesome Kit “late loading,” we ship the FA CSS + webfonts locally.
+ * Font Awesome Kit “late loading,” FA CSS + webfonts are shipped locally.
  *
  * Required output structure (relative paths matter):
  * - /assets/public/vendor/fontawesome/css/all.min.css
@@ -86,6 +129,13 @@ function windpeak_enqueue_font_awesome(): void
 // Load FA early so icons/styles are available as soon as possible.
 add_action('wp_enqueue_scripts', 'windpeak_enqueue_font_awesome', 5);
 
+/**
+ * Block editor-only behavior controls.
+ *
+ * editor-block-styles.js adjusts the available style variations for core blocks
+ * (e.g., removes core Button defaults like "Fill" and "Outline") to keep authoring
+ * options aligned with the theme's design system.
+ */
 add_action('enqueue_block_editor_assets', function () {
     wp_enqueue_script(
         'prelaunch-editor-block-styles',
@@ -95,3 +145,33 @@ add_action('enqueue_block_editor_assets', function () {
         true
     );
 });
+
+/**
+ * Enqueue Gutenberg bridge stylesheet (block editor).
+ *
+ * Purpose:
+ * - Align block editor preview with frontend rendering.
+ *
+ * Notes:
+ * - Loads only inside the block editor.
+ * - Does not enqueue the full frontend stylesheet to avoid unintended wp-admin UI
+ *   side effects.
+ * - blocks.css selectors include .editor-styles-wrapper to scope styling to the
+ *   editor canvas.
+ */
+function windpeak_enqueue_blocks_editor_assets(): void
+{
+    $theme_version = wp_get_theme()->get('Version');
+
+    $rel_path = '/assets/public/css/blocks.css';
+    $file = get_theme_file_path($rel_path);
+    $ver = file_exists($file) ? (string) filemtime($file) : $theme_version;
+
+    wp_enqueue_style(
+        'windpeak-blocks-editor',
+        get_theme_file_uri($rel_path),
+        [],
+        $ver
+    );
+}
+add_action('enqueue_block_editor_assets', 'windpeak_enqueue_blocks_editor_assets');
