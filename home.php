@@ -23,12 +23,19 @@ $posts_page_id = (int) get_option('page_for_posts');
 $posts_page_url = $posts_page_id ? get_permalink($posts_page_id) : home_url('/');
 $page_title = $posts_page_id ? get_the_title($posts_page_id) : __('Blog', 'prelaunch-wp');
 
-// Preserve filter state.
-$raw_cats = isset($_GET['pl_cat']) ? (array) wp_unslash($_GET['pl_cat']) : [];
-$raw_tags = isset($_GET['pl_tag']) ? (array) wp_unslash($_GET['pl_tag']) : [];
+// Preserve Filter State
+$parse_id_list = static function ($value): array {
+    if (is_string($value)) {
+        $value = preg_split('/\s*,\s*/', $value, -1, PREG_SPLIT_NO_EMPTY);
+    }
+    if (! is_array($value)) {
+        return [];
+    }
+    return array_values(array_filter(array_map('absint', $value)));
+};
 
-$selected_cats = array_values(array_filter(array_map('absint', $raw_cats)));
-$selected_tags = array_values(array_filter(array_map('absint', $raw_tags)));
+$selected_cats = $parse_id_list(isset($_GET['pl_cat']) ? wp_unslash($_GET['pl_cat']) : []);
+$selected_tags = $parse_id_list(isset($_GET['pl_tag']) ? wp_unslash($_GET['pl_tag']) : []);
 
 $search_query = get_search_query();
 
