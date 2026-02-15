@@ -25,6 +25,7 @@
 	}
 
 	/* Base: all pagination items */
+	/* Base: all pagination items */
 	.pagination .page-numbers a,
 	.pagination .page-numbers span {
 		@apply inline-flex items-center justify-center
@@ -33,7 +34,10 @@
 		font-semibold
 		text-black
 		transition
-		focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+		focus:outline-none
+		focus-visible:ring-2
+		focus-visible:ring-offset-2
+		focus-visible:ring-primary;
 	}
 
 	/* Number links (default state) */
