@@ -7,11 +7,17 @@
  * - Restrict Gutenberg block list for post_type=post.
  * - Define a strict, brand-only color palette.
  * - Disable arbitrary custom colors & gradients.
+ * - Provide controlled font size presets for posts.
+ * - Register branded core/button styles (remove WP defaults).
  *
  * Notes:
  * - Brand colors are defined once in $brand_colors.
  * - If you update Tailwind tokens, update the hex here as well.
  * - The palette is site-wide by design.
+ *
+ * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/
+ * @link https://developer.wordpress.org/reference/hooks/allowed_block_types_all/
+ * @link https://developer.wordpress.org/reference/hooks/register_block_type_args/
  */
 
 defined('ABSPATH') || exit;
@@ -24,7 +30,6 @@ defined('ABSPATH') || exit;
  * Single source of truth for editor palette.
  * Keep naming consistent with Tailwind tokens.
  */
-
 $brand_colors = [
     // Neutrals
     'black' => '#0F172A',
@@ -40,12 +45,14 @@ $brand_colors = [
 ];
 
 /**
- * Register editor color palette + disable custom colors.
+ * Register editor palette, disable custom colors/gradients, and define font size presets.
  */
 add_action('after_setup_theme', function () use ($brand_colors) {
 
+    // ---------------------------------------------------------------------
+    // Color palette (brand-only)
+    // ---------------------------------------------------------------------
     add_theme_support('editor-color-palette', [
-
         [
             'name' => __('Black', 'prelaunch-wp'),
             'slug' => 'black',
@@ -56,7 +63,6 @@ add_action('after_setup_theme', function () use ($brand_colors) {
             'slug' => 'white',
             'color' => $brand_colors['white'],
         ],
-
         [
             'name' => __('Primary', 'prelaunch-wp'),
             'slug' => 'primary',
@@ -67,7 +73,6 @@ add_action('after_setup_theme', function () use ($brand_colors) {
             'slug' => 'secondary',
             'color' => $brand_colors['secondary'],
         ],
-
         [
             'name' => __('Soft 1', 'prelaunch-wp'),
             'slug' => 'soft-1',
@@ -84,14 +89,50 @@ add_action('after_setup_theme', function () use ($brand_colors) {
     add_theme_support('disable-custom-colors');
     add_theme_support('disable-custom-gradients');
 
+    // ---------------------------------------------------------------------
+    // Font size presets (controlled)
+    // ---------------------------------------------------------------------
+    // NOTE: For classic themes using add_theme_support('editor-font-sizes', ...),
+    // WP expects numeric sizes (pixels). If you want to override values later,
+    // do it via CSS custom properties: --wp--preset--font-size--{slug}.
+    add_theme_support('editor-font-sizes', [
+        [
+            'name' => __('Small', 'prelaunch-wp'),
+            'slug' => 'small',
+            'size' => 13,
+        ],
+        [
+            'name' => __('Medium', 'prelaunch-wp'),
+            'slug' => 'medium',
+            'size' => 16,
+        ],
+        [
+            'name' => __('Large', 'prelaunch-wp'),
+            'slug' => 'large',
+            'size' => 19,
+        ],
+        [
+            'name' => __('XL', 'prelaunch-wp'),
+            'slug' => 'xl',
+            'size' => 24,
+        ],
+    ]);
+
+    // Keep custom font sizes enabled (slider stays available).
+    add_theme_support('custom-font-sizes');
 });
 
 /**
  * Restrict blocks available in the block editor for Posts.
  *
  * WordPress 5.5+ provides $editor_context with the current post object.
+ *
+ * @param bool|array $allowed_block_types
+ * @param object     $editor_context
+ * @return bool|array
  */
 add_filter('allowed_block_types_all', function ($allowed_block_types, $editor_context) {
+
     // Only restrict the block editor for standard Posts.
     if (empty($editor_context->post) || $editor_context->post->post_type !== 'post') {
         return $allowed_block_types;
@@ -113,11 +154,11 @@ add_filter('allowed_block_types_all', function ($allowed_block_types, $editor_co
         // Tables
         'core/table',
 
-        // Buttons (we'll style these to match Tailwind in editor CSS later)
+        // Buttons (styled via theme block styles + blocks.css)
         'core/buttons',
         'core/button',
 
-        // Embeds (strict allowlist)
+        // Embeds (strict allowlist managed in editor JS)
         'core/embed',
 
         // Gravity Forms (must remain usable)
@@ -130,21 +171,25 @@ add_filter('allowed_block_types_all', function ($allowed_block_types, $editor_co
  *
  * Why this works:
  * - Many blocks set supports['color'] = true (boolean), which implicitly enables background.
- * - We normalize that to an explicit array: text=true, background=false.
+ * - Normalize that to an explicit array: text=true, background=false.
+ *
+ * @param array  $args Block type args.
+ * @param string $block_name Block name.
+ * @return array
  */
 add_filter('register_block_type_args', function (array $args, string $block_name): array {
 
-    if (empty($args['supports']) || !is_array($args['supports'])) {
+    if (empty($args['supports']) || ! is_array($args['supports'])) {
         return $args;
     }
 
-    // Normalize supports['color'] from boolean to explicit array so we can disable background.
+    // Normalize supports['color'] from boolean to explicit array so it can disable background.
     if (isset($args['supports']['color']) && $args['supports']['color'] === true) {
         $args['supports']['color'] = [
             'text' => true,
             'background' => false,
             'gradients' => false,
-            // Optional: keep link color off too (usually a good idea for posts)
+            // Optional: keep link color off too (usually a good idea for posts).
             'link' => false,
         ];
     }
@@ -164,76 +209,28 @@ add_filter('register_block_type_args', function (array $args, string $block_name
 }, 100, 2);
 
 /**
- * Define controlled editor font size presets.
- *
- * Why:
- * - Replace WordPress default S/M/L/XL sizes.
- * - Keep typography within a sane range.
- * - Allow custom font sizes via slider.
- */
-add_action('after_setup_theme', function () {
-
-    add_theme_support('editor-font-sizes', [
-        [
-            'name' => __('Small', 'prelaunch-wp'),
-            'slug' => 'small',
-            'size' => '0.8em',
-        ],
-        [
-            'name' => __('Medium', 'prelaunch-wp'),
-            'slug' => 'medium',
-            'size' => '1em',
-        ],
-        [
-            'name' => __('Large', 'prelaunch-wp'),
-            'slug' => 'large',
-            'size' => '1.2em',
-        ],
-        [
-            'name' => __('XL', 'prelaunch-wp'),
-            'slug' => 'xl',
-            'size' => '1.5em',
-        ],
-    ]);
-
-    // Make sure custom font sizes remain enabled (slider stays available).
-    add_theme_support('custom-font-sizes');
-
-});
-
-/**
- * Register branded button styles for the core Button block.
- *
- * Goals:
- * - Replace WP defaults (Fill / Outline) with branded button variants.
- * - Keep markup standard (core/button) for maximum compatibility.
+ * Button block styles: remove WP defaults + add branded variants.
  *
  * Output behavior:
  * - Selecting a style adds: .is-style-{name} on the .wp-block-button wrapper.
- */
-/**
- * Button block styles: remove WP defaults + add branded variants.
  *
  * Why priority 100?
  * - Core registers default block styles on init.
- * - We run after core so our unregister "sticks."
+ * - It runs after core so unregister "sticks."
  */
 add_action('init', function () {
 
     // Safety: only available in modern WP.
-    if (!function_exists('unregister_block_style') || !function_exists('register_block_style')) {
+    if (! function_exists('unregister_block_style') || ! function_exists('register_block_style')) {
         return;
     }
 
-    /**
-     * Remove default button styles.
-     * Note: Some WP versions register these on core/button.
-     * (core/buttons is the wrapper block; styles are generally on core/button.)
-     */
+    // Remove default button styles.
+    // Note: Some WP versions register these on core/button.
     unregister_block_style('core/button', 'fill');
     unregister_block_style('core/button', 'outline');
 
-    // Add your branded variants.
+    // Add branded variants.
     register_block_style('core/button', [
         'name' => 'btn-secondary',
         'label' => __('Secondary', 'prelaunch-wp'),
@@ -258,5 +255,4 @@ add_action('init', function () {
         'name' => 'btn-ghost-black',
         'label' => __('Ghost (Black)', 'prelaunch-wp'),
     ]);
-
 }, 100);
