@@ -34,6 +34,14 @@
 		@apply p-4;
 	}
 
+	.card .card__media {
+		@apply block;
+	}
+
+	.card .card__image {
+		@apply w-full h-auto block;
+	}
+
 	.card .card__cat {
 		@apply text-gray-700 mb-2 inline-block hover:underline;
 	}
@@ -52,6 +60,10 @@
 
 	.card .card__cta {
 		@apply hover:underline;
+	}
+
+	.card .card__cta:focus-visible {
+		@apply outline-none ring-2 ring-offset-2 ring-primary;
 	}
 
 
