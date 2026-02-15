@@ -30,6 +30,17 @@
 	<?php endif; ?>
 
 	<div class="card__body">
+		<div class="card__cat">
+			<?php if (function_exists('prelaunch_post_terms')) {
+				prelaunch_post_terms('category', [ 'class' => 'post-terms post-terms--categories', 'separator' => ', ' ]);
+			} ?>
+		</div>
+		<h2 class="card__title">
+			<a href="<?php the_permalink(); ?>">
+				<?php the_title(); ?>
+			</a>
+		</h2>
+
 		<div class="card__meta">
 			<?php
 			echo prelaunch_display_date();
@@ -39,20 +50,10 @@
 			if (function_exists('prelaunch_get_reading_time')) {
 				echo '<span class="post-reading-time">' . esc_html(prelaunch_get_reading_time()) . '</span>';
 			}
-
-			echo ' - ';
-
-			if (function_exists('prelaunch_post_terms')) {
-				prelaunch_post_terms('category', [ 'class' => 'post-terms post-terms--categories', 'separator' => ', ' ]);
-			}
 			?>
 		</div>
 
-		<h2 class="card__title">
-			<a href="<?php the_permalink(); ?>">
-				<?php the_title(); ?>
-			</a>
-		</h2>
+
 
 		<div class="card__content">
 			<?php echo wp_kses_post(function_exists('prelaunch_get_excerpt') ? prelaunch_get_excerpt() : get_the_excerpt()); ?>
