@@ -54,6 +54,12 @@
 	transition: filter 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
+.wp-block-button .wp-block-button__link.wp-element-button:focus-visible,
+.editor-styles-wrapper .wp-block-button .wp-block-button__link.wp-element-button:focus-visible {
+	outline: 2px solid var(--color-black, #0F172A);
+	outline-offset: 2px;
+}
+
 .wp-block-button .wp-block-button__link.wp-element-button:hover,
 .editor-styles-wrapper .wp-block-button .wp-block-button__link.wp-element-button:hover {
 	filter: brightness(0.95);
