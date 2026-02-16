@@ -7,8 +7,8 @@
 	   -----------------------------------------------------
 	   Pattern:
 	   - .card        → base card surface & containment
-	   - .card__*     → named internal parts (shared defaults)
-	   - .card--*     → usage / context variants (differences only)
+	   - .card__*     → internal parts (shared defaults)
+	   - .card--*     → context variants (differences only)
 	   ===================================================== */
 
 
@@ -16,10 +16,45 @@
 	   Base card
 	   -----------------------------------------------------
 	   Structural rules that apply to ALL cards site-wide.
-	   No color or context-specific styling lives here.
+	   Keep this neutral (no context styling).
 	   ----------------------------------------------------- */
 	.card {
 		@apply border-1 shadow-xl rounded-xl overflow-hidden;
+	}
+
+
+	/* -----------------------------------------------------
+	   Media (shared)
+	   -----------------------------------------------------
+	   Handles:
+	   - Featured image rendering
+	   - Fallback "no image" rendering (gradient + icon)
+	   ----------------------------------------------------- */
+
+	/* Media container (shared) */
+	.card .card__media {
+		@apply block relative overflow-hidden rounded-t-xl;
+	}
+
+	/* Maintain a consistent thumbnail shape */
+	.card .card__media,
+	.card .card__media img {
+		@apply aspect-[16/9] w-full;
+	}
+
+	/* Actual image */
+	.card .card__image {
+		@apply w-full h-auto block;
+	}
+
+	/* Fallback gradient tile (when no featured image exists) */
+	.card .card__media--fallback {
+		@apply flex items-center justify-center;
+	}
+
+	/* Fallback icon */
+	.card .card__media-icon {
+		@apply text-black text-4xl opacity-90;
 	}
 
 
@@ -32,14 +67,6 @@
 
 	.card .card__body {
 		@apply p-4;
-	}
-
-	.card .card__media {
-		@apply block;
-	}
-
-	.card .card__image {
-		@apply w-full h-auto block;
 	}
 
 	.card .card__cat {
@@ -77,6 +104,5 @@
 	.card--blog .card__body {
 		@apply bg-white;
 	}
-
 
 }

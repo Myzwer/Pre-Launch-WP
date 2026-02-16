@@ -23,11 +23,29 @@
 
 <article class="card card--blog">
 	<?php if (has_post_thumbnail()) : ?>
-		<a class="card__media" href="<?php the_permalink(); ?>"
-		   aria-label="<?php the_title_attribute(); ?>">
-			<?php the_post_thumbnail('large', [ 'class' => 'h-auto w-full' ]); ?>
+
+		<a href="<?php the_permalink(); ?>" class="card__media">
+			<?php
+			the_post_thumbnail('medium_large', [
+				'class'   => 'card__image',
+				'loading' => 'lazy',
+			]);
+			?>
 		</a>
+
+	<?php else : ?>
+
+		<a href="<?php the_permalink(); ?>" class="card__media card__media--fallback bg-primary-gradient">
+		<span class="card__media-icon" aria-hidden="true">
+			<i class="fa-regular fa-file-lines"></i>
+		</span>
+			<span class="sr-only">
+			<?php esc_html_e('View post', 'prelaunch-wp'); ?>
+		</span>
+		</a>
+
 	<?php endif; ?>
+
 
 	<div class="card__body">
 		<div class="card__cat">
