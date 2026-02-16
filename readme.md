@@ -1098,3 +1098,307 @@ Opens link in a new tab.
 - Social output is wrapped in `not-prose` automatically.
 - URLs come from ACF Options (Globals) unless overridden.
 - Designed for predictability, not infinite variation.
+
+# Blog Setup & Maintenance Guide
+
+This section covers the parts of the blog system you are most likely to
+tweak per client build.\
+It is not an explanation of how the blog works --- it is a future-you
+survival guide.
+
+---
+
+## 1. Initial Blog Setup Checklist (Per Client)
+
+Before launch, confirm the following:
+
+### ✅ Confirm Posts Page
+
+- Settings → Reading → "Posts page" is assigned correctly.
+- Verify `/posts/` (or chosen slug) resolves properly.
+
+### ✅ Confirm Permalinks
+
+- Settings → Permalinks → Pretty permalinks enabled.
+- Flush permalinks after any slug changes.
+
+### ✅ Confirm Editor Restrictions
+
+- Only approved blocks appear in the Post editor.
+- Button styles show branded variants only.
+- Custom colors & gradients are disabled.
+
+If block restrictions fail, check:
+
+    includes/posts/editor.php
+
+---
+
+## 2. Filter Logic Configuration (Inclusive vs Exclusive)
+
+Blog filters are controlled in:
+
+    includes/posts/queries.php
+
+Search for:
+
+    pre_get_posts
+
+### Current Behavior (Default)
+
+- Multiple categories = OR logic\
+  (Posts matching _any_ selected category are shown.)
+
+- Multiple tags = OR logic
+
+- Category + Tag combined = AND relationship\
+  (Posts must match selected categories AND selected tags.)
+
+---
+
+### Changing to Strict AND (Categories)
+
+Inside the `tax_query` configuration, modify:
+
+    'relation' => 'AND'
+
+And inside category query:
+
+    'operator' => 'AND'
+
+This forces posts to match **all selected categories**.
+
+---
+
+### Making Tags Narrow Categories Differently
+
+To make tags narrow categories more aggressively or override behavior,
+adjust the `relation` value in the combined `tax_query` array.
+
+Common patterns:
+
+- `"AND"` → strict matching
+- `"OR"` → broad matching
+
+Always test: - Multiple categories - Multiple tags - Category + tag
+together - Pagination with filters active
+
+---
+
+## 3. Relative Date Logic ("X Hours Ago")
+
+Human-readable time output lives in:
+
+    includes/posts/template-tags.php
+
+Function:
+
+    prelaunch_display_date()
+
+If a client wants:
+
+- Always show published date
+- Show modified date instead
+- Remove "hours ago" logic
+- Adjust cutoff window (ex: switch to full date after 24h)
+
+Update that function only.
+
+No other template files need modification.
+
+---
+
+## 4. Card System (Design + Variants)
+
+All blog preview markup lives in:
+
+    template-parts/blog/card.php
+
+All card styling lives in:
+
+    assets/src/css/components/cards.css
+
+This is the single source of truth for blog previews.
+
+---
+
+### BEM Naming System
+
+Card classes follow this pattern:
+
+    .card
+    .card__media
+    .card__image
+    .card__body
+    .card__header
+    .card__meta
+    .card__excerpt
+    .card__footer
+    .card__cta
+
+Rules:
+
+- `.card` = block
+- `__element` = part of the block
+- `--modifier` = variation of block
+
+Never mix utility classes directly into markup unless necessary. Modify
+structure in `card.php`, not in archives.
+
+---
+
+### Creating Card Variants (For CPTs)
+
+If a CPT needs a slightly different layout:
+
+1.  Duplicate:
+
+```{=html}
+<!-- -->
+```
+
+    card.php
+
+2.  Rename to:
+
+```{=html}
+<!-- -->
+```
+
+    card-{posttype}.php
+
+3.  Update archive template to load dynamically:
+
+```{=html}
+<!-- -->
+```
+
+    get_template_part(
+      'template-parts/blog/card',
+      get_post_type()
+    );
+
+4.  Add modifier classes in CSS:
+
+```{=html}
+<!-- -->
+```
+
+    .card--resource { ... }
+    .card--case-study { ... }
+
+Do NOT fork logic across templates.\
+Variants belong in the card system.
+
+---
+
+## 5. Changing Excerpt Length
+
+Default excerpt length is controlled in:
+
+    includes/posts/content.php
+
+Function:
+
+    prelaunch_excerpt_length()
+
+Override per site using:
+
+    add_filter('prelaunch_excerpt_length', function() {
+      return 32;
+    });
+
+---
+
+## 6. Pagination Behavior
+
+Pagination markup comes from:
+
+    prelaunch_pagination()
+
+Located in:
+
+    includes/posts/content.php
+
+To modify:
+
+- Icon style
+- mid_size / end_size
+- aria label
+- Replace icons with text
+
+Edit that function only.
+
+---
+
+## 7. Common Client Tweaks
+
+These are the most common per-build adjustments and where to modify
+them.
+
+- **Change excerpt length**\
+  Update `prelaunch_excerpt_length()` in `includes/posts/content.php`.
+
+- **Change card spacing**\
+  Edit layout rules in `assets/src/css/components/cards.css`.
+
+- **Adjust relative date format**\
+  Modify `prelaunch_display_date()` in
+  `includes/posts/template-tags.php`.
+
+- **Tighten filter logic (AND vs OR)**\
+  Adjust the `tax_query` logic inside `includes/posts/queries.php`.
+
+- **Increase related posts count**\
+  Update the `posts_per_page` value passed to
+  `prelaunch_get_related_posts_query()` in `single.php`.
+
+- **Remove reading time**\
+  Remove or comment out `prelaunch_get_reading_time()` in
+  `template-parts/blog/card.php` and/or `single.php`.
+
+- **Change "Read more" text**\
+  Update the string inside `template-parts/blog/card.php`.
+
+- **Add CPT-specific card variant**\
+  Duplicate `card.php`, create `card-{posttype}.php`, and load
+  dynamically via `get_template_part()` in archive templates.
+
+None of these require restructuring the blog.
+
+---
+
+## 8. Debug Checklist (When Something Feels Wrong)
+
+### Filters not working?
+
+- Confirm `pre_get_posts` logic.
+- Confirm URL parameters (`pl_cat`, `pl_tag`) exist.
+- Flush permalinks.
+
+### Cards inconsistent?
+
+- Confirm all templates use `card.php`.
+- Confirm no inline markup was duplicated.
+
+### Dates weird?
+
+- Check `prelaunch_display_date()`.
+
+### Pagination broken?
+
+- Confirm query is paged.
+- Confirm `prelaunch_pagination()` is being called.
+- Confirm only one main query is active.
+
+---
+
+## Final Rule
+
+If something looks wrong:
+
+- Fix it in one place.
+- Do not duplicate logic across templates.
+- The card system and query system are single sources of truth.
+
+Future you will thank present you.
