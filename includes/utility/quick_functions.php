@@ -8,10 +8,12 @@
  * move it into a dedicated file.
  *
  * Current:
+ * - Register core theme supports (e.g., title-tag for SEO plugin compatibility).
  * - Alphabetize page templates in the Page Attributes template dropdown.
  * - Display a non-production environment badge in the admin bar.
  * - Disable comments site-wide (UI + front end + admin cleanup).
  *
+ * @link https://developer.wordpress.org/reference/functions/add_theme_support/
  * @link https://developer.wordpress.org/reference/hooks/theme_page_templates/
  * @link https://developer.wordpress.org/reference/functions/wp_get_environment_type/
  * @link https://developer.wordpress.org/reference/functions/remove_post_type_support/
@@ -20,6 +22,23 @@
  */
 
 declare(strict_types=1);
+
+/**
+ * Register core theme supports.
+ *
+ * Adds foundational WordPress features required for predictable behavior
+ * across the theme and plugin ecosystem.
+ *
+ * Currently registers:
+ * - title-tag: Allows WordPress (and SEO plugins like The SEO Framework)
+ *   to control the <title> element dynamically. Without this support,
+ *   SEO plugins cannot reliably filter or modify document titles.
+ */
+function windpeak_theme_setup(): void
+{
+    add_theme_support('title-tag');
+}
+add_action('after_setup_theme', 'windpeak_theme_setup');
 
 /**
  * Alphabetize page templates in the editor dropdown.
