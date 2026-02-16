@@ -54,7 +54,7 @@
 
 	/* Fallback icon */
 	.card .card__media-icon {
-		@apply text-black text-4xl opacity-90;
+		@apply text-black text-6xl opacity-40;
 	}
 
 
