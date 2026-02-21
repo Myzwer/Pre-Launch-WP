@@ -1501,6 +1501,12 @@ When spinning up a new site from this blueprint:
 
 ### Required Steps
 
+- Follow the steps on this site:
+
+```html
+https://theseoframework.com/docs/seo-plugin-setup/
+```
+
 - Set Site Title and Tagline (Settings → General)
 - Confirm permalink structure (Settings → Permalinks)
 - Assign Posts page (if blog enabled)
