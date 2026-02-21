@@ -173,7 +173,7 @@
 		px-5 py-3
 		transition
 		rounded-lg
-		focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+		focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white;
 
 		/* Keep buttons from inheriting weird text colors in nested contexts */
 		text-decoration: none;
@@ -237,6 +237,17 @@
 	.btn_ghost_black:hover {
 		background-color: color-mix(in oklab, var(--color-black) 8%, transparent);
 	}
+
+	/* Focus styling for inverted sections */
+	.theme-invert .btn_main,
+	.theme-invert .btn_secondary,
+	.theme-invert .btn_light,
+	.theme-invert .btn_dark,
+	.theme-invert .btn_ghost_white,
+	.theme-invert .btn_ghost_black {
+		@apply focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+	}
+
 }
 
 /* =========================================================
