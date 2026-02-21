@@ -1,76 +1,184 @@
 /**
- * Backgrounds
+ * Background / Hero Helpers
  * =================================
- * - Photo Header
- * - Video Header
+ * Purpose:
+ * - Provide low-friction hero layouts for image and video headers.
+ * - Center content predictably without layout hacks (no negative margins / negative z-index).
  *
- *
- *
- *
+ * Assumptions:
+ * - For video heroes, the <video.header-video> lives inside the same wrapper as .viewport-header.
+ * - Wrapper elements are responsible for height (via these helper classes or Tailwind utilities).
  */
+
+/* ---------------------------------------------------------
+   Image / background hero wrapper
+   --------------------------------------------------------- */
+
 .full-background {
-  background-attachment: scroll;
-  background-color: #000000;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 600px;
-  margin-top: -80px;
-  position: relative;
-  z-index: -1;
+	background-attachment: scroll;
+	background-color: var(--color-black);
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	/* Hero container */
+	position: relative;
+	overflow: hidden;
+	display: grid;
+	place-items: center;
+
+	/* Default hero height (legacy-friendly) */
+	min-height: 600px;
 }
 
-.full-background-lg {
-  height: 80vh;
-}
+/* Height variants (kept for convenience) */
+.full-background-lg { min-height: 80vh; }
+.full-background-xl { min-height: 100vh; }
 
-.full-background-xl {
-  height: 100vh;
-}
+/* ---------------------------------------------------------
+   Video hero media + content wrapper
+   --------------------------------------------------------- */
 
+/* Video background
+   - Intended to be placed as a child of .viewport-header (or any positioned hero wrapper).
+   - Uses absolute positioning to avoid fixed-position mobile/Safari weirdness.
+*/
 .header-video {
-  height: 130vh;
-  left: 50%;
-  margin-top: -1px;
-  object-fit: cover;
-  position: fixed;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  z-index: -2;
+	position: absolute;
+	inset: 0;
+
+	width: 100%;
+	height: 100%;
+
+	object-fit: cover;
+	object-position: center;
+
+	/* Video is decorative background media */
+	pointer-events: none;
+	user-select: none;
 }
 
+/* Content wrapper for video heroes */
 .viewport-header {
-  align-items: center;
-  display: flex;
-  height: 60vh;
-  justify-content: center;
-  position: relative;
-  text-align: center;
+	position: relative;
+	overflow: hidden;
+
+	/* Stacking context */
+	z-index: 0;
+
+	display: grid;
+	place-items: center;
+	text-align: center;
+
+	/* Default hero height (tweak per layout as needed) */
+	min-height: 60vh;
 }
 
+/* Ensure direct non-video children of viewport-header sit above the video */
+.viewport-header > :not(.header-video) {
+	position: relative;
+	z-index: 1;
+}
+
+/* ---------------------------------------------------------
+   Dynamic background media (ACF-friendly)
+   ---------------------------------------------------------
+   Usage:
+     <div class="bg-media bg-overlay-45" style="--bg-image: url('...');"></div>
+*/
+
+.bg-media {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+
+	/* Default: image only */
+	background-image: var(--bg-image, none);
+}
+
+/* Overlay strengths (consistent site-wide) */
+.bg-overlay-30 { background-image: linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), var(--bg-image, none); }
+.bg-overlay-45 { background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), var(--bg-image, none); }
+.bg-overlay-60 { background-image: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.60)), var(--bg-image, none); }
+
+/* ---------------------------------------------------------
+   Texture overlay (ACF-friendly, global Options field)
+   ---------------------------------------------------------
+   Usage:
+     <div class="bg-texture" style="--bg-texture: url('...');"></div>
+*/
+
+.bg-texture {
+	position: relative;
+	overflow: hidden;
+}
+
+.bg-texture:after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+
+	pointer-events: none;
+	user-select: none;
+
+	background-image: var(--bg-texture, none);
+	background-repeat: repeat;
+	background-position: center;
+	background-size: auto;
+
+	/* Texture should support readability, not dominate the hero */
+	opacity: 0.25;
+
+	/* Intentional: texture integrates with underlying color/image */
+	mix-blend-mode: overlay;
+}
+
+/* Ensure content sits above the texture layer */
+.bg-texture > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* ---------------------------------------------------------
+   Centering helpers
+   --------------------------------------------------------- */
+
+/* Always-center overlay content inside a positioned parent */
 .content-middle {
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+
+	display: grid;
+	place-content: center;
+	justify-items: center;
+	row-gap: 1rem;
 }
 
+/* Centering enabled only at desktop widths (>= 64em) */
 @media screen and (min-width: 64em) {
-  .content-middle-medium {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-  }
+	.content-middle-medium {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+
+		display: grid;
+		place-content: center;
+		justify-items: center;
+		row-gap: 1rem;
+	}
 }
-@media screen and (min-width: 64em) {
-  .content-middle-large {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-  }
+
+/* Centering enabled only at large desktop widths (>= 80em) */
+@media screen and (min-width: 80em) {
+	.content-middle-large {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+
+		display: grid;
+		place-content: center;
+		justify-items: center;
+		row-gap: 1rem;
+	}
 }
