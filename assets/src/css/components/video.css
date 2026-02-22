@@ -1,32 +1,88 @@
 /**
- * Video
+ * Video Embeds
  * =================================
- * - Full Width Video, fills container
+ * Purpose:
+ * - Responsive embedded video wrapper (YouTube/Vimeo/iframe).
+ * - Keeps embeds full-width and constrained to a predictable aspect ratio.
+ * - Provides a safe fallback for WYSIWYG embeds inside `.prose-theme`.
+ * - Respects reduced-motion preferences for background hero videos.
  *
+ * Usage:
+ * 1) Preferred wrapper:
+ *    <div class="video-container">
+ *      <?php the_field('youtube_link'); ?>
+ *    </div>
  *
- *
- *
- *
+ * 2) WYSIWYG safety net:
+ *    Place embeds inside `.prose-theme` and YouTube/Vimeo iframes will be normalized.
  */
+
+/* ---------------------------------------------------------
+   Standard wrapper (recommended)
+   --------------------------------------------------------- */
+
+/* Modern browsers */
 .video-container {
-  height: 0;
-  padding-top: 56.25%;
-  position: relative;
-  /* width is set as 100% here. any width can be specified as per requirement */
-  width: 100%;
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
 }
 
-iframe {
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
+/* Fallback for older browsers that don't support aspect-ratio */
+@supports not (aspect-ratio: 16 / 9) {
+	.video-container {
+		height: 0;
+		padding-top: 56.25%; /* 16:9 */
+	}
 }
 
-/*
-Usage:
- <div class="video-container">
-    <?php the_field("youtube_link"); ?>
-</div>
+.video-container iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+/* ---------------------------------------------------------
+   WYSIWYG safety net (scoped)
+   ---------------------------------------------------------
+   Purpose:
+   - Clients paste raw embed iframes into the editor.
+   - Only normalizes known video host iframes inside `.prose-theme`.
+   - Does not touch other iframes (maps, CRM widgets, etc.).
 */
+
+.prose-theme iframe[src*="youtube.com"],
+.prose-theme iframe[src*="youtu.be"],
+.prose-theme iframe[src*="vimeo.com"] {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	aspect-ratio: 16 / 9;
+	height: auto;
+	border: 0;
+}
+
+/* Fallback for older browsers */
+@supports not (aspect-ratio: 16 / 9) {
+	.prose-theme iframe[src*="youtube.com"],
+	.prose-theme iframe[src*="youtu.be"],
+	.prose-theme iframe[src*="vimeo.com"] {
+		height: 0;
+		padding-top: 56.25%;
+	}
+}
+
+/* ---------------------------------------------------------
+   Reduced motion (background hero video)
+   ---------------------------------------------------------
+   Applies to `.header-video` used as decorative background media.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+	.header-video {
+		display: none;
+	}
+}
