@@ -130,7 +130,7 @@
 	opacity: 0.25;
 
 	/* Intentional: texture integrates with underlying color/image */
-	mix-blend-mode: overlay;
+	mix-blend-mode: normal;
 }
 
 /* Ensure content sits above the texture layer */
