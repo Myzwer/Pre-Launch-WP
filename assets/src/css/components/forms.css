@@ -1,67 +1,228 @@
 /**
- * Forms
+ * Forms (Gravity Forms)
  * =================================
- * This mostly is here to overwrite GF styles
+ * Purpose:
+ * - Provide consistent, theme-token-based styling for Gravity Forms.
+ * - Keep scope limited to GF to avoid impacting other form markup/plugins.
  *
- *
- *
- *
+ * Notes:
+ * - Titles/descriptions are shown by default.
+ * - To hide GF headings, add `.gf-hide-heading` to the `.gform_wrapper` element.
+ * - Some spacing rules use `!important` to reliably override GF theme defaults.
  */
-/* stylelint-disable selector-max-id, selector-max-compound-selectors, selector-class-pattern */
-.gform_title,
-.gform_description {
-  display: none;
+
+/* ---------------------------------------------------------
+   Optional: hide GF headings (opt-in)
+   --------------------------------------------------------- */
+
+.gform_wrapper.gravity-theme.gf-hide-heading .gform_title,
+.gform_wrapper.gravity-theme.gf-hide-heading .gform_description {
+	display: none;
 }
 
-.ginput_container .ginput_container_date input {
-  margin: 0 auto;
-  text-align: center;
+/* ---------------------------------------------------------
+   Field base styling
+   --------------------------------------------------------- */
+
+.gform_wrapper.gravity-theme .gform_body :is(
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="number"],
+	input[type="password"],
+	input[type="search"],
+	textarea,
+	select
+) {
+	background-color: var(--color-soft-1);
+	color: var(--color-black);
+
+	border: 1px solid color-mix(in srgb, var(--color-black) 18%, transparent);
+	border-radius: 0.5rem;
+
+	padding: 0.75rem 1rem;
+	width: 100%;
+
+	/* Avoid legacy plugin shadows; keep inputs clean and themeable */
+	box-shadow: none;
 }
 
-.gfield_consent_label a {
-  text-decoration: underline;
+/* Placeholder: readable but subordinate */
+.gform_wrapper.gravity-theme .gform_body :is(
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="number"],
+	input[type="password"],
+	input[type="search"],
+	textarea
+)::placeholder {
+	color: var(--color-black);
+	opacity: 0.55;
+}
+
+/* Focus: visible, consistent, keyboard-friendly */
+.gform_wrapper.gravity-theme .gform_body :is(
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="number"],
+	input[type="password"],
+	input[type="search"],
+	textarea,
+	select
+):focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+	border-color: var(--color-primary);
+}
+
+/* ---------------------------------------------------------
+   Minor GF-specific tweaks
+   --------------------------------------------------------- */
+
+/* Date inputs: center when GF renders segmented date fields */
+.gform_wrapper.gravity-theme .ginput_container_date input {
+	margin: 0 auto;
+	text-align: center;
+}
+
+/* Consent */
+.gform_wrapper.gravity-theme .gfield_consent_label a {
+	text-decoration: underline;
 }
 
 .gform_wrapper.gravity-theme .gfield_consent_description {
-  border: 0 !important;
-  margin-top: 0 !important;
+	border: 0 !important;
+	margin-top: 0 !important;
 }
 
-.gform_body input {
-  background-color: #eeeeee;
-  border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  color: #333333;
+/* Required asterisk uses theme accent */
+.gform_wrapper.gravity-theme .gfield_required {
+	color: red !important;
 }
 
-.gform_body input:focus {
-  border: 1px solid #234058;
-  outline: none !important;
+/* ---------------------------------------------------------
+   Submit button (match btn_main)
+   --------------------------------------------------------- */
+
+.gform_wrapper.gravity-theme .gform_footer .gform_button,
+.gform_wrapper.gravity-theme .gform_page_footer .gform_button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+
+	font-weight: 600;
+	text-decoration: none;
+
+	padding: 0.75rem 1.25rem;
+	border-radius: 0.5rem;
+
+	background-color: var(--color-primary);
+	color: var(--color-black);
+	border: 1px solid transparent;
+
+	cursor: pointer;
+	transition: filter 150ms ease;
 }
 
-.gform_wrapper .gfield_required {
-  color: #234058 !important;
+.gform_wrapper.gravity-theme .gform_footer .gform_button:hover,
+.gform_wrapper.gravity-theme .gform_page_footer .gform_button:hover {
+	filter: brightness(0.95);
 }
 
-.gform_body input::placeholder {
-  color: #000000;
-  opacity: 0.5;
+.gform_wrapper.gravity-theme .gform_footer .gform_button:focus-visible,
+.gform_wrapper.gravity-theme .gform_page_footer .gform_button:focus-visible {
+	outline: 2px solid var(--color-black);
+	outline-offset: 3px;
 }
 
-.gform_button {
-  border: 2px solid #333333;
-  border-radius: 20px;
-  color: #333333;
-  cursor: pointer;
-  font-weight: 800;
-  padding: 10px 30px;
-  text-transform: uppercase;
-  transition: 0.3s;
+/* ---------------------------------------------------------
+   Gravity Forms spacing (tighten vertical rhythm)
+   --------------------------------------------------------- */
+
+.gform_wrapper.gravity-theme .gfield .gfield_label {
+	margin-bottom: 5px !important;
 }
 
-.gform_button:hover {
-  background-color: #234058;
-  color: #eeeeee;
+.gform_wrapper.gravity-theme .ginput_complex label,
+.gform_wrapper.gravity-theme .ginput_complex legend {
+	margin-bottom: 0.25rem !important;
 }
 
-/* stylelint-enable selector-max-id, selector-max-compound-selectors, selector-class-pattern */
+/* Tighten GF default per-field spacing */
+.gform_wrapper.gravity-theme .gfield {
+	margin-bottom: 1.25rem !important;
+}
+
+/* Descriptions read like helper text, not a second paragraph block */
+.gform_wrapper.gravity-theme .gfield_description {
+	margin-top: 0.35rem !important;
+	padding-top: 0.35rem !important;
+	padding-bottom: 0.35rem !important;
+}
+
+/* ---------------------------------------------------------
+   File upload (restore usable spacing + theme button)
+   --------------------------------------------------------- */
+
+.gform_wrapper.gravity-theme .ginput_container_fileupload input[type="file"] {
+	width: 100%;
+	max-width: 100%;
+
+	/* Keep browser-native behavior, but readable */
+	padding: 0.25rem 0;
+	color: var(--color-black);
+}
+
+/* Modern browsers */
+.gform_wrapper.gravity-theme .ginput_container_fileupload input[type="file"]::file-selector-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	font-weight: 600;
+	border-radius: 0.5rem;
+
+	padding: 0.75rem 1.25rem;
+	margin-right: 0.75rem;
+
+	background-color: var(--color-primary);
+	color: var(--color-black);
+	border: 1px solid transparent;
+
+	cursor: pointer;
+	transition: filter 150ms ease;
+}
+
+.gform_wrapper.gravity-theme .ginput_container_fileupload input[type="file"]::file-selector-button:hover {
+	filter: brightness(0.95);
+}
+
+/* Safari fallback */
+.gform_wrapper.gravity-theme .ginput_container_fileupload input[type="file"]::-webkit-file-upload-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	font-weight: 600;
+	border-radius: 0.5rem;
+
+	padding: 0.75rem 1.25rem;
+	margin-right: 0.75rem;
+
+	background-color: var(--color-primary);
+	color: var(--color-black);
+	border: 1px solid transparent;
+
+	cursor: pointer;
+	transition: filter 150ms ease;
+}
+
+.gform_wrapper.gravity-theme .ginput_container_fileupload input[type="file"]::-webkit-file-upload-button:hover {
+	filter: brightness(0.95);
+}
