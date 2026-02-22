@@ -1,11 +1,22 @@
-@import "./tailwind.css";
+/**
+ * Frontend CSS Manifest
+ * =================================
+ * Purpose:
+ * - Import order control for all frontend-only CSS partials.
+ * - `frontend.ts` imports this once; add/remove partials here.
+ */
 
-@import "./fonts/fonts.css";
-@import "./components/navbar.css";
-@import "./components/footer.css";
-@import "./components/background.css";
-@import "./components/cards.css";
-@import "./components/pagination.css";
-@import "./components/forms.css";
-@import "./components/video.css";
+/* Base / global helpers */
+@import "./base/background.css";
+@import "./base/footer.css";
+@import "./base/navbar.css";
+@import "./base/video.css";
+
+/* Components */
 @import "./components/accordion.css";
+@import "./components/cards.css";
+@import "./components/gravity-forms.css";
+@import "./components/pagination.css";
+
+/* Fonts */
+@import "./fonts/fonts.css";
