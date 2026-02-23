@@ -22,14 +22,14 @@
 ?>
 
 <article class="card card--blog">
-	<?php if (has_post_thumbnail()) : ?>
+	<?php if( has_post_thumbnail() ) : ?>
 
 		<a href="<?php the_permalink(); ?>" class="card__media">
 			<?php
-			the_post_thumbnail('medium_large', [
+			the_post_thumbnail( 'medium_large', [
 				'class'   => 'card__image',
 				'loading' => 'lazy',
-			]);
+			] );
 			?>
 		</a>
 
@@ -40,7 +40,7 @@
 			<i class="fa-regular fa-file-lines"></i>
 		</span>
 			<span class="sr-only">
-			<?php esc_html_e('View post', 'prelaunch-wp'); ?>
+			<?php esc_html_e( 'View post', 'prelaunch-wp' ); ?>
 		</span>
 		</a>
 
@@ -49,8 +49,11 @@
 
 	<div class="card__body">
 		<div class="card__cat">
-			<?php if (function_exists('prelaunch_post_terms')) {
-				prelaunch_post_terms('category', [ 'class' => 'post-terms post-terms--categories', 'separator' => ', ' ]);
+			<?php if( function_exists( 'prelaunch_post_terms' ) ) {
+				prelaunch_post_terms( 'category', [
+					'class'     => 'post-terms post-terms--categories',
+					'separator' => ', '
+				] );
 			} ?>
 		</div>
 		<h2 class="card__title">
@@ -65,21 +68,20 @@
 
 			echo ' - ';
 
-			if (function_exists('prelaunch_get_reading_time')) {
-				echo '<span class="post-reading-time">' . esc_html(prelaunch_get_reading_time()) . '</span>';
+			if( function_exists( 'prelaunch_get_reading_time' ) ) {
+				echo '<span class="post-reading-time">' . esc_html( prelaunch_get_reading_time() ) . '</span>';
 			}
 			?>
 		</div>
 
 
-
 		<div class="card__content">
-			<?php echo wp_kses_post(function_exists('prelaunch_get_excerpt') ? prelaunch_get_excerpt() : get_the_excerpt()); ?>
+			<?php echo wp_kses_post( function_exists( 'prelaunch_get_excerpt' ) ? prelaunch_get_excerpt() : get_the_excerpt() ); ?>
 		</div>
 
 		<div class="">
-			<a class = "card__cta" href="<?php the_permalink(); ?>">
-				<?php esc_html_e('Read more', 'prelaunch-wp'); ?>
+			<a class="card__cta" href="<?php the_permalink(); ?>">
+				<?php esc_html_e( 'Read more', 'prelaunch-wp' ); ?>
 			</a>
 		</div>
 </article>

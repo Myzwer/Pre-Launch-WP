@@ -24,42 +24,42 @@ $archive_description = get_the_archive_description();
 				<?php the_archive_title(); ?>
 			</h1>
 
-			<?php if ($archive_description) : ?>
+			<?php if( $archive_description ) : ?>
 				<div class="mt-2 text-sm leading-relaxed">
 					<?php the_archive_description(); ?>
 				</div>
 			<?php endif; ?>
 
-			<hr class="mt-6" />
+			<hr class="mt-6"/>
 		</header>
 
-		<?php if (have_posts()) : ?>
+		<?php if( have_posts() ) : ?>
 			<div class="grid-12">
-				<?php while (have_posts()) : ?>
+				<?php while( have_posts() ) : ?>
 					<?php the_post(); ?>
 
 					<div class="col-span-12 md:col-span-6">
-						<?php get_template_part('template-parts/blog/card'); ?>
+						<?php get_template_part( 'template-parts/blog/card' ); ?>
 					</div>
 				<?php endwhile; ?>
 			</div>
 
 			<div class="mt-10">
 				<?php
-                if (function_exists('prelaunch_pagination')) {
-                    prelaunch_pagination();
-                } else {
-                    the_posts_pagination();
-                }
-?>
+				if( function_exists( 'prelaunch_pagination' ) ) {
+					prelaunch_pagination();
+				} else {
+					the_posts_pagination();
+				}
+				?>
 			</div>
 		<?php else : ?>
 			<div class="p-6 rounded-xl border">
 				<p class="text-base font-medium">
-					<?php esc_html_e('Nothing found.', 'prelaunch-wp'); ?>
+					<?php esc_html_e( 'Nothing found.', 'prelaunch-wp' ); ?>
 				</p>
 				<p class="mt-2 text-sm">
-					<?php esc_html_e('Try browsing another archive or searching for something else.', 'prelaunch-wp'); ?>
+					<?php esc_html_e( 'Try browsing another archive or searching for something else.', 'prelaunch-wp' ); ?>
 				</p>
 
 				<div class="mt-4 max-w-md">
