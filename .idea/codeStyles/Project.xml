@@ -38,11 +38,8 @@
       <option name="SPACE_WITHIN_SWITCH_PARENTHESES" value="true" />
       <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true" />
       <option name="SPACE_AFTER_TYPE_CAST" value="true" />
-      <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
       <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false" />
-      <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
       <option name="SPACE_BEFORE_CATCH_PARENTHESES" value="false" />
-      <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false" />
       <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
       <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
       <option name="PARENTHESES_EXPRESSION_LPAREN_WRAP" value="true" />
