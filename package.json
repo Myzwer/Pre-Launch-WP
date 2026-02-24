@@ -19,8 +19,6 @@
 		"clean": "rimraf .cache/webpack .cache/stylelint assets/public/js/frontend.js* assets/public/css/frontend.css* assets/public/fonts/*",
 		"build": "yarn clean && yarn prod",
 		"typecheck": "tsc --noEmit",
-		"php:fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
-		"php:check": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff",
 		"tw:sort": "npx rustywind --write . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\"",
 		"tw:check": "npx rustywind --check-formatted . --ignored-files \"vendor,node_modules,assets/public,.cache,.yarn\""
 	},
@@ -38,8 +36,7 @@
 	},
 	"lint-staged": {
 		"*.php": [
-			"npx rustywind --write --quiet",
-			"vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --path-mode=intersection"
+			"npx rustywind --write --quiet"
 		],
 		"*.{js,jsx,ts,tsx}": [
 			"eslint --fix"
