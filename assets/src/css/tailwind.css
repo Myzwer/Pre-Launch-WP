@@ -16,7 +16,6 @@
 	   - --color-* => text-* / bg-* / border-* / utilities
        - --background-image-* => bg-* / utilities
 */
-
 	/* Neutrals */
 	--color-black: #0F172A;
 	--color-white: #F8FAFC;
@@ -57,24 +56,55 @@
 	--font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
 	"Apple Color Emoji", "Segoe UI Emoji";
 	--font-display: var(--font-body);
+
+	/* [TOKENS] Max-width scale (Tailwind v4 container tokens)
+     Why:
+     - Tailwind v4 emits max-w-* using CSS variables (ex: var(--container-7xl)).
+     - In some builds, specific --container-* tokens can be tree-shaken / not emitted,
+       especially when the only “usage” is via @apply inside component CSS.
+     - Defining the scale here makes max-w-* stable everywhere (markup + @apply).
+  */
+	--container-xs: 20rem;
+	--container-sm: 24rem;
+	--container-md: 28rem;
+	--container-lg: 32rem;
+	--container-xl: 36rem;
+	--container-2xl: 42rem;
+	--container-3xl: 48rem;
+	--container-4xl: 56rem;
+	--container-5xl: 64rem;
+	--container-6xl: 72rem;
+	--container-7xl: 80rem;
 }
 
 /* [BEHAVIOR] Font utilities (override anywhere in markup)
    Use: font-body | font-display
 */
 @layer utilities {
-	.font-body { font-family: var(--font-body); }
-	.font-display { font-family: var(--font-display); }
+	.font-body {
+		font-family: var(--font-body);
+	}
+
+	.font-display {
+		font-family: var(--font-display);
+	}
 }
 
 /* [BEHAVIOR] Global typography defaults (update sometimes)
    Default: body uses body font; H1/H2 use display font
 */
 @layer base {
-	body { font-family: var(--font-body); }
+	body {
+		font-family: var(--font-body);
+	}
 
-	h1, h2 { font-family: var(--font-display); }
-	h3, h4, h5, h6 { font-family: var(--font-body); }
+	h1, h2 {
+		font-family: var(--font-display);
+	}
+
+	h3, h4, h5, h6 {
+		font-family: var(--font-body);
+	}
 }
 
 /* =========================================================
@@ -194,14 +224,20 @@
 		background-color: var(--color-primary);
 		color: var(--color-black);
 	}
-	.btn_main:hover { filter: brightness(0.95); }
+
+	.btn_main:hover {
+		filter: brightness(0.95);
+	}
 
 	/* Secondary: secondary background, usually black text */
 	.btn_secondary {
 		background-color: var(--color-secondary);
 		color: var(--color-black);
 	}
-	.btn_secondary:hover { filter: brightness(0.95); }
+
+	.btn_secondary:hover {
+		filter: brightness(0.95);
+	}
 
 	/* Light: always white bg + black text */
 	.btn_light {
@@ -209,14 +245,20 @@
 		color: var(--color-black);
 		border: 1px solid var(--color-black);
 	}
-	.btn_light:hover { filter: brightness(0.97); }
+
+	.btn_light:hover {
+		filter: brightness(0.97);
+	}
 
 	/* Dark: always black bg + white text */
 	.btn_dark {
 		background-color: var(--color-black);
 		color: var(--color-white);
 	}
-	.btn_dark:hover { filter: brightness(1.1); }
+
+	.btn_dark:hover {
+		filter: brightness(1.1);
+	}
 
 	/* Ghost (white): transparent with white border/text */
 	.btn_ghost_white {
@@ -224,6 +266,7 @@
 		color: var(--color-white);
 		border: 1px solid var(--color-white);
 	}
+
 	.btn_ghost_white:hover {
 		background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
 	}
@@ -234,6 +277,7 @@
 		color: var(--color-black);
 		border: 1px solid var(--color-black);
 	}
+
 	.btn_ghost_black:hover {
 		background-color: color-mix(in oklab, var(--color-black) 8%, transparent);
 	}
@@ -283,16 +327,24 @@
    ========================================================= */
 
 @layer utilities {
-	.section { @apply w-full; }
+	.section {
+		@apply w-full;
+	}
 
 	/* Standard inner container */
-	.wrap { @apply mx-auto max-w-6xl px-5 lg:px-10; }
+	.wrap {
+		@apply mx-auto max-w-6xl px-5 lg:px-10;
+	}
 
 	/* For your max-screen-2xl pattern (option B style) */
-	.wrap-wide { @apply mx-auto max-w-screen-2xl px-5; }
+	.wrap-wide {
+		@apply mx-auto max-w-screen-2xl px-5;
+	}
 
 	/* Grid-first workflow */
-	.grid-12 { @apply grid grid-cols-12 gap-4 md:gap-10; }
+	.grid-12 {
+		@apply grid grid-cols-12 gap-4 md:gap-10;
+	}
 }
 
 
