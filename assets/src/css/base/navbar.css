@@ -197,7 +197,8 @@
 
 		@apply px-3 py-2;
 		@apply text-base;
-		@apply font-normal; /* normalize WP default bolding */
+		@apply font-normal;
+		/* normalize WP default bolding */
 
 		/* hover state */
 		@apply rounded-md transition;
@@ -212,7 +213,8 @@
 
 		@apply px-3 py-2;
 		@apply text-base;
-		@apply font-normal; /* normalize WP default bolding */
+		@apply font-normal;
+		/* normalize WP default bolding */
 
 		@apply cursor-pointer;
 
@@ -326,7 +328,8 @@
 
 		@apply py-2;
 		@apply text-base;
-		@apply font-normal; /* normalize WP default bolding */
+		@apply font-normal;
+		/* normalize WP default bolding */
 
 		/* Long label safety */
 		overflow-wrap: anywhere;
