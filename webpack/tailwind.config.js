@@ -9,13 +9,10 @@
 
 module.exports = {
 	content: [
-		"*.php",
-		"./components/**/*.php",
-		"./assets/src/js/**/*.{js,ts,jsx,tsx}",
+		"./**/*.php", // all theme php (root, template-parts, inc, etc.)
+		"./assets/src/**/*.{css,js,ts,jsx,tsx}", // scan CSS + JS/TS for class usage
 	],
 	plugins: [
 		require("@tailwindcss/typography"),
-		// Optional, but high ROI if you ever style raw form fields:
-		// require("@tailwindcss/forms"),
 	],
 };
