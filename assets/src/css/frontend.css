@@ -8,7 +8,8 @@
 
 /* Base / global helpers */
 @import "./base/background.css";
-@import "./base/footer.css";
+@import "./base/footer-simple.css";
+@import "./base/footer-complex.css";
 @import "./base/navbar.css";
 @import "./base/video.css";
 

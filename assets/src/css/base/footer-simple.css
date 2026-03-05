@@ -1,0 +1,53 @@
+@layer components {
+	.footer {
+		@apply bg-secondary;
+	}
+
+	.footer-outer {
+		@apply mx-auto max-w-6xl px-5 lg:px-10;
+		@apply grid grid-cols-12 gap-1;
+	}
+
+	.footer-logo {
+		@apply col-span-12 mx-auto text-center pt-10 pb-5;
+	}
+
+	.footer-logo img {
+		@apply max-w-40;
+	}
+
+	.primary-link {
+		@apply col-span-12 mx-auto py-1 text-center text-white;
+	}
+
+	.primary-link a {
+		@apply px-3 py-2;
+		@apply text-base;
+		@apply font-normal;
+		/* normalize WP default bolding */
+
+		/* hover state */
+		@apply rounded-md transition;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	.footer-socials {
+		@apply col-span-12;
+		@apply flex flex-wrap justify-center items-center;
+		@apply gap-3 pt-6 mx-auto;
+
+		/* Clamp the row width */
+		@apply w-full max-w-60 md:max-w-90;
+	}
+
+	.footer-social {
+		/* 4 per row on mobile, 6 per row from sm+ */
+		@apply basis-1/4 sm:basis-1/6;
+		@apply flex justify-center;
+	}
+
+	.footer-legal {
+		@apply col-span-12 mx-auto py-10 text-white;
+	}
+}
