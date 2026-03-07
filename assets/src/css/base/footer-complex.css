@@ -61,7 +61,7 @@
 	}
 
 	.footer-complex-contact__text {
-		@apply min-w-0 break-words text-white no-underline transition;
+		@apply min-w-0 wrap-break-word text-white no-underline transition;
 		@apply hover:text-white/85;
 		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-sm;
 	}
@@ -72,7 +72,7 @@
 		/* README:FOOTER_COMPLEX_SOCIALS_WIDTH
 		   Width clamp for the socials area. Adjust when icon count or icon size
 		   makes the block feel too narrow or too wide on mobile. */
-		@apply w-full max-w-[21rem] md:max-w-90;
+		@apply w-full max-w-84 md:max-w-90;
 	}
 
 	.footer-complex-social {
