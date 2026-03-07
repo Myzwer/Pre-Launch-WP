@@ -1,0 +1,277 @@
+@layer components {
+	.footer-complex {
+		@apply bg-secondary;
+	}
+
+	.footer-complex-clamp {
+		@apply mx-auto max-w-6xl py-10 px-4 md:px-0;
+	}
+
+	.footer-complex-grid {
+		@apply grid grid-cols-12 gap-y-10 md:gap-x-8;
+	}
+
+	.footer-complex-main {
+		@apply col-span-12 md:col-span-4;
+		@apply md:border-r md:border-white md:pr-6;
+	}
+
+	.footer-complex-main__inner {
+		@apply grid grid-cols-12 gap-1;
+	}
+
+	.footer-complex-side {
+		@apply col-span-12 md:col-span-8;
+	}
+
+	.footer-complex-side__top {
+		@apply grid grid-cols-12 gap-y-8 md:gap-y-0 md:gap-x-12;
+	}
+
+	.footer-complex-logo-wrap {
+		@apply col-span-12 mx-auto text-center pt-10 pb-5;
+	}
+
+	.footer-complex-logo {
+		/* README:FOOTER_COMPLEX_LOGO_MOBILE_SIZE
+		   Mobile footer logo sizing lives here. Increase/decrease max-height
+		   if the brand mark feels too dominant or too small. */
+		@apply max-w-full h-auto mx-auto object-contain;
+		@apply max-h-24 md:max-h-20;
+	}
+
+	.footer-complex-heading {
+		@apply font-bold text-white text-[2rem] md:text-xl pb-3 md:pb-4 text-center md:text-left;
+	}
+
+	.footer-complex-contact {
+		@apply col-span-12 text-white;
+	}
+
+	.footer-complex-contact__list {
+		@apply flex flex-col gap-3;
+	}
+
+	.footer-complex-contact__item {
+		@apply flex items-center justify-center gap-3 text-lg leading-snug;
+	}
+
+	.footer-complex-contact__icon {
+		@apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-white;
+	}
+
+	.footer-complex-contact__text {
+		@apply min-w-0 break-words text-white no-underline transition;
+		@apply hover:text-white/85;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-sm;
+	}
+
+	.footer-complex-socials {
+		@apply col-span-12;
+		@apply flex flex-wrap justify-center items-center gap-y-4 pt-6 mx-auto;
+		/* README:FOOTER_COMPLEX_SOCIALS_WIDTH
+		   Width clamp for the socials area. Adjust when icon count or icon size
+		   makes the block feel too narrow or too wide on mobile. */
+		@apply w-full max-w-[21rem] md:max-w-90;
+	}
+
+	.footer-complex-social {
+		/* README:FOOTER_COMPLEX_SOCIALS_PER_ROW
+		   Default mobile social layout is 4 across.
+		   Change basis values here if a client commonly has fewer or more icons. */
+		@apply basis-1/4 sm:basis-1/4 md:basis-1/6 flex justify-center;
+	}
+
+	.footer-complex-links {
+		@apply col-span-12 md:col-span-4 text-center md:text-left;
+	}
+
+	.footer-complex-links__grid {
+		/* README:FOOTER_COMPLEX_LINKS_LAYOUT
+		   Mobile: 2 columns to save vertical space.
+		   Desktop: single column for clearer hierarchy and better separation from legal text. */
+		@apply grid grid-cols-2 gap-x-3 gap-y-1;
+	}
+
+	.complex-primary-link {
+		@apply text-white;
+	}
+
+	.complex-primary-link a {
+		@apply inline-flex justify-center md:justify-start px-3 py-2 -ml-2;
+		@apply text-base font-normal text-white no-underline rounded-md transition;
+		@apply hover:bg-white/10;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+	}
+
+	.footer-complex-affiliations {
+		@apply col-span-12 pt-6 md:pt-10;
+	}
+
+	.footer-affiliations-grid {
+		/* README:FOOTER_COMPLEX_AFFILIATIONS_MOBILE_COLUMNS
+		   Mobile affiliation logos default to 3 across.
+		   If the logo count looks awkward (e.g. 5 items), update columns/gap here. */
+		@apply grid grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-3 pt-3;
+	}
+
+	.footer-affiliations-item {
+		@apply min-w-0;
+	}
+
+	.footer-affiliations-link {
+		/* README:FOOTER_COMPLEX_AFFILIATIONS_PADDING
+		   Tightened padding around affiliation logos so partner marks can render
+		   larger on mobile without increasing overall footer height. */
+		@apply flex items-center justify-center transition;
+		@apply px-1 py-1 md:px-5 md:py-5;
+		@apply min-h-16 md:min-h-32;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50;
+	}
+
+	.footer-affiliations-link--static {
+		@apply cursor-default;
+	}
+
+	.footer-affiliations-logo {
+		@apply block w-full h-auto max-h-14 md:max-h-20 object-contain;
+	}
+
+	.footer-complex-legal {
+		@apply col-span-12 md:col-span-8 text-left;
+	}
+
+	.footer-complex-legal--mobile {
+		@apply block pt-6 md:hidden;
+	}
+
+	.footer-complex-legal--desktop {
+		@apply hidden md:block;
+	}
+
+	.footer-complex-legal__prose {
+		/* README:FOOTER_COMPLEX_LEGAL_TEXT_COLOR
+		   Force legal copy to stay white even when prose defaults change. */
+		@apply text-white;
+	}
+
+	.footer-complex-legal__prose,
+	.footer-complex-legal__prose p,
+	.footer-complex-legal__prose li,
+	.footer-complex-legal__prose strong,
+	.footer-complex-legal__prose a {
+		@apply text-white;
+	}
+
+	.footer-complex-legal__prose a {
+		@apply underline-offset-4 hover:underline;
+	}
+
+	.footer-complex-legal__prose > *:first-child {
+		margin-top: 0;
+	}
+
+	@media (max-width: 767px) {
+		.footer-complex-main {
+			@apply border-r-0 pr-0;
+		}
+
+		.footer-complex-logo-wrap {
+			@apply pt-6 pb-6;
+		}
+
+		.footer-complex-contact {
+			@apply text-left;
+		}
+
+		.footer-complex-links {
+			@apply pt-2;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.footer-complex-main {
+			@apply flex flex-col items-center text-center;
+		}
+
+		.footer-complex-contact {
+			@apply flex flex-col items-center;
+		}
+
+		.footer-complex-contact__list {
+			@apply items-center;
+		}
+
+		.footer-complex-contact__item {
+			@apply justify-center;
+		}
+
+		.footer-complex-links {
+			@apply pl-3;
+		}
+
+		.footer-complex-links__grid {
+			@apply grid-cols-1 gap-y-2;
+		}
+
+		.complex-primary-link a {
+			@apply w-auto;
+		}
+
+		.footer-complex-legal .footer-complex-heading {
+			@apply mb-3;
+		}
+
+		.footer-complex-legal__prose {
+			max-width: 38rem;
+		}
+	}
+}
+
+@layer components {
+	.footer-credit {
+		@apply bg-primary;
+	}
+
+	.footer-credit__clamp {
+		@apply mx-auto max-w-7xl px-4 py-5 md:px-6;
+	}
+
+	.footer-credit__grid {
+		@apply grid grid-cols-1 gap-4 md:grid-cols-12 md:items-center;
+	}
+
+	.footer-credit__left {
+		@apply md:col-span-5;
+	}
+
+	.footer-credit__right {
+		@apply md:col-span-7;
+	}
+
+	.footer-credit__copy {
+		@apply m-0 text-center text-black/90 md:text-left md:text-base;
+	}
+
+	.footer-credit__nav {
+		@apply flex flex-wrap items-center justify-center gap-x-3 gap-y-2 md:justify-end;
+	}
+
+	.footer-credit__link,
+	.footer-credit__agency {
+		@apply text-sm text-black/90 md:text-base;
+	}
+
+	.footer-credit__link {
+		@apply underline-offset-4 transition hover:text-black hover:underline;
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-sm;
+	}
+
+	.footer-credit__link--agency {
+		@apply font-medium text-black;
+	}
+
+	.footer-credit__separator {
+		@apply text-black/60;
+	}
+}
