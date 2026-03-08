@@ -2,8 +2,8 @@
 	/**
 	 * Theme Footer
 	 *
-	 * Loads the footer layout selected in the ACF Globals options page,
-	 * then renders the shared footer credit bar beneath it.
+	 * Determines which footer layout (simple or complex) should render based on
+	 * the ACF Globals options page, then outputs the shared site credit bar.
 	 */
 
 	$layout = get_field( 'footer_layout', 'option' ) ?: 'simple';
@@ -21,14 +21,16 @@
 ?>
 
 <?php
-	/**
-	 * Footer Credit Bar
-	 *
-	 * Shared sitewide footer bar shown beneath both footer layouts.
-	 * Displays copyright text, legal links, and optional agency credit.
-	 *
-	 * Agency credit visibility is controlled in the ACF Globals options page.
-	 */
+	/*
+	|--------------------------------------------------------------------------
+	| Footer Credit Bar
+	|--------------------------------------------------------------------------
+	|
+	| Shared sitewide footer bar shown beneath both footer layouts.
+	| Displays copyright text, legal links, and optional agency credit.
+	| Agency credit visibility is controlled in the ACF Globals options page.
+	|
+	*/
 
 	$show_site_credit_bar = get_field( 'show_site_credit_bar', 'option' );
 	// If you keep your original field name instead, use this:
