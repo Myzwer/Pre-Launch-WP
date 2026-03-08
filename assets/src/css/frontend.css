@@ -8,10 +8,13 @@
 
 /* Base / global helpers */
 @import "./base/background.css";
+@import "./base/video.css";
+
+/* Navigation */
 @import "./base/footer-simple.css";
 @import "./base/footer-complex.css";
+@import "./base/footer-credit.css";
 @import "./base/navbar.css";
-@import "./base/video.css";
 
 /* Components */
 @import "./components/accordion.css";
