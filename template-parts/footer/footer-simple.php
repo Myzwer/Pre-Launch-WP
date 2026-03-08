@@ -1,15 +1,22 @@
 <?php
 	/**
 	 * Simple Footer
-	 * --------------
-	 * Displays footer logo only (baseline test).
+	 *
+	 * Lightweight footer layout used on sites that do not need the full
+	 * complex footer system. Displays the footer logo, optional link list,
+	 * social icons, and legal text.
+	 *
+	 * This footer is toggled via the ACF "Globals" options page.
+	 *
+	 * Related files:
+	 * - /assets/src/css/components/footer-simple.css
 	 */
-
 ?>
 
-<div class="footer">
-	<div class="footer-outer">
-		<div class="footer-logo">
+<div class="s-footer">
+	<div class="s-footer-outer">
+
+		<div class="s-footer-logo">
 			<?php
 				$image = get_field( 'footer_logo', 'option' );
 				if ( ! empty( $image ) ): ?>
@@ -17,6 +24,7 @@
 						 alt="<?php echo esc_attr( $image['alt'] ); ?>" />
 				<?php endif; ?>
 		</div>
+
 
 		<?php
 			if ( have_rows( 'footer_simple_links', 'option' ) ):
@@ -28,9 +36,11 @@
 						$link_title  = $link['title'];
 						$link_target = $link['target'] ? $link['target'] : '_self';
 						?>
-						<div class="primary-link">
+						<div class="s-footer-link">
 							<a href="<?php echo esc_url( $link_url ); ?>"
-							   target="<?php echo esc_attr( $link_target ); ?>"><?php echo esc_html( $link_title ); ?></a>
+							   target="<?php echo esc_attr( $link_target ); ?>">
+								<?php echo esc_html( $link_title ); ?>
+							</a>
 						</div>
 					<?php endif;
 				endwhile;
@@ -41,9 +51,9 @@
 		<?php $socials = windpeak_get_social_items(); ?>
 
 		<?php if ( ! empty( $socials ) ): ?>
-			<div class="footer-socials">
+			<div class="s-footer-socials">
 				<?php foreach ( $socials as $item ): ?>
-					<div class="footer-social">
+					<div class="s-footer-social">
 						<?php
 							echo windpeak_render_social_icon( $item['network'], [
 								'size'  => 'sm',
@@ -58,10 +68,11 @@
 		<?php endif; ?>
 
 
-		<div class="footer-legal">
+		<div class="s-footer-legal">
 			<p class="mx-auto text-center">
 				<?php echo get_the_privacy_policy_link(); ?>
 			</p>
+
 			<p>
 				<?php the_field( 'footer_simple_legal_text', 'option' ); ?>
 			</p>
