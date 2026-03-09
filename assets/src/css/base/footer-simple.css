@@ -17,8 +17,14 @@
 		@apply max-w-40;
 	}
 
+	.s-footer-links {
+		@apply col-span-12;
+		@apply flex flex-col items-center gap-1;
+		@apply md:flex-row md:flex-wrap md:justify-center;
+	}
+
 	.s-footer-link {
-		@apply col-span-12 mx-auto py-1 text-center text-white;
+		@apply py-1 text-center text-white;
 	}
 
 	.s-footer-link a {
@@ -35,7 +41,7 @@
 	.s-footer-socials {
 		@apply col-span-12;
 		@apply flex flex-wrap justify-center items-center;
-		@apply gap-3 pt-6 mx-auto;
+		@apply gap-3 pt-6 mx-auto pb-10;
 
 		/* Clamp the row width */
 		@apply w-full max-w-60 md:max-w-90;
@@ -46,9 +52,4 @@
 		@apply basis-1/4 sm:basis-1/6;
 		@apply flex justify-center;
 	}
-
-	.s-footer-legal {
-		@apply col-span-12 mx-auto py-10 text-white;
-	}
-
 }

@@ -26,26 +26,29 @@
 		</div>
 
 
-		<?php
-			if ( have_rows( 'footer_simple_links', 'option' ) ):
-				while ( have_rows( 'footer_simple_links', 'option' ) ) : the_row();
-					$link            = get_sub_field( 'link' );
+		<?php if ( have_rows( 'footer_simple_links', 'option' ) ): ?>
+			<div class="s-footer-links">
+				<?php
+					while ( have_rows( 'footer_simple_links', 'option' ) ) : the_row();
+						$link            = get_sub_field( 'link' );
 
-					if ( $link ):
-						$link_url = $link['url'];
-						$link_title  = $link['title'];
-						$link_target = $link['target'] ? $link['target'] : '_self';
-						?>
-						<div class="s-footer-link">
-							<a href="<?php echo esc_url( $link_url ); ?>"
-							   target="<?php echo esc_attr( $link_target ); ?>">
-								<?php echo esc_html( $link_title ); ?>
-							</a>
-						</div>
-					<?php endif;
-				endwhile;
-			endif;
-		?>
+						if ( $link ):
+							$link_url = $link['url'];
+							$link_title  = $link['title'];
+							$link_target = $link['target'] ? $link['target'] : '_self';
+							?>
+							<div class="s-footer-link">
+								<a href="<?php echo esc_url( $link_url ); ?>"
+								   target="<?php echo esc_attr( $link_target ); ?>">
+									<?php echo esc_html( $link_title ); ?>
+								</a>
+							</div>
+						<?php
+						endif;
+					endwhile;
+				?>
+			</div>
+		<?php endif; ?>
 
 
 		<?php $socials = windpeak_get_social_items(); ?>
@@ -66,17 +69,6 @@
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
-
-
-		<div class="s-footer-legal">
-			<p class="mx-auto text-center">
-				<?php echo get_the_privacy_policy_link(); ?>
-			</p>
-
-			<p>
-				<?php the_field( 'footer_simple_legal_text', 'option' ); ?>
-			</p>
-		</div>
 
 	</div>
 </div>
