@@ -10,7 +10,8 @@
 
 ## What This Is
 
-**WordPress Pre-Launch** is a production-ready **starter theme / blueprint** used as the foundation for all client WordPress builds.
+**WordPress Pre-Launch** is a production-ready **starter theme / blueprint** used as the foundation for all client
+WordPress builds.
 
 This is not really a demo theme or a playground, its meant to be a, well, launching pad.
 
@@ -118,8 +119,10 @@ yarn prod:watch
 ### Google Fonts
 
 1. Go to https://fonts.google.com/
-2. Pick a font family that you like, and select a few styles. (as a note, the more files you choose the slower the site will be. So only pick ones you need to use)
-3. Under "use on the web" section, make sure < link > is selected, and look at the code that is generated. It should look _something_ like this:
+2. Pick a font family that you like, and select a few styles. (as a note, the more files you choose the slower the site
+   will be. So only pick ones you need to use)
+3. Under "use on the web" section, make sure < link > is selected, and look at the code that is generated. It should
+   look _something_ like this:
 
 ```
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -141,7 +144,8 @@ wp_register_style( 'FONTNAME_font', 'FONTLINK' );
 wp_enqueue_style('FONTNAME_font');
 ```
 
-7. Name it whatever where FONTNAME_font is (it doesn't matter what you call it, but it does make sense to name it the fontname for ease of reference later), and add the link to FONTLINK. So to complete our example:
+7. Name it whatever where FONTNAME_font is (it doesn't matter what you call it, but it does make sense to name it the
+   fontname for ease of reference later), and add the link to FONTLINK. So to complete our example:
 
 ```php
 wp_register_style( 'roboto_font', 'https://fonts.googleapis.com/css2?familY=Roboto:ital,wght@0,400;0,500;0,700;1,400' );
@@ -149,28 +153,34 @@ wp_enqueue_style('roboto_font');
 ```
 
 8. Go back to google, copy the font family section and you can begin using it in your CSS!
-9. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. This is already done for you so you should be able to easily swap out my code for your new font code.
+9. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. This is
+   already done for you so you should be able to easily swap out my code for your new font code.
 
 ```css
 fontFamily {
-       'myfontname': ['Roboto', 'sans-serif'], // text-roboto
-      }
+'myfontname': [ 'Roboto', 'sans-serif' ], / / text-roboto
+}
 ```
 
 ---
 
 ### Custom Fonts
 
-1. Purchase or download font files. They will most likely come as .otf or .ttf or something like that. It doesn't matter which you use.
-2. Go to [Transfonter](https://transfonter.org/) and select the fontses you want to include. The more files you include the slower your website will be, so only get the ones you need. Bigger is not always better. Girls do care about the [size of your megapixel.](https://youtu.be/eg8u_Q1tNlo?t=22)
+1. Purchase or download font files. They will most likely come as .otf or .ttf or something like that. It doesn't matter
+   which you use.
+2. Go to [Transfonter](https://transfonter.org/) and select the fontses you want to include. The more files you include
+   the slower your website will be, so only get the ones you need. Bigger is not always better. Girls do care about
+   the [size of your megapixel.](https://youtu.be/eg8u_Q1tNlo?t=22)
 3. Upload the font files to the site.
 4. You do not need to adjust any settings on the bottom section unless you want to.
 5. Download your @font-face kit zip file with new fonts!
 6. Upzip. 😉
 7. You don't need demo.html, though can see what your fonts looks like on a page if you load it up.
-8. Copy all .woff and .woff2 files into ./assets/src/webfonts in the wordpress project. You can delete any existing files that you no longer need including the gitkeep file.
+8. Copy all .woff and .woff2 files into ./assets/src/webfonts in the wordpress project. You can delete any existing
+   files that you no longer need including the gitkeep file.
 9. Open up stylesheet.css, copy all the code out of it, and paste that into fonts.css. (.assets/src/sass/fonts/)
-10. Lastly, you'll need to tell your fonts where they can find the woff files. This means adding `../../webfonts/` to the beginnging of all of your URL's.
+10. Lastly, you'll need to tell your fonts where they can find the woff files. This means adding `../../webfonts/` to
+    the beginnging of all of your URL's.
 
 ```css
 fontFamily {
@@ -184,14 +194,17 @@ fontFamily {
 }
 ```
 
-11. Once added, if you have prettier and stylelint up and running, both of those will throw errors, so hop over to iterm and type `yarn stylelint` to get it fixed.
-12. Once linked like this, you are free to use your new font families! The name is whatever fontfamily is called. In the above example (where I showed linking) MYFONT would be the name you'd use.
-13. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. This is already done for you so you should be able to easily swap out my code for your new font code.
+11. Once added, if you have prettier and stylelint up and running, both of those will throw errors, so hop over to iterm
+    and type `yarn stylelint` to get it fixed.
+12. Once linked like this, you are free to use your new font families! The name is whatever fontfamily is called. In the
+    above example (where I showed linking) MYFONT would be the name you'd use.
+13. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. This is
+    already done for you so you should be able to easily swap out my code for your new font code.
 
 ```css
 fontFamily {
-       'myfontname': ['Bleeding Cowboy', 'serif'], // text-bleeding-cowboy
-      }
+'myfontname': [ 'Bleeding Cowboy', 'serif' ], / / text-bleeding-cowboy
+}
 ```
 
 # Tailwind Theme System (Base Styles)
@@ -1253,7 +1266,7 @@ structure in `card.php`, not in archives.
 
 If a CPT needs a slightly different layout:
 
-1.  Duplicate:
+1. Duplicate:
 
 ```{=html}
 <!-- -->
@@ -1261,7 +1274,7 @@ If a CPT needs a slightly different layout:
 
     card.php
 
-2.  Rename to:
+2. Rename to:
 
 ```{=html}
 <!-- -->
@@ -1269,7 +1282,7 @@ If a CPT needs a slightly different layout:
 
     card-{posttype}.php
 
-3.  Update archive template to load dynamically:
+3. Update archive template to load dynamically:
 
 ```{=html}
 <!-- -->
@@ -1280,7 +1293,7 @@ If a CPT needs a slightly different layout:
       get_post_type()
     );
 
-4.  Add modifier classes in CSS:
+4. Add modifier classes in CSS:
 
 ```{=html}
 <!-- -->
@@ -1526,3 +1539,338 @@ https://theseoframework.com/docs/seo-plugin-setup/
 
 This theme provides safe, scalable SEO defaults. Content strategy and
 authority determine the rest.
+
+# Footer System
+
+This theme includes a flexible footer system designed to support two layouts while keeping shared logic centralized.
+
+The footer is controlled via the **ACF Globals Options Page** and rendered through a simple layout switch in
+`footer.php`.
+
+---
+
+# Footer Architecture
+
+The footer system is composed of:
+
+| Layer          | File                                          | Responsibility                                    |
+| -------------- | --------------------------------------------- | ------------------------------------------------- |
+| Layout Router  | `footer.php`                                  | Chooses which footer layout to render             |
+| Simple Footer  | `template-parts/footer/footer-simple.php`     | Lightweight layout for small sites                |
+| Complex Footer | `template-parts/footer/footer-complex.php`    | Multi-column layout with additional content areas |
+| Credit Bar     | `assets/src/css/components/footer-credit.css` | Shared legal / copyright section                  |
+| Styling        | `assets/src/css/components/footer-*.css`      | Layout-specific styling                           |
+
+The **credit bar always renders**, regardless of which footer layout is active.
+
+---
+
+# Layout Switching
+
+Footer layout is determined by an ACF option field:
+
+```
+footer_layout
+```
+
+Possible values:
+
+```
+simple
+complex
+```
+
+Routing occurs inside `footer.php`.
+
+Example logic:
+
+```
+$layout = get_field('footer_layout','option') ?: 'simple';
+
+switch ($layout) {
+  case 'complex':
+    get_template_part('template-parts/footer/footer','complex');
+    break;
+
+  default:
+    get_template_part('template-parts/footer/footer','simple');
+}
+```
+
+If the field is empty, the **simple footer loads by default**.
+
+---
+
+# Footer Credit Bar (Shared Section)
+
+The footer credit bar sits below both layouts and contains:
+
+- Copyright
+- Privacy policy link
+- Accessibility link
+- Optional agency credit
+
+This section is rendered directly inside `footer.php`.
+
+Key option field:
+
+```
+show_site_credit_bar
+```
+
+When enabled, the footer displays:
+
+```
+Site by Windpeak Design
+```
+
+This can be safely removed or replaced if needed.
+
+---
+
+# Simple Footer
+
+File:
+
+```
+template-parts/footer/footer-simple.php
+```
+
+Purpose:
+
+A minimal footer for small sites or landing pages.
+
+Structure:
+
+- Logo
+- Optional links repeater
+- Social icons
+
+Social icons are pulled from the **global social system**:
+
+```
+windpeak_get_social_items()
+windpeak_render_social_icon()
+```
+
+CSS file:
+
+```
+assets/src/css/components/footer-simple.css
+```
+
+---
+
+# Complex Footer
+
+File:
+
+```
+template-parts/footer/footer-complex.php
+```
+
+Purpose:
+
+A full multi-column footer intended for larger sites.
+
+Typical elements:
+
+- Logo and intro text
+- Navigation link groups
+- Contact information
+- Social icons
+- Affiliation logos
+
+Affiliation logos are typically controlled via an **ACF repeater**.
+
+CSS file:
+
+```
+assets/src/css/components/footer-complex.css
+```
+
+---
+
+# Footer CSS Structure
+
+Footer styling is intentionally separated into **three files**:
+
+```
+footer-simple.css
+footer-complex.css
+footer-credit.css
+```
+
+This separation prevents layout logic from bleeding between systems.
+
+### Rule
+
+Only load styles needed for the rendered layout.
+
+Do **not** mix simple and complex footer classes.
+
+---
+
+# Common Tasks
+
+## Change Footer Layout
+
+Go to:
+
+```
+ACF Globals → Footer Layout
+```
+
+Select:
+
+```
+Simple
+Complex
+```
+
+No code changes required.
+
+---
+
+## Add Footer Links (Simple Footer)
+
+Edit the ACF repeater:
+
+```
+footer_simple_links
+```
+
+Each row expects a standard WordPress link field.
+
+---
+
+## Add Social Icons
+
+Social icons come from the **global social settings**, not the footer.
+
+Configure inside the global social fields used by:
+
+```
+windpeak_get_social_items()
+```
+
+The footer simply renders whatever networks are active.
+
+---
+
+## Edit Legal Links
+
+Privacy policy is pulled from WordPress core:
+
+```
+get_privacy_policy_url()
+```
+
+Accessibility page is resolved automatically if the page slug exists:
+
+```
+/accessibility/
+```
+
+To change the slug or logic, update the URL generation in `footer.php`.
+
+---
+
+## Remove "Site by Windpeak"
+
+Disable the ACF toggle:
+
+```
+show_site_credit_bar
+```
+
+Or remove the agency markup inside the credit section of `footer.php`.
+
+---
+
+# README Flags
+
+### README:FOOTER_LAYOUT_SWITCH
+
+Location:
+
+```
+footer.php
+```
+
+Controls which footer layout loads based on the ACF option field.
+
+If new layouts are ever added, extend the `switch` statement here.
+
+---
+
+### README:FOOTER_CREDIT_BAR
+
+Location:
+
+```
+footer.php
+```
+
+Shared legal section rendered under both footer layouts.
+
+Handles:
+
+- copyright text
+- privacy policy link
+- accessibility link
+- optional agency credit
+
+---
+
+### README:FOOTER_SOCIAL_RENDER
+
+Location:
+
+```
+footer-simple.php
+footer-complex.php
+```
+
+Social icons are not hardcoded.
+
+They render through:
+
+```
+windpeak_get_social_items()
+windpeak_render_social_icon()
+```
+
+If icons appear missing, check the global social configuration.
+
+---
+
+# Debug Checklist
+
+Footer not changing?
+
+- Confirm `footer_layout` ACF value
+- Clear cache
+- Ensure the correct template part exists
+
+Social icons missing?
+
+- Confirm networks exist in global options
+- Confirm helper functions are loaded
+
+Credit bar missing?
+
+- Confirm `show_site_credit_bar` toggle
+
+---
+
+# Design Philosophy
+
+The footer system follows the same principles as the navbar:
+
+- clear PHP responsibility
+- layout-specific CSS
+- minimal runtime logic
+- centralized configuration through ACF
+
+Future layouts should follow the same pattern rather than modifying existing ones.
