@@ -1,3 +1,18 @@
+/**
+ * Footer Credit Bar
+ *
+ * Styles for the shared site credit bar rendered beneath both footer layouts.
+ * This section displays copyright text, legal links (privacy / accessibility),
+ * and optional agency credit.
+ *
+ * The markup for this component lives in:
+ * /footer.php
+ *
+ * This stylesheet is intentionally separated from the simple and complex
+ * footer styles so the credit bar can remain shared without duplicating
+ * CSS between footer variants.
+ */
+
 @layer components {
 	.footer-credit {
 		@apply bg-primary;
