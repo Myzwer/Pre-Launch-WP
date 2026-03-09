@@ -1,9 +1,12 @@
 <?php
 	/**
 	 * Complex Footer
-	 * --------------
-	 * Multi-column footer with contact info, social icons,
-	 * quick links, legal copy, and affiliation logos.
+	 *
+	 * Full footer layout used when the site needs more than the simple footer.
+	 * Renders the footer logo, contact details, social icons, quick links,
+	 * legal copy, and affiliation logos.
+	 *
+	 * This template is selected from the ACF Globals options page.
 	 */
 
 	$phone_number  = get_field( 'phone_number', 'option' );
@@ -31,20 +34,20 @@
 	);
 ?>
 
-<div class="footer-complex">
-	<div class="footer-complex-clamp">
-		<div class="footer-complex-grid">
+<div class="footer">
+	<div class="footer-outer">
+		<div class="footer-grid">
 
-			<div class="footer-complex-main">
-				<div class="footer-complex-main__inner">
-					<div class="footer-complex-logo-wrap">
+			<div class="footer-main">
+				<div class="footer-main-inner">
+					<div class="footer-logo-wrap">
 						<?php
 							$image = get_field( 'footer_logo', 'option' );
 
 							if ( ! empty( $image ) ) :
 								?>
 								<img
-									class="footer-complex-logo"
+									class="footer-logo"
 									src="<?php echo esc_url( $image['url'] ); ?>"
 									alt="<?php echo esc_attr( $image['alt'] ); ?>"
 								/>
@@ -52,19 +55,19 @@
 					</div>
 
 					<?php if ( ! empty( $phone_number ) || ! empty( $email_address ) ) : ?>
-						<div class="footer-complex-contact">
-							<h3 class="footer-complex-heading">Contact Us</h3>
+						<div class="footer-contact">
+							<h3 class="footer-heading">Contact Us</h3>
 
-							<div class="footer-complex-contact__list">
+							<div class="footer-contact-list">
 								<?php if ( ! empty( $phone_number ) ) : ?>
-									<p class="footer-complex-contact__item">
-										<span class="footer-complex-contact__icon" aria-hidden="true">
+									<p class="footer-contact-item">
+										<span class="footer-contact-icon" aria-hidden="true">
 											<i class="fa-solid fa-phone"></i>
 										</span>
 
 										<a
 											href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $phone_number ) ); ?>"
-											class="footer-complex-contact__text"
+											class="footer-contact-text"
 										>
 											<?php echo esc_html( $phone_number ); ?>
 										</a>
@@ -72,14 +75,14 @@
 								<?php endif; ?>
 
 								<?php if ( ! empty( $email_address ) ) : ?>
-									<p class="footer-complex-contact__item">
-										<span class="footer-complex-contact__icon" aria-hidden="true">
+									<p class="footer-contact-item">
+										<span class="footer-contact-icon" aria-hidden="true">
 											<i class="fa-solid fa-envelope"></i>
 										</span>
 
 										<a
 											href="mailto:<?php echo esc_attr( $email_address ); ?>"
-											class="footer-complex-contact__text"
+											class="footer-contact-text"
 										>
 											<?php echo esc_html( $email_address ); ?>
 										</a>
@@ -90,9 +93,9 @@
 					<?php endif; ?>
 
 					<?php if ( ! empty( $socials ) ) : ?>
-						<div class="footer-complex-socials">
+						<div class="footer-socials">
 							<?php foreach ( $socials as $item ) : ?>
-								<div class="footer-complex-social">
+								<div class="footer-social">
 									<?php
 										echo windpeak_render_social_icon(
 											$item['network'],
@@ -111,12 +114,12 @@
 				</div>
 			</div>
 
-			<div class="footer-complex-side">
-				<div class="footer-complex-side__top">
-					<div class="footer-complex-links">
-						<h3 class="footer-complex-heading">Quick Links</h3>
+			<div class="footer-side">
+				<div class="footer-top">
+					<div class="footer-links">
+						<h3 class="footer-heading">Quick Links</h3>
 
-						<div class="footer-complex-links__grid">
+						<div class="footer-links-grid">
 							<?php
 								if ( have_rows( 'footer_complex_links', 'option' ) ) :
 									while ( have_rows( 'footer_complex_links', 'option' ) ) :
@@ -129,7 +132,7 @@
 											$link_title  = $link['title'];
 											$link_target = $link['target'] ? $link['target'] : '_self';
 											?>
-											<div class="complex-primary-link">
+											<div class="footer-link">
 												<a
 													href="<?php echo esc_url( $link_url ); ?>"
 													target="<?php echo esc_attr( $link_target ); ?>"
@@ -145,18 +148,18 @@
 						</div>
 					</div>
 
-					<div class="footer-complex-legal footer-complex-legal--desktop">
-						<h3 class="footer-complex-heading legal-heading">Legal Information</h3>
+					<div class="footer-legal footer-legal-desktop">
+						<h3 class="footer-heading">Legal Information</h3>
 
-						<div class="prose-theme footer-complex-legal__prose">
+						<div class="prose-theme footer-prose">
 							<?php the_field( 'footer_complex_legal', 'option' ); ?>
 						</div>
 					</div>
 				</div>
 
-				<div class="footer-complex-affiliations">
+				<div class="footer-affiliations">
 					<?php if ( get_field( 'footer_affiliations_heading', 'option' ) ) : ?>
-						<h3 class="footer-complex-heading">
+						<h3 class="footer-heading">
 							<?php the_field( 'footer_affiliations_heading', 'option' ); ?>
 						</h3>
 					<?php endif; ?>
@@ -207,7 +210,7 @@
 												</a>
 											<?php endif; ?>
 										<?php else : ?>
-											<div class="footer-affiliations-link footer-affiliations-link--static">
+											<div class="footer-affiliations-link footer-affiliations-link-static">
 												<img
 													class="footer-affiliations-logo"
 													src="<?php echo esc_url( $logo_url ); ?>"
@@ -223,10 +226,10 @@
 					<?php endif; ?>
 				</div>
 
-				<div class="footer-complex-legal footer-complex-legal--mobile">
-					<h3 class="footer-complex-heading">Legal Information</h3>
+				<div class="footer-legal footer-legal-mobile">
+					<h3 class="footer-heading">Legal Information</h3>
 
-					<div class="prose-theme footer-complex-legal__prose">
+					<div class="prose-theme footer-prose">
 						<?php the_field( 'footer_complex_legal', 'option' ); ?>
 					</div>
 				</div>
