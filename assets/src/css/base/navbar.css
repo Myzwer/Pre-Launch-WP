@@ -28,7 +28,7 @@
 
 	.nav-brand-logo {
 		/* Logo height (drives overall header height) */
-		@apply h-20 w-auto;
+		@apply h-15 w-auto py-2;
 	}
 
 	/* ==========================================================================
