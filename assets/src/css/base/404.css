@@ -1,0 +1,276 @@
+/**
+ * 404 Page Styles
+ *
+ * Decorative layout for the theme's 404 template. Uses token-based colors from
+ * tailwind.css so the design automatically adapts to each site's brand palette.
+ *
+ * Structure:
+ * - Radial gradient background using soft theme colors
+ * - Decorative "blob" elements positioned around the viewport edges
+ * - Large stylized 404 typography
+ * - Centered content card for message + CTA (ACF option field output)
+ *
+ * No images or JS are used — all visuals are CSS-driven for portability
+ * across client sites.
+ *
+ * @reference "../tailwind.css"
+ */
+
+@reference "../tailwind.css";
+
+@layer components {
+	.error-404 {
+		background-color: var(--color-white);
+		color: var(--color-black);
+	}
+
+	.error-404__section {
+		position: relative;
+		isolation: isolate;
+		overflow: clip;
+		min-height: calc(100svh - 80px - var(--wp-admin--admin-bar--height, 0px));
+		display: flex;
+		align-items: center;
+		padding-top: clamp(2.5rem, 5vw, 4rem);
+		padding-bottom: clamp(4rem, 8vw, 7rem);
+		background: radial-gradient(
+			circle at top left,
+			color-mix(in oklab, var(--color-soft-2) 54%, var(--color-white)) 0%,
+			transparent 38%
+		),
+		radial-gradient(
+			circle at top right,
+			color-mix(in oklab, var(--color-soft-2) 44%, var(--color-white)) 0%,
+			transparent 36%
+		),
+		radial-gradient(
+			circle at bottom right,
+			color-mix(in oklab, var(--color-secondary-gradient-to) 40%, var(--color-white)) 0%,
+			transparent 42%
+		),
+		linear-gradient(
+			180deg,
+			color-mix(in oklab, var(--color-soft-2) 18%, var(--color-white)) 0%,
+			color-mix(in oklab, var(--color-soft-2) 32%, var(--color-white)) 100%
+		);
+	}
+
+	.error-404__section:before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -2;
+		background: radial-gradient(
+			circle at 50% 34%,
+			color-mix(in oklab, var(--color-primary) 9%, transparent) 0%,
+			transparent 32%
+		);
+		pointer-events: none;
+	}
+
+	.error-404__inner {
+		position: relative;
+		z-index: 1;
+		max-width: 52rem;
+		margin-inline: auto;
+		text-align: center;
+		transform: translateY(-5rem);
+	}
+
+	.error-404__code {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: clamp(5.5rem, 18vw, 12rem);
+		line-height: 0.88;
+		letter-spacing: -0.06em;
+		font-weight: 800;
+		color: color-mix(in oklab, var(--color-primary) 62%, var(--color-white));
+		text-shadow: 0 1px 0 color-mix(in oklab, var(--color-white) 80%, transparent),
+		0 18px 40px color-mix(in oklab, var(--color-primary) 14%, transparent);
+	}
+
+	@supports (-webkit-text-stroke: 1px var(--color-primary)) {
+		.error-404__code {
+			color: color-mix(in oklab, var(--color-white) 65%, transparent);
+			-webkit-text-stroke: 2px color-mix(in oklab, var(--color-primary) 78%, var(--color-white));
+		}
+	}
+
+	.error-404__content {
+		margin-top: clamp(1rem, 2vw, 1.5rem);
+		max-width: 50rem;
+		margin-inline: auto;
+		padding: clamp(1.5rem, 3vw, 2.25rem);
+		border: 1px solid color-mix(in oklab, var(--color-black) 10%, transparent);
+		border-radius: 1.75rem;
+		background-color: color-mix(in oklab, var(--color-white) 78%, transparent);
+		backdrop-filter: blur(14px);
+		box-shadow: 0 12px 35px color-mix(in oklab, var(--color-black) 7%, transparent),
+		inset 0 1px 0 color-mix(in oklab, var(--color-white) 85%, transparent);
+	}
+
+	.error-404__content > :first-child {
+		margin-top: 0;
+	}
+
+	.error-404__content > :last-child {
+		margin-bottom: 0;
+	}
+
+	.error-404__content :where(h1, h2, h3) {
+		@apply font-display;
+		margin-bottom: 0.75rem;
+		text-wrap: balance;
+	}
+
+	.error-404__content :where(p) {
+		text-wrap: pretty;
+	}
+
+	.error-404__content :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black) {
+		margin-top: 0.5rem;
+	}
+
+	.error-404__blob {
+		position: absolute;
+		z-index: 0;
+		border-radius: 9999px;
+		pointer-events: none;
+		opacity: 0.82;
+	}
+
+	.error-404__blob--one {
+		top: -8rem;
+		left: -6rem;
+		width: clamp(12rem, 24vw, 20rem);
+		aspect-ratio: 1 / 1;
+		background-color: color-mix(in oklab, var(--color-primary) 72%, var(--color-white));
+		filter: blur(3px);
+	}
+
+	.error-404__blob--two {
+		top: -6rem;
+		right: -4rem;
+		width: clamp(15rem, 30vw, 26rem);
+		height: clamp(11rem, 22vw, 17rem);
+		background-color: color-mix(in oklab, var(--color-primary) 72%, var(--color-white));
+		border-bottom-left-radius: 12rem;
+		border-bottom-right-radius: 12rem;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		filter: blur(3px);
+	}
+
+	.error-404__blob--three {
+		top: 21%;
+		right: 17%;
+		width: clamp(6rem, 11vw, 8.5rem);
+		aspect-ratio: 1 / 1;
+		background-color: color-mix(in oklab, var(--color-primary) 28%, var(--color-white));
+		filter: blur(1px);
+	}
+
+	.error-404__blob--four {
+		left: 8%;
+		bottom: 14%;
+		width: clamp(4rem, 7vw, 5.5rem);
+		aspect-ratio: 1 / 1;
+		background-color: color-mix(in oklab, var(--color-primary) 22%, var(--color-white));
+		filter: blur(1px);
+	}
+
+	.error-404__blob--five {
+		right: -7rem;
+		bottom: -8rem;
+		width: clamp(16rem, 33vw, 30rem);
+		height: clamp(10rem, 24vw, 18rem);
+		background-color: color-mix(in oklab, var(--color-primary) 30%, var(--color-white));
+		border-top-left-radius: 16rem;
+		border-top-right-radius: 18rem;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		filter: blur(3px);
+	}
+
+	@media (max-width: 767px) {
+		.error-404__section {
+			min-height: calc(100svh - 80px - var(--wp-admin--admin-bar--height, 0px));
+			padding-top: 2.5rem;
+			padding-bottom: 4.5rem;
+		}
+
+		.error-404__inner {
+			transform: translateY(-2.5rem);
+			max-width: 100%;
+		}
+
+		.error-404__content {
+			max-width: 100%;
+			padding: 1.5rem;
+			border-radius: 1.5rem;
+		}
+
+		.error-404__blob--one {
+			top: -4.5rem;
+			left: -3.5rem;
+			width: 10rem;
+		}
+
+		.error-404__blob--two {
+			top: -3.5rem;
+			right: -3rem;
+			width: 11rem;
+			height: 6.5rem;
+		}
+
+		.error-404__blob--three {
+			top: 16%;
+			right: 6%;
+			width: 4.75rem;
+		}
+
+		.error-404__blob--four {
+			left: 6%;
+			bottom: 16%;
+			width: 3.5rem;
+		}
+
+		.error-404__blob--five {
+			right: -4.5rem;
+			bottom: -3.5rem;
+			width: 12rem;
+			height: 7rem;
+		}
+	}
+
+	@media (max-width: 575px) {
+		.error-404__inner {
+			transform: translateY(-1.75rem);
+		}
+
+		.error-404__code {
+			font-size: clamp(4.5rem, 26vw, 6.5rem);
+		}
+
+		.error-404__content {
+			padding: 1.5rem 1.25rem;
+			border-radius: 1.5rem;
+		}
+
+		.error-404__blob--three,
+		.error-404__blob--four {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-transparency: reduce) {
+		.error-404__content {
+			background-color: var(--color-white);
+			backdrop-filter: none;
+		}
+
+		.error-404__blob {
+			filter: none;
+		}
+	}
+}

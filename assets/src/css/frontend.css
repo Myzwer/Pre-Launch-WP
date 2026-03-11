@@ -16,6 +16,9 @@
 @import "./base/footer-credit.css";
 @import "./base/navbar.css";
 
+/* 404 */
+@import "./base/404.css";
+
 /* Components */
 @import "./components/accordion.css";
 @import "./components/cards.css";
