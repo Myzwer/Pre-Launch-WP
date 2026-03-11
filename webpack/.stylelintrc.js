@@ -43,6 +43,7 @@ module.exports = {
 			"ch",
 			"s",
 			"ms",
+			"svh",
 		],
 
 		// Allow Tailwind v4 and related at-rules.
