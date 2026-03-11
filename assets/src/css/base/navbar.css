@@ -28,7 +28,7 @@
 
 	.nav-brand-logo {
 		/* Logo height (drives overall header height) */
-		@apply h-15 w-auto py-2;
+		@apply h-18 w-auto py-3;
 	}
 
 	/* ==========================================================================
@@ -286,7 +286,7 @@
 		.nav-submenu {
 			@apply absolute left-0 top-full;
 			@apply mt-2;
-			@apply min-w-[12rem];
+			@apply min-w-48;
 			@apply w-max;
 
 			/* README:SUBMENU_VIEWPORT_CLAMP
