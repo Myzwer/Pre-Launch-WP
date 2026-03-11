@@ -5,6 +5,9 @@
  *
  * Flexible Content fields are presented as visual "panels" so major page
  * sections (Header, Body, etc.) are easier to understand at a glance.
+ *
+ * File is loading as is directly from ./includes/admin/admin_editor_cleanup.php
+ * It is not being processed by webpack or routing to /public.
  */
 
 /* =========================

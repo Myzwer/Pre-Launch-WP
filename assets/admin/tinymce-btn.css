@@ -21,6 +21,9 @@
  * - It intentionally does NOT use Tailwind or frontend styles.
  * - Styling targets TinyMCE 4 DOM structure used by ACF WYSIWYG fields.
  *
+ * - File is loading as is directly from ./includes/admin/editor_tools.php
+ * - It is not being processed by webpack or routing to /public.
+ *
  * If something looks broken:
  * - Inspect the TinyMCE markup first — class names can differ between
  *   TinyMCE versions.
