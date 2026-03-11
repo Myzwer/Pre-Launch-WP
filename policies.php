@@ -19,7 +19,7 @@
 	</div>
 
 
-	<div class="wrap">
+	<div class="text-black bg-white wrap">
 		<div class="grid-12">
 			<div class="col-span-12 py-10 prose-theme">
 				<?php the_field( 'policy' ); ?>
