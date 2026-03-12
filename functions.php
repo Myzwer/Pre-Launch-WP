@@ -37,3 +37,4 @@
 	require_once get_theme_file_path( 'includes/admin/admin_dashboard.php' );
 	require_once get_theme_file_path( 'includes/admin/admin_tokens_widget.php' );
 	require_once get_theme_file_path( 'includes/admin/login.php' );
+	require_once get_theme_file_path( 'includes/admin/users.php' );
