@@ -2,7 +2,10 @@
 	/**
 	 * Prelaunch custom role registration.
 	 *
-	 * Registers and syncs Prelaunch-managed roles.
+	 * Registers and syncs all Prelaunch-managed roles.
+	 *
+	 * Roles are cloned from the core Administrator role first, then restricted
+	 * by feature modules. This keeps the system modular and self-healing.
 	 */
 
 	defined( 'ABSPATH' ) || exit;
@@ -18,16 +21,26 @@
 	const PRELAUNCH_CLIENT_ADMIN_ROLE = 'prelaunch_client_admin';
 
 	/**
-	 * Get all Prelaunch-managed role slugs.
+	 * Get the Prelaunch-managed role configuration map.
 	 *
-	 * This allows future modules to target all managed roles from one place.
+	 * This is the source of truth for which custom roles should be registered.
+	 * Add future roles here when they are ready to be created.
+	 *
+	 * @return array<string, string>
+	 */
+	function prelaunch_get_managed_role_config(): array {
+		return array(
+			PRELAUNCH_CLIENT_ADMIN_ROLE => __( 'Site Administrator', 'prelaunch-wp' ),
+		);
+	}
+
+	/**
+	 * Get all Prelaunch-managed role slugs.
 	 *
 	 * @return array<int, string>
 	 */
 	function prelaunch_get_managed_user_roles(): array {
-		return array(
-			PRELAUNCH_CLIENT_ADMIN_ROLE,
-		);
+		return array_keys( prelaunch_get_managed_role_config() );
 	}
 
 	/**
@@ -71,42 +84,45 @@
 	}
 
 	/**
-	 * Register or sync the Prelaunch client admin role.
+	 * Register or sync all Prelaunch-managed roles.
 	 *
-	 * Creates a "Site Administrator" role using the default Administrator
-	 * capabilities. If the role already exists, any missing Administrator
-	 * capabilities are added so the role stays in sync with plugin-added caps.
+	 * Each managed role is cloned from the default Administrator role. If the
+	 * role already exists, missing Administrator capabilities are added back so
+	 * the feature modules can deterministically remove or re-add only what they
+	 * control.
 	 *
 	 * @return void
 	 */
-	function prelaunch_register_client_admin_role(): void {
+	function prelaunch_register_managed_roles(): void {
 		$admin_role = get_role( PRELAUNCH_OWNER_ROLE );
 
 		if ( ! $admin_role ) {
 			return;
 		}
 
-		$client_role = get_role( PRELAUNCH_CLIENT_ADMIN_ROLE );
+		foreach ( prelaunch_get_managed_role_config() as $role_slug => $role_label ) {
+			$managed_role = get_role( $role_slug );
 
-		if ( ! $client_role ) {
-			add_role(
-				PRELAUNCH_CLIENT_ADMIN_ROLE,
-				__( 'Site Administrator', 'prelaunch-wp' ),
-				$admin_role->capabilities
-			);
+			if ( ! $managed_role ) {
+				add_role(
+					$role_slug,
+					$role_label,
+					$admin_role->capabilities
+				);
 
-			$client_role = get_role( PRELAUNCH_CLIENT_ADMIN_ROLE );
-		}
+				$managed_role = get_role( $role_slug );
+			}
 
-		if ( ! $client_role ) {
-			return;
-		}
+			if ( ! $managed_role ) {
+				continue;
+			}
 
-		foreach ( $admin_role->capabilities as $cap => $grant ) {
-			if ( $grant ) {
-				$client_role->add_cap( $cap );
+			foreach ( $admin_role->capabilities as $cap => $grant ) {
+				if ( $grant ) {
+					$managed_role->add_cap( $cap );
+				}
 			}
 		}
 	}
 
-	add_action( 'init', 'prelaunch_register_client_admin_role', 20 );
+	add_action( 'init', 'prelaunch_register_managed_roles', 20 );
