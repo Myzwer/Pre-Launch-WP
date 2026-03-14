@@ -29,6 +29,8 @@
 	 * - appearance: off|menus_only|full
 	 * - plugins: off|manage_installed|full
 	 * - users: profile_only|full
+	 * - tools: off|on
+	 *
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -40,6 +42,7 @@
 				'appearance'    => 'menus_only',
 				'plugins'       => 'off',
 				'users'         => 'profile_only',
+				'tools'         => 'off',
 			),
 		);
 	}

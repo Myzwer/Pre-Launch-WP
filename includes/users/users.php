@@ -25,3 +25,4 @@
 	require_once get_theme_file_path( 'includes/users/user-appearance.php' );
 	require_once get_theme_file_path( 'includes/users/user-plugins.php' );
 	require_once get_theme_file_path( 'includes/users/user-users.php' );
+	require_once get_theme_file_path( 'includes/users/user-tools.php' );
