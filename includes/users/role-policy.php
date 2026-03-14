@@ -23,9 +23,12 @@
 	 * Keep this intentionally simple. Binary features can use booleans.
 	 * More nuanced features can use string access levels.
 	 *
-	 * Current examples:
+	 * Current supported values:
 	 * - posts: true|false
 	 * - gravity_forms: off|manager|full
+	 * - appearance: off|menus_only|full
+	 * - plugins: off|manage_installed|full
+	 * - users: profile_only|full
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -34,6 +37,9 @@
 			PRELAUNCH_CLIENT_ADMIN_ROLE => array(
 				'posts'         => false,
 				'gravity_forms' => 'manager',
+				'appearance'    => 'menus_only',
+				'plugins'       => 'off',
+				'users'         => 'profile_only',
 			),
 		);
 	}

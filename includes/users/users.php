@@ -22,3 +22,6 @@
 
 	require_once get_theme_file_path( 'includes/users/gravity-forms.php' );
 	require_once get_theme_file_path( 'includes/users/user-posts.php' );
+	require_once get_theme_file_path( 'includes/users/user-appearance.php' );
+	require_once get_theme_file_path( 'includes/users/user-plugins.php' );
+	require_once get_theme_file_path( 'includes/users/user-users.php' );
