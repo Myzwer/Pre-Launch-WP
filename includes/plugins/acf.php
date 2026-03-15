@@ -1,52 +1,104 @@
 <?php
 	/**
-	 * ACF Options Page Registration
+	 * ACF options page registration.
 	 *
-	 * Registers client-facing ACF options pages used to manage global
-	 * site configuration values (logo, footer data, social links, etc).
+	 * Registers Prelaunch ACF options pages used for site-wide configuration.
 	 *
-	 * These pages intentionally use the `read` capability rather than
-	 * `edit_posts`.
+	 * Capability rules:
+	 * - Client-facing options pages should use `read` so they remain accessible
+	 *   even when post editing is disabled by the managed-role system.
+	 * - Developer-only options pages should use a dedicated custom capability so
+	 *   they stay private even when managed roles retain broader admin access.
 	 *
-	 * Why:
-	 * The Prelaunch role system can disable post editing by removing
-	 * the `edit_posts` capability for certain managed roles when the
-	 * Posts feature is turned off. If an options page requires
-	 * `edit_posts`, it would disappear for those roles even though
-	 * they should still be able to manage site settings.
-	 *
-	 * Using `read` ensures the options page remains accessible to any
-	 * logged-in role while still allowing the role-policy system to
-	 * control visibility of the ACF admin UI itself.
-	 *
-	 * This file should only register options pages intended for
-	 * client-facing configuration. Developer-only options pages
-	 * (such as Tokens) may use stricter capabilities and/or be
-	 * hidden by the role-access modules.
-	 *
-	 * Hooked into `acf/init` to ensure ACF is loaded before
-	 * registering the options page.
+	 * This file is intentionally limited to options-page registration. Access to
+	 * the core ACF admin UI (Field Groups, Tools, etc.) is controlled separately
+	 * by the user-access modules.
 	 */
 
 	declare( strict_types=1 );
 
+	defined( 'ABSPATH' ) || exit;
+
 	/**
-	 * Register the ACF "Globals" options page.
+	 * Register a Prelaunch ACF options page.
 	 *
-	 * Hooked into `acf/init` to ensure ACF is fully loaded before use.
+	 * This helper keeps options-page registration consistent and prevents client-
+	 * facing settings pages from accidentally depending on unrelated caps like
+	 * edit_posts.
+	 *
+	 * Supported visibility types:
+	 * - client: uses `read`
+	 * - developer: uses PRELAUNCH_MANAGE_TOKENS_CAP
+	 *
+	 * @param array{
+	 *     page_title: string,
+	 *     menu_title: string,
+	 *     menu_slug: string,
+	 *     icon_url?: string,
+	 *     redirect?: bool,
+	 *     visibility?: string
+	 * } $args Options page arguments.
+	 *
+	 * @return void
 	 */
-	add_action( 'acf/init', static function (): void {
-		// Bail early if ACF is not active or available.
+	function prelaunch_register_acf_options_page( array $args ): void {
 		if ( ! function_exists( 'acf_add_options_page' ) ) {
 			return;
 		}
 
-		acf_add_options_page( [
-			'page_title' => 'Globals',
-			'menu_title' => 'Globals',
-			'menu_slug'  => 'acf-globals',
-			'capability' => 'read',
-			'icon_url'   => 'dashicons-admin-site', // Globe icon
-			'redirect'   => false,
-		] );
-	} );
+		$visibility = isset( $args['visibility'] ) ? (string) $args['visibility'] : 'client';
+
+		$capability = 'read';
+
+		if ( 'developer' === $visibility ) {
+			$capability = PRELAUNCH_MANAGE_TOKENS_CAP;
+		}
+
+		unset( $args['visibility'] );
+
+		acf_add_options_page(
+			array_merge(
+				array(
+					'icon_url'   => 'dashicons-admin-generic',
+					'redirect'   => false,
+					'capability' => $capability,
+				),
+				$args
+			)
+		);
+	}
+
+	/**
+	 * Register Prelaunch ACF options pages.
+	 *
+	 * Hooked into `acf/init` to ensure ACF is fully loaded before use.
+	 *
+	 * @return void
+	 */
+	function prelaunch_register_acf_options_pages(): void {
+		if ( ! function_exists( 'acf_add_options_page' ) ) {
+			return;
+		}
+
+		prelaunch_register_acf_options_page(
+			array(
+				'page_title' => 'Globals',
+				'menu_title' => 'Globals',
+				'menu_slug'  => 'acf-globals',
+				'icon_url'   => 'dashicons-admin-site',
+				'visibility' => 'client',
+			)
+		);
+
+		prelaunch_register_acf_options_page(
+			array(
+				'page_title' => 'Tokens',
+				'menu_title' => 'Tokens',
+				'menu_slug'  => 'tokens',
+				'icon_url'   => 'dashicons-tickets-alt',
+				'visibility' => 'developer',
+			)
+		);
+	}
+
+	add_action( 'acf/init', 'prelaunch_register_acf_options_pages' );
