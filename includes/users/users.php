@@ -27,3 +27,4 @@
 	require_once get_theme_file_path( 'includes/users/user-users.php' );
 	require_once get_theme_file_path( 'includes/users/user-tools.php' );
 	require_once get_theme_file_path( 'includes/users/user-settings.php' );
+	require_once get_theme_file_path( 'includes/users/user-acf.php' );

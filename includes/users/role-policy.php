@@ -30,8 +30,8 @@
 	 * - plugins: off|manage_installed|full
 	 * - users: profile_only|full
 	 * - tools: off|on
-	 * - settings: off|full
-	 *
+	 * - settings: full|off
+	 * - acf: off|options_only|full
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -45,6 +45,7 @@
 				'users'         => 'profile_only',
 				'tools'         => 'off',
 				'settings'      => 'off',
+				'acf'           => 'full',
 			),
 		);
 	}
