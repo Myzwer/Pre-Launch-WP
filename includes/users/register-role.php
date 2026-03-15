@@ -2,10 +2,7 @@
 	/**
 	 * Prelaunch custom role registration.
 	 *
-	 * Registers and syncs all Prelaunch-managed roles.
-	 *
-	 * Roles are cloned from the core Administrator role first, then restricted
-	 * by feature modules. This keeps the system modular and self-healing.
+	 * Registers and syncs Prelaunch-managed roles.
 	 */
 
 	defined( 'ABSPATH' ) || exit;
@@ -21,26 +18,26 @@
 	const PRELAUNCH_CLIENT_ADMIN_ROLE = 'prelaunch_client_admin';
 
 	/**
-	 * Get the Prelaunch-managed role configuration map.
+	 * Developer-only capability for the Tokens options page.
 	 *
-	 * This is the source of truth for which custom roles should be registered.
-	 * Add future roles here when they are ready to be created.
-	 *
-	 * @return array<string, string>
+	 * This is intentionally separate from broad core capabilities such as
+	 * manage_options so developer-only settings remain private even when a
+	 * managed role retains access to plugin settings pages that depend on
+	 * manage_options.
 	 */
-	function prelaunch_get_managed_role_config(): array {
-		return array(
-			PRELAUNCH_CLIENT_ADMIN_ROLE => __( 'Site Administrator', 'prelaunch-wp' ),
-		);
-	}
+	const PRELAUNCH_MANAGE_TOKENS_CAP = 'prelaunch_manage_tokens';
 
 	/**
 	 * Get all Prelaunch-managed role slugs.
 	 *
+	 * This allows future modules to target all managed roles from one place.
+	 *
 	 * @return array<int, string>
 	 */
 	function prelaunch_get_managed_user_roles(): array {
-		return array_keys( prelaunch_get_managed_role_config() );
+		return array(
+			PRELAUNCH_CLIENT_ADMIN_ROLE,
+		);
 	}
 
 	/**
@@ -84,45 +81,72 @@
 	}
 
 	/**
-	 * Register or sync all Prelaunch-managed roles.
+	 * Register or sync the Prelaunch client admin role.
 	 *
-	 * Each managed role is cloned from the default Administrator role. If the
-	 * role already exists, missing Administrator capabilities are added back so
-	 * the feature modules can deterministically remove or re-add only what they
-	 * control.
+	 * Creates a "Site Administrator" role using the default Administrator
+	 * capabilities. If the role already exists, any missing Administrator
+	 * capabilities are added so the role stays in sync with plugin-added caps.
 	 *
 	 * @return void
 	 */
-	function prelaunch_register_managed_roles(): void {
+	function prelaunch_register_client_admin_role(): void {
 		$admin_role = get_role( PRELAUNCH_OWNER_ROLE );
 
 		if ( ! $admin_role ) {
 			return;
 		}
 
-		foreach ( prelaunch_get_managed_role_config() as $role_slug => $role_label ) {
-			$managed_role = get_role( $role_slug );
+		$client_role = get_role( PRELAUNCH_CLIENT_ADMIN_ROLE );
 
-			if ( ! $managed_role ) {
-				add_role(
-					$role_slug,
-					$role_label,
-					$admin_role->capabilities
-				);
+		if ( ! $client_role ) {
+			add_role(
+				PRELAUNCH_CLIENT_ADMIN_ROLE,
+				__( 'Site Administrator', 'prelaunch-wp' ),
+				$admin_role->capabilities
+			);
 
-				$managed_role = get_role( $role_slug );
-			}
+			$client_role = get_role( PRELAUNCH_CLIENT_ADMIN_ROLE );
+		}
 
-			if ( ! $managed_role ) {
-				continue;
-			}
+		if ( ! $client_role ) {
+			return;
+		}
 
-			foreach ( $admin_role->capabilities as $cap => $grant ) {
-				if ( $grant ) {
-					$managed_role->add_cap( $cap );
-				}
+		foreach ( $admin_role->capabilities as $cap => $grant ) {
+			if ( $grant ) {
+				$client_role->add_cap( $cap );
 			}
 		}
 	}
 
-	add_action( 'init', 'prelaunch_register_managed_roles', 20 );
+	add_action( 'init', 'prelaunch_register_client_admin_role', 20 );
+
+	/**
+	 * Sync developer-only capabilities.
+	 *
+	 * The true Administrator role keeps developer-only capabilities, while all
+	 * Prelaunch-managed roles explicitly lose them. This is important because
+	 * managed roles are cloned from Administrator and would otherwise inherit
+	 * these capabilities automatically.
+	 *
+	 * @return void
+	 */
+	function prelaunch_sync_developer_caps(): void {
+		$admin_role = get_role( PRELAUNCH_OWNER_ROLE );
+
+		if ( $admin_role ) {
+			$admin_role->add_cap( PRELAUNCH_MANAGE_TOKENS_CAP );
+		}
+
+		foreach ( prelaunch_get_managed_user_roles() as $role_slug ) {
+			$role = get_role( $role_slug );
+
+			if ( ! $role ) {
+				continue;
+			}
+
+			$role->remove_cap( PRELAUNCH_MANAGE_TOKENS_CAP );
+		}
+	}
+
+	add_action( 'init', 'prelaunch_sync_developer_caps', 25 );
