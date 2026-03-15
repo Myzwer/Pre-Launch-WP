@@ -30,6 +30,7 @@
 	 * - plugins: off|manage_installed|full
 	 * - users: profile_only|full
 	 * - tools: off|on
+	 * - settings: off|full
 	 *
 	 *
 	 * @return array<string, array<string, mixed>>
@@ -43,6 +44,7 @@
 				'plugins'       => 'off',
 				'users'         => 'profile_only',
 				'tools'         => 'off',
+				'settings'      => 'off',
 			),
 		);
 	}
