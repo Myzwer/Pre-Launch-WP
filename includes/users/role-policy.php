@@ -55,6 +55,21 @@
 				'settings'        => 'off',
 				'acf'             => 'options_only',
 			),
+
+			PRELAUNCH_POSTS_EDITOR_ROLE => array(
+				'dashboard'       => false,
+				'media'           => 'off',
+				'posts'           => true,
+				'pages'           => 'off',
+				'gravity_forms'   => 'off',
+				'appearance'      => 'off',
+				'plugins'         => 'off',
+				'plugin_settings' => 'off',
+				'users'           => 'profile_only',
+				'tools'           => 'off',
+				'settings'        => 'off',
+				'acf'             => 'off',
+			),
 		);
 	}
 
