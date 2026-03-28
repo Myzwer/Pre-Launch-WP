@@ -23,9 +23,6 @@
 	/**
 	 * Remove the Dashboard admin menu for managed users when disabled.
 	 *
-	 * This is admin UX cleanup only. Direct-access enforcement is handled
-	 * separately.
-	 *
 	 * @return void
 	 */
 	function prelaunch_maybe_hide_dashboard_admin_menu(): void {
@@ -44,9 +41,6 @@
 
 	/**
 	 * Redirect managed users away from the Dashboard when it is disabled.
-	 *
-	 * This catches direct requests to wp-admin/, /wp-admin/index.php, and
-	 * other dashboard entry points after WordPress resolves the current screen.
 	 *
 	 * @return void
 	 */
@@ -73,12 +67,10 @@
 
 	/**
 	 * Redirect managed users to My Profile immediately after login when the
-	 * Dashboard is disabled.
+	 * Dashboard is disabled and no explicit redirect was requested.
 	 *
-	 * This avoids landing them on the default Dashboard route first.
-	 *
-	 * @param string $redirect_to Requested redirect destination.
-	 * @param string $requested_redirect_to Raw requested redirect destination.
+	 * @param string $redirect_to Redirect destination.
+	 * @param string $requested_redirect_to Requested redirect.
 	 * @param WP_User|WP_Error $user Authenticated user object.
 	 *
 	 * @return string

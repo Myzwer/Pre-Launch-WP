@@ -25,7 +25,9 @@
 	 *
 	 * Current supported values:
 	 * - dashboard: true|false
+	 * - media: off|browse_only|full
 	 * - posts: true|false
+	 * - pages: off|draft_only|full
 	 * - gravity_forms: off|manager|full
 	 * - appearance: off|menus_only|full
 	 * - plugins: off|manage_installed|full
@@ -41,7 +43,9 @@
 		return array(
 			PRELAUNCH_CLIENT_ADMIN_ROLE => array(
 				'dashboard'       => true,
+				'media'           => 'full',
 				'posts'           => false,
+				'pages'           => 'full',
 				'gravity_forms'   => 'manager',
 				'appearance'      => 'menus_only',
 				'plugins'         => 'off',
