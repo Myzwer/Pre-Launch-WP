@@ -24,6 +24,7 @@
 	 * More nuanced features can use string access levels.
 	 *
 	 * Current supported values:
+	 * - dashboard: true|false
 	 * - posts: true|false
 	 * - gravity_forms: off|manager|full
 	 * - appearance: off|menus_only|full
@@ -39,6 +40,7 @@
 	function prelaunch_get_role_policy(): array {
 		return array(
 			PRELAUNCH_CLIENT_ADMIN_ROLE => array(
+				'dashboard'       => true,
 				'posts'           => false,
 				'gravity_forms'   => 'manager',
 				'appearance'      => 'menus_only',
