@@ -64,9 +64,9 @@
 		return array(
 			'filebird' => array(
 				'label'       => 'FileBird',
-				'parent_slug' => 'filebird-dashboard',
-				'menu_slug'   => 'filebird-dashboard',
-				'approved'    => true,
+				'parent_slug' => 'filebird-settings',
+				'menu_slug'   => 'filebird-settings',
+				'approved'    => false,
 			),
 			'tsf'      => array(
 				'label'       => 'The SEO Framework',
