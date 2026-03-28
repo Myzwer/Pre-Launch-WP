@@ -45,7 +45,7 @@
 				'dashboard'       => true,
 				'media'           => 'full',
 				'posts'           => false,
-				'pages'           => 'full',
+				'pages'           => 'off',
 				'gravity_forms'   => 'manager',
 				'appearance'      => 'menus_only',
 				'plugins'         => 'off',
