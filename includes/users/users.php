@@ -23,7 +23,7 @@
 	require_once get_theme_file_path( 'includes/users/user-dashboard.php' );
 	require_once get_theme_file_path( 'includes/users/user-media.php' );
 	require_once get_theme_file_path( 'includes/users/user-pages.php' );
-	require_once get_theme_file_path( 'includes/users/gravity-forms.php' );
+	require_once get_theme_file_path( 'includes/users/user-gravity-forms.php' );
 	require_once get_theme_file_path( 'includes/users/user-posts.php' );
 	require_once get_theme_file_path( 'includes/users/user-appearance.php' );
 	require_once get_theme_file_path( 'includes/users/user-plugins.php' );
