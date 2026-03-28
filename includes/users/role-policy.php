@@ -28,6 +28,7 @@
 	 * - gravity_forms: off|manager|full
 	 * - appearance: off|menus_only|full
 	 * - plugins: off|manage_installed|full
+	 * - plugin_settings: off|approved_only|full
 	 * - users: profile_only|full
 	 * - tools: off|on
 	 * - settings: full|off
@@ -38,14 +39,15 @@
 	function prelaunch_get_role_policy(): array {
 		return array(
 			PRELAUNCH_CLIENT_ADMIN_ROLE => array(
-				'posts'         => false,
-				'gravity_forms' => 'manager',
-				'appearance'    => 'menus_only',
-				'plugins'       => 'off',
-				'users'         => 'profile_only',
-				'tools'         => 'off',
-				'settings'      => 'off',
-				'acf'           => 'full',
+				'posts'           => false,
+				'gravity_forms'   => 'manager',
+				'appearance'      => 'menus_only',
+				'plugins'         => 'off',
+				'plugin_settings' => 'approved_only',
+				'users'           => 'profile_only',
+				'tools'           => 'off',
+				'settings'        => 'off',
+				'acf'             => 'options_only',
 			),
 		);
 	}

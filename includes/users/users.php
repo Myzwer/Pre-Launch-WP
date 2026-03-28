@@ -28,3 +28,4 @@
 	require_once get_theme_file_path( 'includes/users/user-tools.php' );
 	require_once get_theme_file_path( 'includes/users/user-settings.php' );
 	require_once get_theme_file_path( 'includes/users/user-acf.php' );
+	require_once get_theme_file_path( 'includes/users/user-plugin-settings.php' );
