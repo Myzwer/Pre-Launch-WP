@@ -110,6 +110,27 @@ body.login .button-primary:focus {
 	color: var(--color-black);
 }
 
+body.login .admin-email__actions-primary .button:not(.button-primary) {
+	padding: 0.375rem 1.675rem !important;
+	border: 0;
+	border-radius: 0.75rem;
+	background: var(--color-primary);
+	box-shadow: none;
+	color: var(--color-black);
+	font-weight: 700;
+	text-shadow: none;
+	transition: filter 0.2s ease,
+	transform 0.2s ease,
+	box-shadow 0.2s ease;
+}
+
+body.login .admin-email__actions-primary .button:not(.button-primary):hover,
+body.login .admin-email__actions-primary .button:not(.button-primary):focus {
+	filter: brightness(0.93);
+	box-shadow: 0 10px 24px color-mix(in oklab, var(--color-black) 16%, transparent);
+	transform: translateY(-1px);
+}
+
 body.login .forgetmenot {
 	display: flex;
 	align-items: center;
