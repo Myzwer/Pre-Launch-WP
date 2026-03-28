@@ -2251,3 +2251,369 @@ These collectively manage:
 - developer-only tools
 
 The system is designed to be **easy to extend**, **safe for clients**, and **predictable for developers**.
+
+# Additional Documentation — Plugin Settings & Debugging
+
+This section expands on the user‑role system documentation with guidance for:
+
+- approving plugin settings pages
+- troubleshooting permissions issues
+- adding new feature modules
+
+Add this section to the existing Prelaunch permissions README.
+
+---
+
+# Managing Approved Plugin Settings
+
+Plugin settings visibility is controlled by:
+
+```
+includes/users/user-plugin-settings.php
+```
+
+This file contains a **registry of plugin settings pages**.
+
+Example:
+
+```
+function prelaunch_get_plugin_settings_registry(): array {
+    return [
+        'filebird' => [
+            'label'       => 'FileBird',
+            'parent_slug' => 'filebird-dashboard',
+            'menu_slug'   => 'filebird-dashboard',
+            'approved'    => true,
+        ],
+        'tsf' => [
+            'label'       => 'The SEO Framework',
+            'parent_slug' => 'theseoframework-settings',
+            'menu_slug'   => 'theseoframework-settings',
+            'approved'    => false,
+        ],
+    ];
+}
+```
+
+Each plugin settings page is defined with:
+
+| Field       | Purpose                                             |
+| ----------- | --------------------------------------------------- |
+| label       | Human‑readable plugin name                          |
+| parent_slug | Parent admin menu slug                              |
+| menu_slug   | The plugin settings page slug                       |
+| approved    | Whether the page is visible in `approved_only` mode |
+
+---
+
+# Workflow When Installing a New Plugin
+
+Whenever a plugin is installed, follow this process.
+
+### Step 1 — Locate the plugin settings page
+
+Click the plugin settings menu in the admin panel.
+
+Look at the URL.
+
+Example:
+
+```
+/wp-admin/admin.php?page=my-plugin-settings
+```
+
+The slug is:
+
+```
+my-plugin-settings
+```
+
+---
+
+### Step 2 — Add the plugin to the registry
+
+Open:
+
+```
+includes/users/user-plugin-settings.php
+```
+
+Add a registry entry:
+
+```
+'myplugin' => [
+    'label' => 'My Plugin',
+    'parent_slug' => 'my-plugin-settings',
+    'menu_slug' => 'my-plugin-settings',
+    'approved' => true,
+]
+```
+
+If the settings should **not** be visible to clients:
+
+```
+'approved' => false
+```
+
+---
+
+### Step 3 — Refresh the admin
+
+No role reset is required.
+
+The module runs on:
+
+```
+admin_menu
+admin_init
+```
+
+So the settings page will appear or disappear immediately after refresh.
+
+---
+
+# Troubleshooting Plugin Settings Visibility
+
+If a plugin settings page still appears after adding it to the registry, check the following.
+
+---
+
+## 1. Incorrect menu slug
+
+The most common issue is the wrong slug.
+
+Example URL:
+
+```
+wp-admin/options-general.php?page=example-settings
+```
+
+Correct configuration:
+
+```
+'parent_slug' => 'options-general.php',
+'menu_slug' => 'example-settings',
+```
+
+If the parent is incorrect, `remove_submenu_page()` will fail.
+
+---
+
+## 2. Plugin registers multiple admin pages
+
+Some plugins create:
+
+- a dashboard page
+- a settings page
+- a tools page
+
+You may need **multiple entries** in the registry.
+
+Example:
+
+```
+'plugin-settings' => [...],
+'plugin-tools' => [...],
+```
+
+---
+
+## 3. The plugin uses a custom admin screen
+
+Some plugins bypass `admin.php?page=` URLs and use custom routes.
+
+If that happens:
+
+1. Inspect the admin menu via browser devtools
+2. Look for the `menu_slug` used when the menu is registered
+3. Use that slug in the registry
+
+---
+
+## 4. Plugin loads before the removal hook
+
+Rare, but possible.
+
+The module runs at priority:
+
+```
+admin_menu 1000
+```
+
+This is intentionally late so plugin menus exist before removal.
+
+If a plugin still appears, verify:
+
+```
+remove_menu_page()
+remove_submenu_page()
+```
+
+are targeting the correct slugs.
+
+---
+
+# Debugging Permission Issues
+
+If something disappears in the admin panel unexpectedly, check these areas in order.
+
+---
+
+## 1. Role policy
+
+File:
+
+```
+includes/users/role-policy.php
+```
+
+Check the feature flag.
+
+Example:
+
+```
+'appearance' => 'menus_only'
+```
+
+If the value is:
+
+```
+off
+```
+
+The feature module will hide the entire section.
+
+---
+
+## 2. Feature module logic
+
+Each feature has a dedicated module.
+
+Examples:
+
+```
+user-posts.php
+user-plugins.php
+user-settings.php
+user-tools.php
+user-acf.php
+user-plugin-settings.php
+```
+
+Confirm the module checks the correct policy key.
+
+---
+
+## 3. Role capability sync
+
+File:
+
+```
+register-role.php
+```
+
+This file:
+
+- clones Administrator capabilities
+- removes restricted capabilities
+- adds developer‑only capabilities
+
+If a permission appears inconsistent, verify the capability exists in the correct role.
+
+---
+
+## 4. Developer‑only capabilities
+
+Some admin pages require custom capabilities.
+
+Example:
+
+```
+prelaunch_manage_tokens
+```
+
+Only the real Administrator role should have this capability.
+
+Managed roles intentionally lose it during role sync.
+
+---
+
+# Adding a New Feature Module
+
+New admin areas should follow the established module pattern.
+
+Create a new file:
+
+```
+includes/users/user-example-feature.php
+```
+
+Example structure:
+
+```
+function prelaunch_customize_example_feature(): void {
+
+    if ( ! prelaunch_current_user_has_feature_access('example_feature') ) {
+
+        remove_menu_page('example-page');
+
+    }
+
+}
+
+add_action('admin_menu', 'prelaunch_customize_example_feature', 1000);
+```
+
+---
+
+## Step 2 — Add the module loader
+
+Edit:
+
+```
+includes/users/users.php
+```
+
+Add:
+
+```
+require_once get_theme_file_path(
+    'includes/users/user-example-feature.php'
+);
+```
+
+---
+
+## Step 3 — Add the policy flag
+
+Edit:
+
+```
+role-policy.php
+```
+
+Example:
+
+```
+'example_feature' => 'off'
+```
+
+or
+
+```
+'example_feature' => 'full'
+```
+
+---
+
+# Philosophy of the System
+
+The Prelaunch permissions architecture intentionally:
+
+- begins with Administrator capability parity
+- removes features through modular access rules
+- hides unnecessary WordPress complexity
+- prevents accidental site damage by clients
+
+The goal is to transform WordPress into a **predictable client CMS** without sacrificing plugin compatibility or
+developer control.
