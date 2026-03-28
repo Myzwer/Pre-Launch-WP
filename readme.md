@@ -1874,3 +1874,380 @@ The footer system follows the same principles as the navbar:
 - centralized configuration through ACF
 
 Future layouts should follow the same pattern rather than modifying existing ones.
+
+# Prelaunch User Roles & Permissions System
+
+This document explains how the Prelaunch starter theme manages **user roles, feature access, and plugin settings
+visibility**.
+
+The system is intentionally modular so that client-facing admin areas can be tightly controlled while still allowing
+flexibility for different projects.
+
+---
+
+# Architecture Overview
+
+The permissions system is split into three layers:
+
+### 1. Role Registration
+
+File: `includes/users/register-role.php`
+
+Responsible for:
+
+- Creating Prelaunch-managed roles (ex: `prelaunch_client_admin`)
+- Cloning capabilities from the WordPress `administrator` role
+- Syncing special developer-only capabilities
+- Providing helper functions to check user roles
+
+Example role:
+
+```
+prelaunch_client_admin
+Label: Site Administrator
+```
+
+This role starts with Administrator capabilities and then **feature modules remove or restrict areas of the admin panel
+**.
+
+---
+
+### 2. Role Policy (Central Configuration)
+
+File: `includes/users/role-policy.php`
+
+This file defines **what each role is allowed to do**.
+
+It acts as the **single source of truth** for feature access.
+
+Example:
+
+```
+PRELAUNCH_CLIENT_ADMIN_ROLE => [
+    'posts'           => false,
+    'gravity_forms'   => 'manager',
+    'appearance'      => 'menus_only',
+    'plugins'         => 'off',
+    'plugin_settings' => 'approved_only',
+    'users'           => 'profile_only',
+    'tools'           => 'off',
+    'settings'        => 'off',
+    'acf'             => 'options_only',
+]
+```
+
+Each feature module reads from this policy instead of hardcoding logic.
+
+---
+
+### 3. Feature Modules
+
+Directory:
+
+```
+includes/users/
+```
+
+Each file manages one area of the admin UI.
+
+Examples:
+
+```
+user-posts.php
+user-plugins.php
+user-settings.php
+user-tools.php
+user-acf.php
+user-plugin-settings.php
+```
+
+These modules:
+
+- Remove admin menus
+- Restrict capabilities
+- Block direct URL access
+
+They consult the **role-policy file** to determine what should be allowed.
+
+---
+
+# How to Modify User Roles
+
+User roles are created and synced in:
+
+```
+includes/users/register-role.php
+```
+
+To modify a role's behavior:
+
+### Step 1 — Update the role policy
+
+Edit:
+
+```
+includes/users/role-policy.php
+```
+
+Example: enable plugin settings
+
+```
+'plugin_settings' => 'approved_only'
+```
+
+Available feature flags currently include:
+
+| Feature         | Values                        |
+| --------------- | ----------------------------- |
+| posts           | true / false                  |
+| gravity_forms   | off / manager / full          |
+| appearance      | off / menus_only / full       |
+| plugins         | off / manage_installed / full |
+| plugin_settings | off / approved_only / full    |
+| users           | profile_only / full           |
+| tools           | off / on                      |
+| settings        | off / full                    |
+| acf             | off / options_only / full     |
+
+---
+
+# How Plugin Settings Access Works
+
+Plugin settings pages are handled by:
+
+```
+includes/users/user-plugin-settings.php
+```
+
+The system uses an **allowlist registry**.
+
+### Default Behavior
+
+If policy = `approved_only`
+
+Only plugin settings explicitly approved in the registry will appear.
+
+All others will:
+
+- be hidden from the admin menu
+- block direct URL access
+
+---
+
+# Approving a Plugin Settings Page
+
+Open:
+
+```
+includes/users/user-plugin-settings.php
+```
+
+Locate the registry:
+
+```
+prelaunch_get_plugin_settings_registry()
+```
+
+Example entry:
+
+```
+'filebird' => [
+    'label'       => 'FileBird',
+    'parent_slug' => 'filebird-dashboard',
+    'menu_slug'   => 'filebird-dashboard',
+    'approved'    => true,
+]
+```
+
+### Fields
+
+| Field       | Purpose                                           |
+| ----------- | ------------------------------------------------- |
+| label       | Human-readable label                              |
+| parent_slug | Parent admin menu slug                            |
+| menu_slug   | Plugin page slug                                  |
+| approved    | Whether the page is allowed in approved_only mode |
+
+---
+
+# How to Find a Plugin Page Slug
+
+1. Click the plugin settings page in WordPress admin.
+2. Look at the URL.
+
+Example:
+
+```
+wp-admin/admin.php?page=filebird-dashboard
+```
+
+The slug is:
+
+```
+filebird-dashboard
+```
+
+Then add it to the registry.
+
+Example:
+
+```
+'myplugin' => [
+    'label' => 'My Plugin',
+    'parent_slug' => 'myplugin',
+    'menu_slug' => 'myplugin',
+    'approved' => true,
+]
+```
+
+---
+
+# Developer‑Only Pages
+
+Some admin pages should only be visible to the true `administrator` role.
+
+Example: the **Tokens** ACF options page.
+
+These use a custom capability:
+
+```
+prelaunch_manage_tokens
+```
+
+Defined in:
+
+```
+register-role.php
+```
+
+The system:
+
+- gives the capability to `administrator`
+- removes it from all Prelaunch-managed roles
+
+This keeps developer tools hidden from clients.
+
+---
+
+# Adding a New User Role
+
+New roles can be added by expanding the role system.
+
+### Step 1 — Register the role
+
+Edit:
+
+```
+register-role.php
+```
+
+Add the role slug to:
+
+```
+prelaunch_get_managed_user_roles()
+```
+
+Example:
+
+```
+return [
+    PRELAUNCH_CLIENT_ADMIN_ROLE,
+    PRELAUNCH_SITE_EDITOR_ROLE,
+];
+```
+
+Then register the role similarly to the existing client admin role.
+
+---
+
+### Step 2 — Add role policy
+
+Edit:
+
+```
+role-policy.php
+```
+
+Add a new policy entry:
+
+```
+PRELAUNCH_SITE_EDITOR_ROLE => [
+    'posts' => true,
+    'appearance' => 'off',
+    'plugins' => 'off',
+    ...
+]
+```
+
+---
+
+### Step 3 — Assign the role
+
+Roles can be assigned through:
+
+```
+WordPress Admin → Users → Edit User
+```
+
+or via WP‑CLI.
+
+---
+
+# Recommended Workflow When Installing New Plugins
+
+Whenever a new plugin is installed:
+
+1. Review the plugin settings page.
+2. Decide if clients should access it.
+3. Add it to the registry in:
+
+```
+user-plugin-settings.php
+```
+
+If it is safe:
+
+```
+'approved' => true
+```
+
+If not:
+
+```
+'approved' => false
+```
+
+---
+
+# Design Philosophy
+
+The system intentionally:
+
+- starts from **Administrator-level capabilities**
+- removes access via feature modules
+- uses **policy-driven access control**
+- hides WordPress complexity from clients
+
+This approach makes the admin panel feel more like a **custom CMS** while still maintaining compatibility with plugins.
+
+---
+
+# Summary
+
+Core files involved:
+
+```
+includes/users/register-role.php
+includes/users/role-policy.php
+includes/users/users.php
+includes/users/user-plugin-settings.php
+```
+
+These collectively manage:
+
+- role creation
+- feature access
+- plugin settings visibility
+- developer-only tools
+
+The system is designed to be **easy to extend**, **safe for clients**, and **predictable for developers**.
