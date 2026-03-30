@@ -1876,3 +1876,565 @@ The footer system follows the same principles as the navbar:
 Future layouts should follow the same pattern rather than modifying existing ones.
 
 ---
+
+# User Roles & Permissions System
+
+The Prelaunch starter theme includes a modular system for controlling **user roles, admin feature access, and plugin
+settings visibility**.
+
+The goal of this system is to turn WordPress into a predictable client‑safe CMS while remaining compatible with plugins
+and normal WordPress workflows.
+
+The system works by:
+
+1. Creating **Prelaunch‑managed roles**
+2. Defining what those roles are allowed to access through a **central role policy**
+3. Enforcing those rules through **feature modules** that modify the WordPress admin UI
+
+---
+
+# Architecture Overview
+
+The permissions system is split into three layers.
+
+## 1. Role Registration
+
+File:
+
+```
+includes/users/register-role.php
+```
+
+Responsibilities:
+
+- Creates Prelaunch‑managed roles (ex: `prelaunch_client_admin`, `prelaunch_posts_editor`)
+- Clones capabilities from the WordPress **administrator** role
+- Syncs developer‑only capabilities
+- Provides helper functions for checking managed roles
+
+Example managed role:
+
+```
+prelaunch_client_admin
+Label: Site Administrator
+```
+
+Roles begin with Administrator‑level capabilities.  
+Feature modules then remove or restrict access to specific areas of the admin interface.
+
+This approach ensures:
+
+- plugin compatibility
+- predictable permissions
+- centralized control of admin complexity
+
+---
+
+## 2. Role Policy (Central Configuration)
+
+File:
+
+```
+includes/users/role-policy.php
+```
+
+The role policy defines **what each role can access**.
+
+It is the **single source of truth** for permissions.
+
+Example:
+
+```
+PRELAUNCH_CLIENT_ADMIN_ROLE => [
+    'dashboard'       => true,
+    'media'           => 'full',
+    'posts'           => false,
+    'pages'           => 'off',
+    'gravity_forms'   => 'manager',
+    'appearance'      => 'menus_only',
+    'plugins'         => 'off',
+    'plugin_settings' => 'approved_only',
+    'users'           => 'profile_only',
+    'tools'           => 'off',
+    'settings'        => 'off',
+    'acf'             => 'options_only',
+]
+```
+
+Each feature module reads from this policy rather than hardcoding logic.
+
+---
+
+## 3. Feature Modules
+
+Directory:
+
+```
+includes/users/
+```
+
+Each module controls one area of the WordPress admin UI.
+
+Examples:
+
+```
+user-dashboard.php
+user-media.php
+user-posts.php
+user-pages.php
+user-gravity-forms.php
+user-appearance.php
+user-plugins.php
+user-users.php
+user-tools.php
+user-settings.php
+user-acf.php
+user-plugin-settings.php
+```
+
+Feature modules typically:
+
+- remove admin menus
+- restrict capabilities
+- block direct URL access
+- adjust admin UI elements
+
+Modules determine access by reading the **role policy**.
+
+---
+
+# Feature Policy Reference
+
+The role policy supports several types of feature controls.
+
+## Binary Features
+
+```
+dashboard: true | false
+posts: true | false
+```
+
+Used when a feature is either visible or completely hidden.
+
+---
+
+## Tiered Features
+
+### Media
+
+```
+media: off | browse_only | full
+```
+
+Behavior:
+
+| Value       | Behavior                             |
+| ----------- | ------------------------------------ |
+| off         | Media Library hidden                 |
+| browse_only | Library visible but uploads disabled |
+| full        | Full media access                    |
+
+The `browse_only` mode removes the `upload_files` capability.
+
+---
+
+### Pages
+
+```
+pages: off | draft_only | full
+```
+
+Behavior:
+
+| Value      | Behavior                               |
+| ---------- | -------------------------------------- |
+| off        | Pages hidden                           |
+| draft_only | Pages editable but cannot be published |
+| full       | Full page access                       |
+
+This allows editorial roles to prepare content without publishing it.
+
+---
+
+### Gravity Forms
+
+```
+gravity_forms: off | manager | full
+```
+
+Controls access to forms and entries without exposing plugin settings.
+
+---
+
+### Appearance
+
+```
+appearance: off | menus_only | full
+```
+
+Allows sites to expose **navigation editing** while hiding theme configuration.
+
+---
+
+### Plugins
+
+```
+plugins: off | manage_installed | full
+```
+
+`manage_installed` allows enabling/disabling existing plugins but prevents installing new ones.
+
+---
+
+### Plugin Settings
+
+```
+plugin_settings: off | approved_only | full
+```
+
+Controls access to plugin settings pages using an allowlist registry.
+
+---
+
+### ACF
+
+```
+acf: off | options_only | full
+```
+
+Allows sites to expose **ACF Options pages** while hiding the ACF field editor.
+
+---
+
+## Partial Access Features
+
+### Users
+
+```
+users: profile_only | full
+```
+
+`profile_only` allows users to edit their own profile but hides the Users management screen.
+
+---
+
+## Simple Toggles
+
+```
+tools: off | on
+settings: off | full
+```
+
+Used for WordPress core admin areas.
+
+---
+
+# Admin Bar Behavior
+
+The system also modifies the **WordPress Admin Bar**.
+
+The **"+ New" menu** is filtered based on role policy.
+
+| Item      | Behavior                       |
+| --------- | ------------------------------ |
+| New Post  | follows `posts` policy         |
+| New Page  | follows `pages` policy         |
+| New Form  | follows `gravity_forms` policy |
+| New Media | always hidden                  |
+
+### Why Media Is Hidden
+
+The default **+ New → Media** shortcut allows uploads outside of the preferred **FileBird folder workflow**.
+
+Uploads should instead occur through the Media Library interface.
+
+---
+
+# Plugin Settings Access
+
+Plugin settings pages are controlled by:
+
+```
+includes/users/user-plugin-settings.php
+```
+
+This module maintains an **allowlist registry**.
+
+Example registry:
+
+```
+function prelaunch_get_plugin_settings_registry(): array {
+    return [
+        'filebird' => [
+            'label'       => 'FileBird',
+            'parent_slug' => 'filebird-dashboard',
+            'menu_slug'   => 'filebird-dashboard',
+            'approved'    => true,
+        ],
+        'tsf' => [
+            'label'       => 'The SEO Framework',
+            'parent_slug' => 'theseoframework-settings',
+            'menu_slug'   => 'theseoframework-settings',
+            'approved'    => false,
+        ],
+    ];
+}
+```
+
+Fields:
+
+| Field       | Purpose                                     |
+| ----------- | ------------------------------------------- |
+| label       | Human‑readable plugin name                  |
+| parent_slug | parent admin menu slug                      |
+| menu_slug   | plugin page slug                            |
+| approved    | visible when `approved_only` policy is used |
+
+---
+
+# Approving Plugin Settings Pages
+
+1. Navigate to the plugin settings page in the WordPress admin.
+2. Inspect the URL.
+
+Example:
+
+```
+wp-admin/admin.php?page=my-plugin-settings
+```
+
+The slug is:
+
+```
+my-plugin-settings
+```
+
+3. Add an entry to the registry:
+
+```
+'myplugin' => [
+    'label' => 'My Plugin',
+    'parent_slug' => 'my-plugin-settings',
+    'menu_slug' => 'my-plugin-settings',
+    'approved' => true,
+]
+```
+
+Refresh the admin panel to apply the change.
+
+---
+
+# Troubleshooting Plugin Settings Visibility
+
+If a plugin settings page still appears unexpectedly, check the following.
+
+### Incorrect Menu Slug
+
+Example URL:
+
+```
+wp-admin/options-general.php?page=example-settings
+```
+
+Correct configuration:
+
+```
+'parent_slug' => 'options-general.php',
+'menu_slug' => 'example-settings',
+```
+
+---
+
+### Plugin Registers Multiple Pages
+
+Some plugins create multiple admin screens (dashboard, settings, tools).
+
+Each page may require its own registry entry.
+
+---
+
+### Plugin Uses a Custom Admin Screen
+
+Some plugins do not use `admin.php?page=` URLs.
+
+Use browser devtools to inspect the admin menu and locate the `menu_slug`.
+
+---
+
+### Plugin Loads After Removal Hook
+
+The module runs at:
+
+```
+admin_menu priority 1000
+```
+
+This ensures plugin menus exist before removal occurs.
+
+---
+
+# Debugging Permission Issues
+
+If an admin area appears or disappears unexpectedly, check the following areas.
+
+### Role Policy
+
+```
+includes/users/role-policy.php
+```
+
+Confirm the feature flag is correct.
+
+---
+
+### Feature Module Logic
+
+Verify the correct module is enforcing the feature.
+
+Examples:
+
+```
+user-posts.php
+user-plugins.php
+user-settings.php
+user-tools.php
+user-acf.php
+user-plugin-settings.php
+```
+
+---
+
+### Role Capability Sync
+
+File:
+
+```
+register-role.php
+```
+
+Roles are cloned from Administrator capabilities and then adjusted.
+
+Confirm the role has the expected capability.
+
+---
+
+### Developer‑Only Capabilities
+
+Some features rely on custom capabilities.
+
+Example:
+
+```
+prelaunch_manage_tokens
+```
+
+Only the real **administrator** role should retain this capability.
+
+Managed roles intentionally lose it during role sync.
+
+---
+
+# Adding a New User Role
+
+1. Register the role.
+
+Edit:
+
+```
+includes/users/register-role.php
+```
+
+Add the role to:
+
+```
+prelaunch_get_managed_user_roles()
+```
+
+Example:
+
+```
+return [
+    PRELAUNCH_CLIENT_ADMIN_ROLE,
+    PRELAUNCH_POSTS_EDITOR_ROLE,
+];
+```
+
+2. Define its policy.
+
+Edit:
+
+```
+includes/users/role-policy.php
+```
+
+Example:
+
+```
+PRELAUNCH_POSTS_EDITOR_ROLE => [
+    'dashboard' => false,
+    'media' => 'off',
+    'posts' => true,
+    'pages' => 'off',
+    'users' => 'profile_only',
+]
+```
+
+3. Assign the role to a user through WordPress admin or WP‑CLI.
+
+---
+
+# Adding a New Feature Module
+
+Create a module file:
+
+```
+includes/users/user-example-feature.php
+```
+
+Example structure:
+
+```
+function prelaunch_customize_example_feature(): void {
+
+    if ( ! prelaunch_current_user_has_feature_access('example_feature') ) {
+
+        remove_menu_page('example-page');
+
+    }
+
+}
+
+add_action('admin_menu', 'prelaunch_customize_example_feature', 1000);
+```
+
+Then load the module in:
+
+```
+includes/users/users.php
+```
+
+Add a policy key to:
+
+```
+role-policy.php
+```
+
+Example:
+
+```
+'example_feature' => 'off'
+```
+
+---
+
+# Design Philosophy
+
+The Prelaunch permissions architecture intentionally:
+
+- begins with **Administrator capability parity**
+- removes features through modular rules
+- centralizes permissions inside a role policy
+- hides unnecessary WordPress complexity from clients
+
+The result is a **predictable, client‑friendly CMS experience** without sacrificing plugin compatibility or developer
+control.
