@@ -28,7 +28,7 @@ if (mode === "development") {
 	envFiles.forEach((file) => {
 		const fullPath = path.resolve(__dirname, file);
 		if (fs.existsSync(fullPath)) {
-			dotenv.config({ path: fullPath, override: true });
+			dotenv.config({path: fullPath, override: true});
 		}
 	});
 }
@@ -65,7 +65,7 @@ module.exports = {
 			{
 				test: /\.css$/i,
 				use: [
-					{ loader: MiniCssExtractPlugin.loader },
+					{loader: MiniCssExtractPlugin.loader},
 
 					{
 						loader: "css-loader",
@@ -91,7 +91,7 @@ module.exports = {
 			{
 				test: /\.[jt]sx?$/,
 				exclude: /node_modules/,
-				use: { loader: "babel-loader" },
+				use: {loader: "babel-loader"},
 			},
 
 			// ***** FONTS (ASSET MODULES) *****
@@ -120,7 +120,7 @@ module.exports = {
 					preset: [
 						"default",
 						{
-							discardComments: { removeAll: true },
+							discardComments: {removeAll: true},
 						},
 					],
 				},
@@ -175,6 +175,11 @@ module.exports = {
 				{
 					from: "assets/src/vendor/fontawesome",
 					to: "../vendor/fontawesome",
+					noErrorOnMissing: true,
+				},
+				{
+					from: "assets/src/img",
+					to: "../img",
 					noErrorOnMissing: true,
 				},
 			],
