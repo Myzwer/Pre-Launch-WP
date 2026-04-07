@@ -31,8 +31,13 @@
 }
 
 /* Height variants (kept for convenience) */
-.full-background-lg { min-height: 80vh; }
-.full-background-xl { min-height: 100vh; }
+.full-background-lg {
+	min-height: 80vh;
+}
+
+.full-background-xl {
+	min-height: 100vh;
+}
 
 /* ---------------------------------------------------------
    Video hero media + content wrapper
@@ -96,9 +101,21 @@
 }
 
 /* Overlay strengths (consistent site-wide) */
-.bg-overlay-30 { background-image: linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), var(--bg-image, none); }
-.bg-overlay-45 { background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), var(--bg-image, none); }
-.bg-overlay-60 { background-image: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.60)), var(--bg-image, none); }
+.bg-overlay-10 {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.10)), var(--bg-image, none);
+}
+
+.bg-overlay-30 {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.30)), var(--bg-image, none);
+}
+
+.bg-overlay-45 {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), var(--bg-image, none);
+}
+
+.bg-overlay-60 {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), var(--bg-image, none);
+}
 
 /* ---------------------------------------------------------
    Texture overlay (ACF-friendly, global Options field)
