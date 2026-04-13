@@ -1,75 +1,106 @@
 <?php
 	/**
-	 * The Default template file - Page Builder
+	 * Page Builder Template
 	 *
-	 * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+	 * Dynamically renders page headers and body sections from ACF Flexible Content.
 	 *
-	 * @package WordPress
-	 * @subpackage Pre_Launch_WP
-	 * @author Josh Forrester <josh@onefortyfivedesign.com>
-	 * @version 1.0.0
+	 * Conventions:
+	 * - ACF layout names must match the corresponding template partial.
+	 * - Layout suffixes are removed and underscores become hyphens.
+	 * - Example: `text_block` → `flex/blocks/_text.php`
+	 *
+	 * Body blocks are output-buffered so empty sections do not render wrappers.
+	 * This prevents empty blocks from affecting background alternation.
+	 *
+	 * Related:
+	 * README → Flexible Content Blocks
 	 */
 
-	get_header(); ?>
+	get_header();
+
+	/**
+	 * Convert an ACF layout name into a template partial path.
+	 *
+	 * Removes the expected suffix and converts underscores to hyphens.
+	 */
+	function prelaunch_get_flex_template_path( string $layout_slug, string $suffix, string $base_path ): string {
+
+		$template_slug = preg_replace( '/' . preg_quote( $suffix, '/' ) . '$/', '', $layout_slug );
+		$template_slug = str_replace( '_', '-', $template_slug );
+
+		return $base_path . '_' . $template_slug;
+
+	}
+
+?>
 
 <?php
-// Check value exists.
 	if ( have_rows( 'header_select' ) ) :
 
-		// Loop through rows.
-		while ( have_rows( 'header_select' ) ) : the_row();
+		while ( have_rows( 'header_select' ) ) :
+			the_row();
 
-			switch ( get_row_layout() ) {
-				case 'simple_header':
-//                get_template_part('components/headers/flexy/_simple');
-					break;
+			$layout = get_row_layout();
+			$path   = prelaunch_get_flex_template_path( $layout, '_header', 'flex/headers/' );
 
-				case 'button_header':
-//                get_template_part('components/headers/flexy/_button');
-					break;
+			// Only render if the template exists.
+			if ( locate_template( $path . '.php', false, false ) ) {
+				get_template_part( $path );
+			} else {
 
-				case 'image_header':
-//                get_template_part('components/headers/flexy/_image');
-					break;
+				error_log( 'Missing header template: ' . $layout . ' → ' . $path . '.php' );
 
-				default:
-					error_log( 'Unhandled content block: ' . get_row_layout() );
-					break;
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					echo '<div style="padding:1rem;border:2px dashed red;margin:1rem 0;">';
+					echo '<strong>Missing header template:</strong> ' . esc_html( $layout );
+					echo '</div>';
+				}
+
 			}
 
 		endwhile;
+
 	endif;
 ?>
 
-
 <?php
-// Check value exists.
 	if ( have_rows( 'body_sections' ) ) :
 
-		echo "<div class='alt-bg-wrap'>"; // Wrap the entire section
+		echo '<div class="alt-bg-wrap">';
 
-		// Loop through rows.
-		while ( have_rows( 'body_sections' ) ) : the_row();
+		while ( have_rows( 'body_sections' ) ) :
+			the_row();
 
-			echo "<div class='bg-alternating-gradient'>";
+			$layout = get_row_layout();
+			$path   = prelaunch_get_flex_template_path( $layout, '_block', 'flex/blocks/' );
 
-			switch ( get_row_layout() ) {
-				case 'text_block':
-//                get_template_part('components/blocks/flexy/_text');
-					break;
+			if ( ! locate_template( $path . '.php', false, false ) ) {
 
-				case 'image_banner_text':
-//                get_template_part('components/blocks/flexy/_image-text');
-					break;
+				error_log( 'Missing content block template: ' . $layout . ' → ' . $path . '.php' );
 
-				default:
-					error_log( 'Unhandled content block: ' . get_row_layout() );
-					break;
+				// Show visible warning in development
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					echo '<div style="padding:1rem;border:2px dashed red;margin:1rem 0;">';
+					echo '<strong>Missing block template:</strong> ' . esc_html( $layout );
+					echo '</div>';
+				}
+
+				continue;
 			}
 
+			// Capture block output so empty blocks can be skipped.
+			ob_start();
+			get_template_part( $path );
+			$markup = trim( ob_get_clean() );
+
+			if ( '' === $markup ) {
+				continue;
+			}
+
+			echo '<div class="bg-alternating-gradient" data-layout="' . esc_attr( $layout ) . '">';
+			echo $markup; // safe: rendered template markup
 			echo '</div>';
 
-			// End loop.
 		endwhile;
 
 		echo '</div>';
@@ -77,4 +108,4 @@
 	endif;
 ?>
 
-<?php get_footer();
+<?php get_footer(); ?>
