@@ -1,18 +1,29 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * FAQ block.
+	 *
+	 * Renders a list of frequently asked questions and answers.
+	 *
+	 * Used in:
+	 * - FAQ pages
+	 * - support or help sections
+	 * - informational content pages
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Questions are stored in a repeater field.
+	 * - Answers use a WYSIWYG editor for light formatting.
+	 * - Intended for static display rather than interactive accordions.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header = get_sub_field( 'header' );
-$intro  = get_sub_field( 'intro' );
+	$header = get_sub_field( 'header' );
+	$intro  = get_sub_field( 'intro' );
 ?>
 <section class="flex-block flex-block--faq">
 	<?php if ( $header ) : ?>

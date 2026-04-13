@@ -1,19 +1,30 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * List content block.
+	 *
+	 * Renders a repeating list of titled items with optional descriptive text.
+	 *
+	 * Used in:
+	 * - service lists
+	 * - feature highlights
+	 * - informational bullet sections
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Items are generated from a repeater field.
+	 * - Item descriptions use WYSIWYG editors for light formatting.
+	 * - Optional button may appear after the list.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header = get_sub_field( 'header' );
-$intro  = get_sub_field( 'intro' );
-$link   = get_sub_field( 'link' );
+	$header = get_sub_field( 'header' );
+	$intro  = get_sub_field( 'intro' );
+	$link   = get_sub_field( 'link' );
 ?>
 <section class="flex-block flex-block--list">
 	<?php if ( $header ) : ?>

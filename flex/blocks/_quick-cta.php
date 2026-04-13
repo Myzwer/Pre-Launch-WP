@@ -1,18 +1,28 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Call to Action block.
+	 *
+	 * Renders a short call-to-action message with a single button.
+	 *
+	 * Used in:
+	 * - conversion prompts
+	 * - signup invitations
+	 * - quick engagement sections
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Message field is typically a short paragraph.
+	 * - Button links to a primary action such as contact or signup.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$message = get_sub_field( 'message' );
-$link    = get_sub_field( 'link' );
+	$message = get_sub_field( 'message' );
+	$link    = get_sub_field( 'link' );
 ?>
 <section class="flex-block flex-block--quick-cta">
 	<?php if ( $message ) : ?>

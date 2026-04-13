@@ -1,19 +1,30 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Process / steps content block.
+	 *
+	 * Renders a series of steps describing a process or workflow.
+	 *
+	 * Used in:
+	 * - onboarding instructions
+	 * - service signup processes
+	 * - step-by-step explanations
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Steps are generated from a repeater field.
+	 * - Step content uses a WYSIWYG editor for inline links and buttons.
+	 * - Headers should not be used within step text.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header = get_sub_field( 'header' );
-$intro  = get_sub_field( 'intro' );
-$link   = get_sub_field( 'link' );
+	$header = get_sub_field( 'header' );
+	$intro  = get_sub_field( 'intro' );
+	$link   = get_sub_field( 'link' );
 ?>
 <section class="flex-block flex-block--process">
 	<?php if ( $header ) : ?>

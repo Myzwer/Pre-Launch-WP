@@ -1,20 +1,31 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Video content block.
+	 *
+	 * Renders an embedded video with supporting text above and below.
+	 *
+	 * Used in:
+	 * - promotional videos
+	 * - tutorials or walkthroughs
+	 * - sermon or media embeds
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Video is rendered via an oEmbed field.
+	 * - Supporting text fields use WYSIWYG editors.
+	 * - Headers should not use H1 to preserve page SEO structure.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header  = get_sub_field( 'header' );
-$intro   = get_sub_field( 'intro' );
-$video   = get_sub_field( 'video' );
-$content = get_sub_field( 'content' );
+	$header  = get_sub_field( 'header' );
+	$intro   = get_sub_field( 'intro' );
+	$video   = get_sub_field( 'video' );
+	$content = get_sub_field( 'content' );
 ?>
 <section class="flex-block flex-block--video">
 	<?php if ( $header ) : ?>

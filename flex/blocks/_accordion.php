@@ -1,18 +1,29 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Accordion content block.
+	 *
+	 * Renders collapsible content sections controlled by titles.
+	 *
+	 * Used in:
+	 * - expandable FAQs
+	 * - detailed content sections
+	 * - progressive information disclosure
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Items are generated from a repeater field.
+	 * - Content uses a WYSIWYG editor.
+	 * - Headers should not be used inside accordion body content.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header = get_sub_field( 'header' );
-$intro  = get_sub_field( 'intro' );
+	$header = get_sub_field( 'header' );
+	$intro  = get_sub_field( 'intro' );
 ?>
 <section class="flex-block flex-block--accordion">
 	<?php if ( $header ) : ?>

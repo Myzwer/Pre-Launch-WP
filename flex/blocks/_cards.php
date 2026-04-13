@@ -1,19 +1,30 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Card grid content block.
+	 *
+	 * Renders a repeating set of cards containing a title, text, and optional link.
+	 *
+	 * Used in:
+	 * - services grids
+	 * - feature highlights
+	 * - content summaries
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Cards are generated from a repeater field.
+	 * - Descriptions use a textarea field for simple copy.
+	 * - Optional button may appear after the grid.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header = get_sub_field( 'header' );
-$intro  = get_sub_field( 'intro' );
-$link   = get_sub_field( 'link' );
+	$header = get_sub_field( 'header' );
+	$intro  = get_sub_field( 'intro' );
+	$link   = get_sub_field( 'link' );
 ?>
 <section class="flex-block flex-block--cards">
 	<?php if ( $header ) : ?>

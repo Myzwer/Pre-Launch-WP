@@ -1,19 +1,30 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Form block.
+	 *
+	 * Renders a Gravity Forms form within a section.
+	 *
+	 * Used in:
+	 * - contact forms
+	 * - signup forms
+	 * - lead generation sections
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Form is rendered using the stored form ID.
+	 * - Form output is handled via shortcode injection in PHP.
+	 * - Section may include header and intro text above the form.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header  = get_sub_field( 'header' );
-$intro   = get_sub_field( 'intro' );
-$form_id = get_sub_field( 'form_id' );
+	$header  = get_sub_field( 'header' );
+	$intro   = get_sub_field( 'intro' );
+	$form_id = get_sub_field( 'form_id' );
 ?>
 <section class="flex-block flex-block--form">
 	<?php if ( $header ) : ?>

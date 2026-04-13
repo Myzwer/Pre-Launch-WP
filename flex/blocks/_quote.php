@@ -1,21 +1,32 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Quote / testimonial block.
+	 *
+	 * Renders a highlighted quote with attribution details.
+	 *
+	 * Used in:
+	 * - testimonials
+	 * - customer or member quotes
+	 * - featured statements
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Quote content uses a WYSIWYG field for basic formatting such as italics.
+	 * - Attribution may include title, company, or location.
+	 * - Optional image may be displayed alongside the quote.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header      = get_sub_field( 'header' );
-$quote       = get_sub_field( 'quote' );
-$image       = get_sub_field( 'image' );
-$name        = get_sub_field( 'name' );
-$attribution = get_sub_field( 'attribution' );
+	$header      = get_sub_field( 'header' );
+	$quote       = get_sub_field( 'quote' );
+	$image       = get_sub_field( 'image' );
+	$name        = get_sub_field( 'name' );
+	$attribution = get_sub_field( 'attribution' );
 ?>
 <section class="flex-block flex-block--quote">
 	<?php if ( $header ) : ?>

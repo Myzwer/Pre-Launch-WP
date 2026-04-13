@@ -1,19 +1,30 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Information block.
+	 *
+	 * Renders structured informational content organized into sections.
+	 *
+	 * Used in:
+	 * - structured copywriting layouts
+	 * - educational or explanatory content
+	 * - long-form informational pages
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Structure may include repeatable headings and supporting text.
+	 * - Designed to support structured copywriting formats.
+	 * - Layout may gracefully degrade if some fields are unused.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header  = get_sub_field( 'header' );
-$content = get_sub_field( 'content' );
-$link    = get_sub_field( 'link' );
+	$header  = get_sub_field( 'header' );
+	$content = get_sub_field( 'content' );
+	$link    = get_sub_field( 'link' );
 ?>
 <section class="flex-block flex-block--info">
 	<?php if ( $header ) : ?>

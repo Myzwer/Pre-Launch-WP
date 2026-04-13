@@ -1,19 +1,30 @@
 <?php
-/**
- * Flex block partial.
- *
- * Barebones output for verifying ACF content rendering.
- * No styling included.
- */
+	/**
+	 * Announcement block.
+	 *
+	 * Renders a highlighted announcement or important notice.
+	 *
+	 * Used in:
+	 * - temporary announcements
+	 * - alerts or updates
+	 * - promotional messages
+	 *
+	 * Content is sourced from ACF Flexible Content fields.
+	 *
+	 * Notes:
+	 * - Announcement text uses a WYSIWYG editor.
+	 * - Optional button may link to additional information.
+	 * - This block may visually override default section backgrounds.
+	 */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
 
 
-$header       = get_sub_field( 'header' );
-$announcement = get_sub_field( 'announcement' );
-$link         = get_sub_field( 'link' );
+	$header       = get_sub_field( 'header' );
+	$announcement = get_sub_field( 'announcement' );
+	$link         = get_sub_field( 'link' );
 ?>
 <section class="flex-block flex-block--announcement">
 	<?php if ( $header ) : ?>
