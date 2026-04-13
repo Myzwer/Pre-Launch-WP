@@ -15,7 +15,7 @@
 	   Notes:
 	   - --color-* => text-* / bg-* / border-* / utilities
        - --background-image-* => bg-* / utilities
-*/
+	*/
 	/* Neutrals */
 	--color-black: #0F172A;
 	--color-white: #F8FAFC;
@@ -313,6 +313,50 @@
 	.prose-theme :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black):hover {
 		text-decoration: none;
 	}
+}
+
+
+/* =========================================================
+   [COMPONENTS] Alternating section backgrounds
+   ---------------------------------------------------------
+   Purpose:
+   Provides automatic alternating backgrounds for flexible
+   content sections rendered in page.php.
+
+   Implementation:
+   - page.php wraps all body sections in `.alt-bg-wrap`
+   - Each block is wrapped in `.bg-alternating-gradient`
+   - nth-child is used to alternate between theme gradients
+
+   Why this exists:
+   - Keeps background logic centralized in CSS
+   - Allows blocks to override their internal styling without
+     breaking the alternating pattern
+   - Uses theme tokens so color palettes remain site-specific
+
+   Notes:
+   - Uses theme gradient tokens defined in [TOKENS]
+   - Wrappers must remain in the DOM even if blocks style their
+     internal section backgrounds.
+   - Empty sections should ideally be prevented at the PHP layer
+     so the alternating sequence remains correct.
+
+   Related:
+   page.php → body_sections loop
+   ========================================================= */
+
+@layer components {
+
+	/* Default gradient */
+	.alt-bg-wrap > .bg-alternating-gradient {
+		background-image: var(--background-image-primary-gradient);
+	}
+
+	/* Alternate gradient */
+	.alt-bg-wrap > .bg-alternating-gradient:nth-child(even) {
+		background-image: var(--background-image-secondary-gradient);
+	}
+
 }
 
 
