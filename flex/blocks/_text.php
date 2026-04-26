@@ -21,17 +21,12 @@
 		exit;
 	}
 
-
-	$header = get_sub_field( 'header' );
-	$intro  = get_sub_field( 'intro' );
+	$intro = get_sub_field( 'content' );
 ?>
-<section class="p-5 mx-auto max-w-screen-2xl xl:p-5 xl:w-8/12">
-	<div class="grid grid-cols-12 gap-4 md:gap-4">
-		<div class="col-span-12 py-5 max-w-none prose-theme">
-			<?php if ( $header ) : ?>
-				<h2><?php echo esc_html( $header ); ?></h2>
-			<?php endif; ?>
 
+<section class="wrap">
+	<div class="grid-12 prose-theme">
+		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
 				<div><?php echo wp_kses_post( $intro ); ?></div>
 			<?php endif; ?>
