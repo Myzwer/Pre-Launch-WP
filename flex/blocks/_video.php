@@ -21,28 +21,34 @@
 		exit;
 	}
 
-
-	$header  = get_sub_field( 'header' );
 	$intro   = get_sub_field( 'intro' );
 	$video   = get_sub_field( 'video' );
 	$content = get_sub_field( 'content' );
 ?>
-<section class="flex-block flex-block--video">
-	<?php if ( $header ) : ?>
-		<h2><?php echo esc_html( $header ); ?></h2>
-	<?php endif; ?>
-
-	<?php if ( $intro ) : ?>
-		<div><?php echo wp_kses_post( $intro ); ?></div>
-	<?php endif; ?>
-
-	<?php if ( $video ) : ?>
-		<div>
-			<?php echo wp_kses_post( wp_oembed_get( $video ) ?: $video ); ?>
+<section class="py-8 wrap">
+	<div class="grid-12 prose-theme">
+		<div class="col-span-12">
+			<?php if ( $intro ) : ?>
+				<div class="">
+					<?php echo wp_kses_post( $intro ); ?>
+				</div>
+			<?php endif; ?>
 		</div>
-	<?php endif; ?>
 
-	<?php if ( $content ) : ?>
-		<div><?php echo wp_kses_post( $content ); ?></div>
-	<?php endif; ?>
+		<div class="col-span-12">
+			<?php if ( $video ) : ?>
+				<div class="video-container">
+					<?php echo $video; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		<div class="col-span-12">
+			<?php if ( $content ) : ?>
+				<div class="">
+					<?php echo wp_kses_post( $content ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
 </section>
