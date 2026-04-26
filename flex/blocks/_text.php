@@ -21,14 +21,16 @@
 		exit;
 	}
 
-	$intro = get_sub_field( 'content' );
+	$content = get_sub_field( 'content' );
 ?>
 
 <section class="wrap">
-	<div class="grid-12 prose-theme">
+	<div class="py-8 grid-12 prose-theme">
 		<div class="col-span-12">
-			<?php if ( $intro ) : ?>
-				<div><?php echo wp_kses_post( $intro ); ?></div>
+			<?php if ( $content ) : ?>
+				<div class="">
+					<?php echo wp_kses_post( $content ); ?>
+				</div>
 			<?php endif; ?>
 		</div>
 	</div>
