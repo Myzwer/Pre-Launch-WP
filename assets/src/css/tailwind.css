@@ -387,7 +387,7 @@
 
 	/* Grid-first workflow */
 	.grid-12 {
-		@apply grid grid-cols-12 gap-4 md:gap-10;
+		@apply grid grid-cols-12 gap-4;
 	}
 }
 
