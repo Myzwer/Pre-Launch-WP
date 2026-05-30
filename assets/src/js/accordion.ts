@@ -3,26 +3,43 @@ import $ from "jquery";
 $(document).ready(() => {
 	const SPEED = 200;
 
-	$(".faq-content").on("click", "summary", function (e) {
-		e.preventDefault();
+	$("[data-accordion]").each(function () {
+		const $accordion = $(this);
 
-		const $details = $(this).closest("details");
-		const $panel = $details.children(".tab-details");
+		$accordion.addClass("is-animated");
 
-		if ($panel.length === 0) return;
+		$accordion.find(".accordion__item").each(function () {
+			const $details = $(this);
+			const $panel = $details.children(".accordion__panel");
 
-		// Prevent animation queue buildup
+			if (!$details.prop("open")) {
+				$panel.hide();
+			}
+		});
+	});
+
+	$("[data-accordion]").on("click", ".accordion__summary", function (event) {
+		event.preventDefault();
+
+		const $summary = $(this);
+		const $details = $summary.closest(".accordion__item");
+		const $panel = $details.children(".accordion__panel");
+
+		if ($panel.length === 0) {
+			return;
+		}
+
 		$panel.stop(true, true);
 
 		if ($details.prop("open")) {
-			// CLOSE: animate first, then remove open
 			$panel.slideUp(SPEED, () => {
 				$details.prop("open", false);
 			});
-		} else {
-			// OPEN: set open first so content can render, then animate
-			$details.prop("open", true);
-			$panel.hide().slideDown(SPEED);
+
+			return;
 		}
+
+		$details.prop("open", true);
+		$panel.hide().slideDown(SPEED);
 	});
 });

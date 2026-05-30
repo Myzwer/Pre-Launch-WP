@@ -21,33 +21,53 @@
 		exit;
 	}
 
-
 	$header = get_sub_field( 'header' );
 	$intro  = get_sub_field( 'intro' );
 ?>
-<section class="flex-block flex-block--accordion">
-	<?php if ( $header ) : ?>
-		<h2><?php echo esc_html( $header ); ?></h2>
-	<?php endif; ?>
 
-	<?php if ( $intro ) : ?>
-		<div><?php echo wp_kses_post( $intro ); ?></div>
-	<?php endif; ?>
+<section class="py-8 wrap accordion-block">
+	<div class="grid-12">
+		<?php if ( $header || $intro ) : ?>
+			<div class="col-span-12 lg:col-span-10 lg:col-start-2">
+				<?php if ( $header ) : ?>
+					<h2 class="accordion-block__heading">
+						<?php echo esc_html( $header ); ?>
+					</h2>
+				<?php endif; ?>
 
-	<?php if ( have_rows( 'accordion_items' ) ) : ?>
-		<div>
-			<?php while ( have_rows( 'accordion_items' ) ) : the_row(); ?>
-				<details>
-					<?php $title = get_sub_field( 'accordion_title' ); ?>
-					<?php $content = get_sub_field( 'accordion_content' ); ?>
-					<?php if ( $title ) : ?>
-						<summary><?php echo esc_html( $title ); ?></summary>
-					<?php endif; ?>
-					<?php if ( $content ) : ?>
-						<div><?php echo wp_kses_post( $content ); ?></div>
-					<?php endif; ?>
-				</details>
-			<?php endwhile; ?>
-		</div>
-	<?php endif; ?>
+				<?php if ( $intro ) : ?>
+					<div class="accordion-block__intro prose-theme">
+						<?php echo wp_kses_post( $intro ); ?>
+					</div>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( have_rows( 'accordion_items' ) ) : ?>
+			<div class="col-span-12 lg:col-span-10 lg:col-start-2">
+				<div class="accordion" data-accordion>
+					<?php while ( have_rows( 'accordion_items' ) ) : the_row(); ?>
+						<?php
+						$title   = get_sub_field( 'accordion_title' );
+						$content = get_sub_field( 'accordion_content' );
+						?>
+
+						<?php if ( $title && $content ) : ?>
+							<details class="accordion__item">
+								<summary class="accordion__summary">
+									<span class="accordion__title">
+										<?php echo esc_html( $title ); ?>
+									</span>
+								</summary>
+
+								<div class="accordion__panel prose-theme">
+									<?php echo wp_kses_post( $content ); ?>
+								</div>
+							</details>
+						<?php endif; ?>
+					<?php endwhile; ?>
+				</div>
+			</div>
+		<?php endif; ?>
+	</div>
 </section>
