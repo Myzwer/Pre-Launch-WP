@@ -52,7 +52,7 @@
 
 				<?php endif; ?>
 			</div>
-			
+
 			<div class="grid-12">
 				<?php if ( ! empty( $link['url'] ) ) : ?>
 					<div class="col-span-12 mx-auto text-center">
