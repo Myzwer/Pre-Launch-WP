@@ -22,39 +22,50 @@
 	}
 
 
-	$header = get_sub_field( 'header' );
-	$intro  = get_sub_field( 'intro' );
-	$link   = get_sub_field( 'link' );
+	$intro = get_sub_field( 'intro' );
+	$link  = get_sub_field( 'link' );
 ?>
-<section class="flex-block flex-block--process">
-	<?php if ( $header ) : ?>
-		<h2><?php echo esc_html( $header ); ?></h2>
-	<?php endif; ?>
 
-	<?php if ( $intro ) : ?>
-		<div><?php echo wp_kses_post( $intro ); ?></div>
-	<?php endif; ?>
+<section class="wrap">
+	<div class="py-8 grid-12 prose-theme">
+		<div class="col-span-12">
+			<?php if ( $intro ) : ?>
+				<div><?php echo wp_kses_post( $intro ); ?></div>
+			<?php endif; ?>
+		</div>
 
-	<?php if ( have_rows( 'steps' ) ) : ?>
-		<ol>
-			<?php while ( have_rows( 'steps' ) ) : the_row(); ?>
-				<li>
-					<?php $title = get_sub_field( 'step_title' ); ?>
-					<?php $text = get_sub_field( 'step_text' ); ?>
-					<?php if ( $title ) : ?>
-						<h3><?php echo esc_html( $title ); ?></h3>
-					<?php endif; ?>
-					<?php if ( $text ) : ?>
-						<div><?php echo wp_kses_post( $text ); ?></div>
-					<?php endif; ?>
-				</li>
-			<?php endwhile; ?>
-		</ol>
-	<?php endif; ?>
+		<div class="col-span-12">
+			<div class="grid-12 prose-theme">
+				<?php if ( have_rows( 'steps' ) ) : ?>
+					<div class="col-span-12">
+						<?php while ( have_rows( 'steps' ) ) : the_row(); ?>
+							<?php $title = get_sub_field( 'step_title' ); ?>
+							<?php $text = get_sub_field( 'step_text' ); ?>
+							<?php if ( $title ) : ?>
+								<h3><?php echo esc_html( $title ); ?></h3>
+							<?php endif; ?>
+							<?php if ( $text ) : ?>
+								<div><?php echo wp_kses_post( $text ); ?></div>
+							<?php endif; ?>
 
-	<?php if ( ! empty( $link['url'] ) ) : ?>
-		<p>
-			<a href="<?php echo esc_url( $link['url'] ); ?>"<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></a>
-		</p>
-	<?php endif; ?>
-</section>
+						<?php endwhile; ?>
+					</div>
+				<?php endif; ?>
+
+			</div>
+
+			<div class="grid-12">
+				<?php if ( ! empty( $link['url'] ) ) : ?>
+					<div class="col-span-12 mx-auto text-center">
+						<a
+							class="btn_main"
+							href="<?php echo esc_url( $link['url'] ); ?>"
+							<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>
+						>
+							<span><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></span>
+						</a>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
