@@ -22,38 +22,49 @@
 	}
 
 
-	$header      = get_sub_field( 'header' );
+	$intro       = get_sub_field( 'intro' );
 	$quote       = get_sub_field( 'quote' );
 	$image       = get_sub_field( 'image' );
 	$name        = get_sub_field( 'name' );
 	$attribution = get_sub_field( 'attribution' );
 ?>
-<section class="flex-block flex-block--quote">
-	<?php if ( $header ) : ?>
-		<h2><?php echo esc_html( $header ); ?></h2>
-	<?php endif; ?>
 
-	<?php if ( $quote ) : ?>
-		<blockquote><?php echo wp_kses_post( $quote ); ?></blockquote>
-	<?php endif; ?>
-
-	<?php if ( ! empty( $image['ID'] ) ) : ?>
-		<div>
-			<?php echo wp_get_attachment_image( (int) $image['ID'], 'medium' ); ?>
+<section class="wrap">
+	<div class="py-8 grid-12 prose-theme">
+		<div class="col-span-12">
+			<?php if ( $intro ) : ?>
+				<div><?php echo wp_kses_post( $intro ); ?></div>
+			<?php endif; ?>
 		</div>
-	<?php endif; ?>
+	</div>
 
-	<?php if ( $name || $attribution ) : ?>
-		<p>
-			<?php if ( $name ) : ?>
-				<strong><?php echo esc_html( $name ); ?></strong>
+	<div class="grid-12 prose-theme">
+		<div class="col-span-12">
+			<?php if ( $quote ) : ?>
+				<blockquote><?php echo wp_kses_post( $quote ); ?></blockquote>
 			<?php endif; ?>
-			<?php if ( $name && $attribution ) : ?>
-				<br>
+		</div>
+
+		<div class="col-span-12">
+			<?php if ( ! empty( $image['ID'] ) ) : ?>
+				<div>
+					<?php echo wp_get_attachment_image( (int) $image['ID'], 'medium' ); ?>
+				</div>
 			<?php endif; ?>
-			<?php if ( $attribution ) : ?>
-				<span><?php echo esc_html( $attribution ); ?></span>
+
+			<?php if ( $name || $attribution ) : ?>
+				<p>
+					<?php if ( $name ) : ?>
+						<strong><?php echo esc_html( $name ); ?></strong>
+					<?php endif; ?>
+					<?php if ( $name && $attribution ) : ?>
+						<br>
+					<?php endif; ?>
+					<?php if ( $attribution ) : ?>
+						<span><?php echo esc_html( $attribution ); ?></span>
+					<?php endif; ?>
+				</p>
 			<?php endif; ?>
-		</p>
-	<?php endif; ?>
+		</div>
+	</div>
 </section>
