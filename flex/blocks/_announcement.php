@@ -22,22 +22,29 @@
 	}
 
 
-	$header       = get_sub_field( 'header' );
 	$announcement = get_sub_field( 'announcement' );
 	$link         = get_sub_field( 'link' );
 ?>
-<section class="flex-block flex-block--announcement">
-	<?php if ( $header ) : ?>
-		<h2><?php echo esc_html( $header ); ?></h2>
-	<?php endif; ?>
+<section class="bg-secondary">
+	<div class="wrap">
+		<div class="py-8 grid-12 prose-theme theme-invert">
+			<div class="col-span-12">
+				<?php if ( $announcement ) : ?>
+					<div><?php echo wp_kses_post( $announcement ); ?></div>
+				<?php endif; ?>
+			</div>
 
-	<?php if ( $announcement ) : ?>
-		<div><?php echo wp_kses_post( $announcement ); ?></div>
-	<?php endif; ?>
-
-	<?php if ( ! empty( $link['url'] ) ) : ?>
-		<p>
-			<a href="<?php echo esc_url( $link['url'] ); ?>"<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></a>
-		</p>
-	<?php endif; ?>
+			<?php if ( ! empty( $link['url'] ) ) : ?>
+				<div class="col-span-12 mx-auto text-center">
+					<a
+						class="btn_main"
+						href="<?php echo esc_url( $link['url'] ); ?>"
+						<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>
+					>
+						<span><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></span>
+					</a>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
 </section>
