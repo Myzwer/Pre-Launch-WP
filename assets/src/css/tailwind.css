@@ -156,8 +156,15 @@
 		--tw-prose-pre-bg: var(--color-black);
 	}
 
-	/* Inverted prose (used inside .theme-invert sections) */
-	.theme-invert .prose-theme {
+	/* Inverted prose:
+	   Supports:
+	   - <div class="theme-invert prose-theme">
+	   - <div class="theme-invert"><div class="prose-theme">...</div></div>
+	   - <div class="prose-theme"><div class="theme-invert">...</div></div>
+	*/
+	.theme-invert.prose-theme,
+	.theme-invert .prose-theme,
+	.prose-theme .theme-invert {
 		color: var(--color-white);
 
 		--tw-prose-body: var(--color-white);
