@@ -24,14 +24,28 @@
 	$message = get_sub_field( 'message' );
 	$link    = get_sub_field( 'link' );
 ?>
-<section class="flex-block flex-block--quick-cta">
-	<?php if ( $message ) : ?>
-		<p><?php echo nl2br( esc_html( $message ) ); ?></p>
-	<?php endif; ?>
 
-	<?php if ( ! empty( $link['url'] ) ) : ?>
-		<p>
-			<a href="<?php echo esc_url( $link['url'] ); ?>"<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></a>
-		</p>
-	<?php endif; ?>
+<section class="wrap">
+	<div class="py-8 grid-12 prose-theme">
+		<div class="col-span-12 text-center">
+			<?php if ( $message ) : ?>
+				<h4 class="text-2xl font-bold"><?php echo nl2br( esc_html( $message ) ); ?></h4>
+			<?php endif; ?>
+		</div>
+
+
+		<?php if ( ! empty( $link['url'] ) ) : ?>
+			<div class="col-span-12 mx-auto text-center">
+				<a
+					class="btn_main"
+					href="<?php echo esc_url( $link['url'] ); ?>"
+					<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>
+				>
+					<span><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></span>
+				</a>
+			</div>
+		<?php endif; ?>
+	</div>
 </section>
+
+
