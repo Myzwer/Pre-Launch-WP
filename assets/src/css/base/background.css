@@ -41,12 +41,48 @@
 
 /* ---------------------------------------------------------
    Video hero media + content wrapper
-   --------------------------------------------------------- */
+   ---------------------------------------------------------
+   Structure:
+     .viewport-header
+       .video-hero-media
+         video.header-video
+         .video-hero-overlay
+       .video-hero-content
 
-/* Video background
-   - Intended to be placed as a child of .viewport-header (or any positioned hero wrapper).
-   - Uses absolute positioning to avoid fixed-position mobile/Safari weirdness.
+   Notes:
+   - Keeps positioning/stacking in CSS instead of template markup.
+   - Overlay opacity is controlled by modifier classes.
+   - Height can still be controlled in markup with Tailwind min-h-*.
 */
+
+.viewport-header {
+	position: relative;
+	overflow: hidden;
+	z-index: 0;
+
+	display: grid;
+	place-items: center;
+	text-align: center;
+
+	min-height: 60vh;
+
+	background-color: var(--color-black);
+}
+
+/* Absolute media layer */
+.video-hero-media {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+
+	background-color: var(--color-black);
+	background-image: var(--video-poster-image, none);
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+/* Video background */
 .header-video {
 	position: absolute;
 	inset: 0;
@@ -57,32 +93,62 @@
 	object-fit: cover;
 	object-position: center;
 
-	/* Video is decorative background media */
 	pointer-events: none;
 	user-select: none;
 }
 
-/* Content wrapper for video heroes */
-.viewport-header {
-	position: relative;
-	overflow: hidden;
-
-	/* Stacking context */
-	z-index: 0;
-
-	display: grid;
-	place-items: center;
-	text-align: center;
-
-	/* Default hero height (tweak per layout as needed) */
-	min-height: 60vh;
-}
-
-/* Ensure direct non-video children of viewport-header sit above the video */
-.viewport-header > :not(.header-video) {
-	position: relative;
+/* Overlay layer */
+.video-hero-overlay {
+	position: absolute;
+	inset: 0;
 	z-index: 1;
+
+	pointer-events: none;
+	user-select: none;
+
+	background-color: rgb(0 0 0 / var(--video-overlay-opacity, 0.45));
 }
+
+/* Overlay strengths */
+.video-overlay-0 {
+	--video-overlay-opacity: 0;
+}
+
+.video-overlay-30 {
+	--video-overlay-opacity: 0.30;
+}
+
+.video-overlay-45 {
+	--video-overlay-opacity: 0.45;
+}
+
+.video-overlay-60 {
+	--video-overlay-opacity: 0.60;
+}
+
+.video-overlay-70 {
+	--video-overlay-opacity: 0.70;
+}
+
+/* Optional: useful when the video is bright at the top/bottom */
+.video-overlay-gradient {
+	background: linear-gradient(
+		to bottom,
+		rgb(0 0 0 / 0.45),
+		rgb(0 0 0 / var(--video-overlay-opacity, 0.45)),
+		rgb(0 0 0 / 0.55)
+	);
+}
+
+/* Content layer */
+.video-hero-content {
+	position: relative;
+	z-index: 2;
+
+	width: 100%;
+	padding-inline: 1.25rem;
+}
+
 
 /* ---------------------------------------------------------
    Dynamic background media (ACF-friendly)
