@@ -13,7 +13,7 @@
 	 *
 	 * Notes:
 	 * - Questions are stored in a repeater field.
-	 * - Answers use a WYSIWYG editor for light formatting.
+	 * - Answers use a textarea field for simple copy.
 	 * - Intended for static display rather than interactive accordions.
 	 */
 
@@ -34,22 +34,23 @@
 		</div>
 
 		<div class="col-span-12">
-			<div class="grid-12">
-				<?php if ( have_rows( 'faqs' ) ) : ?>
-
-				<?php while ( have_rows( 'faqs' ) ) : the_row(); ?>
-					<div class="col-span-12">
+			<?php if ( have_rows( 'faqs' ) ) : ?>
+				<div class="grid-12">
+					<?php while ( have_rows( 'faqs' ) ) : the_row(); ?>
 						<?php $question = get_sub_field( 'faq_question' ); ?>
 						<?php $answer = get_sub_field( 'faq_answer' ); ?>
-						<?php if ( $question ) : ?>
-							<h3><?php echo esc_html( $question ); ?></h3>
-						<?php endif; ?>
-						<?php if ( $answer ) : ?>
-							<p><?php echo nl2br( esc_html( $answer ) ); ?></p>
-						<?php endif; ?>
-					</div>
-				<?php endwhile; ?>
-			</div>
+
+						<article class="col-span-12">
+							<?php if ( $question ) : ?>
+								<h3><?php echo esc_html( $question ); ?></h3>
+							<?php endif; ?>
+
+							<?php if ( $answer ) : ?>
+								<p><?php echo nl2br( esc_html( $answer ) ); ?></p>
+							<?php endif; ?>
+						</article>
+					<?php endwhile; ?>
+				</div>
 			<?php endif; ?>
 		</div>
 	</div>
