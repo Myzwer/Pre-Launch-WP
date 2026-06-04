@@ -41,17 +41,19 @@
 						<?php while ( have_rows( 'steps' ) ) : the_row(); ?>
 							<?php $title = get_sub_field( 'step_title' ); ?>
 							<?php $text = get_sub_field( 'step_text' ); ?>
-							<?php if ( $title ) : ?>
-								<h3><?php echo esc_html( $title ); ?></h3>
-							<?php endif; ?>
-							<?php if ( $text ) : ?>
-								<div><?php echo wp_kses_post( $text ); ?></div>
-							<?php endif; ?>
 
+							<article>
+								<?php if ( $title ) : ?>
+									<h3><?php echo esc_html( $title ); ?></h3>
+								<?php endif; ?>
+
+								<?php if ( $text ) : ?>
+									<div><?php echo wp_kses_post( $text ); ?></div>
+								<?php endif; ?>
+							</article>
 						<?php endwhile; ?>
 					</div>
 				<?php endif; ?>
-
 			</div>
 
 			<div class="grid-12">
@@ -69,3 +71,4 @@
 			</div>
 		</div>
 	</div>
+</section>
