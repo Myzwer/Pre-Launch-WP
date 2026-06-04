@@ -102,7 +102,7 @@
 }
 
 .accordion__panel {
-	padding: 0 1.15rem 1.15rem;
+	padding: 1.15rem;
 	color: var(--color-black);
 }
 

@@ -12,8 +12,9 @@
 	 * Content is sourced from ACF Flexible Content fields.
 	 *
 	 * Notes:
+	 * - Intro content uses a WYSIWYG editor.
 	 * - Items are generated from a repeater field.
-	 * - Content uses a WYSIWYG editor.
+	 * - Accordion body content uses a WYSIWYG editor.
 	 * - Headers should not be used inside accordion body content.
 	 */
 
@@ -21,30 +22,21 @@
 		exit;
 	}
 
-	$header = get_sub_field( 'header' );
-	$intro  = get_sub_field( 'intro' );
+	$intro = get_sub_field( 'intro' );
 ?>
 
-<section class="py-8 wrap accordion-block">
-	<div class="grid-12">
-		<?php if ( $header || $intro ) : ?>
-			<div class="col-span-12 lg:col-span-10 lg:col-start-2">
-				<?php if ( $header ) : ?>
-					<h2 class="accordion-block__heading">
-						<?php echo esc_html( $header ); ?>
-					</h2>
-				<?php endif; ?>
-
-				<?php if ( $intro ) : ?>
-					<div class="accordion-block__intro prose-theme">
-						<?php echo wp_kses_post( $intro ); ?>
-					</div>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+<section class="wrap accordion-block">
+	<div class="py-8 grid-12 prose-theme">
+		<div class="col-span-12">
+			<?php if ( $intro ) : ?>
+				<div class="accordion-block__intro">
+					<?php echo wp_kses_post( $intro ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
 
 		<?php if ( have_rows( 'accordion_items' ) ) : ?>
-			<div class="col-span-12 lg:col-span-10 lg:col-start-2">
+			<div class="col-span-12">
 				<div class="accordion" data-accordion>
 					<?php while ( have_rows( 'accordion_items' ) ) : the_row(); ?>
 						<?php
@@ -60,7 +52,7 @@
 									</span>
 								</summary>
 
-								<div class="accordion__panel prose-theme">
+								<div class="accordion__panel">
 									<?php echo wp_kses_post( $content ); ?>
 								</div>
 							</details>
