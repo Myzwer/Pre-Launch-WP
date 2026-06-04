@@ -2,7 +2,7 @@
 	/**
 	 * Text content block.
 	 *
-	 * Renders a standard text section with a header and WYSIWYG intro.
+	 * Renders a standard text section with WYSIWYG content.
 	 *
 	 * Used in:
 	 * - general page content
@@ -12,9 +12,9 @@
 	 * Content is sourced from ACF Flexible Content fields.
 	 *
 	 * Notes:
-	 * - Intro field uses a WYSIWYG editor and should render inside `.prose-theme`.
+	 * - Content field uses a WYSIWYG editor and should render inside `.prose-theme`.
 	 * - Headers should be limited to H2–H6 to preserve page hierarchy.
-	 * - Block should return early if both header and intro are empty.
+	 * - Block should return early if content is empty.
 	 */
 
 	if ( ! defined( 'ABSPATH' ) ) {
@@ -28,15 +28,10 @@
 	<div class="py-8 grid-12 prose-theme">
 		<div class="col-span-12">
 			<?php if ( $content ) : ?>
-				<div class="">
+				<div>
 					<?php echo wp_kses_post( $content ); ?>
 				</div>
 			<?php endif; ?>
 		</div>
 	</div>
 </section>
-
-
-
-
-
