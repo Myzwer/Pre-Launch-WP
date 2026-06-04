@@ -33,7 +33,6 @@
 			<?php endif; ?>
 		</div>
 
-
 		<?php if ( ! empty( $link['url'] ) ) : ?>
 			<div class="col-span-12 mx-auto text-center">
 				<a
@@ -47,5 +46,3 @@
 		<?php endif; ?>
 	</div>
 </section>
-
-
