@@ -2,7 +2,7 @@
 	/**
 	 * Information block.
 	 *
-	 * Renders structured informational content organized into sections.
+	 * Renders structured informational content with optional supporting items.
 	 *
 	 * Used in:
 	 * - structured copywriting layouts
@@ -12,8 +12,9 @@
 	 * Content is sourced from ACF Flexible Content fields.
 	 *
 	 * Notes:
-	 * - Structure may include repeatable headings and supporting text.
-	 * - Designed to support structured copywriting formats.
+	 * - Header is stored in a text field.
+	 * - Main content is rendered from a WYSIWYG field.
+	 * - Supporting items are generated from a repeater field.
 	 * - Layout may gracefully degrade if some fields are unused.
 	 */
 
@@ -42,39 +43,38 @@
 				<div><?php echo wp_kses_post( $content ); ?></div>
 			<?php endif; ?>
 
-
 			<?php if ( ! empty( $link['url'] ) ) : ?>
-			<div class="col-span-12">
-				<a
-					class="btn_main"
-					href="<?php echo esc_url( $link['url'] ); ?>"
-					<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>
-				>
-					<span><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></span>
-				</a>
-				<?php endif; ?>
-			</div>
+				<div class="col-span-12">
+					<a
+						class="btn_main"
+						href="<?php echo esc_url( $link['url'] ); ?>"
+						<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener noreferrer"' : ''; ?>
+					>
+						<span><?php echo esc_html( $link['title'] ?: 'Learn More' ); ?></span>
+					</a>
+				</div>
+			<?php endif; ?>
 		</div>
 
 		<div class="col-span-12 md:col-span-6">
 			<div class="grid-12">
 				<?php if ( have_rows( 'items' ) ) : ?>
-
 					<?php while ( have_rows( 'items' ) ) : the_row(); ?>
-						<div class="col-span-12">
-							<?php $title = get_sub_field( 'item_title' ); ?>
-							<?php $text = get_sub_field( 'item_text' ); ?>
+						<?php $title = get_sub_field( 'item_title' ); ?>
+						<?php $text = get_sub_field( 'item_text' ); ?>
+
+						<article class="col-span-12">
 							<?php if ( $title ) : ?>
 								<h3 class="mt-0"><?php echo esc_html( $title ); ?></h3>
 							<?php endif; ?>
+
 							<?php if ( $text ) : ?>
 								<p><?php echo nl2br( esc_html( $text ) ); ?></p>
 							<?php endif; ?>
-						</div>
+						</article>
 					<?php endwhile; ?>
 				<?php endif; ?>
 			</div>
 		</div>
 	</div>
 </section>
-
