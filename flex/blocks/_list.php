@@ -38,18 +38,19 @@
 			<div class="grid-12 prose-theme">
 				<?php if ( have_rows( 'list_items' ) ) : ?>
 					<?php while ( have_rows( 'list_items' ) ) : the_row(); ?>
-						<div class="col-span-12 md:col-span-6">
+						<article class="col-span-12 md:col-span-6">
 							<?php $title = get_sub_field( 'list_item_title' ); ?>
 							<?php $subtext = get_sub_field( 'list_item_subtext' ); ?>
+
 							<?php if ( $title ) : ?>
 								<h3><?php echo esc_html( $title ); ?></h3>
 							<?php endif; ?>
+
 							<?php if ( $subtext ) : ?>
 								<div><?php echo wp_kses_post( $subtext ); ?></div>
 							<?php endif; ?>
-						</div>
+						</article>
 					<?php endwhile; ?>
-
 				<?php endif; ?>
 			</div>
 
@@ -68,7 +69,4 @@
 			</div>
 		</div>
 	</div>
-
 </section>
-
-
