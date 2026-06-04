@@ -25,6 +25,7 @@
 	$intro       = get_sub_field( 'intro' );
 	$quote       = get_sub_field( 'quote' );
 	$image       = get_sub_field( 'image' );
+	$image_id    = ! empty( $image['ID'] ) ? absint( $image['ID'] ) : 0;
 	$name        = get_sub_field( 'name' );
 	$attribution = get_sub_field( 'attribution' );
 ?>
@@ -46,9 +47,9 @@
 		</div>
 
 		<div class="col-span-12">
-			<?php if ( ! empty( $image['ID'] ) ) : ?>
+			<?php if ( $image_id ) : ?>
 				<div>
-					<?php echo wp_get_attachment_image( (int) $image['ID'], 'medium' ); ?>
+					<?php echo wp_get_attachment_image( $image_id, 'medium' ); ?>
 				</div>
 			<?php endif; ?>
 
