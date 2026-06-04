@@ -22,22 +22,29 @@
 	}
 
 
-	$content = get_sub_field( 'content' );
-	$image   = get_sub_field( 'image' );
+	$content  = get_sub_field( 'content' );
+	$image    = get_sub_field( 'image' );
+	$image_id = ! empty( $image['ID'] ) ? absint( $image['ID'] ) : 0;
+
+	if ( ! $content && ! $image_id ) {
+		return;
+	}
 ?>
 <section class="py-5 wrap">
 	<div class="grid-12 prose-theme">
 		<div class="col-span-12">
-			<?php if ( ! empty( $image['ID'] ) ) :
-				echo wp_get_attachment_image(
-					(int) $image['ID'],
-					'large',
-					false,
-					[
-						'class' => 'rounded-lg shadow-lg mb-0'
-					]
-				);
-			endif; ?>
+			<?php
+				if ( $image_id ) :
+					echo wp_get_attachment_image(
+						$image_id,
+						'large',
+						false,
+						[
+							'class' => 'rounded-lg shadow-lg mb-0',
+						]
+					);
+				endif;
+			?>
 		</div>
 
 		<div class="col-span-12">
