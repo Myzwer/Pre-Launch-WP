@@ -8,11 +8,18 @@
 
 	get_header(); ?>
 
-	<div class="relative bg-scroll bg-no-repeat bg-cover" style="background: linear-gradient(
-		rgba(0, 0, 0, 0.45),
-		rgba(0, 0, 0, 0.45)
-		), url('<?php the_field( 'header_image' ); ?>') center center;
-		height: 40vh;">
+	<div
+		class="relative"
+		style="
+			background-image:
+			linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+			url('<?php the_field( 'header_image' ); ?>');
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			height: 40vh;
+			"
+	>
 		<div class="text-center text-white content-middle">
 			<h1 class="mb-5 text-4xl font-bold"><?php echo the_title(); ?></h1>
 		</div>
