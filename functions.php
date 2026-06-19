@@ -11,6 +11,7 @@
 
 	/* Theme Tokens */
 	require_once get_theme_file_path( 'includes/theme/tokens.php' );
+	require_once get_theme_file_path( 'includes/theme/fonts.php' );
 
 	/* Posts / content system */
 	require_once get_theme_file_path( 'includes/posts/setup.php' );
