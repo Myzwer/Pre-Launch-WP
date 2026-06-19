@@ -333,21 +333,24 @@
 
    Implementation:
    - page.php wraps all body sections in `.alt-bg-wrap`
-   - Each block is wrapped in `.bg-alternating-gradient`
-   - nth-child is used to alternate between theme gradients
+   - Background-eligible blocks are wrapped in `.bg-alternating-gradient`
+   - page.php assigns either `.bg-alternating-odd` or `.bg-alternating-even`
+   - CSS maps those odd/even classes to theme gradient tokens
 
    Why this exists:
-   - Keeps background logic centralized in CSS
-   - Allows blocks to override their internal styling without
-     breaking the alternating pattern
+   - Keeps background color logic centralized
+   - Avoids hardcoding background styles inside every flex block
    - Uses theme tokens so color palettes remain site-specific
+   - Allows certain layouts, such as announcements, to be excluded
+     from the alternating count without disrupting the stripe pattern
 
    Notes:
-   - Uses theme gradient tokens defined in [TOKENS]
-   - Wrappers must remain in the DOM even if blocks style their
-     internal section backgrounds.
+   - Alternation is controlled by PHP, not `nth-child`
+   - Excluded blocks may still render their own internal backgrounds
    - Empty sections should ideally be prevented at the PHP layer
-     so the alternating sequence remains correct.
+     so the alternating sequence remains correct
+   - If a new block has its own full-section background, consider
+     adding its layout slug to the excluded layouts array in page.php
 
    Related:
    page.php → body_sections loop
