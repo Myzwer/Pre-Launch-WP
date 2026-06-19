@@ -66,6 +66,12 @@
 <?php
 	if ( have_rows( 'body_sections' ) ) :
 
+		$background_index = 0;
+
+		$background_excluded_layouts = array(
+			'announcement_block',
+		);
+
 		echo '<div class="alt-bg-wrap">';
 
 		while ( have_rows( 'body_sections' ) ) :
@@ -78,7 +84,6 @@
 
 				error_log( 'Missing content block template: ' . $layout . ' → ' . $path . '.php' );
 
-				// Show visible warning in development
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 					echo '<div style="padding:1rem;border:2px dashed red;margin:1rem 0;">';
 					echo '<strong>Missing block template:</strong> ' . esc_html( $layout );
@@ -88,7 +93,6 @@
 				continue;
 			}
 
-			// Capture block output so empty blocks can be skipped.
 			ob_start();
 			get_template_part( $path );
 			$markup = trim( ob_get_clean() );
@@ -97,7 +101,22 @@
 				continue;
 			}
 
-			echo '<div class="bg-alternating-gradient" data-layout="' . esc_attr( $layout ) . '">';
+			$skip_background_alternation = in_array( $layout, $background_excluded_layouts, true );
+
+			if ( $skip_background_alternation ) {
+				echo '<div class="bg-alternating-skip" data-layout="' . esc_attr( $layout ) . '">';
+				echo $markup; // safe: rendered template markup
+				echo '</div>';
+
+				continue;
+			}
+
+			$background_index ++;
+			$background_class = 0 === $background_index % 2
+				? 'bg-alternating-gradient bg-alternating-even'
+				: 'bg-alternating-gradient bg-alternating-odd';
+
+			echo '<div class="' . esc_attr( $background_class ) . '" data-layout="' . esc_attr( $layout ) . '">';
 			echo $markup; // safe: rendered template markup
 			echo '</div>';
 

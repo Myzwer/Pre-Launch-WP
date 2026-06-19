@@ -355,13 +355,11 @@
 
 @layer components {
 
-	/* Default gradient */
-	.alt-bg-wrap > .bg-alternating-gradient {
+	.alt-bg-wrap > .bg-alternating-gradient.bg-alternating-odd {
 		background-image: var(--background-image-primary-gradient);
 	}
 
-	/* Alternate gradient */
-	.alt-bg-wrap > .bg-alternating-gradient:nth-child(even) {
+	.alt-bg-wrap > .bg-alternating-gradient.bg-alternating-even {
 		background-image: var(--background-image-secondary-gradient);
 	}
 
