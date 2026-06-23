@@ -27,15 +27,15 @@
 ?>
 <section class="bg-secondary">
 	<div class="wrap">
-		<div class="py-8 grid-12 prose-theme theme-invert">
+		<div class="py-10 grid-12 theme-invert">
 			<div class="col-span-12">
 				<?php if ( $announcement ) : ?>
-					<div><?php echo wp_kses_post( $announcement ); ?></div>
+					<div class="prose-theme"><?php echo wp_kses_post( $announcement ); ?></div>
 				<?php endif; ?>
 			</div>
 
 			<?php if ( ! empty( $link['url'] ) ) : ?>
-				<div class="col-span-12 mx-auto text-center">
+				<div class="col-span-12 mx-auto mt-5 text-center">
 					<a
 						class="btn_main"
 						href="<?php echo esc_url( $link['url'] ); ?>"
