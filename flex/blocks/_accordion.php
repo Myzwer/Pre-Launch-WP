@@ -26,10 +26,10 @@
 ?>
 
 <section class="wrap accordion-block">
-	<div class="py-8 grid-12 prose-theme">
+	<div class="pt-10 pb-15 grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
-				<div class="accordion-block__intro">
+				<div class="accordion-block__intro prose-theme">
 					<?php echo wp_kses_post( $intro ); ?>
 				</div>
 			<?php endif; ?>
