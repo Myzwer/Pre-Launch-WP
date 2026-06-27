@@ -26,29 +26,29 @@
 	$link  = get_sub_field( 'link' );
 ?>
 
-<section class="wrap">
-	<div class="py-8 grid-12 prose-theme">
+<section class="py-10 wrap">
+	<div class="grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
-				<div><?php echo wp_kses_post( $intro ); ?></div>
+				<div class="prose-theme"><?php echo wp_kses_post( $intro ); ?></div>
 			<?php endif; ?>
 		</div>
 
 		<div class="col-span-12">
-			<div class="grid-12 prose-theme">
+			<div class="grid-12">
 				<?php if ( have_rows( 'steps' ) ) : ?>
-					<div class="col-span-12">
+					<div class="col-span-12 pb-5">
 						<?php while ( have_rows( 'steps' ) ) : the_row(); ?>
 							<?php $title = get_sub_field( 'step_title' ); ?>
 							<?php $text = get_sub_field( 'step_text' ); ?>
 
 							<article>
 								<?php if ( $title ) : ?>
-									<h3><?php echo esc_html( $title ); ?></h3>
+									<h4 class="heading-4"><?php echo esc_html( $title ); ?></h4>
 								<?php endif; ?>
 
 								<?php if ( $text ) : ?>
-									<div><?php echo wp_kses_post( $text ); ?></div>
+									<div class="pb-5 prose-theme"><?php echo wp_kses_post( $text ); ?></div>
 								<?php endif; ?>
 							</article>
 						<?php endwhile; ?>

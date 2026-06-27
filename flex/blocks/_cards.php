@@ -26,8 +26,8 @@
 	$link  = get_sub_field( 'link' );
 ?>
 
-<section class="wrap">
-	<div class="py-10 grid-12">
+<section class="py-10 wrap">
+	<div class="grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
 				<div class="pb-5 prose-theme"><?php echo wp_kses_post( $intro ); ?></div>

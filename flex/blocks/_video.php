@@ -25,11 +25,11 @@
 	$video   = get_sub_field( 'video' );
 	$content = get_sub_field( 'content' );
 ?>
-<section class="py-8 wrap">
-	<div class="grid-12 prose-theme">
+<section class="py-10 wrap">
+	<div class="grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
-				<div class="">
+				<div class="prose-theme">
 					<?php echo wp_kses_post( $intro ); ?>
 				</div>
 			<?php endif; ?>
@@ -45,7 +45,7 @@
 
 		<div class="col-span-12">
 			<?php if ( $content ) : ?>
-				<div class="">
+				<div class="prose-theme">
 					<?php echo wp_kses_post( $content ); ?>
 				</div>
 			<?php endif; ?>

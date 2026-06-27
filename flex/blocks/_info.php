@@ -28,23 +28,25 @@
 	$link    = get_sub_field( 'link' );
 ?>
 
-<section class="wrap">
-	<div class="pt-8 grid-12 prose-theme">
-		<div class="col-span-12 mx-auto text-center">
-			<?php if ( $header ) : ?>
-				<h2><?php echo esc_html( $header ); ?></h2>
-			<?php endif; ?>
+<section class="py-10 wrap">
+	<?php if ( $header ) : ?>
+		<div class="pb-10 grid-12">
+			<div class="col-span-12 mx-auto text-center">
+				<h2 class="heading-2"><?php echo esc_html( $header ); ?></h2>
+			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 
-	<div class="py-8 grid-12 prose-theme">
+	<div class="md:gap-8 grid-12">
 		<div class="col-span-12 md:col-span-6">
 			<?php if ( $content ) : ?>
-				<div><?php echo wp_kses_post( $content ); ?></div>
+				<div class="prose-theme">
+					<?php echo wp_kses_post( $content ); ?>
+				</div>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $link['url'] ) ) : ?>
-				<div class="col-span-12">
+				<div class="mt-8">
 					<a
 						class="btn_main"
 						href="<?php echo esc_url( $link['url'] ); ?>"
@@ -57,20 +59,22 @@
 		</div>
 
 		<div class="col-span-12 md:col-span-6">
-			<div class="grid-12">
+			<div class="gap-y-8 md:gap-y-10 grid-12">
 				<?php if ( have_rows( 'items' ) ) : ?>
 					<?php while ( have_rows( 'items' ) ) : the_row(); ?>
 						<?php $title = get_sub_field( 'item_title' ); ?>
 						<?php $text = get_sub_field( 'item_text' ); ?>
 
 						<article class="col-span-12">
-							<?php if ( $title ) : ?>
-								<h3 class="mt-0"><?php echo esc_html( $title ); ?></h3>
-							<?php endif; ?>
+							<div class="prose-theme prose-compact">
+								<?php if ( $title ) : ?>
+									<h4><?php echo esc_html( $title ); ?></h4>
+								<?php endif; ?>
 
-							<?php if ( $text ) : ?>
-								<p><?php echo nl2br( esc_html( $text ) ); ?></p>
-							<?php endif; ?>
+								<?php if ( $text ) : ?>
+									<p><?php echo nl2br( esc_html( $text ) ); ?></p>
+								<?php endif; ?>
+							</div>
 						</article>
 					<?php endwhile; ?>
 				<?php endif; ?>

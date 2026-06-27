@@ -30,8 +30,8 @@
 		return;
 	}
 ?>
-<section class="py-5 wrap">
-	<div class="grid-12 prose-theme">
+<section class="py-10 wrap">
+	<div class="grid-12">
 		<div class="col-span-12">
 			<?php
 				if ( $image_id ) :
@@ -49,7 +49,7 @@
 
 		<div class="col-span-12">
 			<?php if ( $content ) : ?>
-				<div><?php echo wp_kses_post( $content ); ?></div>
+				<div class="prose-theme"><?php echo wp_kses_post( $content ); ?></div>
 			<?php endif; ?>
 		</div>
 	</div>

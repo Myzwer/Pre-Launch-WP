@@ -25,11 +25,11 @@
 	$link    = get_sub_field( 'link' );
 ?>
 
-<section class="wrap">
-	<div class="py-8 grid-12 prose-theme">
+<section class="py-10 wrap">
+	<div class="grid-12">
 		<div class="col-span-12 text-center">
 			<?php if ( $message ) : ?>
-				<h4 class="text-2xl font-bold"><?php echo nl2br( esc_html( $message ) ); ?></h4>
+				<h3 class="heading-3"><?php echo nl2br( esc_html( $message ) ); ?></h3>
 			<?php endif; ?>
 		</div>
 

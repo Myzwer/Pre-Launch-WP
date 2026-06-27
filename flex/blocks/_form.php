@@ -26,8 +26,8 @@
 	$form_id = absint( get_sub_field( 'form_id' ) );
 ?>
 
-<section class="wrap">
-	<div class="py-10 grid-12">
+<section class="py-10 wrap">
+	<div class="grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
 				<div class="prose-theme"><?php echo wp_kses_post( $intro ); ?></div>

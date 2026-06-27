@@ -25,8 +25,8 @@
 	$intro = get_sub_field( 'intro' );
 ?>
 
-<section class="wrap accordion-block">
-	<div class="pt-10 pb-15 grid-12">
+<section class="pt-10 wrap accordion-block pb-15">
+	<div class="grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
 				<div class="accordion-block__intro prose-theme">

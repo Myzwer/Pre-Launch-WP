@@ -26,8 +26,8 @@
 	$link         = get_sub_field( 'link' );
 ?>
 <section class="bg-secondary">
-	<div class="wrap">
-		<div class="py-10 grid-12 theme-invert">
+	<div class="py-10 wrap">
+		<div class="grid-12 theme-invert">
 			<div class="col-span-12">
 				<?php if ( $announcement ) : ?>
 					<div class="prose-theme"><?php echo wp_kses_post( $announcement ); ?></div>
