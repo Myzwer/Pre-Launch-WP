@@ -44,7 +44,7 @@
 
 						<article class="col-span-12 p-5 mb-5 bg-white rounded-lg shadow-lg">
 							<?php if ( $title ) : ?>
-								<h3 class="pb-3 text-2xl font-bold"><?php echo esc_html( $title ); ?></h3>
+								<h4 class="heading-4"><?php echo esc_html( $title ); ?></h4>
 							<?php endif; ?>
 
 							<?php if ( $text ) : ?>
