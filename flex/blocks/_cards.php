@@ -27,10 +27,10 @@
 ?>
 
 <section class="wrap">
-	<div class="py-8 grid-12 prose-theme">
+	<div class="py-10 grid-12">
 		<div class="col-span-12">
 			<?php if ( $intro ) : ?>
-				<div><?php echo wp_kses_post( $intro ); ?></div>
+				<div class="pb-5 prose-theme"><?php echo wp_kses_post( $intro ); ?></div>
 			<?php endif; ?>
 		</div>
 
@@ -44,7 +44,7 @@
 
 						<article class="col-span-12 p-5 mb-5 bg-white rounded-lg shadow-lg">
 							<?php if ( $title ) : ?>
-								<h3><?php echo esc_html( $title ); ?></h3>
+								<h3 class="pb-3 text-2xl font-bold"><?php echo esc_html( $title ); ?></h3>
 							<?php endif; ?>
 
 							<?php if ( $text ) : ?>
