@@ -78,9 +78,14 @@
 	--container-7xl: 80rem;
 }
 
-/* [BEHAVIOR] Font utilities (override anywhere in markup)
-   Use: font-body | font-display
-*/
+/* =========================================================
+   [BEHAVIOR] Font utilities
+   ---------------------------------------------------------
+   Use:
+   - font-body
+   - font-display
+   ========================================================= */
+
 @layer utilities {
 	.font-body {
 		font-family: var(--font-body);
@@ -91,19 +96,32 @@
 	}
 }
 
-/* [BEHAVIOR] Global typography defaults (update sometimes)
-   Default: body uses body font; H1/H2 use display font
-*/
+/* =========================================================
+   [BEHAVIOR] Global typography defaults
+   ---------------------------------------------------------
+   Purpose:
+   Sets broad font-family defaults only.
+
+   Notes:
+   - This does not fully style all headings globally.
+   - Reusable visual heading styles live in `.heading-*`.
+   - WYSIWYG heading styles are mapped inside `.prose-theme`.
+   ========================================================= */
+
 @layer base {
 	body {
 		font-family: var(--font-body);
 	}
 
-	h1, h2 {
+	h1,
+	h2 {
 		font-family: var(--font-display);
 	}
 
-	h3, h4, h5, h6 {
+	h3,
+	h4,
+	h5,
+	h6 {
 		font-family: var(--font-body);
 	}
 }
@@ -130,10 +148,34 @@
 }
 
 /* =========================================================
-   [COMPONENTS] Prose wrapper (use for all WYSIWYG content)
+   [COMPONENTS] Prose wrapper
    ---------------------------------------------------------
-   Use: class="prose-theme"
-   Works with: theme-invert
+   Purpose:
+   Provides consistent styling for WYSIWYG/editor content.
+
+   Use:
+   - prose-theme
+     Default editor content. Includes normal prose rhythm, but
+     removes top margin from the first child and bottom margin
+     from the last child so WYSIWYG content does not control
+     outer layout spacing.
+
+   - prose-compact
+     Use for cards, FAQs, process steps, accordions, repeaters,
+     sidebars, and other marketing/content chunks where h3/h4
+     headings should sit closer to the text they introduce.
+
+   - prose-tight
+     Use for denser WYSIWYG areas where the overall vertical
+     rhythm should be slightly reduced.
+
+   - prose-no-spacing
+     Rare escape hatch. Use only where WYSIWYG content should
+     behave almost like plain template text.
+
+   House rule:
+   - Do not put `.prose-theme` on grid/wrap/layout wrappers.
+   - Put `.prose-theme` directly around actual editor/content output.
    ========================================================= */
 
 @layer components {
@@ -155,6 +197,61 @@
 		--tw-prose-code: var(--color-black);
 		--tw-prose-pre-code: var(--color-white);
 		--tw-prose-pre-bg: var(--color-black);
+	}
+
+	/* Prevent WYSIWYG content from creating outside layout spacing */
+	.prose-theme > :first-child {
+		margin-top: 0;
+	}
+
+	.prose-theme > :last-child {
+		margin-bottom: 0;
+	}
+
+	/* Baseline heading rhythm inside WYSIWYG content */
+	.prose-theme :where(h1, h2):not(:where(.not-prose, .not-prose *)) {
+		margin-bottom: 0.7em;
+	}
+
+	.prose-theme :where(h1 + p, h2 + p):not(:where(.not-prose, .not-prose *)) {
+		margin-top: 0;
+	}
+
+	/* Tighter title-to-text rhythm for cards/repeaters/FAQs/process steps */
+	.prose-theme.prose-compact
+	:where(h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+		margin-bottom: 0.25em;
+	}
+
+	.prose-theme.prose-compact
+	:where(h3 + p, h4 + p, h5 + p, h6 + p):not(:where(.not-prose, .not-prose *)) {
+		margin-top: 0;
+	}
+
+	/* Slightly denser overall prose rhythm */
+	.prose-theme.prose-tight :where(p):not(:where(.not-prose, .not-prose *)) {
+		margin-top: 0.75em;
+		margin-bottom: 0.75em;
+	}
+
+	.prose-theme.prose-tight
+	:where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+		margin-top: 0.75em;
+		margin-bottom: 0.75em;
+	}
+
+	/* Nuclear option: remove most internal prose spacing */
+	.prose-theme.prose-no-spacing
+	:where(p, h1, h2, h3, h4, h5, h6, blockquote, ul, ol):not(
+			:where(.not-prose, .not-prose *)
+		) {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	/* Keep consecutive direct children from smashing together entirely */
+	.prose-theme.prose-no-spacing > :where(* + *) {
+		margin-top: 0.5em;
 	}
 
 	/* Inverted prose:
@@ -184,18 +281,72 @@
 	}
 }
 
+/* =========================================================
+   [COMPONENTS] Typography system
+   ---------------------------------------------------------
+   Purpose:
+   Provides reusable baseline type styles for headings and
+   common content patterns.
+
+   Philosophy:
+   - HTML headings handle document structure.
+   - `.heading-*` classes handle visual style.
+   - `.prose-theme` maps WYSIWYG headings to these same
+     baseline styles so editor content matches template content.
+
+   Use:
+   - heading-1: major page/hero headings
+   - heading-2: section headings
+   - heading-3: card/repeater/subsection headings
+   - heading-4: small subsection headings
+
+   Notes:
+   - Do not `@apply heading-1` inside another selector.
+     Tailwind may treat custom component classes as unknown.
+   - Group the reusable class and prose selector together instead.
+   ========================================================= */
+
+@layer components {
+	.heading-1,
+	.prose-theme :where(h1):not(:where(.not-prose, .not-prose *)) {
+		font-family: var(--font-display);
+		@apply text-4xl leading-tight font-normal md:text-5xl lg:text-6xl;
+	}
+
+	.heading-2,
+	.prose-theme :where(h2):not(:where(.not-prose, .not-prose *)) {
+		font-family: var(--font-display);
+		@apply text-3xl leading-tight font-normal;
+	}
+
+	.heading-3,
+	.prose-theme :where(h3):not(:where(.not-prose, .not-prose *)) {
+		font-family: var(--font-body);
+		@apply text-xl leading-snug font-bold md:text-2xl;
+	}
+
+	.heading-4,
+	.prose-theme :where(h4):not(:where(.not-prose, .not-prose *)) {
+		font-family: var(--font-body);
+		@apply text-lg leading-snug font-bold md:text-xl;
+	}
+}
 
 /* =========================================================
-   [COMPONENTS] Buttons (used in shortcodes / WYSIWYG)
+   [COMPONENTS] Buttons
    ---------------------------------------------------------
    Public classes:
-     btn_main, btn_secondary, btn_light, btn_dark,
-     btn_ghost_white, btn_ghost_black
+   - btn_main
+   - btn_secondary
+   - btn_light
+   - btn_dark
+   - btn_ghost_white
+   - btn_ghost_black
 
    Notes:
    - Shared base styles are applied via grouped selectors.
    - Variants set explicit bg/text/border so behavior is stable
-     inside .theme-invert sections.
+     inside `.theme-invert` sections.
    ========================================================= */
 
 @layer components {
@@ -299,30 +450,60 @@
 	.theme-invert .btn_ghost_black {
 		@apply focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black;
 	}
-
 }
 
 /* =========================================================
    [COMPONENTS] Prose protection for buttons
    ---------------------------------------------------------
-   @tailwindcss/typography styles .prose a as article links.
+   @tailwindcss/typography styles `.prose a` as article links.
    This ensures button links keep their button styling.
    ========================================================= */
 
 @layer components {
 	/* Remove typography link styling from any anchor that is a button */
-	.prose :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black),
-	.prose-theme :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black) {
+	.prose
+	:where(
+			a.btn_main,
+			a.btn_secondary,
+			a.btn_light,
+			a.btn_dark,
+			a.btn_ghost_white,
+			a.btn_ghost_black
+		),
+	.prose-theme
+	:where(
+			a.btn_main,
+			a.btn_secondary,
+			a.btn_light,
+			a.btn_dark,
+			a.btn_ghost_white,
+			a.btn_ghost_black
+		) {
 		text-decoration: none;
 	}
 
-	/* Ensure hover doesn’t get the prose underline back */
-	.prose :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black):hover,
-	.prose-theme :where(a.btn_main, a.btn_secondary, a.btn_light, a.btn_dark, a.btn_ghost_white, a.btn_ghost_black):hover {
+	/* Ensure hover does not get the prose underline back */
+	.prose
+	:where(
+			a.btn_main,
+			a.btn_secondary,
+			a.btn_light,
+			a.btn_dark,
+			a.btn_ghost_white,
+			a.btn_ghost_black
+		):hover,
+	.prose-theme
+	:where(
+			a.btn_main,
+			a.btn_secondary,
+			a.btn_light,
+			a.btn_dark,
+			a.btn_ghost_white,
+			a.btn_ghost_black
+		):hover {
 		text-decoration: none;
 	}
 }
-
 
 /* =========================================================
    [COMPONENTS] Alternating section backgrounds
@@ -357,7 +538,6 @@
    ========================================================= */
 
 @layer components {
-
 	.alt-bg-wrap > .bg-alternating-gradient.bg-alternating-odd {
 		background-image: var(--background-image-primary-gradient);
 	}
@@ -365,18 +545,20 @@
 	.alt-bg-wrap > .bg-alternating-gradient.bg-alternating-even {
 		background-image: var(--background-image-secondary-gradient);
 	}
-
 }
 
-
 /* =========================================================
-   [UTILITIES] Layout helpers (rarely change)
+   [UTILITIES] Layout helpers
    ---------------------------------------------------------
    Use:
-     section      => full width section wrapper
-     wrap         => main inner container (max-w-6xl + padding)
-     wrap-wide    => wide container (max-w-screen-2xl + padding)
-     grid-12      => 12-col grid with sane gaps
+   - section      => full width section wrapper
+   - wrap         => main inner container
+   - wrap-wide    => wide inner container
+   - grid-12      => 12-column grid with safe mobile gap
+
+   Notes:
+   - `.grid-12` includes `gap-4` by default.
+   - Use `md:gap-8` where a section needs more desktop breathing room.
    ========================================================= */
 
 @layer utilities {
@@ -389,7 +571,7 @@
 		@apply mx-auto max-w-6xl px-5 lg:px-10;
 	}
 
-	/* For your max-screen-2xl pattern (option B style) */
+	/* Wide inner container */
 	.wrap-wide {
 		@apply mx-auto max-w-screen-2xl px-5;
 	}
@@ -399,5 +581,3 @@
 		@apply grid grid-cols-12 gap-4;
 	}
 }
-
-
