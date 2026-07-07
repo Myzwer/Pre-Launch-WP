@@ -10,571 +10,579 @@
 
 ## What This Is
 
-**WordPress Pre-Launch** is a production-ready **starter theme / blueprint** used as the foundation for all client
+**WordPress Pre-Launch** is a production-ready starter theme / LocalWP blueprint used as the foundation for client
 WordPress builds.
 
-This is not really a demo theme or a playground, its meant to be a, well, launching pad.
+This is not a demo theme or a playground. It is a launching pad.
 
-It is a deliberately opinionated starting point that solves the same problems every time:
+It is deliberately opinionated and built to solve the same problems every time:
 
-- A modern frontend toolchain
-- A dual environment for dev and prod
-- A predictable workflow that survives long gaps between projects
-- A setup designed to scale across large and small sites
+- A modern frontend toolchain.
+- A predictable dev/prod workflow.
+- A reusable ACF Flexible Content structure.
+- A client-safe WordPress admin experience.
+- A setup that can survive long gaps between projects.
 
 ---
 
-## Features & Benefits
+## If You’re Not Josh
 
-### General
+You are welcome to use this starter.
 
-- **Webpack 5 build pipeline**  
-  Modern asset bundling with a clear dev vs production split.
+Just know what you are getting into.
 
-- **Clean source vs output separation**  
-  Source files live in `/assets/src`.  
-  Compiled assets are generated into `/assets/public` and are never committed.
+This theme assumes:
 
-- **Fast local development**  
-  BrowserSync provides live reload and cross-device syncing during development.
+- WordPress.
+- ACF, especially Flexible Content.
+- Gravity Forms.
+- LocalWP as the primary local workflow.
+- Tailwind v4.
+- A fairly opinionated PHP/CSS/JS structure.
 
-- **Predictable production builds**  
-  Minification, optimization, and cache-friendly output handled automatically.
+If that sounds reasonable, go for it. It is super built out; it is also very specific to how I build sites.
 
-### CSS
+---
 
-- **Tailwind CSS v4**  
-  Utility-first styling with a fully migrated v4 setup.
+## Site Workflow SOP
 
-- **Plain CSS only**  
-  No Sass, no preprocessors.  
-  CSS is authored directly and processed via PostCSS.
+The step-by-step workflow for cloning a new site, configuring it, and prepping it for launch lives in a separate SOP
+file:
 
-- **PostCSS pipeline**  
-  Handles vendor prefixing and future-safe CSS features.
+```text
+/docs/site-workflow-sop.md
+```
 
-### JavaScript
+Use that file when you are actively spinning up or launching a site.
+Use this README when you need to understand how the theme works.
 
-- **Babel-powered JS & TypeScript support**  
-  Modern JS/TS authored safely and transpiled for browser compatibility.
+---
+
+## Table of Contents
+
+### Start Here
+
+- [What This Is](#what-this-is)
+- [If You’re Not Josh](#if-youre-not-josh)
+- [Site Workflow SOP](#site-workflow-sop)
+- [Requirements](#requirements)
+- [Core Commands](#core-commands)
+- [Project Structure](#project-structure)
+
+### Theme Configuration
+
+- [Theme System Overview](#theme-system-overview)
+- [Theme Tokens](#theme-tokens)
+- [Colors & Gradients](#colors--gradients)
+- [Fonts](#fonts)
+- [Typography System](#typography-system)
+- [WYSIWYG / Prose Styling](#wysiwyg--prose-styling)
+- [Buttons](#buttons)
+- [Layout Helpers](#layout-helpers)
+- [Alternating Section Backgrounds](#alternating-section-backgrounds)
+
+### WordPress Systems
+
+- [ACF Globals](#acf-globals)
+- [Navbar System](#navbar-system)
+- [Footer System](#footer-system)
+- [Editor Tooling & Shortcodes](#editor-tooling--shortcodes)
+- [Blog System](#blog-system)
+- [SEO Architecture](#seo-architecture)
+- [User Roles & Permissions System](#user-roles--permissions-system)
+
+### Reference
+
+- [Reference Flag Index](#reference-flag-index)
+- [Troubleshooting Index](#troubleshooting-index)
 
 ---
 
 ## Requirements
 
-This project assumes the following are already installed and available:
+This project assumes the following are already installed and available.
 
-General:
+### General
 
-- **Node.js** (version pinned via `.nvmrc`)
-- **Yarn (Berry)** — this project uses Yarn 3 with the node-modules linker
-- **LocalWP** (assumed local WordPress environment)
-- **Git**
+- Node.js, pinned via `.nvmrc`.
+- Yarn Berry, using the node-modules linker.
+- LocalWP.
+- Git.
 
-Plugins:
+### WordPress Plugins
 
-- **ACF with flex content**
-- **Gravity Forms**
+- ACF with Flexible Content.
+- Gravity Forms.
+- The SEO Framework.
 
 ---
 
-<img src="https://i.imgflip.com/5gak9s.jpg" width="50%" alt="How do you do fellow coders?">
+## Core Commands
 
-## If You’re Not Josh
-
-You’re welcome to use this starter.
-
-Just know what you’re getting into.
-
-This theme:
-
-- Assumes **ACF** (and is built around ACF Flexible Content blocks)
-- Assumes but does not require a LocalWP-based workflow
-
-If that sounds reasonable, go for it! It's super built out, its just kinda specific to me.
+Install dependencies if needed:
 
 ```bash
-# 1-- Set up a local instance of Worpress in Local or something.
-# 2-- Clone this into your themes folder (as a new theme)
+yarn install
+```
 
-$ git clone https://github.com/Myzwer/Pre-Launch-WP.git
+Run a development build:
 
-# 2-- Edit the BrowserSync settings (you can find that below)
-
-# 3-- Install yarn and all the project dependencies
-
-$ yarn install
-
-# 4-- Run a command and start making some magic.
+```bash
 yarn dev
+```
+
+Run development watch mode:
+
+```bash
 yarn dev:watch
+```
+
+Run a production build:
+
+```bash
 yarn prod
+```
+
+Run production watch mode:
+
+```bash
 yarn prod:watch
 ```
 
----
-
-# How To Add Fonts To Your Project
-
-### Google Fonts
-
-1. Go to https://fonts.google.com/
-2. Pick a font family that you like, and select a few styles. (as a note, the more files you choose the slower the site
-   will be. So only pick ones you need to use)
-3. Under "use on the web" section, make sure < link > is selected, and look at the code that is generated. It should
-   look _something_ like this:
-
-```
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-```
-
-4. Copy the link from the 3rd block, minus the &display=swap. In the example above, it would be this:
-
-```html
-https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400
-```
-
-5. Navigate to functions.php, specifically the fonts part.
-6. Drop in this code:
-
-```php
-wp_register_style( 'FONTNAME_font', 'FONTLINK' );
-wp_enqueue_style('FONTNAME_font');
-```
-
-7. Name it whatever where FONTNAME_font is (it doesn't matter what you call it, but it does make sense to name it the
-   fontname for ease of reference later), and add the link to FONTLINK. So to complete our example:
-
-```php
-wp_register_style( 'roboto_font', 'https://fonts.googleapis.com/css2?familY=Roboto:ital,wght@0,400;0,500;0,700;1,400' );
-wp_enqueue_style('roboto_font');
-```
-
-8. Go back to google, copy the font family section and you can begin using it in your CSS!
-9. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. This is
-   already done for you so you should be able to easily swap out my code for your new font code.
-
-```css
-fontFamily {
-'myfontname': [ 'Roboto', 'sans-serif' ], / / text-roboto
-}
-```
+Common maintenance commands may also exist in `package.json`, including linting, formatting, PHP fixing, typechecking,
+and build cleanup.
 
 ---
 
-### Custom Fonts
+## Project Structure
 
-1. Purchase or download font files. They will most likely come as .otf or .ttf or something like that. It doesn't matter
-   which you use.
-2. Go to [Transfonter](https://transfonter.org/) and select the fontses you want to include. The more files you include
-   the slower your website will be, so only get the ones you need. Bigger is not always better. Girls do care about
-   the [size of your megapixel.](https://youtu.be/eg8u_Q1tNlo?t=22)
-3. Upload the font files to the site.
-4. You do not need to adjust any settings on the bottom section unless you want to.
-5. Download your @font-face kit zip file with new fonts!
-6. Upzip. 😉
-7. You don't need demo.html, though can see what your fonts looks like on a page if you load it up.
-8. Copy all .woff and .woff2 files into ./assets/src/webfonts in the wordpress project. You can delete any existing
-   files that you no longer need including the gitkeep file.
-9. Open up stylesheet.css, copy all the code out of it, and paste that into fonts.css. (.assets/src/sass/fonts/)
-10. Lastly, you'll need to tell your fonts where they can find the woff files. This means adding `../../webfonts/` to
-    the beginnging of all of your URL's.
-
-```css
-fontFamily {
-	font-family: "MYFONT";
-	src:
-		url("../../webfonts/MYFONT.woff2") format("woff2"),
-		url("../../webfonts/MYFONT.woff") format("woff");
-	font-weight: 900;
-	font-style: normal;
-	font-display: swap;
-}
-```
-
-11. Once added, if you have prettier and stylelint up and running, both of those will throw errors, so hop over to iterm
-    and type `yarn stylelint` to get it fixed.
-12. Once linked like this, you are free to use your new font families! The name is whatever fontfamily is called. In the
-    above example (where I showed linking) MYFONT would be the name you'd use.
-13. (optional) If you are still using tailwind, go into tailwind.config.js and update the fontFamily section. This is
-    already done for you so you should be able to easily swap out my code for your new font code.
-
-```css
-fontFamily {
-'myfontname': [ 'Bleeding Cowboy', 'serif' ], / / text-bleeding-cowboy
-}
-```
-
-# Tailwind Theme System (Base Styles)
-
-This project uses **Tailwind v4**, but not in a “raw utility soup everywhere” way.
-
-Instead, there is a small, opinionated **theme layer** that sits on top of Tailwind and handles:
-
-- colors & gradients
-- typography defaults
-- light vs inverted (dark) sections
-- buttons
-- a few layout helpers
-
-The goal here is **consistency without rigidity**.
-You should be able to spin up a new site quickly, update a few values, and move on.
-
----
-
-## Quick Reference (Read This First)
+Important paths:
 
 ```text
-Theme helpers
--------------
-theme-invert     → flips default text to white for a section
-prose-theme      → WYSIWYG / rich text styling (no enforced width)
-not-prose        → escape hatch for buttons / UI inside prose
+assets/src/                 Source assets
+assets/public/              Compiled assets; do not edit directly
+assets/src/css/tailwind.css Theme tokens, helpers, typography, buttons
+assets/src/js/              Frontend JS/TS
+assets/admin/               Admin/editor tooling assets
+includes/theme/fonts.php    Google Fonts enqueue + resource hints
+includes/theme/tokens.php   PHP-injected theme/admin tokens
+includes/users/             User roles and permissions system
+template-parts/             Reusable PHP template parts
+```
 
-Layout helpers
---------------
-wrap             → centered container (max-w-6xl + padding)
-wrap-wide        → wider container (max-w-screen-2xl + padding)
-grid-12          → 12-column grid with standard gaps
+Compiled assets are generated into `assets/public` and should not be edited by hand.
 
-Buttons
--------
-btn_main
-btn_secondary
-btn_light
-btn_dark
-btn_ghost_white
-btn_ghost_black
+---
 
-Color tokens
-------------
+# Theme Configuration
+
+---
+
+## Theme System Overview
+
+This project uses **Tailwind v4**, but not in a raw utility soup everywhere way.
+
+The theme has a small, opinionated layer that handles:
+
+- colors and gradients,
+- fonts,
+- typography defaults,
+- WYSIWYG/prose styling,
+- light vs inverted sections,
+- buttons,
+- layout helpers,
+- alternating section backgrounds.
+
+The goal is consistency without rigidity. You should be able to spin up a new site, update the brand tokens, test the
+sample page, and move on.
+
+---
+
+## Theme Tokens
+
+All major frontend design tokens live here:
+
+```text
+assets/src/css/tailwind.css
+```
+
+Specifically, update the `@theme {}` block.
+
+Primary token groups:
+
+- colors,
+- gradients,
+- fonts,
+- max-width/container scale.
+
+Do not reference CSS variables directly in markup. Define tokens once, then use Tailwind utilities or theme component
+classes.
+
+---
+
+## Colors & Gradients
+
+Colors are defined as roles, not literal color names.
+
+Typical roles:
+
+```text
 black
 white
 primary
 secondary
 soft-1
 soft-2
-
-Gradient tokens
----------------
-primary-gradient
-secondary-gradient
-impact-gradient
+primary-gradient-to
+secondary-gradient-to
+impact-gradient-to
 ```
+
+Once defined, Tailwind exposes utilities like:
+
+```text
+bg-primary
+text-secondary
+bg-primary-gradient
+bg-impact-gradient
+```
+
+Typical usage:
+
+```html
+<section class="bg-impact-gradient theme-invert">
+	<div class="wrap py-16">
+		<div class="prose-theme max-w-3xl">
+			<h2>Section heading</h2>
+			<p>Section copy.</p>
+		</div>
+	</div>
+</section>
+```
+
+### Backend/Admin Tokens
+
+Admin-side branded colors are driven by PHP-injected tokens:
+
+```text
+includes/theme/tokens.php
+```
+
+These are used by admin/login contexts that do not automatically inherit the compiled frontend Tailwind file.
 
 ---
 
-## Example: Helpers Working Together
+## Fonts
+
+Fonts have two parts:
+
+- loading the font files through WordPress,
+- assigning font roles in Tailwind tokens.
+
+### Google Fonts
+
+Google Fonts are loaded here:
+
+```text
+includes/theme/fonts.php
+```
+
+To update Google Fonts:
+
+- Choose fonts at Google Fonts.
+- Copy the full stylesheet URL from the generated `href` value.
+- Replace the URL in `prelaunch_get_google_fonts_url()`.
+- Keep the Google Fonts URL intact.
+
+Example:
 
 ```php
-<div class="bg-primary">
-  <div class="wrap-wide py-10">
-    <div class="grid-12">
-      <div class="col-span-12 prose-theme max-w-3xl">
-        <!-- prose-theme restores typography, width is explicit -->
-        <p>This is WYSIWYG content.</p>
-
-        <div class="not-prose mt-6">
-          <!-- not-prose prevents typography plugin from styling buttons -->
-          <a class="btn_main" href="#">Book Now</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+function prelaunch_get_google_fonts_url(): string {
+	return 'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap';
+}
 ```
 
-Key takeaways:
+The file also adds Google Fonts preconnect resource hints.
 
-- Background is chosen with `bg-*`
-- Width is controlled by layout helpers or `max-w-*`
-- Typography is opt-in via `prose-theme`
-- UI inside prose uses `not-prose`
+Load the file from the theme include stack:
 
----
+```php
+require_once get_template_directory() . '/includes/theme/fonts.php';
+```
 
-## Step 1 – Update Theme Tokens (Always Do This)
+### Tailwind Font Tokens
 
-All site-level design decisions live in one place:
+After loading the fonts, assign them here:
 
 ```text
 assets/src/css/tailwind.css
 ```
 
-Inside the `@theme {}` block.
+Inside `@theme {}`:
 
-### Colors & Gradients
+```css
+--font-body:
+	"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+	"Apple Color Emoji", "Segoe UI Emoji";
 
-Colors are defined as **roles**, not names.
-
-You are not defining “blue” or “green” — you are defining _how a color is used_.
-
-Typical roles:
-
-- `black` / `white` → global neutrals
-- `primary` → main CTA color
-- `secondary` → secondary emphasis
-- `soft-*` → pastel tones used for gradients
-- `*-gradient` → section backgrounds
-
-Once defined, Tailwind automatically gives you utilities like:
-
-- `bg-primary`
-- `text-secondary`
-- `bg-primary-gradient`
-
-You never reference CSS variables directly in markup.
-
----
-
-### Fonts
-
-There are exactly **two font roles**:
-
-- `--font-body` → most text
-- `--font-display` → h1 / h2 by default
-
-Default behavior:
-
-- body text uses `--font-body`
-- `h1` and `h2` use `--font-display`
-
-If a site only uses one font, just point both variables to the same family.
-
-You can override per-element using:
-
-- `font-body`
-- `font-display`
-
-Fonts must still be **loaded via WordPress**.
-Tailwind only references the font names.
-
----
-
-## Step 2 – Theme Behavior (Read Once)
-
-### Default vs Inverted Sections
-
-The site has one global default:
-
-- black text
-- light background
-
-For standout / impact sections, use:
-
-```html
-<section class="theme-invert"></section>
+--font-display:
+	"DM Serif Display", Georgia, Cambria, "Times New Roman", Times, serif;
 ```
 
-This flips the **default text color to white** inside that section.
+Rules:
 
-Important:
+- `--font-body` is for most text.
+- `--font-display` is for major headings.
+- If a site uses one font, point both roles to the same family.
+- Do not update `tailwind.config.js` for fonts in this Tailwind v4 setup.
+- Do not copy Google’s generated `.font-class-name` snippets into the theme.
 
-- `theme-invert` does **not** set a background
-- backgrounds are still chosen via `bg-*`
-- this is not “dark mode” — it’s a per-section override
+Google Fonts variable syntax like `100..900` means a range of weights. The `..` means “through.”
+
+---
+
+## Typography System
+
+The theme includes reusable visual heading classes:
+
+```text
+heading-1
+heading-2
+heading-3
+heading-4
+```
+
+Philosophy:
+
+- HTML headings handle document structure.
+- `.heading-*` classes handle visual style.
+- `.prose-theme` maps WYSIWYG headings to the same baseline styles.
 
 Typical usage:
 
 ```html
-<section class="bg-impact-gradient theme-invert"></section>
+<h1 class="heading-1">Page heading</h1>
+<h2 class="heading-2">Section heading</h2>
+<h3 class="heading-3">Card heading</h3>
 ```
+
+Do not `@apply heading-1` inside another selector. Tailwind may treat custom component classes as unknown. If a
+component needs the same visual style, group the class and selector together in CSS instead.
 
 ---
 
-## Step 3 – Typography & WYSIWYG
+## WYSIWYG / Prose Styling
 
-### `prose-theme`
-
-All WYSIWYG / rich text should use:
+Use `prose-theme` for WYSIWYG/editor content.
 
 ```html
-<div class="prose-theme"></div>
+<div class="prose-theme"><?php echo wp_kses_post( $content ); ?></div>
 ```
 
-This:
+House rule:
 
-1. enables Tailwind typography styles
-2. maps text colors to theme tokens
-3. removes enforced max-width
+> Do not put `.prose-theme` on grid, wrap, or layout wrappers. Put `.prose-theme` directly around actual editor/content
+> output.
 
-You control width explicitly:
+### Prose Helpers
 
-```html
-<div class="prose-theme max-w-3xl"></div>
+Available helpers:
+
+```text
+prose-theme       Default editor content
+prose-compact     Cards, FAQs, process steps, accordions, repeaters
+prose-tight       Denser WYSIWYG areas
+prose-no-spacing  Rare escape hatch for almost plain template text
 ```
 
----
-
-### `theme-invert` + `prose-theme`
-
-When `prose-theme` is nested inside `theme-invert`:
-
-- text flips to white automatically
-- headings, lists, and links stay consistent
-- no `text-white` spam needed
-
-Do **not** use `prose-invert` in this system.
-
----
-
-### `not-prose`
-
-Typography styles links as article content.
-
-That’s great for paragraphs — bad for UI.
-
-Wrap buttons, icons, and UI elements like this:
+Examples:
 
 ```html
-<div class="not-prose">
-	<a class="btn_main">Book Now</a>
+<div class="prose-theme prose-compact">
+	<?php echo wp_kses_post( $card_text ); ?>
 </div>
 ```
 
-Button shortcodes already do this automatically.
-
----
-
-## Step 4 – Buttons
-
-Buttons are **component classes**, not utility chains.
-
-This keeps:
-
-- shortcodes clean
-- markup readable
-- behavior consistent inside prose and inverted sections
-
-Available buttons:
-
-- `btn_main` – primary CTA
-- `btn_secondary` – secondary emphasis
-- `btn_light` – white background, black text
-- `btn_dark` – black background, white text
-- `btn_ghost_white` – white outline / text
-- `btn_ghost_black` – black outline / text
-
----
-
-## Step 5 – Layout Helpers
-
-These exist purely to reduce repetition.
-
-### `wrap`
-
 ```html
-<div class="wrap"></div>
+<div class="prose-theme prose-tight">
+	<?php echo wp_kses_post( $sidebar_text ); ?>
+</div>
 ```
 
-Centered container with max-width and horizontal padding.
+### Inverted Prose
 
----
-
-### `wrap-wide`
+When `prose-theme` is inside a `theme-invert` section, prose colors flip automatically.
 
 ```html
-<div class="wrap-wide"></div>
+<section class="bg-impact-gradient theme-invert">
+	<div class="wrap py-16">
+		<div class="prose-theme max-w-3xl">
+			<h2>White heading</h2>
+			<p>White body copy.</p>
+		</div>
+	</div>
+</section>
 ```
 
-Use for wider layouts or hero sections.
+Do not use `prose-invert` in this system.
 
----
+### `not-prose`
 
-### `grid-12`
+Use `not-prose` to protect buttons and UI from Tailwind Typography link styling.
 
 ```html
-<div class="grid-12"></div>
+<div class="not-prose mt-6">
+	<a class="btn_main" href="/contact/">Contact Us</a>
+</div>
 ```
 
-Equivalent to:
+Button shortcodes wrap themselves in `not-prose` automatically.
 
-- `grid`
-- `grid-cols-12`
-- standard gaps
+### Common Gotchas
 
----
-
-## Common Gotchas
-
-- **Buttons underlined?** → missing `not-prose`
-- **Text not turning white?** → forgot `theme-invert`
-- **Prose width wrong?** → add `max-w-*` yourself
-- **Colors not applying?** → check token names, not utilities
-
-# Navbar
-
-This project includes a **fully custom primary navigation system** designed to be reused across all client sites.
-
-It is **not** a generic WordPress menu.
-It is a **contract-based component** with strict assumptions shared between:
-
-- PHP (markup generation)
-- CSS (layout + visuals)
-- JS/TS (interaction, accessibility, state)
-
-If something looks a little “extra” in the walker, there is probably a reason.
-If it works and is documented — **leave it alone**.
+- Buttons underlined? Missing `not-prose`.
+- Text not turning white? Missing `theme-invert`.
+- Prose width wrong? Add an explicit `max-w-*`.
+- WYSIWYG spacing weird? Use the correct prose helper and make sure `prose-theme` is only wrapping content output.
 
 ---
 
-## High-Level Architecture
+## Buttons
 
-**Responsibility split:**
+Buttons are component classes, not long utility chains.
+
+Available classes:
+
+```text
+btn_main
+btn_secondary
+btn_light
+btn_dark
+btn_ghost_white
+btn_ghost_black
+```
+
+Button styles live in:
+
+```text
+assets/src/css/tailwind.css
+```
+
+Buttons are intentionally stable inside normal and inverted sections.
+
+Example:
+
+```html
+<a class="btn_main" href="/contact/">Contact Us</a>
+<a class="btn_ghost_black" href="/about/">Learn More</a>
+```
+
+Use the sample page to check the full button spread after brand token changes.
+
+---
+
+## Layout Helpers
+
+Available layout helpers:
+
+```text
+section      Full-width section wrapper
+wrap         Standard centered inner container
+wrap-wide    Wider inner container
+grid-12      12-column grid with safe mobile gap
+```
+
+Examples:
+
+```html
+<section class="section">
+	<div class="wrap py-16">
+		<div class="grid-12 md:gap-8">
+			<div class="col-span-12 md:col-span-6">...</div>
+		</div>
+	</div>
+</section>
+```
+
+Notes:
+
+- `.grid-12` includes `gap-4` by default.
+- Add `md:gap-8` where a section needs more desktop breathing room.
+- Prefer grid-first layout for major components.
+
+---
+
+## Alternating Section Backgrounds
+
+Flexible Content sections can use automatic alternating backgrounds.
+
+Implementation summary:
+
+- `page.php` wraps body sections in `.alt-bg-wrap`.
+- Background-eligible blocks are wrapped in `.bg-alternating-gradient`.
+- `page.php` assigns `.bg-alternating-odd` or `.bg-alternating-even`.
+- CSS maps those odd/even classes to gradient tokens.
+
+This is PHP-controlled, not pure `nth-child`.
+
+Why this matters:
+
+- Certain blocks, such as announcements, can be excluded from the alternating count.
+- Excluded blocks can have their own backgrounds without disrupting the stripe pattern.
+- Background logic stays centralized instead of hardcoded into every block.
+
+If a new block has its own full-section background, consider excluding that layout slug from the alternating count in
+`page.php`.
+
+---
+
+# WordPress Systems
+
+---
+
+## ACF Globals
+
+ACF Globals hold site-wide options used across the theme.
+
+Common globals include:
+
+- header/nav logo,
+- footer logo,
+- social links,
+- basic contact information,
+- 404 page text,
+- global fallback image,
+- footer layout,
+- footer content,
+- footer credit settings.
+
+Update these during new site setup before building out final nav/footer content.
+
+---
+
+## Navbar System
+
+The theme includes a custom primary navigation system.
+
+It is not a generic WordPress menu. It is a contract-based component with responsibilities split between PHP, CSS, and
+JS/TS.
+
+### Architecture
 
 | Layer    | File                                   | Responsibility                           |
 | -------- | -------------------------------------- | ---------------------------------------- |
 | Markup   | `header.php`                           | Shell, brand, hamburger, menu mount      |
-| Menu DOM | `nav_walker.php`                       | Exact HTML structure & classes           |
+| Menu DOM | `nav_walker.php`                       | Exact HTML structure and classes         |
 | Styles   | `assets/src/css/components/navbar.css` | Layout, hover, dropdowns, CTA styling    |
 | Behavior | `assets/src/js/navbar.ts`              | Toggle logic, ARIA state, focus handling |
 
-No layer should “fix” another layer’s problems.
+No layer should fix another layer’s problems.
 
----
+### DOM Contract
 
-## DOM Contract (Read This Before Touching Anything)
+The navbar relies on stable markup.
 
-The navbar relies on a **stable HTML contract**.
-
-### Header Structure
-
-```html
-<header class="site-header">
-	<div class="nav-shell">
-		<a class="nav-brand">...</a>
-
-		<nav class="nav" aria-label="Primary">
-			<button
-				class="nav-hamburger"
-				aria-controls="nav-panel"
-				aria-expanded="false"
-			></button>
-
-			<div class="nav-panel" id="nav-panel">
-				<ul class="nav-list" role="list">
-					<!-- Menu items -->
-				</ul>
-			</div>
-		</nav>
-	</div>
-</header>
-```
-
-This structure is assumed by both CSS and JS.
-
----
-
-### Menu Item Rules
-
-- Exactly **2 levels only**
-    - Depth 0 → top-level
-    - Depth 1 → submenu
-- No third level support (by design)
-
-#### Top-level item without children
+Top-level item without children:
 
 ```html
 <li class="nav-item">
@@ -584,7 +592,7 @@ This structure is assumed by both CSS and JS.
 </li>
 ```
 
-#### Top-level item with children (not a link)
+Top-level item with children:
 
 ```html
 <li class="nav-item has-submenu" data-nav-item>
@@ -610,1374 +618,612 @@ This structure is assumed by both CSS and JS.
 </li>
 ```
 
-Key points:
+Rules:
 
-- Dropdown parents are **buttons**, not links
-- Submenus are controlled via:
-    - `aria-expanded`
-    - `aria-controls`
-    - `[hidden]`
-- JS depends on `data-nav-item`, `data-nav-toggle`, `data-nav-submenu`
+- Two levels only.
+- Dropdown parents are buttons, not links.
+- JS depends on `data-nav-item`, `data-nav-toggle`, and `data-nav-submenu`.
 
----
+### CTA Behavior
 
-## CTA Behavior
+CTA items are expected to be the last menu item.
 
-CTA items are **special-cased** and expected to be the **last menu item**.
+In WP Admin, mark the CTA menu item with one of these classes:
 
-### How to mark a CTA (WP Admin)
-
-Use **one** of the following menu item classes:
-
-```
+```text
 nav-cta
 is-cta
 menu-cta
 ```
 
-They are normalized to `.nav-cta` on the `<li>`.
+They normalize to `.nav-cta` on the `<li>`.
 
-### CTA Output Contract
+### Font Awesome Rules
 
-```html
-<li class="nav-item nav-cta">
-	<div class="nav-item-inner">
-		<a class="nav-link nav-cta-link">
-			<span class="nav-label">Contact</span>
-			<i class="fa-solid fa-arrow-right nav-cta-icon"></i>
-		</a>
-	</div>
-</li>
-```
-
-CSS assumes:
-
-- `.nav-cta` exists on the `<li>`
-- `.nav-cta-link` exists on the `<a>`
-- CTA is last (hover + spacing rules depend on this)
-
----
-
-## Font Awesome Rules (FA6 / FA7)
-
-Icons are defined **only** via menu item classes.
+Icons are defined through menu item classes.
 
 Examples:
 
-```
+```text
 is-cta fa-arrow-right
 is-cta fa-brands fa-facebook
 ```
 
-### README:CTA_ICON_PREFIX_DEFAULT
+Font Awesome classes are read from the WP admin classes field, but rendered only on `<i>` elements.
 
-**What it does:**  
-Sets the default FA style prefix if none is provided.
+### Navbar README Flags
 
-**Default:**
+#### `README:TOGGLE_CENTER_NAV`
 
+Use this when you want to center desktop nav items while keeping the CTA aligned right.
+
+File:
+
+```text
+header.php
 ```
-fa-solid
-```
 
-**Where to change:**  
-Search for `README:CTA_ICON_PREFIX_DEFAULT` in `nav_walker.php`.
+Add this class to `<header class="site-header">`:
 
----
-
-### README:FA_CLASSES_ON_LI
-
-**What it does:**  
-Explains why `fa-*` classes are **not rendered on `<li>` elements**.
-
-**Why:**  
-FA Kits may scan any element with `fa-*` and inject SVG markup, which can break layout.  
-FA classes are read from admin but rendered **only on `<i>`**.
-
----
-
-## Layout Toggles
-
-### README:TOGGLE_CENTER_NAV
-
-**Want to center the desktop navigation?**
-
-**Search:**  
-`README:TOGGLE_CENTER_NAV`
-
-**File:**  
-`header.php`
-
-**What this does:**  
-Centers the primary nav items on desktop while keeping the CTA aligned to the right edge.
-
-**How to enable:**  
-Add the following class to the `<header class="site-header">` element:
-
-```
+```text
 nav-center-desktop
 ```
 
-**Notes:**
+#### `README:TOGGLE_FULL_HEIGHT_HOVER`
 
-- Desktop-only behavior
-- No JS changes required
-- CTA positioning is preserved intentionally
+Use this when top-level desktop nav items should hover/focus for the full header height.
 
----
+File:
 
-### README:TOGGLE_FULL_HEIGHT_HOVER
-
-**Want nav items to hover the full header height?**
-
-**Search:**  
-`README:TOGGLE_FULL_HEIGHT_HOVER`
-
-**File:**  
-`header.php`
-
-**What this does:**  
-Expands the hover and focus area of top-level nav items to match the full header height (desktop only).
-
-**How to enable:**  
-Add the following class to the `<header class="site-header">` element:
-
+```text
+header.php
 ```
+
+Add this class to `<header class="site-header">`:
+
+```text
 nav-hover-full
 ```
 
-**Notes:**
+#### `README:CTA_ICON_POSITION`
 
-- Improves usability on taller headers
-- Does not affect mobile behavior
-- No JS changes required
+Use this when the CTA icon should render before the label instead of after it.
 
----
+File:
 
-### README:CTA_ICON_POSITION
-
-**Want the CTA icon on the left instead of the right?**
-
-**Search:**  
-`README:CTA_ICON_POSITION`
-
-**File:**  
-`nav_walker.php`
-
-**What this controls:**  
-The visual order of the label and icon inside the CTA button.
-
-**Default output:**
-
-```
-[Label] [Icon]
+```text
+nav_walker.php
 ```
 
-**Alternate output:**
+Swap the documented output order inside the CTA render block.
 
+#### `README:CTA_ICON_PREFIX_DEFAULT`
+
+Controls the default Font Awesome style prefix when no explicit prefix is provided.
+
+File:
+
+```text
+nav_walker.php
 ```
-[Icon] [Label]
-```
 
-**How to change:**  
-Inside the CTA `<a>` rendering block:
+Default:
 
-- Comment out the default output line
-- Uncomment the alternate output line directly below it
-
-**Notes:**
-
-- This is a manual, documented swap by design
-- No CSS or JS changes should be required
-
----
-
-### README:CTA_ICON_PREFIX_DEFAULT
-
-**Want to change the default Font Awesome style?**
-
-**Search:**  
-`README:CTA_ICON_PREFIX_DEFAULT`
-
-**File:**  
-`nav_walker.php`
-
-**What this does:**  
-Controls which Font Awesome style prefix is used when a CTA icon is provided **without** an explicit style.
-
-**Default:**
-
-```
+```text
 fa-solid
 ```
 
-**How to change:**  
-Update the default value passed to the filter in the walker.
+#### `README:FA_CLASSES_ON_LI`
 
-**Notes:**
+Explains why `fa-*` classes are not printed on `<li>` elements.
 
-- Only applies when no `fa-brands`, `fa-regular`, etc. is provided
-- Prevents broken or missing icons
+File:
 
----
-
-### README:FA_CLASSES_ON_LI
-
-**Seeing weird layout issues with CTA icons?**
-
-**Search:**  
-`README:FA_CLASSES_ON_LI`
-
-**File:**  
-`nav_walker.php`
-
-**What this explains:**  
-Why `fa-*` classes are intentionally **not printed on `<li>` elements**.
-
-**Why this matters:**  
-Font Awesome Kits (FA6 / FA7) may scan _any_ element with `fa-*` and inject SVG markup.  
-If `fa-*` appears on a `<li>`, this can break sizing and layout (especially CTAs).
-
-**Important detail:**
-
-- FA classes are still read from WP admin
-- FA classes are rendered **only** on the `<i>` element
-
----
-
-### README:BREAKPOINT_SYNC
-
-**Navbar behaving differently between mobile and desktop?**
-
-**Search:**  
-`README:BREAKPOINT_SYNC`
-
-**Files:**
-
-- `assets/src/css/components/navbar.css`
-- `assets/src/js/navbar.ts`
-
-**What this means:**  
-Navbar breakpoints must be kept in sync between CSS and JS.
-
-**If you change one:**  
-You must update the other.
-
-**Notes:**
-
-- Desync can cause scroll lock, stuck menus, or broken animations
-- This is one of the easiest ways to accidentally break the navbar
-
----
-
-## Common Gotchas
-
-- **Dropdowns not opening?** → check `data-nav-item`, `data-nav-toggle`, `data-nav-submenu`
-- **CTA layout broken?** → ensure CTA is last menu item
-- **Icons rendering weirdly?** → make sure `fa-*` classes are NOT on `<li>`
-- **Mobile menu scroll-lock broken?** → breakpoint mismatch between CSS and JS
-- **Hover feels off on desktop?** → check `nav-hover-full` toggle
-- **Centering not working?** → missing `nav-center-desktop` on header
-
-If behavior is odd, verify the DOM contract before touching CSS or JS.
-
-# Editor Tooling: Button & Social Shortcodes
-
-This theme includes a small amount of **custom editor tooling** designed to make
-working with WYSIWYG content safer and less frustrating for non-technical users.
-
-The goal is **quality of life**, not feature expansion:
-
-- Reduce shortcode syntax errors
-- Avoid “code-y” experiences in the editor
-- Keep frontend rendering logic simple and predictable
-
----
-
-## TinyMCE Button Generator (ACF WYSIWYG)
-
-A custom **TinyMCE toolbar button** labeled **“Button”** is available in all
-ACF WYSIWYG fields (Classic editor engine).
-
-### What this does
-
-- Adds a toolbar button to the main formatting row
-- Opens a modal UI to configure a button
-- Inserts a properly formatted `[btn]` shortcode at the cursor
-- Prevents common mistakes (missing attributes, malformed markup)
-
-This tool **only inserts shortcodes**.  
-It does _not_ control how buttons render on the frontend.
-
-### Where this lives
-
-- Logic: `assets/admin/tinymce-btn.js`
-- Styling: `assets/admin/tinymce-btn.css`
-- Registration / hooks: `includes/editor_tools.php`
-
-If the button is missing or broken, check those files first.
-
----
-
-## If the Editor Tool Looks Broken
-
-Before debugging frontend code, check these common issues:
-
-- **Dropdowns show no text**  
-  → TinyMCE 4 requires listbox options to use `text`, not `label`.
-
-- **Modal is too narrow / dropdowns clipped**  
-  → Check `tinymce-btn.css` for modal width and menu overflow rules.
-
-- **Button appears but does nothing**  
-  → Check browser console for JS errors in `tinymce-btn.js`.
-
-- **Styling looks “off”**  
-  → Remember this is admin-only CSS. Frontend Tailwind styles do not apply here.
-
----
-
-## Button Shortcode Reference
-
-Buttons are rendered using a shortcode so they can be safely inserted into
-WYSIWYG content and styled consistently.
-
-### Basic Usage
-
-[btn text="Contact Us" url="/contact"]
-
-### Required Attributes
-
-- `text` – Button label
-- `url` – Destination URL (relative or absolute)
-
-### Optional Attributes
-
-#### Style / Variant
-
-variant="main"
-
-Available options:
-
-- main (default)
-- secondary
-- light
-- dark
-- ghost_white
-- ghost_black
-
-Example:
-
-[btn text="Learn More" url="/about" variant="secondary"]
-
----
-
-#### Icon
-
-icon="arrow"
-
-Available options:
-
-- none (default)
-- arrow
-- external
-- download
-- phone
-- email
-
-Icon position defaults to the right.
-
-icon_pos="left" | "right"
-
-Example:
-
-[btn text="Email Us" url="mailto:hello@example.com" icon="email" icon_pos="left"]
-
----
-
-#### New Tab
-
-tab="Y"
-
-Opens link in a new tab.
-
-Example:
-
-[btn text="External Site" url="https://example.com" tab="Y"]
-
----
-
-#### Centering
-
-center="Y"
-
-Centers the button within its container.
-
-Example:
-
-[btn text="Book Now" url="/book" center="Y"]
-
----
-
-### Notes
-
-- Buttons automatically wrap themselves in `not-prose` to avoid
-  Tailwind Typography side effects.
-- Only non-default attributes are rendered to keep markup clean.
-
----
-
-## Social Icon Shortcode Reference
-
-Social icons are intentionally **opinionated and minimal**.
-
-They are most often used in footers, headers, or global sections.
-
-URLs are pulled from the **ACF Options page** by default.
-
-### Basic Usage
-
-[social network="facebook"]
-
-### Required Attribute
-
-- `network` – which social platform to render
-
-Available networks:
-
-- facebook
-- instagram
-- x
-- youtube
-- pinterest
-- linkedin
-- tiktok
-- threads
-- github
-- website
-- email
-- phone
-
----
-
-### Size
-
-size="md"
-
-Options:
-
-- sm
-- md (default)
-- lg
-- xl
-- 2xl
-
----
-
-### Shape & Color Rules (Important)
-
-shape="none" | "circle" | "square"
-
-#### If shape = none (default)
-
-- Icon inherits text color
-- Optional `color` applies
-
-color="current" | "primary" | "black" | "white"
-
-#### If shape = circle or square
-
-- Background is **always** bg-primary
-- Foreground controlled via:
-
-fg="white" | "black"
-
-This constraint is intentional.
-
-Example:
-
-[social network="instagram" shape="circle" fg="white"]
-
----
-
-### New Tab
-
-tab="Y"
-
-Opens link in a new tab.
-
----
-
-### Notes
-
-- Social output is wrapped in `not-prose` automatically.
-- URLs come from ACF Options (Globals) unless overridden.
-- Designed for predictability, not infinite variation.
-
-# Blog Setup & Maintenance Guide
-
-This section covers the parts of the blog system you are most likely to
-tweak per client build.\
-It is not an explanation of how the blog works --- it is a future-you
-survival guide.
-
----
-
-## 1. Initial Blog Setup Checklist (Per Client)
-
-Before launch, confirm the following:
-
-### ✅ Confirm Posts Page
-
-- Settings → Reading → "Posts page" is assigned correctly.
-- Verify `/posts/` (or chosen slug) resolves properly.
-
-### ✅ Confirm Permalinks
-
-- Settings → Permalinks → Pretty permalinks enabled.
-- Flush permalinks after any slug changes.
-
-### ✅ Confirm Editor Restrictions
-
-- Only approved blocks appear in the Post editor.
-- Button styles show branded variants only.
-- Custom colors & gradients are disabled.
-
-If block restrictions fail, check:
-
-    includes/posts/editor.php
-
----
-
-## 2. Filter Logic Configuration (Inclusive vs Exclusive)
-
-Blog filters are controlled in:
-
-    includes/posts/queries.php
-
-Search for:
-
-    pre_get_posts
-
-### Current Behavior (Default)
-
-- Multiple categories = OR logic\
-  (Posts matching _any_ selected category are shown.)
-
-- Multiple tags = OR logic
-
-- Category + Tag combined = AND relationship\
-  (Posts must match selected categories AND selected tags.)
-
----
-
-### Changing to Strict AND (Categories)
-
-Inside the `tax_query` configuration, modify:
-
-    'relation' => 'AND'
-
-And inside category query:
-
-    'operator' => 'AND'
-
-This forces posts to match **all selected categories**.
-
----
-
-### Making Tags Narrow Categories Differently
-
-To make tags narrow categories more aggressively or override behavior,
-adjust the `relation` value in the combined `tax_query` array.
-
-Common patterns:
-
-- `"AND"` → strict matching
-- `"OR"` → broad matching
-
-Always test: - Multiple categories - Multiple tags - Category + tag
-together - Pagination with filters active
-
----
-
-## 3. Relative Date Logic ("X Hours Ago")
-
-Human-readable time output lives in:
-
-    includes/posts/template-tags.php
-
-Function:
-
-    prelaunch_display_date()
-
-If a client wants:
-
-- Always show published date
-- Show modified date instead
-- Remove "hours ago" logic
-- Adjust cutoff window (ex: switch to full date after 24h)
-
-Update that function only.
-
-No other template files need modification.
-
----
-
-## 4. Card System (Design + Variants)
-
-All blog preview markup lives in:
-
-    template-parts/blog/card.php
-
-All card styling lives in:
-
-    assets/src/css/components/cards.css
-
-This is the single source of truth for blog previews.
-
----
-
-### BEM Naming System
-
-Card classes follow this pattern:
-
-    .card
-    .card__media
-    .card__image
-    .card__body
-    .card__header
-    .card__meta
-    .card__excerpt
-    .card__footer
-    .card__cta
-
-Rules:
-
-- `.card` = block
-- `__element` = part of the block
-- `--modifier` = variation of block
-
-Never mix utility classes directly into markup unless necessary. Modify
-structure in `card.php`, not in archives.
-
----
-
-### Creating Card Variants (For CPTs)
-
-If a CPT needs a slightly different layout:
-
-1. Duplicate:
-
-```{=html}
-<!-- -->
+```text
+nav_walker.php
 ```
 
-    card.php
+Reason: Font Awesome kits may scan any element with `fa-*` and inject SVG markup, which can break layout.
 
-2. Rename to:
+#### `README:BREAKPOINT_SYNC`
 
-```{=html}
-<!-- -->
+Navbar breakpoints must stay synced between CSS and JS.
+
+Files:
+
+```text
+assets/src/css/components/navbar.css
+assets/src/js/navbar.ts
 ```
 
-    card-{posttype}.php
+If you change one breakpoint, update the other.
 
-3. Update archive template to load dynamically:
+### Navbar Troubleshooting
 
-```{=html}
-<!-- -->
+- Dropdowns not opening? Check `data-nav-item`, `data-nav-toggle`, and `data-nav-submenu`.
+- CTA layout broken? Confirm the CTA is the last menu item.
+- Icons rendering weirdly? Confirm `fa-*` classes are not printed on `<li>`.
+- Mobile menu scroll lock broken? Check breakpoint sync.
+- Desktop hover feels off? Check `nav-hover-full`.
+- Centering not working? Check `nav-center-desktop`.
+
+---
+
+## Footer System
+
+The footer system supports two layouts while keeping shared logic centralized.
+
+Footer configuration is controlled through ACF Globals and rendered through a layout switch in:
+
+```text
+footer.php
 ```
 
-    get_template_part(
-      'template-parts/blog/card',
-      get_post_type()
-    );
+### Architecture
 
-4. Add modifier classes in CSS:
+| Layer          | File                                          | Responsibility              |
+| -------------- | --------------------------------------------- | --------------------------- |
+| Layout router  | `footer.php`                                  | Chooses the footer layout   |
+| Simple footer  | `template-parts/footer/footer-simple.php`     | Lightweight footer          |
+| Complex footer | `template-parts/footer/footer-complex.php`    | Multi-column footer         |
+| Credit bar     | `assets/src/css/components/footer-credit.css` | Shared legal/credit section |
+| Styling        | `assets/src/css/components/footer-*.css`      | Layout-specific styles      |
 
-```{=html}
-<!-- -->
-```
+### Layout Switching
 
-    .card--resource { ... }
-    .card--case-study { ... }
+Footer layout is determined by the ACF option field:
 
-Do NOT fork logic across templates.\
-Variants belong in the card system.
-
----
-
-## 5. Changing Excerpt Length
-
-Default excerpt length is controlled in:
-
-    includes/posts/content.php
-
-Function:
-
-    prelaunch_excerpt_length()
-
-Override per site using:
-
-    add_filter('prelaunch_excerpt_length', function() {
-      return 32;
-    });
-
----
-
-## 6. Pagination Behavior
-
-Pagination markup comes from:
-
-    prelaunch_pagination()
-
-Located in:
-
-    includes/posts/content.php
-
-To modify:
-
-- Icon style
-- mid_size / end_size
-- aria label
-- Replace icons with text
-
-Edit that function only.
-
----
-
-## 7. Common Client Tweaks
-
-These are the most common per-build adjustments and where to modify
-them.
-
-- **Change excerpt length**\
-  Update `prelaunch_excerpt_length()` in `includes/posts/content.php`.
-
-- **Change card spacing**\
-  Edit layout rules in `assets/src/css/components/cards.css`.
-
-- **Adjust relative date format**\
-  Modify `prelaunch_display_date()` in
-  `includes/posts/template-tags.php`.
-
-- **Tighten filter logic (AND vs OR)**\
-  Adjust the `tax_query` logic inside `includes/posts/queries.php`.
-
-- **Increase related posts count**\
-  Update the `posts_per_page` value passed to
-  `prelaunch_get_related_posts_query()` in `single.php`.
-
-- **Remove reading time**\
-  Remove or comment out `prelaunch_get_reading_time()` in
-  `template-parts/blog/card.php` and/or `single.php`.
-
-- **Change "Read more" text**\
-  Update the string inside `template-parts/blog/card.php`.
-
-- **Add CPT-specific card variant**\
-  Duplicate `card.php`, create `card-{posttype}.php`, and load
-  dynamically via `get_template_part()` in archive templates.
-
-None of these require restructuring the blog.
-
----
-
-## 8. Debug Checklist (When Something Feels Wrong)
-
-### Filters not working?
-
-- Confirm `pre_get_posts` logic.
-- Confirm URL parameters (`pl_cat`, `pl_tag`) exist.
-- Flush permalinks.
-
-### Cards inconsistent?
-
-- Confirm all templates use `card.php`.
-- Confirm no inline markup was duplicated.
-
-### Dates weird?
-
-- Check `prelaunch_display_date()`.
-
-### Pagination broken?
-
-- Confirm query is paged.
-- Confirm `prelaunch_pagination()` is being called.
-- Confirm only one main query is active.
-
----
-
-## Final Rule
-
-If something looks wrong:
-
-- Fix it in one place.
-- Do not duplicate logic across templates.
-- The card system and query system are single sources of truth.
-
-Future you will thank present you.
-
-# SEO Architecture & Launch Checklist
-
----
-
-## 1. What SEO Is Handled Automatically (Theme + Code)
-
-This starter theme ships with opinionated, production-safe SEO defaults
-via **The SEO Framework (TSF)**.
-
-### Meta Titles
-
-- Uses WordPress native title support
-  (`add_theme_support('title-tag')`)
-- TSF automatically generates page and archive titles
-- Site title is appended by default
-- Manual TSF titles always override generated titles
-
-### Meta Descriptions
-
-- For ACF-first pages:
-    - Scans Flexible Content (`body_sections`) for the first
-      meaningful text block
-    - Falls back to regular ACF text fields if no flex content exists
-- For blog posts:
-    - TSF uses Gutenberg content automatically
-- Descriptions are trimmed to \~150 characters to satisfy SERP preview
-  heuristics
-- Manual TSF descriptions always override automation
-
-### Social Sharing (Open Graph / Twitter)
-
-- Priority order:
-    1.  Manual TSF social image
-    2.  Featured image
-    3.  Global ACF option field: `fallback_image`
-- Prevents broken or empty social previews
-- No content image scraping (intentional)
-
-### Sitemaps
-
-- Automatically generated by TSF at: `/sitemap.xml`
-- Updates dynamically with published content
-- Respects noindex settings
-
-### Canonicals & Schema
-
-- Canonical tags handled by TSF
-- Structured data (schema) handled by TSF
-- Theme does not inject duplicate SEO meta or schema markup
-
----
-
-## 2. Content Best Practices (Editorial Guidelines)
-
-Technical SEO is only part of the equation. Content structure still
-matters.
-
-### Per Page
-
-- Use exactly **one H1**
-- Maintain logical heading hierarchy (H2 → H3 → H4)
-- Avoid skipping heading levels
-- Write descriptive, human-readable page titles
-- Do not artificially pad titles for character count
-
-### Meta Descriptions
-
-- Write compelling summaries when needed
-- Aim for \~140--160 characters
-- Focus on clarity and click-through, not keyword stuffing
-
-### Images
-
-- Add meaningful `alt` text for content images
-- Avoid uploading oversized images
-- Use featured images intentionally when available
-
-### Internal Linking
-
-- Link between relevant service pages and blog posts
-- Avoid orphaned pages
-
-### General
-
-- Do not duplicate content across pages
-- Avoid excessive keyword repetition
-- Write for users first, search engines second
-
----
-
-## 3. New Site Launch Checklist (Before Going Live)
-
-When spinning up a new site from this blueprint:
-
-### Required Steps
-
-- Follow the steps on this site:
-
-```html
-https://theseoframework.com/docs/seo-plugin-setup/
-```
-
-- Set Site Title and Tagline (Settings → General)
-- Confirm permalink structure (Settings → Permalinks)
-- Assign Posts page (if blog enabled)
-- Upload global `fallback_image` in ACF Options
-- Confirm `/sitemap.xml` resolves
-- Verify site is not set to "Discourage search engines"
-
-### After Going Live
-
-- Verify domain in Google Search Console
-- Submit: `https://yoursite.com/sitemap.xml`
-- Add analytics (GA4 / other)
-- Spot-check social previews (homepage + key service pages)
-- Implement 301 redirects if replacing an old site
-
----
-
-This theme provides safe, scalable SEO defaults. Content strategy and
-authority determine the rest.
-
-# Footer System
-
-This theme includes a flexible footer system designed to support two layouts while keeping shared logic centralized.
-
-The footer is controlled via the **ACF Globals Options Page** and rendered through a simple layout switch in
-`footer.php`.
-
----
-
-# Footer Architecture
-
-The footer system is composed of:
-
-| Layer          | File                                          | Responsibility                                    |
-| -------------- | --------------------------------------------- | ------------------------------------------------- |
-| Layout Router  | `footer.php`                                  | Chooses which footer layout to render             |
-| Simple Footer  | `template-parts/footer/footer-simple.php`     | Lightweight layout for small sites                |
-| Complex Footer | `template-parts/footer/footer-complex.php`    | Multi-column layout with additional content areas |
-| Credit Bar     | `assets/src/css/components/footer-credit.css` | Shared legal / copyright section                  |
-| Styling        | `assets/src/css/components/footer-*.css`      | Layout-specific styling                           |
-
-The **credit bar always renders**, regardless of which footer layout is active.
-
----
-
-# Layout Switching
-
-Footer layout is determined by an ACF option field:
-
-```
+```text
 footer_layout
 ```
 
 Possible values:
 
-```
+```text
 simple
 complex
 ```
 
-Routing occurs inside `footer.php`.
+If the field is empty, the simple footer loads by default.
 
-Example logic:
+### Footer Credit Bar
 
-```
-$layout = get_field('footer_layout','option') ?: 'simple';
+The footer credit bar sits below both layouts and can include:
 
-switch ($layout) {
-  case 'complex':
-    get_template_part('template-parts/footer/footer','complex');
-    break;
-
-  default:
-    get_template_part('template-parts/footer/footer','simple');
-}
-```
-
-If the field is empty, the **simple footer loads by default**.
-
----
-
-# Footer Credit Bar (Shared Section)
-
-The footer credit bar sits below both layouts and contains:
-
-- Copyright
-- Privacy policy link
-- Accessibility link
-- Optional agency credit
-
-This section is rendered directly inside `footer.php`.
+- copyright,
+- privacy policy link,
+- accessibility link,
+- optional agency credit.
 
 Key option field:
 
-```
+```text
 show_site_credit_bar
 ```
 
-When enabled, the footer displays:
+### Social Icons
 
-```
-Site by Windpeak Design
-```
+Social icons come from the global social system, not hardcoded footer markup.
 
-This can be safely removed or replaced if needed.
+Helpers:
 
----
-
-# Simple Footer
-
-File:
-
-```
-template-parts/footer/footer-simple.php
-```
-
-Purpose:
-
-A minimal footer for small sites or landing pages.
-
-Structure:
-
-- Logo
-- Optional links repeater
-- Social icons
-
-Social icons are pulled from the **global social system**:
-
-```
+```text
 windpeak_get_social_items()
 windpeak_render_social_icon()
 ```
 
-CSS file:
+### Footer README Flags
 
-```
-assets/src/css/components/footer-simple.css
-```
-
----
-
-# Complex Footer
-
-File:
-
-```
-template-parts/footer/footer-complex.php
-```
-
-Purpose:
-
-A full multi-column footer intended for larger sites.
-
-Typical elements:
-
-- Logo and intro text
-- Navigation link groups
-- Contact information
-- Social icons
-- Affiliation logos
-
-Affiliation logos are typically controlled via an **ACF repeater**.
-
-CSS file:
-
-```
-assets/src/css/components/footer-complex.css
-```
-
----
-
-# Footer CSS Structure
-
-Footer styling is intentionally separated into **three files**:
-
-```
-footer-simple.css
-footer-complex.css
-footer-credit.css
-```
-
-This separation prevents layout logic from bleeding between systems.
-
-### Rule
-
-Only load styles needed for the rendered layout.
-
-Do **not** mix simple and complex footer classes.
-
----
-
-# Common Tasks
-
-## Change Footer Layout
-
-Go to:
-
-```
-ACF Globals → Footer Layout
-```
-
-Select:
-
-```
-Simple
-Complex
-```
-
-No code changes required.
-
----
-
-## Add Footer Links (Simple Footer)
-
-Edit the ACF repeater:
-
-```
-footer_simple_links
-```
-
-Each row expects a standard WordPress link field.
-
----
-
-## Add Social Icons
-
-Social icons come from the **global social settings**, not the footer.
-
-Configure inside the global social fields used by:
-
-```
-windpeak_get_social_items()
-```
-
-The footer simply renders whatever networks are active.
-
----
-
-## Edit Legal Links
-
-Privacy policy is pulled from WordPress core:
-
-```
-get_privacy_policy_url()
-```
-
-Accessibility page is resolved automatically if the page slug exists:
-
-```
-/accessibility/
-```
-
-To change the slug or logic, update the URL generation in `footer.php`.
-
----
-
-## Remove "Site by Windpeak"
-
-Disable the ACF toggle:
-
-```
-show_site_credit_bar
-```
-
-Or remove the agency markup inside the credit section of `footer.php`.
-
----
-
-# README Flags
-
-### README:FOOTER_LAYOUT_SWITCH
+#### `README:FOOTER_LAYOUT_SWITCH`
 
 Location:
 
-```
+```text
 footer.php
 ```
 
 Controls which footer layout loads based on the ACF option field.
 
-If new layouts are ever added, extend the `switch` statement here.
-
----
-
-### README:FOOTER_CREDIT_BAR
+#### `README:FOOTER_CREDIT_BAR`
 
 Location:
 
-```
+```text
 footer.php
 ```
 
 Shared legal section rendered under both footer layouts.
 
-Handles:
+#### `README:FOOTER_SOCIAL_RENDER`
 
-- copyright text
-- privacy policy link
-- accessibility link
-- optional agency credit
+Locations:
+
+```text
+template-parts/footer/footer-simple.php
+template-parts/footer/footer-complex.php
+```
+
+Social icons render through the global social helper functions.
+
+### Footer Troubleshooting
+
+- Footer not changing? Confirm `footer_layout` ACF value.
+- Footer still wrong? Clear cache and confirm the template part exists.
+- Social icons missing? Confirm networks exist in ACF Globals and helper functions are loaded.
+- Credit bar missing? Confirm `show_site_credit_bar`.
 
 ---
 
-### README:FOOTER_SOCIAL_RENDER
+## Editor Tooling & Shortcodes
 
-Location:
+The theme includes custom editor tooling to make WYSIWYG content safer for non-technical users.
 
-```
-footer-simple.php
-footer-complex.php
-```
+### TinyMCE Button Generator
 
-Social icons are not hardcoded.
+A custom TinyMCE toolbar button labeled **Button** is available in ACF WYSIWYG fields.
 
-They render through:
+Files:
 
-```
-windpeak_get_social_items()
-windpeak_render_social_icon()
+```text
+assets/admin/tinymce-btn.js
+assets/admin/tinymce-btn.css
+includes/editor_tools.php
 ```
 
-If icons appear missing, check the global social configuration.
+What it does:
+
+- Adds a toolbar button.
+- Opens a modal UI.
+- Inserts a valid `[btn]` shortcode.
+- Prevents common shortcode formatting mistakes.
+
+This tool only inserts shortcodes. It does not control frontend button styling.
+
+### Button Shortcode
+
+Basic usage:
+
+```text
+[btn text="Contact Us" url="/contact"]
+```
+
+Required attributes:
+
+```text
+text
+url
+```
+
+Optional attributes:
+
+```text
+variant="main|secondary|light|dark|ghost_white|ghost_black"
+icon="none|arrow|external|download|phone|email"
+icon_pos="left|right"
+tab="Y"
+center="Y"
+```
+
+Examples:
+
+```text
+[btn text="Learn More" url="/about" variant="secondary"]
+[btn text="Email Us" url="mailto:hello@example.com" icon="email" icon_pos="left"]
+[btn text="External Site" url="https://example.com" tab="Y"]
+[btn text="Book Now" url="/book" center="Y"]
+```
+
+Notes:
+
+- Buttons automatically wrap themselves in `not-prose`.
+- Only non-default attributes are rendered.
+
+### Social Icon Shortcode
+
+Basic usage:
+
+```text
+[social network="facebook"]
+```
+
+Available networks:
+
+```text
+facebook
+instagram
+x
+youtube
+pinterest
+linkedin
+tiktok
+threads
+github
+website
+email
+phone
+```
+
+Optional attributes:
+
+```text
+size="sm|md|lg|xl|2xl"
+shape="none|circle|square"
+color="current|primary|black|white"
+fg="white|black"
+tab="Y"
+```
+
+Shape rules:
+
+- `shape="none"`: icon inherits text color unless `color` is set.
+- `shape="circle"` or `shape="square"`: background is `bg-primary`; foreground is controlled by `fg`.
+
+### Editor Tooling Troubleshooting
+
+- Dropdowns show no text? TinyMCE 4 needs `text`, not `label`.
+- Modal too narrow or clipped? Check `assets/admin/tinymce-btn.css`.
+- Button appears but does nothing? Check console errors in `assets/admin/tinymce-btn.js`.
+- Frontend button styling wrong? Check the shortcode output and button CSS, not the TinyMCE tool.
 
 ---
 
-# Debug Checklist
+## Blog System
 
-Footer not changing?
+This section covers the blog pieces most likely to need client-specific tweaks.
 
-- Confirm `footer_layout` ACF value
-- Clear cache
-- Ensure the correct template part exists
+### Initial Blog Setup
 
-Social icons missing?
+Before launch, confirm:
 
-- Confirm networks exist in global options
-- Confirm helper functions are loaded
+- Settings → Reading → Posts page is assigned if blog is enabled.
+- Settings → Permalinks → pretty permalinks are enabled.
+- Approved editor blocks/styles are working.
+- Custom colors and gradients are disabled where expected.
 
-Credit bar missing?
+If editor restrictions fail, check:
 
-- Confirm `show_site_credit_bar` toggle
+```text
+includes/posts/editor.php
+```
+
+### Filter Logic
+
+Blog filters are controlled in:
+
+```text
+includes/posts/queries.php
+```
+
+Search for:
+
+```text
+pre_get_posts
+```
+
+Default behavior:
+
+- Multiple categories use OR logic.
+- Multiple tags use OR logic.
+- Category + tag together use an AND relationship.
+
+To make category filtering stricter, adjust the `tax_query` relation/operator to `AND`.
+
+Always test:
+
+- multiple categories,
+- multiple tags,
+- category + tag together,
+- pagination with filters active.
+
+### Date Logic
+
+Human-readable time output lives in:
+
+```text
+includes/posts/template-tags.php
+```
+
+Function:
+
+```text
+prelaunch_display_date()
+```
+
+Update that function if a client wants different date behavior.
+
+### Card System
+
+Blog preview markup lives in:
+
+```text
+template-parts/blog/card.php
+```
+
+Card styling lives in:
+
+```text
+assets/src/css/components/cards.css
+```
+
+Card classes follow a BEM-style pattern:
+
+```text
+.card
+.card__media
+.card__image
+.card__body
+.card__header
+.card__meta
+.card__excerpt
+.card__footer
+.card__cta
+```
+
+Rules:
+
+- Keep card structure in `card.php`.
+- Avoid duplicating archive card markup across templates.
+- Add variants as modifiers or CPT-specific card template parts only when needed.
+
+### Common Blog Tweaks
+
+| Task                         | File                                               |
+| ---------------------------- | -------------------------------------------------- |
+| Change excerpt length        | `includes/posts/content.php`                       |
+| Change card spacing          | `assets/src/css/components/cards.css`              |
+| Adjust relative date format  | `includes/posts/template-tags.php`                 |
+| Tighten filter logic         | `includes/posts/queries.php`                       |
+| Increase related posts count | `single.php`                                       |
+| Remove reading time          | `template-parts/blog/card.php` and/or `single.php` |
+| Change “Read more” text      | `template-parts/blog/card.php`                     |
+
+### Blog Troubleshooting
+
+- Filters not working? Confirm `pre_get_posts` logic and URL parameters.
+- Cards inconsistent? Confirm all templates use the card system.
+- Dates weird? Check `prelaunch_display_date()`.
+- Pagination broken? Confirm the query is paged and `prelaunch_pagination()` is called.
 
 ---
 
-# Design Philosophy
+## SEO Architecture
 
-The footer system follows the same principles as the navbar:
+This starter theme uses The SEO Framework for opinionated, production-safe SEO defaults.
 
-- clear PHP responsibility
-- layout-specific CSS
-- minimal runtime logic
-- centralized configuration through ACF
+### Meta Titles
 
-Future layouts should follow the same pattern rather than modifying existing ones.
+- Uses WordPress native title support.
+- TSF generates page/archive titles.
+- Manual TSF titles override generated titles.
+
+### Meta Descriptions
+
+For ACF-first pages, the theme scans Flexible Content for the first meaningful text block and falls back to regular ACF
+fields if needed.
+
+For blog posts, TSF uses Gutenberg content automatically.
+
+Manual TSF descriptions always override automation.
+
+### Social Sharing
+
+Social image priority:
+
+- manual TSF social image,
+- featured image,
+- global ACF `fallback_image`.
+
+No content image scraping is used.
+
+### Sitemaps
+
+TSF generates the sitemap at:
+
+```text
+/sitemap.xml
+```
+
+### Editorial SEO Guidelines
+
+- Use exactly one H1 per page.
+- Keep heading hierarchy logical.
+- Write human-readable page titles.
+- Write clear meta descriptions for important pages.
+- Add meaningful alt text for content images.
+- Avoid orphaned pages.
+- Avoid keyword stuffing.
+
+### SEO Launch Checks
+
+- Confirm site title and tagline.
+- Confirm permalink structure.
+- Assign Posts page if blog is enabled.
+- Upload global `fallback_image`.
+- Confirm `/sitemap.xml` resolves.
+- Confirm search visibility before launch.
+- Verify domain in Google Search Console.
+- Submit sitemap after launch.
+- Add analytics if needed.
+- Spot-check social previews.
+- Add redirects if replacing an old site.
 
 ---
 
-# User Roles & Permissions System
+## User Roles & Permissions System
 
-The Prelaunch starter theme includes a modular system for controlling **user roles, admin feature access, and plugin
-settings visibility**.
+The Pre-Launch starter includes a modular system for controlling user roles, admin feature access, and plugin settings
+visibility.
 
-The goal of this system is to turn WordPress into a predictable client‑safe CMS while remaining compatible with plugins
-and normal WordPress workflows.
+The goal is a predictable, client-safe CMS without breaking plugin compatibility.
 
 The system works by:
 
-1. Creating **Prelaunch‑managed roles**
-2. Defining what those roles are allowed to access through a **central role policy**
-3. Enforcing those rules through **feature modules** that modify the WordPress admin UI
+- creating Pre-Launch-managed roles,
+- defining access through a central role policy,
+- enforcing those rules through feature modules.
 
----
-
-# Architecture Overview
-
-The permissions system is split into three layers.
-
-## 1. Role Registration
+### Role Registration
 
 File:
 
-```
+```text
 includes/users/register-role.php
 ```
 
 Responsibilities:
 
-- Creates Prelaunch‑managed roles (ex: `prelaunch_client_admin`, `prelaunch_posts_editor`)
-- Clones capabilities from the WordPress **administrator** role
-- Syncs developer‑only capabilities
-- Provides helper functions for checking managed roles
+- Creates managed roles.
+- Clones capabilities from Administrator.
+- Syncs developer-only capabilities.
+- Provides helper functions for checking managed roles.
 
-Example managed role:
+Example role:
 
-```
+```text
 prelaunch_client_admin
 Label: Site Administrator
 ```
 
-Roles begin with Administrator‑level capabilities.  
-Feature modules then remove or restrict access to specific areas of the admin interface.
-
-This approach ensures:
-
-- plugin compatibility
-- predictable permissions
-- centralized control of admin complexity
-
----
-
-## 2. Role Policy (Central Configuration)
+### Role Policy
 
 File:
 
-```
+```text
 includes/users/role-policy.php
 ```
 
-The role policy defines **what each role can access**.
-
-It is the **single source of truth** for permissions.
+This is the single source of truth for what each role can access.
 
 Example:
 
-```
+```php
 PRELAUNCH_CLIENT_ADMIN_ROLE => [
-    'dashboard'       => true,
-    'media'           => 'full',
-    'posts'           => false,
-    'pages'           => 'off',
-    'gravity_forms'   => 'manager',
-    'appearance'      => 'menus_only',
-    'plugins'         => 'off',
-    'plugin_settings' => 'approved_only',
-    'users'           => 'profile_only',
-    'tools'           => 'off',
-    'settings'        => 'off',
-    'acf'             => 'options_only',
+	'dashboard'       => true,
+	'media'           => 'full',
+	'posts'           => false,
+	'pages'           => 'off',
+	'gravity_forms'   => 'manager',
+	'appearance'      => 'menus_only',
+	'plugins'         => 'off',
+	'plugin_settings' => 'approved_only',
+	'users'           => 'profile_only',
+	'tools'           => 'off',
+	'settings'        => 'off',
+	'acf'             => 'options_only',
 ]
 ```
 
-Each feature module reads from this policy rather than hardcoding logic.
-
----
-
-## 3. Feature Modules
+### Feature Modules
 
 Directory:
 
-```
+```text
 includes/users/
 ```
 
-Each module controls one area of the WordPress admin UI.
-
 Examples:
 
-```
+```text
 user-dashboard.php
 user-media.php
 user-posts.php
@@ -1992,148 +1238,30 @@ user-acf.php
 user-plugin-settings.php
 ```
 
-Feature modules typically:
+Feature modules read from the role policy instead of hardcoding access rules.
 
-- remove admin menus
-- restrict capabilities
-- block direct URL access
-- adjust admin UI elements
+### Feature Policy Reference
 
-Modules determine access by reading the **role policy**.
+Common policy values:
 
----
-
-# Feature Policy Reference
-
-The role policy supports several types of feature controls.
-
-## Binary Features
-
-```
+```text
 dashboard: true | false
 posts: true | false
-```
-
-Used when a feature is either visible or completely hidden.
-
----
-
-## Tiered Features
-
-### Media
-
-```
 media: off | browse_only | full
-```
-
-Behavior:
-
-| Value       | Behavior                             |
-| ----------- | ------------------------------------ |
-| off         | Media Library hidden                 |
-| browse_only | Library visible but uploads disabled |
-| full        | Full media access                    |
-
-The `browse_only` mode removes the `upload_files` capability.
-
----
-
-### Pages
-
-```
 pages: off | draft_only | full
-```
-
-Behavior:
-
-| Value      | Behavior                               |
-| ---------- | -------------------------------------- |
-| off        | Pages hidden                           |
-| draft_only | Pages editable but cannot be published |
-| full       | Full page access                       |
-
-This allows editorial roles to prepare content without publishing it.
-
----
-
-### Gravity Forms
-
-```
 gravity_forms: off | manager | full
-```
-
-Controls access to forms and entries without exposing plugin settings.
-
----
-
-### Appearance
-
-```
 appearance: off | menus_only | full
-```
-
-Allows sites to expose **navigation editing** while hiding theme configuration.
-
----
-
-### Plugins
-
-```
 plugins: off | manage_installed | full
-```
-
-`manage_installed` allows enabling/disabling existing plugins but prevents installing new ones.
-
----
-
-### Plugin Settings
-
-```
 plugin_settings: off | approved_only | full
-```
-
-Controls access to plugin settings pages using an allowlist registry.
-
----
-
-### ACF
-
-```
 acf: off | options_only | full
-```
-
-Allows sites to expose **ACF Options pages** while hiding the ACF field editor.
-
----
-
-## Partial Access Features
-
-### Users
-
-```
 users: profile_only | full
-```
-
-`profile_only` allows users to edit their own profile but hides the Users management screen.
-
----
-
-## Simple Toggles
-
-```
 tools: off | on
 settings: off | full
 ```
 
-Used for WordPress core admin areas.
+### Admin Bar Behavior
 
----
-
-# Admin Bar Behavior
-
-The system also modifies the **WordPress Admin Bar**.
-
-The **"+ New" menu** is filtered based on role policy.
+The `+ New` admin bar menu is filtered based on role policy.
 
 | Item      | Behavior                       |
 | --------- | ------------------------------ |
@@ -2142,299 +1270,78 @@ The **"+ New" menu** is filtered based on role policy.
 | New Form  | follows `gravity_forms` policy |
 | New Media | always hidden                  |
 
-### Why Media Is Hidden
+New Media is hidden to keep uploads inside the preferred media library/folder workflow.
 
-The default **+ New → Media** shortcut allows uploads outside of the preferred **FileBird folder workflow**.
-
-Uploads should instead occur through the Media Library interface.
-
----
-
-# Plugin Settings Access
+### Plugin Settings Access
 
 Plugin settings pages are controlled by:
 
-```
+```text
 includes/users/user-plugin-settings.php
 ```
 
-This module maintains an **allowlist registry**.
+This module maintains an allowlist registry.
 
-Example registry:
+Example:
 
-```
+```php
 function prelaunch_get_plugin_settings_registry(): array {
-    return [
-        'filebird' => [
-            'label'       => 'FileBird',
-            'parent_slug' => 'filebird-dashboard',
-            'menu_slug'   => 'filebird-dashboard',
-            'approved'    => true,
-        ],
-        'tsf' => [
-            'label'       => 'The SEO Framework',
-            'parent_slug' => 'theseoframework-settings',
-            'menu_slug'   => 'theseoframework-settings',
-            'approved'    => false,
-        ],
-    ];
+	return [
+		'filebird' => [
+			'label'       => 'FileBird',
+			'parent_slug' => 'filebird-dashboard',
+			'menu_slug'   => 'filebird-dashboard',
+			'approved'    => true,
+		],
+	];
 }
 ```
 
-Fields:
+To approve a plugin settings page:
 
-| Field       | Purpose                                     |
-| ----------- | ------------------------------------------- |
-| label       | Human‑readable plugin name                  |
-| parent_slug | parent admin menu slug                      |
-| menu_slug   | plugin page slug                            |
-| approved    | visible when `approved_only` policy is used |
+- Open the plugin settings page in WP Admin.
+- Inspect the URL.
+- Add the correct parent/menu slug to the registry.
+- Refresh admin.
 
----
+### Permissions Troubleshooting
 
-# Approving Plugin Settings Pages
-
-1. Navigate to the plugin settings page in the WordPress admin.
-2. Inspect the URL.
-
-Example:
-
-```
-wp-admin/admin.php?page=my-plugin-settings
-```
-
-The slug is:
-
-```
-my-plugin-settings
-```
-
-3. Add an entry to the registry:
-
-```
-'myplugin' => [
-    'label' => 'My Plugin',
-    'parent_slug' => 'my-plugin-settings',
-    'menu_slug' => 'my-plugin-settings',
-    'approved' => true,
-]
-```
-
-Refresh the admin panel to apply the change.
+- Admin area appears/disappears unexpectedly? Check `includes/users/role-policy.php`.
+- A feature is not enforcing correctly? Check the matching feature module.
+- Role has weird capabilities? Check `includes/users/register-role.php`.
+- Plugin settings page still visible? Confirm the parent slug and menu slug.
+- Plugin registers multiple pages? Add each needed page to the registry.
+- Plugin loads late? Confirm menu removal priority.
 
 ---
 
-# Troubleshooting Plugin Settings Visibility
-
-If a plugin settings page still appears unexpectedly, check the following.
-
-### Incorrect Menu Slug
-
-Example URL:
-
-```
-wp-admin/options-general.php?page=example-settings
-```
-
-Correct configuration:
-
-```
-'parent_slug' => 'options-general.php',
-'menu_slug' => 'example-settings',
-```
+# Reference
 
 ---
 
-### Plugin Registers Multiple Pages
+## Reference Flag Index
 
-Some plugins create multiple admin screens (dashboard, settings, tools).
+Navbar:
 
-Each page may require its own registry entry.
+- `README:TOGGLE_CENTER_NAV` — center desktop nav items.
+- `README:TOGGLE_FULL_HEIGHT_HOVER` — full-height desktop nav hover/focus.
+- `README:CTA_ICON_POSITION` — CTA icon before/after label.
+- `README:CTA_ICON_PREFIX_DEFAULT` — default Font Awesome icon style.
+- `README:FA_CLASSES_ON_LI` — why FA classes are not rendered on `<li>`.
+- `README:BREAKPOINT_SYNC` — navbar CSS/JS breakpoint sync.
 
----
+Footer:
 
-### Plugin Uses a Custom Admin Screen
-
-Some plugins do not use `admin.php?page=` URLs.
-
-Use browser devtools to inspect the admin menu and locate the `menu_slug`.
-
----
-
-### Plugin Loads After Removal Hook
-
-The module runs at:
-
-```
-admin_menu priority 1000
-```
-
-This ensures plugin menus exist before removal occurs.
+- `README:FOOTER_LAYOUT_SWITCH` — footer layout routing.
+- `README:FOOTER_CREDIT_BAR` — shared legal/credit section.
+- `README:FOOTER_SOCIAL_RENDER` — global social icon render helpers.
 
 ---
 
-# Debugging Permission Issues
+## Troubleshooting Index
 
-If an admin area appears or disappears unexpectedly, check the following areas.
-
-### Role Policy
-
-```
-includes/users/role-policy.php
-```
-
-Confirm the feature flag is correct.
-
----
-
-### Feature Module Logic
-
-Verify the correct module is enforcing the feature.
-
-Examples:
-
-```
-user-posts.php
-user-plugins.php
-user-settings.php
-user-tools.php
-user-acf.php
-user-plugin-settings.php
-```
-
----
-
-### Role Capability Sync
-
-File:
-
-```
-register-role.php
-```
-
-Roles are cloned from Administrator capabilities and then adjusted.
-
-Confirm the role has the expected capability.
-
----
-
-### Developer‑Only Capabilities
-
-Some features rely on custom capabilities.
-
-Example:
-
-```
-prelaunch_manage_tokens
-```
-
-Only the real **administrator** role should retain this capability.
-
-Managed roles intentionally lose it during role sync.
-
----
-
-# Adding a New User Role
-
-1. Register the role.
-
-Edit:
-
-```
-includes/users/register-role.php
-```
-
-Add the role to:
-
-```
-prelaunch_get_managed_user_roles()
-```
-
-Example:
-
-```
-return [
-    PRELAUNCH_CLIENT_ADMIN_ROLE,
-    PRELAUNCH_POSTS_EDITOR_ROLE,
-];
-```
-
-2. Define its policy.
-
-Edit:
-
-```
-includes/users/role-policy.php
-```
-
-Example:
-
-```
-PRELAUNCH_POSTS_EDITOR_ROLE => [
-    'dashboard' => false,
-    'media' => 'off',
-    'posts' => true,
-    'pages' => 'off',
-    'users' => 'profile_only',
-]
-```
-
-3. Assign the role to a user through WordPress admin or WP‑CLI.
-
----
-
-# Adding a New Feature Module
-
-Create a module file:
-
-```
-includes/users/user-example-feature.php
-```
-
-Example structure:
-
-```
-function prelaunch_customize_example_feature(): void {
-
-    if ( ! prelaunch_current_user_has_feature_access('example_feature') ) {
-
-        remove_menu_page('example-page');
-
-    }
-
-}
-
-add_action('admin_menu', 'prelaunch_customize_example_feature', 1000);
-```
-
-Then load the module in:
-
-```
-includes/users/users.php
-```
-
-Add a policy key to:
-
-```
-role-policy.php
-```
-
-Example:
-
-```
-'example_feature' => 'off'
-```
-
----
-
-# Design Philosophy
-
-The Prelaunch permissions architecture intentionally:
-
-- begins with **Administrator capability parity**
-- removes features through modular rules
-- centralizes permissions inside a role policy
-- hides unnecessary WordPress complexity from clients
-
-The result is a **predictable, client‑friendly CMS experience** without sacrificing plugin compatibility or developer
-control.
+- Navbar issues: see [Navbar Troubleshooting](#navbar-troubleshooting).
+- Footer issues: see [Footer Troubleshooting](#footer-troubleshooting).
+- Editor/shortcode issues: see [Editor Tooling Troubleshooting](#editor-tooling-troubleshooting).
+- Blog issues: see [Blog Troubleshooting](#blog-troubleshooting).
+- Permission issues: see [Permissions Troubleshooting](#permissions-troubleshooting).
