@@ -95,6 +95,13 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
 	};
 
+	const updateMenuLabel = (open: boolean): void => {
+		const menuLabel = hamburger?.querySelector("[data-nav-menu-label]");
+		if (menuLabel) {
+			menuLabel.textContent = open ? "Close menu" : "Menu";
+		}
+	};
+
 	/**
 	 * Cancel any running Web Animations API animation on an element.
 	 * Used to prevent overlapping height animations and stale computed styles.
@@ -279,6 +286,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 
 		hamburger.setAttribute("aria-expanded", open ? "true" : "false");
 		hamburger.classList.toggle("is-open", open);
+		updateMenuLabel(open && !desktopMql.matches);
 
 		// Styling hook (optional): used for backdrop + scroll lock in CSS.
 		doc.body.classList.toggle("nav-open", open);
@@ -338,6 +346,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		hamburger.setAttribute("aria-expanded", "false");
 		hamburger.classList.remove("is-open");
 		doc.body.classList.remove("nav-open");
+		updateMenuLabel(false);
 
 		panel.getAnimations?.().forEach((a) => a.cancel());
 		panel.style.removeProperty("height");
@@ -399,6 +408,7 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 			if (hamburger) {
 				hamburger.setAttribute("aria-expanded", "false");
 				hamburger.classList.remove("is-open");
+				updateMenuLabel(false);
 			}
 			doc.body.classList.remove("nav-open");
 			void closeAllSubmenus();
@@ -448,8 +458,48 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 		}
 	});
 
-	// Escape closes submenus first; then panel.
+	const isMobilePanelOpen = (): boolean =>
+		!desktopMql.matches && hamburger?.getAttribute("aria-expanded") === "true";
+
+	const getNavFocusable = (): HTMLElement[] => {
+		const candidates = nav.querySelectorAll<HTMLElement>(
+			'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+		);
+
+		return Array.from(candidates).filter((el) => {
+			if (el.closest("[hidden]")) {
+				return false;
+			}
+
+			return el.getClientRects().length > 0;
+		});
+	};
+
+	// Tab stays inside the open mobile panel. Escape closes submenus, then the panel.
 	doc.addEventListener("keydown", (e) => {
+		if (e.key === "Tab" && isMobilePanelOpen()) {
+			const items = getNavFocusable();
+			if (items.length === 0) {
+				return;
+			}
+
+			const first = items[0];
+			const last = items[items.length - 1];
+			const active = doc.activeElement;
+
+			if (e.shiftKey) {
+				if (active === first || (active instanceof Node && !nav.contains(active))) {
+					e.preventDefault();
+					last.focus();
+				}
+			} else if (active === last) {
+				e.preventDefault();
+				first.focus();
+			}
+
+			return;
+		}
+
 		if (e.key !== "Escape") return;
 
 		const openSubmenu = topItems.find((item) => item.classList.contains("is-open"));

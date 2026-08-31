@@ -8,6 +8,8 @@
 
 	get_header(); ?>
 
+	<main id="main-content">
+
 	<div
 		class="relative"
 		style="
@@ -21,7 +23,7 @@
 			"
 	>
 		<div class="text-center text-white content-middle">
-			<h1 class="mb-5 text-4xl font-bold"><?php echo the_title(); ?></h1>
+			<h1 class="mb-5 text-4xl font-bold"><?php echo esc_html( get_the_title() ); ?></h1>
 		</div>
 	</div>
 
@@ -35,5 +37,7 @@
 		</div>
 	</div>
 
+
+	</main>
 
 <?php get_footer();

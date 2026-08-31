@@ -562,6 +562,13 @@
    ========================================================= */
 
 @layer utilities {
+	.skip-link {
+		@apply sr-only;
+		@apply focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60];
+		@apply focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:font-semibold focus:text-black;
+		@apply focus:outline-none focus-visible:ring-2 focus-visible:ring-black;
+	}
+
 	.section {
 		@apply w-full;
 	}

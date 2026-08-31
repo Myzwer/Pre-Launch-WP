@@ -8,7 +8,7 @@
 	get_header();
 ?>
 
-	<main class="error-404 not-found">
+	<main id="main-content" class="error-404 not-found">
 		<section class="error-404__section">
 			<div class="error-404__blob error-404__blob--one" aria-hidden="true"></div>
 			<div class="error-404__blob error-404__blob--two" aria-hidden="true"></div>

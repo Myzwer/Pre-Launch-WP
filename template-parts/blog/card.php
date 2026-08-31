@@ -24,7 +24,7 @@
 <article class="card card--blog">
 	<?php if( has_post_thumbnail() ) : ?>
 
-		<a href="<?php the_permalink(); ?>" class="card__media">
+		<a href="<?php the_permalink(); ?>" class="card__media" aria-hidden="true" tabindex="-1">
 			<?php
 			the_post_thumbnail( 'medium_large', [
 				'class'   => 'card__image',
@@ -84,4 +84,5 @@
 				<?php esc_html_e( 'Read more', 'prelaunch-wp' ); ?>
 			</a>
 		</div>
+	</div>
 </article>

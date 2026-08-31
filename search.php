@@ -15,7 +15,7 @@ global $wp_query;
 $count = isset( $wp_query->found_posts ) ? (int) $wp_query->found_posts : 0;
 ?>
 
-<main class="site-main">
+<main id="main-content" class="site-main">
 	<div class="py-10 px-4 mx-auto max-w-5xl">
 		<header class="mb-8">
 			<div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-end">

@@ -46,6 +46,7 @@
 	$has_ctas = ( $show_primary_regular && $primary_cta ) || ( $show_primary_download && $download_url !== '' ) || ( $show_ghost && $ghost_cta );
 ?>
 
+<main id="main-content">
 <section class="overflow-hidden relative min-h-screen bg-primary-gradient">
 	<div aria-hidden="true" class="absolute inset-0 pointer-events-none">
 		<div
@@ -137,5 +138,6 @@
 			</div>
 		</div>
 </section>
+</main>
 
 <?php get_footer(); ?>

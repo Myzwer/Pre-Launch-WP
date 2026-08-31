@@ -19,7 +19,7 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main">
+<main id="main-content" class="site-main">
 	<section class="section">
 		<div class="wrap">
 			<?php if (have_posts()) : ?>

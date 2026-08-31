@@ -76,7 +76,7 @@
 	);
 ?>
 
-	<main>
+	<main id="main-content">
 		<section class="section">
 			<div class="py-10 wrap">
 

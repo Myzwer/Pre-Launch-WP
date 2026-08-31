@@ -17,7 +17,7 @@ get_header();
 $archive_description = get_the_archive_description();
 ?>
 
-<main class="site-main">
+<main id="main-content" class="site-main">
 	<div class="py-10 px-4 mx-auto max-w-5xl">
 		<header class="mb-8">
 			<h1 class="text-2xl font-semibold leading-tight">

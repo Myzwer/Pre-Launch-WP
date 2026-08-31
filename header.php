@@ -48,6 +48,8 @@
 <body <?php body_class('tracking-normal leading-normal'); ?>>
 <?php wp_body_open(); ?>
 
+<a class="skip-link" href="#main-content"><?php esc_html_e( 'Skip to content', 'prelaunch-wp' ); ?></a>
+
 
 <!--
 	Start Navbar
@@ -85,7 +87,7 @@ if (is_array($logo) && ! empty($logo['url'])) : ?>
 				aria-expanded="false"
 				aria-controls="nav-panel"
 			>
-				<span class="sr-only">Menu</span>
+				<span class="sr-only" data-nav-menu-label><?php esc_html_e( 'Menu', 'prelaunch-wp' ); ?></span>
 				<span class="nav-hamburger-icon" aria-hidden="true">
 					<span class="nav-hamburger-bar"></span>
 				</span>

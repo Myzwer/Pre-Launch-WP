@@ -153,4 +153,14 @@
 		</div>
 
 	</div>
+
+	<?php if ( $video_url ) : ?>
+		<button
+			type="button"
+			class="video-pause-btn"
+			data-header-video-toggle
+		>
+			Pause background video
+		</button>
+	<?php endif; ?>
 </section>
