@@ -18,7 +18,7 @@
 	 * @return string
 	 */
 	function prelaunch_get_google_fonts_url(): string {
-		return 'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap';
+		return 'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
 	}
 
 	/**

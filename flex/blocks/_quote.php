@@ -61,7 +61,9 @@
 										'thumbnail',
 										false,
 										array(
-											'class' => 'h-full w-full object-cover',
+											'class'    => 'h-full w-full object-cover',
+											'loading'  => 'lazy',
+											'decoding' => 'async',
 										)
 									);
 								?>

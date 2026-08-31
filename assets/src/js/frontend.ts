@@ -5,9 +5,15 @@ import "./accordion";
 import { initPrimaryNav } from "./navbar";
 import { initHeaderVideoPause } from "./header-video";
 
-document.addEventListener("DOMContentLoaded", () => {
+const boot = (): void => {
 	initPrimaryNav();
 	initHeaderVideoPause();
-});
+};
+
+if (document.readyState === "loading") {
+	document.addEventListener("DOMContentLoaded", boot);
+} else {
+	boot();
+}
 
 

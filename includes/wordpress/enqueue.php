@@ -45,7 +45,10 @@ function prelaunch_enqueue_assets(): void
         get_theme_file_uri($js_rel_path),
         [],
         $js_ver,
-        true // Load in footer for better performance / less render blocking.
+        [
+            'in_footer' => true,
+            'strategy'  => 'defer',
+        ]
     );
 
     // ----- CSS bundle -----
@@ -77,6 +80,9 @@ add_action('wp_enqueue_scripts', 'prelaunch_enqueue_assets');
  */
 function prelaunch_enqueue_blocks_bridge_css(): void
 {
+    if (! function_exists('prelaunch_front_needs_block_styles') || ! prelaunch_front_needs_block_styles()) {
+        return;
+    }
     $theme_version = wp_get_theme()->get('Version');
 
     $rel_path = '/assets/public/css/blocks.css';
@@ -96,37 +102,49 @@ function prelaunch_enqueue_blocks_bridge_css(): void
 add_action('wp_enqueue_scripts', 'prelaunch_enqueue_blocks_bridge_css');
 
 /**
- * Enqueue Font Awesome (self-hosted).
+ * Enqueue Font Awesome (self-hosted, subset).
  *
- * This theme uses <i> tag classnames for icons (no SVG/JS runtime). To avoid
- * Font Awesome Kit “late loading,” FA CSS + webfonts are shipped locally.
+ * Theme + walker icons use solid, regular, and brands only. `all.min.css`
+ * pulls every FA family (sharp, duotone, thin, …) and is a Lighthouse
+ * render-blocking / unused-byte hit on mobile.
  *
  * Required output structure (relative paths matter):
- * - /assets/public/vendor/fontawesome/css/all.min.css
+ * - /assets/public/vendor/fontawesome/css/fontawesome.min.css
+ * - /assets/public/vendor/fontawesome/css/solid.min.css
+ * - /assets/public/vendor/fontawesome/css/regular.min.css
+ * - /assets/public/vendor/fontawesome/css/brands.min.css
  * - /assets/public/vendor/fontawesome/webfonts/...
  *
- * In this project, Font Awesome is treated as a static vendor asset:
- * it is copied 1:1 during the build step (not bundled into frontend.css).
- *
- * @link https://fontawesome.com/download
  * @link https://fontawesome.com/docs/web/setup/host-yourself
  */
 function prelaunch_enqueue_font_awesome(): void
 {
     $theme_version = wp_get_theme()->get('Version');
+    $base = '/assets/public/vendor/fontawesome/css';
 
-    $rel_css = '/assets/public/vendor/fontawesome/css/all.min.css';
-    $path = get_theme_file_path($rel_css);
-    $ver = file_exists($path) ? (string) filemtime($path) : $theme_version;
+    $sheets = [
+        'prelaunch-fa-core'    => $base . '/fontawesome.min.css',
+        'prelaunch-fa-solid'   => $base . '/solid.min.css',
+        'prelaunch-fa-regular' => $base . '/regular.min.css',
+        'prelaunch-fa-brands'  => $base . '/brands.min.css',
+    ];
 
-    wp_enqueue_style(
-        'prelaunch-font-awesome',
-        get_theme_file_uri($rel_css),
-        [],
-        $ver
-    );
+    $deps = [];
+
+    foreach ($sheets as $handle => $rel_css) {
+        $file = get_theme_file_path($rel_css);
+        $ver  = file_exists($file) ? (string) filemtime($file) : $theme_version;
+
+        wp_enqueue_style(
+            $handle,
+            get_theme_file_uri($rel_css),
+            $deps,
+            $ver
+        );
+
+        $deps[] = $handle;
+    }
 }
-// Load FA early so icons/styles are available as soon as possible.
 add_action('wp_enqueue_scripts', 'prelaunch_enqueue_font_awesome', 5);
 
 /**

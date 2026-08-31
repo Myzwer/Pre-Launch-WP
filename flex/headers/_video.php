@@ -70,16 +70,15 @@
 			<?php if ( $video_url ) : ?>
 				<video
 					class="header-video"
-					autoplay
 					muted
 					loop
 					playsinline
-					preload="metadata"
+					preload="none"
 					<?php if ( $poster_url ) : ?>
 						poster="<?php echo esc_url( $poster_url ); ?>"
 					<?php endif; ?>
 				>
-					<source src="<?php echo esc_url( $video_url ); ?>" type="video/mp4">
+					<source data-src="<?php echo esc_url( $video_url ); ?>" type="video/mp4">
 				</video>
 			<?php endif; ?>
 

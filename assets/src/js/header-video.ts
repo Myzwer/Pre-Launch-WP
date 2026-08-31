@@ -1,6 +1,10 @@
 /**
  * Pause/play control for decorative looping header videos.
  *
+ * The video source is not in the HTML `src` so first paint (especially mobile)
+ * is the poster only. Playback starts after idle unless the user already paused
+ * or Save-Data is on.
+ *
  * The button is rendered in the video header template and stays fixed in the
  * bottom-right so it remains available while the video is moving (WCAG 2.2.2).
  * Reduced-motion users never see the video or the control (CSS).
@@ -9,6 +13,23 @@
 const STORAGE_KEY = "prelaunch-header-video-paused";
 const PAUSE_LABEL = "Pause background video";
 const PLAY_LABEL = "Play background video";
+
+/**
+ * Attach the mp4 when we actually intend to play.
+ *
+ * @param {HTMLVideoElement} video Header video element with a data-src source.
+ */
+function attachHeaderVideoSource(video: HTMLVideoElement): void {
+	const source = video.querySelector("source");
+	const pending = source?.getAttribute("data-src");
+
+	if (!source || !pending || source.getAttribute("src")) {
+		return;
+	}
+
+	source.setAttribute("src", pending);
+	video.load();
+}
 
 /**
  * Bind pause/play for decorative looping header videos.
@@ -28,11 +49,15 @@ export function initHeaderVideoPause(): void {
 		return;
 	}
 
+	const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+	const saveData = Boolean(connection?.saveData);
+
 	const setPaused = (paused: boolean): void => {
 		videos.forEach((video) => {
 			if (paused) {
 				video.pause();
 			} else {
+				attachHeaderVideoSource(video);
 				void video.play();
 			}
 		});
@@ -53,10 +78,28 @@ export function initHeaderVideoPause(): void {
 		stored = false;
 	}
 
-	setPaused(stored);
+	toggle.textContent = stored || saveData ? PLAY_LABEL : PAUSE_LABEL;
+
+	const startWhenIdle = (): void => {
+		if (stored || saveData) {
+			return;
+		}
+
+		setPaused(false);
+	};
+
+	const idleWindow = window as Window & {
+		requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+	};
+
+	if (typeof idleWindow.requestIdleCallback === "function") {
+		idleWindow.requestIdleCallback(startWhenIdle, { timeout: 2500 });
+	} else {
+		window.setTimeout(startWhenIdle, 1);
+	}
 
 	toggle.addEventListener("click", () => {
-		const isPaused = videos.every((video) => video.paused);
+		const isPaused = videos.every((video) => video.paused || !video.querySelector("source")?.getAttribute("src"));
 		setPaused(!isPaused);
 	});
 }

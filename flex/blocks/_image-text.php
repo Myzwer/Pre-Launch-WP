@@ -40,7 +40,9 @@
 						'large',
 						false,
 						[
-							'class' => 'rounded-lg shadow-lg mb-0',
+							'class'   => 'rounded-lg shadow-lg mb-0',
+							'loading' => 'lazy',
+							'decoding' => 'async',
 						]
 					);
 				endif;
