@@ -14,41 +14,6 @@
  */
 
 /**
- * Output post date markup.
- *
- * Prints a linked published date only.
- * Modified dates are intentionally not displayed, even if the post was updated.
- *
- * @param int|\WP_Post|null $post Post ID or object. Defaults to current post in the loop.
- * @param array            $args Optional arguments.
- *
- * @return void
- */
-function prelaunch_posted_on(int|WP_Post $post = null, array $args = []): void
-{
-    $post = get_post($post);
-
-    if (! $post instanceof WP_Post) {
-        return;
-    }
-
-    $args = array_merge([
-        'class' => 'post-date',
-    ], $args);
-
-    $published_w3c = get_the_date(DATE_W3C, $post);
-    $published_hum = get_the_date('', $post);
-
-    echo '<span class="' . esc_attr($args['class']) . '">';
-    echo '<a href="' . esc_url(get_permalink($post)) . '" rel="bookmark">';
-    echo '<time class="published updated" datetime="' . esc_attr($published_w3c) . '">';
-    echo esc_html($published_hum);
-    echo '</time>';
-    echo '</a>';
-    echo '</span>';
-}
-
-/**
  * Output a term list for a taxonomy on the current post.
  *
  * @param string            $taxonomy Taxonomy name (e.g. 'category', 'post_tag').
