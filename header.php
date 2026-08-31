@@ -71,6 +71,7 @@ if (is_array($logo) && ! empty($logo['url'])) : ?>
 					class="nav-brand-logo"
 					src="<?php echo esc_url($logo['url']); ?>"
 					alt="<?php echo esc_attr(! empty($logo['alt']) ? $logo['alt'] : get_bloginfo('name')); ?>"
+					fetchpriority="high"
 					loading="eager"
 					decoding="async"
 				/>
@@ -93,7 +94,7 @@ if (is_array($logo) && ! empty($logo['url'])) : ?>
 				</span>
 			</button>
 
-			<div class="nav-panel" id="nav-panel">
+			<div class="nav-panel" id="nav-panel" hidden>
 				<?php
     wp_nav_menu([
         'theme_location' => 'primary-nav',

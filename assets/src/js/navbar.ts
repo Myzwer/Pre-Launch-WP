@@ -396,7 +396,10 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 			doc.body.classList.remove("nav-open");
 			void closeAllSubmenus();
 		} else {
-			void setPanelOpen(false);
+			// Start closed without animating. The panel is hidden in markup so
+			// the first paint is not a full-width sheet; do not call
+			// setPanelOpen(false) here (that animates an already-visible panel shut).
+			hardClosePanel();
 		}
 	}
 
@@ -413,8 +416,9 @@ export function initPrimaryNav(root: Document | HTMLElement = document): void {
 			doc.body.classList.remove("nav-open");
 			void closeAllSubmenus();
 		} else {
-			// Entering mobile: always start closed.
-			void setPanelOpen(false);
+			// Entering mobile: start closed with no close animation.
+			hardCloseAllSubmenus();
+			hardClosePanel();
 		}
 	});
 
