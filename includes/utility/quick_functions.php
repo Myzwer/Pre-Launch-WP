@@ -34,11 +34,12 @@ declare(strict_types=1);
  *   to control the <title> element dynamically. Without this support,
  *   SEO plugins cannot reliably filter or modify document titles.
  */
-function windpeak_theme_setup(): void
+function prelaunch_theme_setup(): void
 {
     add_theme_support('title-tag');
+    load_theme_textdomain('prelaunch-wp', get_template_directory() . '/languages');
 }
-add_action('after_setup_theme', 'windpeak_theme_setup');
+add_action('after_setup_theme', 'prelaunch_theme_setup');
 
 /**
  * Alphabetize page templates in the editor dropdown.
@@ -46,12 +47,12 @@ add_action('after_setup_theme', 'windpeak_theme_setup');
  * @param array<string,string> $templates Template file => label.
  * @return array<string,string>
  */
-function windpeak_alphabetize_page_templates(array $templates): array
+function prelaunch_alphabetize_page_templates(array $templates): array
 {
     asort($templates);
     return $templates;
 }
-add_filter('theme_page_templates', 'windpeak_alphabetize_page_templates');
+add_filter('theme_page_templates', 'prelaunch_alphabetize_page_templates');
 
 /**
  * Add an environment indicator to the admin bar on non-production environments.
@@ -59,7 +60,7 @@ add_filter('theme_page_templates', 'windpeak_alphabetize_page_templates');
  * Helps prevent accidental edits on the wrong site when working across
  * development, staging, and production.
  */
-function windpeak_admin_bar_environment_badge(): void
+function prelaunch_admin_bar_environment_badge(): void
 {
     // Only show to admins and only outside of production.
     if (
@@ -75,7 +76,7 @@ function windpeak_admin_bar_environment_badge(): void
     global $wp_admin_bar;
 
     $wp_admin_bar->add_node([
-        'id' => 'windpeak-env-badge',
+        'id' => 'prelaunch-env-badge',
         'title' => esc_html($env),
         'meta' => [
             // Inline styles keep this self-contained and avoid extra CSS.
@@ -83,7 +84,7 @@ function windpeak_admin_bar_environment_badge(): void
         ],
     ]);
 }
-add_action('admin_bar_menu', 'windpeak_admin_bar_environment_badge', 100);
+add_action('admin_bar_menu', 'prelaunch_admin_bar_environment_badge', 100);
 
 /**
  * Disable comments site-wide.
@@ -102,7 +103,7 @@ add_action('admin_bar_menu', 'windpeak_admin_bar_environment_badge', 100);
  * @link https://developer.wordpress.org/reference/hooks/pings_open/
  * @link https://developer.wordpress.org/reference/hooks/admin_menu/
  */
-function windpeak_disable_comments_setup(): void
+function prelaunch_disable_comments_setup(): void
 {
     // Remove comment support from all registered post types that expose it.
     foreach (get_post_types([], 'names') as $post_type) {
@@ -112,19 +113,19 @@ function windpeak_disable_comments_setup(): void
         }
     }
 }
-add_action('init', 'windpeak_disable_comments_setup', 100);
+add_action('init', 'prelaunch_disable_comments_setup', 100);
 
 /**
  * Always close comments and pings on the front end.
  *
  * This prevents bots from submitting comments even if something re-enables UI.
  */
-function windpeak_disable_comments_status(): bool
+function prelaunch_disable_comments_status(): bool
 {
     return false;
 }
-add_filter('comments_open', 'windpeak_disable_comments_status', 20);
-add_filter('pings_open', 'windpeak_disable_comments_status', 20);
+add_filter('comments_open', 'prelaunch_disable_comments_status', 20);
+add_filter('pings_open', 'prelaunch_disable_comments_status', 20);
 
 /**
  * Hide existing comments from appearing in templates that call comments_template().
@@ -134,7 +135,7 @@ add_filter('comments_array', static fn (array $comments): array => [], 10, 2);
 /**
  * Remove comment UI entry points in the WordPress admin.
  */
-function windpeak_disable_comments_admin_ui(): void
+function prelaunch_disable_comments_admin_ui(): void
 {
     // Remove the Comments menu item.
     remove_menu_page('edit-comments.php');
@@ -148,12 +149,12 @@ function windpeak_disable_comments_admin_ui(): void
     // If you have custom post types that add these metaboxes, the init() removal above
     // generally prevents them, but plugins can re-add. Keeping these removals is cheap.
 }
-add_action('admin_menu', 'windpeak_disable_comments_admin_ui');
+add_action('admin_menu', 'prelaunch_disable_comments_admin_ui');
 
 /**
  * Remove the Comments item from the admin bar.
  */
-function windpeak_disable_comments_admin_bar(): void
+function prelaunch_disable_comments_admin_bar(): void
 {
     if (! is_admin_bar_showing()) {
         return;
@@ -162,12 +163,12 @@ function windpeak_disable_comments_admin_bar(): void
     global $wp_admin_bar;
     $wp_admin_bar->remove_node('comments');
 }
-add_action('admin_bar_menu', 'windpeak_disable_comments_admin_bar', 999);
+add_action('admin_bar_menu', 'prelaunch_disable_comments_admin_bar', 999);
 
 /**
  * Redirect any direct access to comment management screens back to the dashboard.
  */
-function windpeak_disable_comments_admin_redirect(): void
+function prelaunch_disable_comments_admin_redirect(): void
 {
     global $pagenow;
 
@@ -176,4 +177,4 @@ function windpeak_disable_comments_admin_redirect(): void
         exit;
     }
 }
-add_action('admin_init', 'windpeak_disable_comments_admin_redirect');
+add_action('admin_init', 'prelaunch_disable_comments_admin_redirect');

@@ -31,8 +31,8 @@
 (function () {
 	if (typeof tinymce === "undefined") return;
 
-	const PLUGIN_NAME = "wpk_btn";
-	const BUTTON_ID = "wpk_btn";
+	const PLUGIN_NAME = "prelaunch_btn";
+	const BUTTON_ID = "prelaunch_btn";
 
 	const VARIANTS = [
 		{ text: "Main", value: "main" },

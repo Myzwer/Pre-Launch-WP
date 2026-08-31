@@ -33,8 +33,8 @@
 	*/
 
 	$show_site_credit_bar = get_field( 'show_site_credit_bar', 'option' );
-	// If you keep your original field name instead, use this:
-	// $show_site_credit_bar = get_field( 'show_built_by_section', 'option' );
+	$agency_credit_name   = trim( (string) get_field( 'agency_credit_name', 'option' ) );
+	$agency_credit_url    = trim( (string) get_field( 'agency_credit_url', 'option' ) );
 
 	$privacy_policy_url = get_privacy_policy_url();
 	$accessibility_page = get_page_by_path( 'accessibility' );
@@ -68,19 +68,23 @@
 						</a>
 					<?php endif; ?>
 
-					<?php if ( $show_site_credit_bar ) : ?>
+					<?php if ( $show_site_credit_bar && $agency_credit_name !== '' ) : ?>
 						<span class="footer-credit-separator" aria-hidden="true">|</span>
 
 						<span class="footer-credit-agency">
 							Site by
-							<a
-								class="footer-credit-link footer-credit-link-agency"
-								href="https://windpeakdesign.com/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Windpeak Design
-							</a>
+							<?php if ( $agency_credit_url !== '' ) : ?>
+								<a
+									class="footer-credit-link footer-credit-link-agency"
+									href="<?php echo esc_url( $agency_credit_url ); ?>"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<?php echo esc_html( $agency_credit_name ); ?>
+								</a>
+							<?php else : ?>
+								<?php echo esc_html( $agency_credit_name ); ?>
+							<?php endif; ?>
 						</span>
 					<?php endif; ?>
 				</nav>

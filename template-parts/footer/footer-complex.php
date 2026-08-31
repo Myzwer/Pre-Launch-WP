@@ -3,7 +3,7 @@
 	 * Complex Footer
 	 *
 	 * Full footer layout used when the site needs more than the simple footer.
-	 * Renders the footer logo, contact details, social icons, quick links,
+	 * Renders the footer logo, contact details, social icons, footer links,
 	 * legal copy, and affiliation logos.
 	 *
 	 * This template is selected from the ACF Globals options page.
@@ -16,7 +16,7 @@
 	   The complex footer excludes phone + email from the social grid
 	   because they appear in the contact block above. Modify the
 	   'networks' array here if additional platforms should appear. */
-	$socials = windpeak_get_social_items(
+	$socials = prelaunch_get_social_items(
 		[
 			'networks' => [
 				'facebook',
@@ -32,6 +32,10 @@
 			],
 		]
 	);
+
+	$complex_links      = get_field( 'footer_complex_links', 'option' );
+	$has_complex_links  = is_array( $complex_links ) && ! empty( $complex_links );
+	$show_affiliations  = (bool) get_field( 'footer_show_affiliations', 'option' );
 ?>
 
 <div class="footer">
@@ -97,7 +101,7 @@
 							<?php foreach ( $socials as $item ) : ?>
 								<div class="footer-social">
 									<?php
-										echo windpeak_render_social_icon(
+										echo prelaunch_render_social_icon(
 											$item['network'],
 											[
 												'size'  => 'sm',
@@ -116,39 +120,37 @@
 
 			<div class="footer-side">
 				<div class="footer-top">
-					<div class="footer-links">
-						<h3 class="footer-heading">Quick Links</h3>
+					<?php if ( $has_complex_links ) : ?>
+						<div class="footer-links">
+							<h3 class="footer-heading">Footer Links</h3>
 
-						<div class="footer-links-grid">
-							<?php
-								if ( have_rows( 'footer_complex_links', 'option' ) ) :
-									while ( have_rows( 'footer_complex_links', 'option' ) ) :
-										the_row();
+							<div class="footer-links-grid">
+								<?php foreach ( $complex_links as $row ) : ?>
+									<?php
+										$link = $row['link'] ?? null;
 
-										$link            = get_sub_field( 'link' );
+										if ( empty( $link['url'] ) ) {
+											continue;
+										}
 
-										if ( $link ) :
-											$link_url = $link['url'];
-											$link_title  = $link['title'];
-											$link_target = $link['target'] ? $link['target'] : '_self';
-											?>
-											<div class="footer-link">
-												<a
-													href="<?php echo esc_url( $link_url ); ?>"
-													target="<?php echo esc_attr( $link_target ); ?>"
-												>
-													<?php echo esc_html( $link_title ); ?>
-												</a>
-											</div>
-										<?php
-										endif;
-									endwhile;
-								endif;
-							?>
+										$link_url    = $link['url'];
+										$link_title  = $link['title'] ?? $link_url;
+										$link_target = ! empty( $link['target'] ) ? $link['target'] : '_self';
+									?>
+									<div class="footer-link">
+										<a
+											href="<?php echo esc_url( $link_url ); ?>"
+											target="<?php echo esc_attr( $link_target ); ?>"
+										>
+											<?php echo esc_html( $link_title ); ?>
+										</a>
+									</div>
+								<?php endforeach; ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
-					<div class="footer-legal footer-legal-desktop">
+					<div class="footer-legal footer-legal-desktop<?php echo $has_complex_links ? '' : ' footer-legal-wide'; ?>">
 						<h3 class="footer-heading">Legal Information</h3>
 
 						<div class="prose-theme footer-prose">
@@ -157,49 +159,61 @@
 					</div>
 				</div>
 
-				<div class="footer-affiliations">
-					<?php if ( get_field( 'footer_affiliations_heading', 'option' ) ) : ?>
-						<h3 class="footer-heading">
-							<?php the_field( 'footer_affiliations_heading', 'option' ); ?>
-						</h3>
-					<?php endif; ?>
+				<?php if ( $show_affiliations ) : ?>
+					<div class="footer-affiliations">
+						<?php if ( get_field( 'footer_affiliations_heading', 'option' ) ) : ?>
+							<h3 class="footer-heading">
+								<?php the_field( 'footer_affiliations_heading', 'option' ); ?>
+							</h3>
+						<?php endif; ?>
 
-					<?php if ( have_rows( 'footer_affiliation_logos', 'option' ) ) : ?>
-						<div class="footer-affiliations-grid">
-							<?php
-								while ( have_rows( 'footer_affiliation_logos', 'option' ) ) :
-									the_row();
+						<?php if ( have_rows( 'footer_affiliation_logos', 'option' ) ) : ?>
+							<div class="footer-affiliations-grid">
+								<?php
+									while ( have_rows( 'footer_affiliation_logos', 'option' ) ) :
+										the_row();
 
-									$logo = get_sub_field( 'logo' );
-									$name = get_sub_field( 'name' );
-									$link = get_sub_field( 'link' );
+										$logo = get_sub_field( 'logo' );
+										$name = get_sub_field( 'name' );
+										$link = get_sub_field( 'link' );
 
-									if ( empty( $logo ) ) {
-										continue;
-									}
+										if ( empty( $logo ) ) {
+											continue;
+										}
 
-									$logo_url = ! empty( $logo['url'] ) ? $logo['url'] : '';
-									$logo_alt = ! empty( $logo['alt'] ) ? $logo['alt'] : $name;
+										$logo_url = ! empty( $logo['url'] ) ? $logo['url'] : '';
+										$logo_alt = ! empty( $logo['alt'] ) ? $logo['alt'] : $name;
 
-									if ( empty( $logo_url ) ) {
-										continue;
-									}
-									?>
-									<div class="footer-affiliations-item">
-										<?php if ( $link ) : ?>
-											<?php
-											$link_url    = ! empty( $link['url'] ) ? $link['url'] : '';
-											$link_target = ! empty( $link['target'] ) ? $link['target'] : '_self';
-											$link_title  = ! empty( $link['title'] ) ? $link['title'] : $name;
+										if ( empty( $logo_url ) ) {
+											continue;
+										}
+										?>
+										<div class="footer-affiliations-item">
+											<?php if ( $link ) : ?>
+												<?php
+												$link_url    = ! empty( $link['url'] ) ? $link['url'] : '';
+												$link_target = ! empty( $link['target'] ) ? $link['target'] : '_self';
+												$link_title  = ! empty( $link['title'] ) ? $link['title'] : $name;
 
-											if ( $link_url ) :
-												?>
-												<a
-													class="footer-affiliations-link"
-													href="<?php echo esc_url( $link_url ); ?>"
-													target="<?php echo esc_attr( $link_target ); ?>"
-													aria-label="<?php echo esc_attr( $link_title ); ?>"
-												>
+												if ( $link_url ) :
+													?>
+													<a
+														class="footer-affiliations-link"
+														href="<?php echo esc_url( $link_url ); ?>"
+														target="<?php echo esc_attr( $link_target ); ?>"
+														aria-label="<?php echo esc_attr( $link_title ); ?>"
+													>
+														<img
+															class="footer-affiliations-logo"
+															src="<?php echo esc_url( $logo_url ); ?>"
+															alt="<?php echo esc_attr( $logo_alt ); ?>"
+															loading="lazy"
+															decoding="async"
+														/>
+													</a>
+												<?php endif; ?>
+											<?php else : ?>
+												<div class="footer-affiliations-link footer-affiliations-link-static">
 													<img
 														class="footer-affiliations-logo"
 														src="<?php echo esc_url( $logo_url ); ?>"
@@ -207,24 +221,14 @@
 														loading="lazy"
 														decoding="async"
 													/>
-												</a>
+												</div>
 											<?php endif; ?>
-										<?php else : ?>
-											<div class="footer-affiliations-link footer-affiliations-link-static">
-												<img
-													class="footer-affiliations-logo"
-													src="<?php echo esc_url( $logo_url ); ?>"
-													alt="<?php echo esc_attr( $logo_alt ); ?>"
-													loading="lazy"
-													decoding="async"
-												/>
-											</div>
-										<?php endif; ?>
-									</div>
-								<?php endwhile; ?>
-						</div>
-					<?php endif; ?>
-				</div>
+										</div>
+									<?php endwhile; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
 
 				<div class="footer-legal footer-legal-mobile">
 					<h3 class="footer-heading">Legal Information</h3>

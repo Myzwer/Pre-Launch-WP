@@ -21,16 +21,16 @@
 	/**
 	 * Remove the Welcome panel.
 	 */
-	function wpk_dashboard_remove_welcome_panel(): void {
+	function prelaunch_dashboard_remove_welcome_panel(): void {
 		remove_action( 'welcome_panel', 'wp_welcome_panel' );
 	}
 
-	add_action( 'admin_init', 'wpk_dashboard_remove_welcome_panel' );
+	add_action( 'admin_init', 'prelaunch_dashboard_remove_welcome_panel' );
 
 	/**
 	 * Remove default dashboard widgets that are typically not useful in an ACF-first site.
 	 */
-	function wpk_dashboard_remove_default_widgets(): void {
+	function prelaunch_dashboard_remove_default_widgets(): void {
 		remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );       // WordPress Events & News / feed (varies)
 		remove_meta_box( 'dashboard_secondary', 'dashboard', 'side' );     // Secondary feed box
 		remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );   // Quick Draft
@@ -44,27 +44,27 @@
 		// Safe: remove_meta_box is a no-op if a box ID doesn't exist.
 	}
 
-	add_action( 'wp_dashboard_setup', 'wpk_dashboard_remove_default_widgets', 20 );
+	add_action( 'wp_dashboard_setup', 'prelaunch_dashboard_remove_default_widgets', 20 );
 
 	/**
 	 * Add the "Site Overview" dashboard widget.
 	 */
-	function wpk_dashboard_add_site_overview_widget(): void {
+	function prelaunch_dashboard_add_site_overview_widget(): void {
 		wp_add_dashboard_widget(
-			'wpk_site_overview',
+			'prelaunch_site_overview',
 			'Site Overview',
-			'wpk_dashboard_render_site_overview_widget'
+			'prelaunch_dashboard_render_site_overview_widget'
 		);
 	}
 
-	add_action( 'wp_dashboard_setup', 'wpk_dashboard_add_site_overview_widget', 30 );
+	add_action( 'wp_dashboard_setup', 'prelaunch_dashboard_add_site_overview_widget', 30 );
 
 	/**
 	 * Get the current environment label (Local / Staging / Production).
 	 *
 	 * Uses WordPress core environment type when available; falls back conservatively.
 	 */
-	function wpk_get_environment_label(): string {
+	function prelaunch_get_environment_label(): string {
 		// WordPress core (WP 5.5+): returns 'local', 'development', 'staging', or 'production'
 		if ( function_exists( 'wp_get_environment_type' ) ) {
 			$type = wp_get_environment_type();
@@ -90,7 +90,7 @@
 	 *
 	 * Returns a wp-admin URL if found, otherwise null.
 	 */
-	function wpk_get_globals_options_url(): ?string {
+	function prelaunch_get_globals_options_url(): ?string {
 		if ( ! function_exists( 'acf_get_options_pages' ) ) {
 			return null;
 		}
@@ -135,7 +135,7 @@
 	 *
 	 * Keep these short, calm, and non-invasive. (Original lines to avoid licensing/copyright concerns.)
 	 */
-	function wpk_get_dashboard_whimsy_line(): string {
+	function prelaunch_get_dashboard_whimsy_line(): string {
 		$lines = [
 			'Did you know? Saving often saves your sanity.',
 			'Friendly reminder: Little saves now beat big fixes later.',
@@ -157,11 +157,11 @@
 	/**
 	 * Render the "Site Overview" widget content.
 	 */
-	function wpk_dashboard_render_site_overview_widget(): void {
+	function prelaunch_dashboard_render_site_overview_widget(): void {
 		$theme       = wp_get_theme();
 		$site_name   = get_bloginfo( 'name' );
-		$env_label   = wpk_get_environment_label();
-		$globals_url = wpk_get_globals_options_url();
+		$env_label   = prelaunch_get_environment_label();
+		$globals_url = prelaunch_get_globals_options_url();
 
 		$links = [];
 
@@ -173,8 +173,8 @@
 			];
 		}
 
-		// Globals (Options)
-		if ( $globals_url && current_user_can( 'edit_posts' ) ) {
+		// Globals (Options). Client Admin has posts disabled, so do not gate on edit_posts.
+		if ( $globals_url && prelaunch_user_can_edit_globals() ) {
 			$links[] = [
 				'label' => 'Edit site settings (Globals)',
 				'url'   => $globals_url,
@@ -212,9 +212,16 @@
 			echo '</ul>';
 		}
 
-		echo '<hr style="margin:14px 0;">';
-		echo '<p style="margin:0 0 6px;"><strong>Need help?</strong></p>';
-		echo '<p style="margin:0;">Contact Josh: <code>hello@windpeakdesign.com</code></p>';
+		$support_email = '';
+		if ( function_exists( 'get_field' ) ) {
+			$support_email = sanitize_email( (string) get_field( 'token_support_email', 'option' ) );
+		}
 
-		echo '<p style="margin:12px 0 0; color:#646970;"><em>' . esc_html( wpk_get_dashboard_whimsy_line() ) . '</em></p>';
+		if ( $support_email !== '' ) {
+			echo '<hr style="margin:14px 0;">';
+			echo '<p style="margin:0 0 6px;"><strong>Need help?</strong></p>';
+			echo '<p style="margin:0;"><a href="mailto:' . esc_attr( $support_email ) . '">' . esc_html( $support_email ) . '</a></p>';
+		}
+
+		echo '<p style="margin:12px 0 0; color:#646970;"><em>' . esc_html( prelaunch_get_dashboard_whimsy_line() ) . '</em></p>';
 	}

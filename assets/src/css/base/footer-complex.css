@@ -133,6 +133,10 @@
 		@apply col-span-12 text-left md:col-span-8;
 	}
 
+	.footer-legal-wide {
+		@apply md:col-span-12;
+	}
+
 	.footer-legal-mobile {
 		@apply block pt-6 md:hidden;
 	}

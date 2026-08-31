@@ -52,4 +52,12 @@
 		@apply basis-1/4 sm:basis-1/6;
 		@apply flex justify-center;
 	}
+
+	.s-footer-legal {
+		@apply col-span-12 mx-auto max-w-3xl px-4 pb-10 text-center text-sm text-white;
+	}
+
+	.s-footer-legal a {
+		@apply text-white underline-offset-4 hover:underline;
+	}
 }

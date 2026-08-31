@@ -23,11 +23,11 @@
 	/**
 	 * Register theme menu locations.
 	 */
-	function windpeak_register_menus(): void {
+	function prelaunch_register_menus(): void {
 		register_nav_menus( [
 			// Main site navigation.
-			'primary-nav' => __( 'Primary Navigation', 'windpeak' ),
+			'primary-nav' => __( 'Primary Navigation', 'prelaunch-wp' ),
 		] );
 	}
 
-	add_action( 'init', 'windpeak_register_menus' );
+	add_action( 'init', 'prelaunch_register_menus' );

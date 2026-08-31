@@ -17,6 +17,24 @@
 	defined( 'ABSPATH' ) || exit;
 
 	/**
+	 * Whether the current user should see / open the Globals options page.
+	 *
+	 * Unmanaged admins keep access. Managed roles follow the `acf` policy
+	 * (options_only or full). Posts Editor has acf:off and is excluded.
+	 */
+	function prelaunch_user_can_edit_globals(): bool {
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( ! prelaunch_get_current_managed_role() ) {
+			return true;
+		}
+
+		return prelaunch_current_user_has_feature_access( 'acf' );
+	}
+
+	/**
 	 * Get the ACF access level for a managed role.
 	 *
 	 * @param string $role_slug Role slug.

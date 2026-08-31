@@ -31,7 +31,7 @@
 /**
  * Enqueue the theme’s compiled JS/CSS bundles.
  */
-function windpeak_enqueue_assets(): void
+function prelaunch_enqueue_assets(): void
 {
     $theme_version = wp_get_theme()->get('Version');
 
@@ -41,7 +41,7 @@ function windpeak_enqueue_assets(): void
     $js_ver = file_exists($js_file) ? (string) filemtime($js_file) : $theme_version;
 
     wp_enqueue_script(
-        'windpeak-frontend',
+        'prelaunch-frontend',
         get_theme_file_uri($js_rel_path),
         [],
         $js_ver,
@@ -54,13 +54,13 @@ function windpeak_enqueue_assets(): void
     $css_ver = file_exists($css_file) ? (string) filemtime($css_file) : $theme_version;
 
     wp_enqueue_style(
-        'windpeak-frontend',
+        'prelaunch-frontend',
         get_theme_file_uri($css_rel_path),
         [],
         $css_ver
     );
 }
-add_action('wp_enqueue_scripts', 'windpeak_enqueue_assets');
+add_action('wp_enqueue_scripts', 'prelaunch_enqueue_assets');
 
 /**
  * Enqueue Gutenberg bridge stylesheet (frontend).
@@ -70,12 +70,12 @@ add_action('wp_enqueue_scripts', 'windpeak_enqueue_assets');
  *
  * Load Order Requirement:
  * - Must load after wp-block-library so theme styles override core block styles.
- * - Must load after windpeak-frontend so design tokens/variables are available.
+ * - Must load after prelaunch-frontend so design tokens/variables are available.
  *
  * Policy:
  * - Loaded globally. If block markup exists anywhere, it should render correctly.
  */
-function windpeak_enqueue_blocks_bridge_css(): void
+function prelaunch_enqueue_blocks_bridge_css(): void
 {
     $theme_version = wp_get_theme()->get('Version');
 
@@ -84,16 +84,16 @@ function windpeak_enqueue_blocks_bridge_css(): void
     $ver = file_exists($file) ? (string) filemtime($file) : $theme_version;
 
     wp_enqueue_style(
-        'windpeak-blocks',
+        'prelaunch-blocks',
         get_theme_file_uri($rel_path),
         [
             'wp-block-library',
-            'windpeak-frontend',
+            'prelaunch-frontend',
         ],
         $ver
     );
 }
-add_action('wp_enqueue_scripts', 'windpeak_enqueue_blocks_bridge_css');
+add_action('wp_enqueue_scripts', 'prelaunch_enqueue_blocks_bridge_css');
 
 /**
  * Enqueue Font Awesome (self-hosted).
@@ -111,7 +111,7 @@ add_action('wp_enqueue_scripts', 'windpeak_enqueue_blocks_bridge_css');
  * @link https://fontawesome.com/download
  * @link https://fontawesome.com/docs/web/setup/host-yourself
  */
-function windpeak_enqueue_font_awesome(): void
+function prelaunch_enqueue_font_awesome(): void
 {
     $theme_version = wp_get_theme()->get('Version');
 
@@ -120,14 +120,14 @@ function windpeak_enqueue_font_awesome(): void
     $ver = file_exists($path) ? (string) filemtime($path) : $theme_version;
 
     wp_enqueue_style(
-        'windpeak-font-awesome',
+        'prelaunch-font-awesome',
         get_theme_file_uri($rel_css),
         [],
         $ver
     );
 }
 // Load FA early so icons/styles are available as soon as possible.
-add_action('wp_enqueue_scripts', 'windpeak_enqueue_font_awesome', 5);
+add_action('wp_enqueue_scripts', 'prelaunch_enqueue_font_awesome', 5);
 
 /**
  * Block editor-only behavior controls.
@@ -159,7 +159,7 @@ add_action('enqueue_block_editor_assets', function () {
  * - blocks.css selectors include .editor-styles-wrapper to scope styling to the
  *   editor canvas.
  */
-function windpeak_enqueue_blocks_editor_assets(): void
+function prelaunch_enqueue_blocks_editor_assets(): void
 {
     $theme_version = wp_get_theme()->get('Version');
 
@@ -168,10 +168,10 @@ function windpeak_enqueue_blocks_editor_assets(): void
     $ver = file_exists($file) ? (string) filemtime($file) : $theme_version;
 
     wp_enqueue_style(
-        'windpeak-blocks-editor',
+        'prelaunch-blocks-editor',
         get_theme_file_uri($rel_path),
         [],
         $ver
     );
 }
-add_action('enqueue_block_editor_assets', 'windpeak_enqueue_blocks_editor_assets');
+add_action('enqueue_block_editor_assets', 'prelaunch_enqueue_blocks_editor_assets');

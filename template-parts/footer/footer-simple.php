@@ -51,14 +51,14 @@
 		<?php endif; ?>
 
 
-		<?php $socials = windpeak_get_social_items(); ?>
+		<?php $socials = prelaunch_get_social_items(); ?>
 
 		<?php if ( ! empty( $socials ) ): ?>
 			<div class="s-footer-socials">
 				<?php foreach ( $socials as $item ): ?>
 					<div class="s-footer-social">
 						<?php
-							echo windpeak_render_social_icon( $item['network'], [
+							echo prelaunch_render_social_icon( $item['network'], [
 								'size'  => 'sm',
 								'shape' => 'circle',
 								'tab'   => 'Y',
@@ -69,6 +69,15 @@
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
+
+		<?php
+			$simple_legal = get_field( 'footer_simple_legal_text', 'option' );
+			if ( ! empty( $simple_legal ) ) :
+				?>
+				<div class="s-footer-legal">
+					<?php echo wp_kses_post( $simple_legal ); ?>
+				</div>
+			<?php endif; ?>
 
 	</div>
 </div>

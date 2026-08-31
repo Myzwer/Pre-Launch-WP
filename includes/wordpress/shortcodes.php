@@ -22,7 +22,7 @@
 	/**
 	 * Internal: Normalize a Y/N-style flag.
 	 */
-	function windpeak_shortcode_flag( string $value, bool $default = false ): bool {
+	function prelaunch_shortcode_flag( string $value, bool $default = false ): bool {
 		$value = strtoupper( trim( $value ) );
 
 		if ( in_array( $value, [ 'Y', 'YES', 'TRUE', '1' ], true ) ) {
@@ -39,7 +39,7 @@
 	/**
 	 * Internal: Normalize and sanitize a tel: number.
 	 */
-	function windpeak_normalize_phone_for_tel( string $phone ): string {
+	function prelaunch_normalize_phone_for_tel( string $phone ): string {
 		$phone = trim( $phone );
 
 		// Keep digits and a single leading + (international).
@@ -52,7 +52,7 @@
 	/**
 	 * Internal: Safe access to ACF option fields (Globals).
 	 */
-	function windpeak_get_acf_option( string $field_name ): string {
+	function prelaunch_get_acf_option( string $field_name ): string {
 		if ( ! function_exists( 'get_field' ) ) {
 			return '';
 		}
@@ -65,7 +65,7 @@
 	/**
 	 * Internal: Resolve a social network URL from shortcode override or ACF options.
 	 */
-	function windpeak_resolve_social_href( string $network, string $override_url = '' ): string {
+	function prelaunch_resolve_social_href( string $network, string $override_url = '' ): string {
 		$network      = strtolower( trim( $network ) );
 		$override_url = trim( $override_url );
 
@@ -78,7 +78,7 @@
 			}
 
 			if ( $network === 'phone' ) {
-				$phone = windpeak_normalize_phone_for_tel( $override_url );
+				$phone = prelaunch_normalize_phone_for_tel( $override_url );
 
 				return $phone ? 'tel:' . $phone : '';
 			}
@@ -106,7 +106,7 @@
 			return '';
 		}
 
-		$value = windpeak_get_acf_option( $map[ $network ] );
+		$value = prelaunch_get_acf_option( $map[ $network ] );
 		if ( $value === '' ) {
 			return '';
 		}
@@ -118,7 +118,7 @@
 		}
 
 		if ( $network === 'phone' ) {
-			$phone = windpeak_normalize_phone_for_tel( $value );
+			$phone = prelaunch_normalize_phone_for_tel( $value );
 
 			return $phone ? 'tel:' . $phone : '';
 		}
@@ -138,7 +138,7 @@
 	 * - icon: none|arrow|external|download|phone|email (default: none)
 	 * - icon_pos: left|right (default: right)
 	 */
-	function windpeak_shortcode_btn( array $atts ): string {
+	function prelaunch_shortcode_btn( array $atts ): string {
 		$atts = shortcode_atts(
 			[
 				'text'     => '',
@@ -171,8 +171,8 @@
 		];
 		$btn_class   = $variant_map[ $variant ] ?? $variant_map['main'];
 
-		$new_tab = windpeak_shortcode_flag( (string) $atts['tab'], false );
-		$center  = windpeak_shortcode_flag( (string) $atts['center'], false );
+		$new_tab = prelaunch_shortcode_flag( (string) $atts['tab'], false );
+		$center  = prelaunch_shortcode_flag( (string) $atts['center'], false );
 
 		$icon     = strtolower( trim( (string) $atts['icon'] ) );
 		$icon_pos = strtolower( trim( (string) $atts['icon_pos'] ) ) === 'left' ? 'left' : 'right';
@@ -218,7 +218,7 @@
 		return '<span class="inline-block not-prose">' . $button . '</span>';
 	}
 
-	add_shortcode( 'btn', 'windpeak_shortcode_btn' );
+	add_shortcode( 'btn', 'prelaunch_shortcode_btn' );
 
 	/**
 	 * Internal: Ordered list of supported social networks for loops.
@@ -227,7 +227,7 @@
 	 *   - Which networks exist
 	 *   - The output order everywhere you loop socials
 	 */
-	function windpeak_social_networks_ordered(): array {
+	function prelaunch_social_networks_ordered(): array {
 		return [
 			'facebook',
 			'instagram',
@@ -259,10 +259,10 @@
 	 *   href: string
 	 * }>
 	 */
-	function windpeak_get_social_items( array $args = [] ): array {
-		$networks = $args['networks'] ?? windpeak_social_networks_ordered();
+	function prelaunch_get_social_items( array $args = [] ): array {
+		$networks = $args['networks'] ?? prelaunch_social_networks_ordered();
 		if ( ! is_array( $networks ) || $networks === [] ) {
-			$networks = windpeak_social_networks_ordered();
+			$networks = prelaunch_social_networks_ordered();
 		}
 
 		$overrides = $args['overrides'] ?? [];
@@ -283,7 +283,7 @@
 				$override_url = $overrides[ $network ];
 			}
 
-			$href = windpeak_resolve_social_href( $network, $override_url );
+			$href = prelaunch_resolve_social_href( $network, $override_url );
 			if ( $href === '' ) {
 				continue;
 			}
@@ -314,7 +314,7 @@
 	 *
 	 * @return string
 	 */
-	function windpeak_render_social_icon( string $network, array $args = [] ): string {
+	function prelaunch_render_social_icon( string $network, array $args = [] ): string {
 		// Reuse the shortcode renderer to guarantee consistent markup + classes.
 		// (shortcode_atts will ignore unknown keys.)
 		$atts = array_merge(
@@ -324,7 +324,7 @@
 			$args
 		);
 
-		return windpeak_shortcode_social( $atts );
+		return prelaunch_shortcode_social( $atts );
 	}
 
 	/**
@@ -340,7 +340,7 @@
 	 * - bg: primary|black|white (default: primary)  (used only when shape != none)
 	 * - color: current|primary|black|white (default: current) (used only when shape == none)
 	 */
-	function windpeak_shortcode_social( array $atts ): string {
+	function prelaunch_shortcode_social( array $atts ): string {
 		$atts = shortcode_atts(
 			[
 				'network' => '',
@@ -361,7 +361,7 @@
 			return '';
 		}
 
-		$href = windpeak_resolve_social_href( $network, (string) $atts['url'] );
+		$href = prelaunch_resolve_social_href( $network, (string) $atts['url'] );
 		if ( $href === '' ) {
 			return '';
 		}
@@ -408,7 +408,7 @@
 		];
 		$box_size_class = $box_map[ $size ] ?? $box_map['md'];
 
-		$new_tab = windpeak_shortcode_flag( (string) $atts['tab'], true );
+		$new_tab = prelaunch_shortcode_flag( (string) $atts['tab'], true );
 		$target  = $new_tab ? ' target="_blank"' : '';
 		$rel     = $new_tab ? ' rel="noopener noreferrer"' : '';
 
@@ -472,4 +472,4 @@
 		return '<span class="inline-block not-prose"><a class="' . $class_attr . '" href="' . esc_url( $href ) . '"' . $target . $rel . $aria . '><i class="' . esc_attr( $icon_class ) . '" aria-hidden="true"></i></a></span>';
 	}
 
-	add_shortcode( 'social', 'windpeak_shortcode_social' );
+	add_shortcode( 'social', 'prelaunch_shortcode_social' );

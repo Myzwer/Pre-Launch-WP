@@ -795,10 +795,12 @@ The footer credit bar sits below both layouts and can include:
 - accessibility link,
 - optional agency credit.
 
-Key option field:
+Key option fields:
 
 ```text
 show_site_credit_bar
+agency_credit_name
+agency_credit_url
 ```
 
 ### Social Icons
@@ -808,8 +810,8 @@ Social icons come from the global social system, not hardcoded footer markup.
 Helpers:
 
 ```text
-windpeak_get_social_items()
-windpeak_render_social_icon()
+prelaunch_get_social_items()
+prelaunch_render_social_icon()
 ```
 
 ### Footer README Flags

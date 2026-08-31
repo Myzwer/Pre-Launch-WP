@@ -29,12 +29,12 @@
  *   TinyMCE versions.
  * - Avoid over-scoping selectors; wp-admin styles are shared globally.
  */
-.mce-container .mce-toolbar .mce-btn.mce-wpk_btn button {
+.mce-container .mce-toolbar .mce-btn.mce-prelaunch_btn button {
 	background: #2271b1 !important; /* WP blue */
 	border-color: #2271b1 !important;
 }
 
-.mce-container .mce-toolbar .mce-btn.mce-wpk_btn span {
+.mce-container .mce-toolbar .mce-btn.mce-prelaunch_btn span {
 	color: #ffffff !important;
 }
 

@@ -4,7 +4,7 @@
  * Admin Dashboard: Tokens Widget
  *
  * Displays token plan info, rollover, available balance (calculated), recent activity,
- * and a "Request Help" button that links to Windpeak's request portal with context.
+ * and a "Request Help" button that links to the Tokens request URL with context.
  *
  * Data source: ACF option fields stored on the "Tokens" options page.
  *
@@ -16,7 +16,7 @@
  * Permissions:
  * - Current behavior: admins only (manage_options).
  * - Future change: when a client-facing role exists, update the capability
- *   check in wpk_tokens_widget_user_can_view() to allow that role to view
+ *   check in prelaunch_tokens_widget_user_can_view() to allow that role to view
  *   the widget without granting access to edit the Tokens options page.
  */
 
@@ -25,7 +25,7 @@ defined('ABSPATH') || exit;
 /**
  * True if the current user should see the Tokens widget.
  */
-function wpk_tokens_widget_user_can_view(): bool
+function prelaunch_tokens_widget_user_can_view(): bool
 {
     return current_user_can('manage_options');
 }
@@ -39,7 +39,7 @@ function wpk_tokens_widget_user_can_view(): bool
  * - user_name  => Current user display name
  * - user_email => Current user email
  */
-function wpk_build_token_request_url(string $base_url): string
+function prelaunch_build_token_request_url(string $base_url): string
 {
     $site_name = get_bloginfo('name');
     $site_url = home_url('/');
@@ -62,9 +62,9 @@ function wpk_build_token_request_url(string $base_url): string
 /**
  * Render the Tokens dashboard widget.
  */
-function wpk_render_tokens_dashboard_widget(): void
+function prelaunch_render_tokens_dashboard_widget(): void
 {
-    if (!wpk_tokens_widget_user_can_view()) {
+    if (!prelaunch_tokens_widget_user_can_view()) {
         return;
     }
 
@@ -81,14 +81,8 @@ function wpk_render_tokens_dashboard_widget(): void
     $token_rollover = (int) (get_field('token_rollover', 'option') ?? 0);
     $available_tokens = $tokens_remaining + $token_rollover;
 
-    // Request portal URL (base URL only; params are appended in PHP)
-    $token_request_url = (string) (get_field('token_request_url', 'option') ?? '');
-    if (empty($token_request_url)) {
-        $token_request_url = 'https://windpeakdesign.com/request';
-    }
-    $request_url = wpk_build_token_request_url($token_request_url);
+    $token_request_url = trim((string) (get_field('token_request_url', 'option') ?? ''));
 
-    // Summary row
     echo '<p style="margin:0 0 10px;"><strong>Tokens</strong></p>';
 
     echo '<p style="margin:0 0 12px;">';
@@ -97,10 +91,12 @@ function wpk_render_tokens_dashboard_widget(): void
     echo ' &nbsp;|&nbsp; <strong>Available:</strong> ' . esc_html((string) $available_tokens);
     echo '</p>';
 
-    // Request Help button
-    echo '<p style="margin:0 0 14px;">';
-    echo '<a class="button button-primary" href="' . esc_url($request_url) . '" target="_blank" rel="noopener noreferrer">Request Help</a>';
-    echo '</p>';
+    if ($token_request_url !== '') {
+        $request_url = prelaunch_build_token_request_url($token_request_url);
+        echo '<p style="margin:0 0 14px;">';
+        echo '<a class="button button-primary" href="' . esc_url($request_url) . '" target="_blank" rel="noopener noreferrer">Request Help</a>';
+        echo '</p>';
+    }
 
     // Recent activity (last 5 entries), shown before token guide
     $rows = get_field('token_log', 'option');
@@ -161,16 +157,16 @@ function wpk_render_tokens_dashboard_widget(): void
 /**
  * Register the dashboard widget.
  */
-function wpk_register_tokens_dashboard_widget(): void
+function prelaunch_register_tokens_dashboard_widget(): void
 {
-    if (!wpk_tokens_widget_user_can_view()) {
+    if (!prelaunch_tokens_widget_user_can_view()) {
         return;
     }
 
     wp_add_dashboard_widget(
-        'wpk_tokens_widget',
+        'prelaunch_tokens_widget',
         'Tokens',
-        'wpk_render_tokens_dashboard_widget'
+        'prelaunch_render_tokens_dashboard_widget'
     );
 }
-add_action('wp_dashboard_setup', 'wpk_register_tokens_dashboard_widget', 40);
+add_action('wp_dashboard_setup', 'prelaunch_register_tokens_dashboard_widget', 40);
