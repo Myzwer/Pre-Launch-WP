@@ -184,3 +184,40 @@
 	}
 
 	add_action( 'init', 'prelaunch_sync_developer_caps', 25 );
+
+	/**
+	 * Hard-deny leftover Administrator capabilities on Posts Editor.
+	 *
+	 * Managed roles are cloned from Administrator, then feature modules strip
+	 * only the caps they own. Posts Editor would otherwise keep unfiltered HTML,
+	 * unfiltered uploads, manage_options (plugin admin), and core updates.
+	 *
+	 * Site Administrator keeps those leftovers on purpose: their extra screens
+	 * are hidden, not capability-stripped.
+	 *
+	 * Runs after feature modules (priority 30) so clone + media full cannot
+	 * re-grant these on the same request.
+	 *
+	 * @return void
+	 */
+	function prelaunch_sync_posts_editor_restricted_caps(): void {
+		$role = get_role( PRELAUNCH_POSTS_EDITOR_ROLE );
+
+		if ( ! $role ) {
+			return;
+		}
+
+		$denied_caps = array(
+			'unfiltered_html',
+			'unfiltered_upload',
+			'manage_options',
+			'update_core',
+			'edit_files',
+		);
+
+		foreach ( $denied_caps as $cap ) {
+			$role->remove_cap( $cap );
+		}
+	}
+
+	add_action( 'init', 'prelaunch_sync_posts_editor_restricted_caps', 40 );

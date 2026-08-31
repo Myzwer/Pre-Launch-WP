@@ -174,6 +174,7 @@
 			'plugin-install.php',
 			'plugin-editor.php',
 			'update.php',
+			'update-core.php',
 		);
 
 		if ( ! in_array( $pagenow, $plugin_pages, true ) ) {
@@ -195,6 +196,7 @@
 			$blocked_pages = array(
 				'plugin-install.php',
 				'plugin-editor.php',
+				'update-core.php',
 			);
 
 			if ( in_array( $pagenow, $blocked_pages, true ) ) {

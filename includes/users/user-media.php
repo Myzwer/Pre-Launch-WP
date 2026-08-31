@@ -83,7 +83,12 @@
 			switch ( $access_level ) {
 				case 'full':
 					$role->add_cap( 'upload_files' );
-					$role->add_cap( 'unfiltered_upload' );
+
+					// Site Administrator may keep unfiltered uploads. Posts Editor
+					// must stay on WordPress mime checks (no SVG/HTML upload XSS).
+					if ( PRELAUNCH_CLIENT_ADMIN_ROLE === $role_slug ) {
+						$role->add_cap( 'unfiltered_upload' );
+					}
 					break;
 
 				case 'browse_only':

@@ -137,9 +137,75 @@
 				remove_submenu_page( $parent_slug, $menu_slug );
 			}
 		}
+
+		if ( 'off' === $access_level ) {
+			prelaunch_remove_non_core_admin_menus();
+		}
 	}
 
 	add_action( 'admin_menu', 'prelaunch_customize_plugin_settings_admin_menu', 1000 );
+
+	/**
+	 * Core wp-admin menu slugs that other role modules already govern.
+	 *
+	 * Used when plugin_settings is off so unknown plugin menus cannot remain
+	 * visible just because they are not in the local registry.
+	 *
+	 * @param string $slug Menu file / slug from $menu[$i][2].
+	 *
+	 * @return bool
+	 */
+	function prelaunch_is_core_admin_menu_slug( string $slug ): bool {
+		if ( '' === $slug ) {
+			return false;
+		}
+
+		if ( 0 === strpos( $slug, 'separator' ) ) {
+			return true;
+		}
+
+		$core_slugs = array(
+			'index.php',
+			'edit.php',
+			'upload.php',
+			'edit-comments.php',
+			'themes.php',
+			'plugins.php',
+			'users.php',
+			'profile.php',
+			'tools.php',
+			'options-general.php',
+		);
+
+		if ( in_array( $slug, $core_slugs, true ) ) {
+			return true;
+		}
+
+		return 0 === strpos( $slug, 'edit.php?post_type=' );
+	}
+
+	/**
+	 * Remove top-level admin menus that are not core WordPress screens.
+	 *
+	 * @return void
+	 */
+	function prelaunch_remove_non_core_admin_menus(): void {
+		global $menu;
+
+		if ( ! is_array( $menu ) ) {
+			return;
+		}
+
+		foreach ( $menu as $key => $item ) {
+			$slug = isset( $item[2] ) ? (string) $item[2] : '';
+
+			if ( prelaunch_is_core_admin_menu_slug( $slug ) ) {
+				continue;
+			}
+
+			unset( $menu[ $key ] );
+		}
+	}
 
 	/**
 	 * Block direct access to hidden plugin settings pages.
@@ -167,6 +233,19 @@
 
 		if ( ! is_string( $page ) || '' === $page ) {
 			return;
+		}
+
+		// plugin_settings:off — any admin.php?page= request is plugin UI, not a
+		// core screen. Do not rely on the two-item registry alone.
+		if ( 'off' === $access_level && 'admin.php' === $pagenow ) {
+			wp_die(
+				esc_html__( 'You do not have access to this plugin settings page on this site.', 'prelaunch-wp' ),
+				esc_html__( 'Access denied', 'prelaunch-wp' ),
+				array(
+					'response'  => 403,
+					'back_link' => true,
+				)
+			);
 		}
 
 		foreach ( prelaunch_get_hidden_plugin_settings_pages( $access_level ) as $page_config ) {

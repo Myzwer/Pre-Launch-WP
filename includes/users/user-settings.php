@@ -93,6 +93,7 @@
 			'options-media.php',
 			'options-permalink.php',
 			'options-privacy.php',
+			'options.php',
 		);
 
 		if ( in_array( $pagenow, $blocked_pages, true ) ) {
