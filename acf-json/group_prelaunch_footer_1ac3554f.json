@@ -1,0 +1,569 @@
+{
+	"key": "group_prelaunch_footer_1ac3554f",
+	"title": "Footer (Globals)",
+	"fields": [
+		{
+			"key": "field_f4c7e3ce",
+			"label": "Footer Settings",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "left",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_2c070b68",
+			"label": "Footer Layout",
+			"name": "footer_layout",
+			"aria-label": "",
+			"type": "radio",
+			"instructions": "Choose which footer template to render site-wide.",
+			"required": 1,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"simple": "Simple",
+				"complex": "Complex"
+			},
+			"default_value": "simple",
+			"return_format": "value",
+			"allow_null": 0,
+			"other_choice": 0,
+			"layout": "horizontal",
+			"save_other_choice": 0
+		},
+		{
+			"key": "field_04f98299",
+			"label": "Footer Logo",
+			"name": "footer_logo",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "Optional. Used in the footer and on the login screen. If empty, nothing is shown.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"allow_in_bindings": 1,
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_69ac6ba4b4501",
+			"label": "Show Site Credit Bar",
+			"name": "show_site_credit_bar",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 0,
+			"allow_in_bindings": 0,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_prelaunch_agency_credit_name",
+			"label": "Agency Credit Name",
+			"name": "agency_credit_name",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "Shown in the footer credit bar as “Site by {name}”.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_69ac6ba4b4501",
+						"operator": "==",
+						"value": "1"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "Windpeak Design",
+			"maxlength": "",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_prelaunch_agency_credit_url",
+			"label": "Agency Credit URL",
+			"name": "agency_credit_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "Optional. If empty, the agency name is shown as plain text.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_69ac6ba4b4501",
+						"operator": "==",
+						"value": "1"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "https://windpeakdesign.com/",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_3ecf2d01",
+			"label": "Simple Footer",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "simple"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_9c113cde",
+			"label": "Footer Links (optional)",
+			"name": "footer_simple_links",
+			"aria-label": "",
+			"type": "repeater",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "simple"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layout": "table",
+			"pagination": 0,
+			"min": 0,
+			"max": 4,
+			"collapsed": "field_ebecc0b2",
+			"button_label": "Add Link",
+			"rows_per_page": 20,
+			"sub_fields": [
+				{
+					"key": "field_ebecc0b2",
+					"label": "Link",
+					"name": "link",
+					"aria-label": "",
+					"type": "link",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"return_format": "array",
+					"allow_in_bindings": 0,
+					"parent_repeater": "field_9c113cde"
+				}
+			]
+		},
+		{
+			"key": "field_5377717b",
+			"label": "Legal / Copyright Text",
+			"name": "footer_simple_legal_text",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "Shown beneath the footer content. Basic line breaks are supported.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "simple"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 1,
+			"rows": 4,
+			"placeholder": "",
+			"new_lines": "br"
+		},
+		{
+			"key": "field_50178e32",
+			"label": "Complex Footer",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_10e0822a",
+			"label": "Footer Links",
+			"name": "footer_complex_links",
+			"aria-label": "",
+			"type": "repeater",
+			"instructions": "Optional links shown in the complex footer.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"collapsed": "field_1a09fcf8",
+			"min": 0,
+			"max": 0,
+			"layout": "table",
+			"button_label": "Add Link",
+			"rows_per_page": 20,
+			"sub_fields": [
+				{
+					"key": "field_1a09fcf8",
+					"label": "Link",
+					"name": "link",
+					"aria-label": "",
+					"type": "link",
+					"instructions": "",
+					"required": 1,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"return_format": "array",
+					"parent_repeater": "field_10e0822a"
+				}
+			]
+		},
+		{
+			"key": "field_eec3ace2",
+			"label": "Legal Information",
+			"name": "footer_complex_legal",
+			"aria-label": "",
+			"type": "wysiwyg",
+			"instructions": "Use bold/italics and links as needed. Media uploads are disabled.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"tabs": "visual",
+			"toolbar": "basic",
+			"media_upload": 0,
+			"delay": 0
+		},
+		{
+			"key": "field_578c099a",
+			"label": "Affiliations",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_2b0e270a",
+			"label": "Show Affiliations Panel",
+			"name": "footer_show_affiliations",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Enable the logo grid panel for affiliations / certifications.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide"
+		},
+		{
+			"key": "field_94809553",
+			"label": "Affiliations Heading",
+			"name": "footer_affiliations_heading",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					},
+					{
+						"field": "field_2b0e270a",
+						"operator": "==",
+						"value": "1"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "Our Affiliations",
+			"placeholder": "",
+			"prepend": "",
+			"append": "",
+			"maxlength": ""
+		},
+		{
+			"key": "field_eaeefbac",
+			"label": "Affiliation Logos",
+			"name": "footer_affiliation_logos",
+			"aria-label": "",
+			"type": "repeater",
+			"instructions": "Logos display in a responsive grid. Name is used for alt text.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_2c070b68",
+						"operator": "==",
+						"value": "complex"
+					},
+					{
+						"field": "field_2b0e270a",
+						"operator": "==",
+						"value": "1"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layout": "table",
+			"pagination": 0,
+			"min": 0,
+			"max": 0,
+			"collapsed": "field_b068931c",
+			"button_label": "Add Logo",
+			"rows_per_page": 20,
+			"sub_fields": [
+				{
+					"key": "field_96d6f2e7",
+					"label": "Logo",
+					"name": "logo",
+					"aria-label": "",
+					"type": "image",
+					"instructions": "Upload a logo for an affiliation / certification / partner.",
+					"required": 1,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "25",
+						"class": "",
+						"id": ""
+					},
+					"return_format": "array",
+					"library": "all",
+					"min_width": "",
+					"min_height": "",
+					"min_size": "",
+					"max_width": "",
+					"max_height": "",
+					"max_size": "",
+					"mime_types": "",
+					"allow_in_bindings": 1,
+					"preview_size": "medium",
+					"parent_repeater": "field_eaeefbac"
+				},
+				{
+					"key": "field_b068931c",
+					"label": "Name",
+					"name": "name",
+					"aria-label": "",
+					"type": "text",
+					"instructions": "Used for accessibility (alt text) and internal reference.",
+					"required": 1,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "35",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"placeholder": "",
+					"prepend": "",
+					"append": "",
+					"maxlength": "",
+					"parent_repeater": "field_eaeefbac"
+				},
+				{
+					"key": "field_097de5b6",
+					"label": "Link (optional)",
+					"name": "link",
+					"aria-label": "",
+					"type": "link",
+					"instructions": "Optional. If provided, the logo becomes a link.",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "40",
+						"class": "",
+						"id": ""
+					},
+					"return_format": "array",
+					"parent_repeater": "field_eaeefbac"
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "options_page",
+				"operator": "==",
+				"value": "acf-globals"
+			}
+		]
+	],
+	"menu_order": 5,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "Global footer settings for Pre-Launch WP.",
+	"show_in_rest": 0,
+	"display_title": "",
+	"allow_ai_access": false,
+	"ai_description": "",
+	"modified": 1788145342
+}

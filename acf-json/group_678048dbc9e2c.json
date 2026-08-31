@@ -1,0 +1,394 @@
+{
+	"key": "group_678048dbc9e2c",
+	"title": "Globals",
+	"fields": [
+		{
+			"key": "field_696dac1abf1d6",
+			"label": "Branding",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "left",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_696dabedbf1d5",
+			"label": "Site Nav Logo",
+			"name": "site_nav_logo",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "Shown in the site header. Use a transparent PNG.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"allow_in_bindings": 0,
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_69928861abe10",
+			"label": "Fallback Image",
+			"name": "fallback_image",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "Used for SEO/social sharing when a page has no featured image.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"allow_in_bindings": 0,
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_prelaunch_tab_contact",
+			"label": "Contact",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "left",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_69769d26a7d17",
+			"label": "Email",
+			"name": "email_address",
+			"aria-label": "",
+			"type": "email",
+			"instructions": "Used in the complex footer and the [social network=\"email\"] shortcode.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_69769d39a7d18",
+			"label": "Phone",
+			"name": "phone_number",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "Used in the complex footer and the [social network=\"phone\"] shortcode.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_696dac24a5b7d",
+			"label": "Socials",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "left",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_678048dc93e2b",
+			"label": "Facebook",
+			"name": "facebook_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_6780490a93e2c",
+			"label": "Instagram",
+			"name": "instagram_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_696dac35ce797",
+			"label": "X (Twitter)",
+			"name": "x_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_697699a4a7d10",
+			"label": "YouTube",
+			"name": "youtube_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_69769ccda7d11",
+			"label": "Pinterest",
+			"name": "pinterest_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_69769cd9a7d12",
+			"label": "LinkedIn",
+			"name": "linkedin_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_69769ce7a7d13",
+			"label": "TikTok",
+			"name": "tiktok_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_69769cf2a7d14",
+			"label": "Threads",
+			"name": "threads_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_69769d0da7d15",
+			"label": "GitHub",
+			"name": "github_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_69769d1ca7d16",
+			"label": "Other Website",
+			"name": "website_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "Optional extra site (parent company, shop, etc.). Leave empty if unused.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_prelaunch_tab_404",
+			"label": "404 Page",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "left",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_69b086bddf7c6",
+			"label": "Main Text",
+			"name": "main_text",
+			"aria-label": "",
+			"type": "wysiwyg",
+			"instructions": "Replaces the default 404 copy. Include a heading, a short explanation, and a link home.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"allow_in_bindings": 0,
+			"tabs": "visual",
+			"toolbar": "basic",
+			"media_upload": 0,
+			"delay": 0
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "options_page",
+				"operator": "==",
+				"value": "acf-globals"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "Site-wide branding, contact, socials, and 404 copy.",
+	"show_in_rest": 0,
+	"display_title": "",
+	"allow_ai_access": false,
+	"ai_description": "",
+	"modified": 1788145342
+}

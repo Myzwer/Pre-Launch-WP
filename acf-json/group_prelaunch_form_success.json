@@ -1,0 +1,216 @@
+{
+	"key": "group_prelaunch_form_success",
+	"title": "Form Success Page",
+	"fields": [
+		{
+			"key": "field_success_title",
+			"label": "Title",
+			"name": "success_title",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": false,
+			"conditional_logic": false,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_success_cta_layout",
+			"label": "CTA Layout",
+			"name": "success_cta_layout",
+			"aria-label": "",
+			"type": "select",
+			"instructions": "Primary uses a page/URL button. Download uses a file as the main button.",
+			"required": false,
+			"conditional_logic": false,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"primary": "Primary",
+				"primary_ghost": "Primary + Ghost",
+				"primary_download": "Primary Download",
+				"primary_download_ghost": "Primary Download + Ghost"
+			},
+			"default_value": "primary",
+			"multiple": 0,
+			"allow_null": 0,
+			"ui": 0,
+			"ajax": 0,
+			"placeholder": "",
+			"return_format": "value",
+			"create_options": 0,
+			"save_options": 0
+		},
+		{
+			"key": "field_success_body",
+			"label": "Body",
+			"name": "success_body",
+			"aria-label": "",
+			"type": "wysiwyg",
+			"instructions": "",
+			"required": false,
+			"conditional_logic": false,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"tabs": "visual",
+			"toolbar": "basic",
+			"media_upload": 0,
+			"default_value": "",
+			"delay": 0
+		},
+		{
+			"key": "field_success_primary_button",
+			"label": "Primary CTA",
+			"name": "success_primary_cta",
+			"aria-label": "",
+			"type": "link",
+			"instructions": "",
+			"required": false,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_success_cta_layout",
+						"operator": "==",
+						"value": "primary"
+					}
+				],
+				[
+					{
+						"field": "field_success_cta_layout",
+						"operator": "==",
+						"value": "primary_ghost"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array"
+		},
+		{
+			"key": "field_success_secondary_button",
+			"label": "Secondary CTA (Ghost)",
+			"name": "success_secondary_cta",
+			"aria-label": "",
+			"type": "link",
+			"instructions": "",
+			"required": false,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_success_cta_layout",
+						"operator": "==",
+						"value": "primary_ghost"
+					}
+				],
+				[
+					{
+						"field": "field_success_cta_layout",
+						"operator": "==",
+						"value": "primary_download_ghost"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array"
+		},
+		{
+			"key": "field_success_download_button",
+			"label": "Download CTA",
+			"name": "success_download_cta",
+			"aria-label": "",
+			"type": "file",
+			"instructions": "The attachment title in Media is used as the button label.",
+			"required": false,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_success_cta_layout",
+						"operator": "==",
+						"value": "primary_download"
+					}
+				],
+				[
+					{
+						"field": "field_success_cta_layout",
+						"operator": "==",
+						"value": "primary_download_ghost"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array",
+			"library": "all",
+			"min_size": 0,
+			"max_size": 0,
+			"mime_types": ""
+		},
+		{
+			"key": "field_69b1849f3b245",
+			"label": "Follow Up Statement",
+			"name": "follow_up_statement",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "Use this to give any follow up regarding timeline of response, next steps or otherwise.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 0,
+			"rows": 3,
+			"placeholder": "",
+			"new_lines": "br"
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "form-success.php"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "acf_after_title",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "Fields used by the Form Success page template.",
+	"show_in_rest": 0,
+	"display_title": "",
+	"allow_ai_access": false,
+	"ai_description": "",
+	"modified": 1788145342
+}

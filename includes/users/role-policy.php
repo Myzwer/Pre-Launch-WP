@@ -58,7 +58,7 @@
 
 			PRELAUNCH_POSTS_EDITOR_ROLE => array(
 				'dashboard'       => false,
-				'media'           => 'off',
+				'media'           => 'full',
 				'posts'           => true,
 				'pages'           => 'off',
 				'gravity_forms'   => 'off',

@@ -1,0 +1,407 @@
+{
+	"key": "group_69784567996b3",
+	"title": "Tokens Page",
+	"fields": [
+		{
+			"key": "field_6978481f65c1c",
+			"label": "Token Counts",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_6978478265c1a",
+			"label": "Tokens Remaining",
+			"name": "tokens_remaining",
+			"aria-label": "",
+			"type": "number",
+			"instructions": "This needs modified down after logs are completed, and back up to full at the start of each month.<br \/><br \/>\r\nDEFAULT: 10",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"min": "",
+			"max": "",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"step": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_6978522b33ecf",
+			"label": "Token Rollover",
+			"name": "token_rollover",
+			"aria-label": "",
+			"type": "number",
+			"instructions": "If any tokens rollover, they go here. They are automatically calculated into the available hours on the client side.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"min": "",
+			"max": "",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"step": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_6978524433ed0",
+			"label": "Tokens Last Reset (Admin Only)",
+			"name": "tokens_last_reset",
+			"aria-label": "",
+			"type": "date_picker",
+			"instructions": "Should be the first of each month.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"display_format": "F j, Y",
+			"return_format": "F j, Y",
+			"first_day": 0,
+			"default_to_current_date": 1,
+			"allow_in_bindings": 0
+		},
+		{
+			"key": "field_697852a533ed1",
+			"label": "Token Logs",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_697852c233ed2",
+			"label": "Token Log",
+			"name": "token_log",
+			"aria-label": "",
+			"type": "repeater",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layout": "table",
+			"pagination": 0,
+			"min": 0,
+			"max": 0,
+			"collapsed": "",
+			"button_label": "Add Row",
+			"rows_per_page": 20,
+			"sub_fields": [
+				{
+					"key": "field_697852da33ed3",
+					"label": "Log Date",
+					"name": "log_date",
+					"aria-label": "",
+					"type": "date_picker",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"display_format": "F j, Y",
+					"return_format": "F j, Y",
+					"first_day": 0,
+					"default_to_current_date": 1,
+					"allow_in_bindings": 0,
+					"parent_repeater": "field_697852c233ed2"
+				},
+				{
+					"key": "field_6978534c33ed4",
+					"label": "Log Note",
+					"name": "log_note",
+					"aria-label": "",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"maxlength": "",
+					"allow_in_bindings": 0,
+					"placeholder": "",
+					"prepend": "",
+					"append": "",
+					"parent_repeater": "field_697852c233ed2"
+				},
+				{
+					"key": "field_6978536b33ed5",
+					"label": "Tokens Used",
+					"name": "tokens_used",
+					"aria-label": "",
+					"type": "number",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"min": 0,
+					"max": "",
+					"allow_in_bindings": 0,
+					"placeholder": "",
+					"step": 1,
+					"prepend": "",
+					"append": "",
+					"parent_repeater": "field_697852c233ed2"
+				}
+			]
+		},
+		{
+			"key": "field_6978492633ecd",
+			"label": "Client Notes",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_6978492f33ece",
+			"label": "Client Notes (Admin Only)",
+			"name": "client_notes",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 0,
+			"rows": 20,
+			"placeholder": "",
+			"new_lines": "wpautop"
+		},
+		{
+			"key": "field_69785d767b17c",
+			"label": "Set It Forget It",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_69784568ae919",
+			"label": "Tokens Per Month",
+			"name": "tokens_per_month",
+			"aria-label": "",
+			"type": "number",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"min": "",
+			"max": "",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"step": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_697848f033ecb",
+			"label": "Token Request URL",
+			"name": "token_request_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "https://windpeakdesign.com/request",
+			"allow_in_bindings": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_6978490933ecc",
+			"label": "Token Support Email",
+			"name": "token_support_email",
+			"aria-label": "",
+			"type": "email",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "hello@windpeakdesign.com",
+			"allow_in_bindings": 0,
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_6978484133ec8",
+			"label": "Token Guide",
+			"name": "token_guide",
+			"aria-label": "",
+			"type": "repeater",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layout": "table",
+			"pagination": 0,
+			"min": 0,
+			"max": 0,
+			"collapsed": "",
+			"button_label": "Add New Token",
+			"rows_per_page": 20,
+			"sub_fields": [
+				{
+					"key": "field_6978486933ec9",
+					"label": "Tier Label",
+					"name": "tier_label",
+					"aria-label": "",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"maxlength": "",
+					"allow_in_bindings": 0,
+					"placeholder": "",
+					"prepend": "",
+					"append": "",
+					"parent_repeater": "field_6978484133ec8"
+				},
+				{
+					"key": "field_6978487933eca",
+					"label": "Tier Description",
+					"name": "tier_description",
+					"aria-label": "",
+					"type": "wysiwyg",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"allow_in_bindings": 0,
+					"tabs": "all",
+					"toolbar": "full",
+					"media_upload": 1,
+					"delay": 0,
+					"parent_repeater": "field_6978484133ec8"
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "options_page",
+				"operator": "==",
+				"value": "tokens"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "acf_after_title",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 0,
+	"display_title": "",
+	"allow_ai_access": false,
+	"ai_description": "",
+	"modified": 1783134000
+}

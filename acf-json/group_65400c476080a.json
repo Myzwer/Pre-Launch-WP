@@ -1,0 +1,576 @@
+{
+	"key": "group_65400c476080a",
+	"title": "Header Templates",
+	"fields": [
+		{
+			"key": "field_65400c47a347c",
+			"label": "Header Select",
+			"name": "header_select",
+			"aria-label": "",
+			"type": "flexible_content",
+			"instructions": "Add one header. Options:<br>\r\nSimple — colored background, title, and optional buttons.<br>\r\nSide Image — photo on one side, title and buttons on the other.<br>\r\nFull Image — full-width photo background with a tint, title, and buttons.<br>\r\nVideo — looping video background with a poster image, title, and buttons.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layouts": {
+				"layout_65400c9fe3754": {
+					"key": "layout_65400c9fe3754",
+					"name": "simple_header",
+					"label": "Simple Header",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_65fc6fda5b630",
+							"label": "Small Subtitle",
+							"name": "small_subtitle",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_65400d0ba347d",
+							"label": "Main Title",
+							"name": "main_title",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_69d296eaa9fb9",
+							"label": "Primary Button (Optional)",
+							"name": "primary_button",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						},
+						{
+							"key": "field_69d29703a9fba",
+							"label": "Secondary Button (Optional)",
+							"name": "secondary_button",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_65400e8f22c1a": {
+					"key": "layout_65400e8f22c1a",
+					"name": "side_image_header",
+					"label": "Side Image Header",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_65400ec322c1e",
+							"label": "Side Photo",
+							"name": "side_photo",
+							"aria-label": "",
+							"type": "image",
+							"instructions": "Strongly advised that your photo is less than 1.5mb in size. Large images will slow down your site.",
+							"required": 1,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "url",
+							"library": "all",
+							"min_width": 800,
+							"min_height": "",
+							"min_size": "",
+							"max_width": "",
+							"max_height": "",
+							"max_size": "1.5",
+							"mime_types": "",
+							"allow_in_bindings": 1,
+							"preview_size": "medium"
+						},
+						{
+							"key": "field_65400eb922c1d",
+							"label": "Small Subtitle",
+							"name": "small_subtitle",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Small title that goes above the main one. 45 Character Limit",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": 45,
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_65400ea322c1c",
+							"label": "Main Title",
+							"name": "main_title",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_69d29a146348a",
+							"label": "Primary Button (Optional)",
+							"name": "primary_button_side",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						},
+						{
+							"key": "field_69d29a186348b",
+							"label": "Secondary Button (Optional)",
+							"name": "secondary_button_side",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_69d4681c4f7c1": {
+					"key": "layout_69d4681c4f7c1",
+					"name": "full_image_header",
+					"label": "Full Image Header",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_69d4681c4f7c2",
+							"label": "Background Photo",
+							"name": "background_photo",
+							"aria-label": "",
+							"type": "image",
+							"instructions": "Strongly advised that your photo is less than 1.5mb in size. Large images will slow down your site.",
+							"required": 1,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "url",
+							"library": "all",
+							"min_width": 800,
+							"min_height": "",
+							"min_size": "",
+							"max_width": "",
+							"max_height": "",
+							"max_size": "1.5",
+							"mime_types": "",
+							"allow_in_bindings": 1,
+							"preview_size": "medium"
+						},
+						{
+							"key": "field_69d470855314f",
+							"label": "Background Tint Level",
+							"name": "background_tint_level",
+							"aria-label": "",
+							"type": "select",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"choices": {
+								"0": "None",
+								"10": "Subtle",
+								"30": "Normal",
+								"45": "Medium",
+								"60": "Strong"
+							},
+							"default_value": false,
+							"return_format": "value",
+							"multiple": 0,
+							"allow_null": 0,
+							"allow_in_bindings": 0,
+							"ui": 0,
+							"ajax": 0,
+							"placeholder": "",
+							"create_options": 0,
+							"save_options": 0
+						},
+						{
+							"key": "field_69d4681c4f7c3",
+							"label": "Small Subtitle",
+							"name": "small_subtitle",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Small title that goes above the main one. 45 Character Limit",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": 45,
+							"allow_in_bindings": 1,
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_69d4681c4f7c4",
+							"label": "Main Title",
+							"name": "main_title",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"allow_in_bindings": 1,
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_69d4681c4f7c5",
+							"label": "Primary Button (Optional)",
+							"name": "primary_button",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						},
+						{
+							"key": "field_69d4681c4f7c6",
+							"label": "Secondary Button (Optional)",
+							"name": "secondary_button",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_6a192fb598371": {
+					"key": "layout_6a192fb598371",
+					"name": "video_header",
+					"label": "Video Header",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_6a192fbe98373",
+							"label": "NOTE",
+							"name": "",
+							"aria-label": "",
+							"type": "message",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"message": "This is ONLY for use on the homepage. For design / SEO reasons, please don't use this anywhere other than the homepage. :)",
+							"new_lines": "wpautop",
+							"esc_html": 0
+						},
+						{
+							"key": "field_6a1fb80875000",
+							"label": "Poster Image",
+							"name": "poster_image",
+							"aria-label": "",
+							"type": "image",
+							"instructions": "Set this to the first frame of your video and it'll load it first, which speeds up your site because it doesn't have to wait for the video to load.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"library": "all",
+							"min_width": "",
+							"min_height": "",
+							"min_size": "",
+							"max_width": "",
+							"max_height": "",
+							"max_size": "",
+							"mime_types": "",
+							"allow_in_bindings": 0,
+							"preview_size": "medium"
+						},
+						{
+							"key": "field_6a192fe998374",
+							"label": "Video Background",
+							"name": "video_background",
+							"aria-label": "",
+							"type": "file",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"library": "all",
+							"min_size": "",
+							"max_size": "",
+							"mime_types": "",
+							"allow_in_bindings": 0
+						},
+						{
+							"key": "field_6a1fa4932cc87",
+							"label": "Background Tint Level",
+							"name": "background_tint_level",
+							"aria-label": "",
+							"type": "select",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"choices": {
+								"0": "None",
+								"30": "Light",
+								"45": "Medium",
+								"60": "Strong",
+								"70": "Extra Strong"
+							},
+							"default_value": false,
+							"return_format": "value",
+							"multiple": 0,
+							"allow_null": 0,
+							"allow_in_bindings": 0,
+							"ui": 0,
+							"ajax": 0,
+							"placeholder": "",
+							"create_options": 0,
+							"save_options": 0
+						},
+						{
+							"key": "field_6a19303198375",
+							"label": "Title",
+							"name": "title",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"allow_in_bindings": 0,
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_6a19303b98376",
+							"label": "Subtitle",
+							"name": "subtitle",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"allow_in_bindings": 0,
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_6a19304898377",
+							"label": "Primary CTA",
+							"name": "primary_cta",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						},
+						{
+							"key": "field_6a19305298378",
+							"label": "Secondary CTA",
+							"name": "secondary_cta",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array",
+							"allow_in_bindings": 0
+						}
+					],
+					"min": "",
+					"max": ""
+				}
+			},
+			"min": "",
+			"max": 1,
+			"button_label": "Add Header"
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "default"
+			}
+		],
+		[
+			{
+				"param": "page_type",
+				"operator": "==",
+				"value": "front_page"
+			}
+		]
+	],
+	"menu_order": 1,
+	"position": "acf_after_title",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 0,
+	"display_title": "",
+	"allow_ai_access": false,
+	"ai_description": "",
+	"modified": 1788145342
+}

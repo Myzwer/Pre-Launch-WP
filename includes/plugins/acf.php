@@ -102,3 +102,48 @@
 	}
 
 	add_action( 'acf/init', 'prelaunch_register_acf_options_pages' );
+
+	/**
+	 * Populate the flex Form block select with Gravity Forms.
+	 *
+	 * @param array<string, mixed> $field ACF field array.
+	 *
+	 * @return array<string, mixed>
+	 */
+	function prelaunch_acf_load_gravity_form_choices( array $field ): array {
+		$field['choices'] = array();
+
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return $field;
+		}
+
+		$forms = GFAPI::get_forms();
+
+		if ( ! is_array( $forms ) ) {
+			return $field;
+		}
+
+		usort(
+			$forms,
+			static function ( $a, $b ): int {
+				$a_title = is_array( $a ) ? (string) ( $a['title'] ?? '' ) : '';
+				$b_title = is_array( $b ) ? (string) ( $b['title'] ?? '' ) : '';
+
+				return strcasecmp( $a_title, $b_title );
+			}
+		);
+
+		foreach ( $forms as $form ) {
+			if ( ! is_array( $form ) || empty( $form['id'] ) ) {
+				continue;
+			}
+
+			$id    = (string) (int) $form['id'];
+			$title = isset( $form['title'] ) ? (string) $form['title'] : 'Form ' . $id;
+			$field['choices'][ $id ] = $title . ' (ID ' . $id . ')';
+		}
+
+		return $field;
+	}
+
+	add_filter( 'acf/load_field/name=form_id', 'prelaunch_acf_load_gravity_form_choices' );
