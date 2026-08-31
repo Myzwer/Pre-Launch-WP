@@ -13,6 +13,18 @@
 	$ghost_cta    = get_field( 'success_secondary_cta' );
 	$download_cta = get_field( 'success_download_cta' );
 
+	$download_url   = '';
+	$download_title = 'Download';
+	if ( is_array( $download_cta ) ) {
+		$download_url   = (string) ( $download_cta['url'] ?? '' );
+		$download_title = (string) ( $download_cta['title'] ?? '' );
+		if ( $download_title === '' ) {
+			$download_title = (string) ( $download_cta['filename'] ?? 'Download' );
+		}
+	} elseif ( is_string( $download_cta ) ) {
+		$download_url = $download_cta;
+	}
+
 	$follow_up = get_field( 'follow_up_statement' );
 
 	/**
@@ -31,7 +43,7 @@
 	$show_primary_download = in_array( $cta_layout, array( 'primary_download', 'primary_download_ghost' ), true );
 	$show_ghost            = in_array( $cta_layout, array( 'primary_ghost', 'primary_download_ghost' ), true );
 
-	$has_ctas = ( $show_primary_regular && $primary_cta ) || ( $show_primary_download && $download_cta ) || ( $show_ghost && $ghost_cta );
+	$has_ctas = ( $show_primary_regular && $primary_cta ) || ( $show_primary_download && $download_url !== '' ) || ( $show_ghost && $ghost_cta );
 ?>
 
 <section class="overflow-hidden relative min-h-screen bg-primary-gradient">
@@ -39,8 +51,9 @@
 		<div
 			class="absolute left-1/2 top-[42%] h-[32rem] w-[32rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/35 blur-3xl md:h-[42rem] md:w-[42rem]">
 		</div>
+	</div>
 
-		<div class="wrap">
+	<div class="relative wrap">
 			<div class="items-center grid-12 min-h-[calc(100vh-70px)]">
 				<div class="col-span-12 md:-translate-y-10">
 					<div
@@ -83,14 +96,14 @@
 										</span>
 										<?php endif; ?>
 
-										<?php if ( $show_primary_download && $download_cta ) : ?>
+										<?php if ( $show_primary_download && $download_url !== '' ) : ?>
 											<span class="inline-block not-prose">
 											<a
 												class="btn_main"
-												href="<?php echo esc_url( $download_cta['url'] ); ?>"
-												target="<?php echo esc_attr( $download_cta['target'] ?: '_self' ); ?>"
+												href="<?php echo esc_url( $download_url ); ?>"
+												download
 											>
-												<span><?php echo esc_html( $download_cta['title'] ); ?></span>
+												<span><?php echo esc_html( $download_title ); ?></span>
 												<i class="fa-solid fa-download" aria-hidden="true"></i>
 											</a>
 										</span>
