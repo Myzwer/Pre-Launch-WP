@@ -31,7 +31,7 @@
 	<div class="text-black bg-white wrap">
 		<div class="grid-12">
 			<div class="col-span-12 py-10 prose-theme">
-				<?php the_field( 'policy' ); ?>
+				<?php echo prelaunch_demote_policy_h1s( (string) get_field( 'policy' ) ); ?>
 				Contact Email: <?php echo esc_html( get_option( 'admin_email' ) ); ?>
 			</div>
 		</div>

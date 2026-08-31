@@ -34,7 +34,7 @@
 			"name": "policy",
 			"aria-label": "",
 			"type": "wysiwyg",
-			"instructions": "",
+			"instructions": "Start with Heading 2. The page title is already the main heading (H1).",
 			"required": 0,
 			"conditional_logic": 0,
 			"wrapper": {
@@ -71,5 +71,5 @@
 	"display_title": "",
 	"allow_ai_access": false,
 	"ai_description": "",
-	"modified": 1773252930
+	"modified": 1788145400
 }

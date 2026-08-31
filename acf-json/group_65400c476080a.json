@@ -558,6 +558,13 @@
 				"operator": "==",
 				"value": "front_page"
 			}
+		],
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "frontpage.php"
+			}
 		]
 	],
 	"menu_order": 1,
@@ -572,5 +579,5 @@
 	"display_title": "",
 	"allow_ai_access": false,
 	"ai_description": "",
-	"modified": 1788145342
+	"modified": 1788145400
 }

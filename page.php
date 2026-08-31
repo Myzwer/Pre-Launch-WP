@@ -64,6 +64,13 @@
 
 		endwhile;
 
+	else :
+		?>
+		<div class="py-10 wrap">
+			<h1 class="text-4xl font-bold"><?php echo esc_html( get_the_title() ); ?></h1>
+		</div>
+		<?php
+
 	endif;
 ?>
 

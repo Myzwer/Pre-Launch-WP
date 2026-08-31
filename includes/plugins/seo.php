@@ -36,16 +36,21 @@ function prelaunch_tsf_generated_description_fallback(string $desc, ?array $args
         return $desc;
     }
 
-    $tsfquery = tsf()->query();
-    if (!$tsfquery || !method_exists($tsfquery, 'is_singular')) {
-        return $desc;
+    $post_id = 0;
+
+    if (is_array($args) && empty($args['tax']) && empty($args['pta']) && ! empty($args['id'])) {
+        $post_id = (int) $args['id'];
     }
 
-    if (!$tsfquery->is_singular()) {
-        return $desc;
+    if ($post_id <= 0) {
+        $tsfquery = tsf()->query();
+        if (!$tsfquery || !method_exists($tsfquery, 'is_singular') || !$tsfquery->is_singular()) {
+            return $desc;
+        }
+
+        $post_id = method_exists($tsfquery, 'get_the_real_id') ? (int) $tsfquery->get_the_real_id() : 0;
     }
 
-    $post_id = method_exists($tsfquery, 'get_the_real_id') ? (int) $tsfquery->get_the_real_id() : 0;
     if ($post_id <= 0) {
         return $desc;
     }
@@ -62,6 +67,8 @@ function prelaunch_tsf_generated_description_fallback(string $desc, ?array $args
         'page_intro',
         'intro_text',
         'summary',
+        'policy',
+        'success_body',
     ];
 
     // Keys commonly used for UI, labels, media, or short snippets.
@@ -73,6 +80,11 @@ function prelaunch_tsf_generated_description_fallback(string $desc, ?array $args
         'highlight_3',
         'video_background',
         'primary_cta_button',
+        'header_image',
+        'poster_image',
+        'background_photo',
+        'side_photo',
+        'form_id',
     ];
 
     $text = prelaunch_extract_first_meaningful_text_from_acf_fields($post_id, $priority_fields, $exclude_fields);
@@ -82,22 +94,62 @@ function prelaunch_tsf_generated_description_fallback(string $desc, ?array $args
 
 function prelaunch_extract_first_meaningful_text_from_flex(array $rows): string
 {
+    $preferred_keys = [
+        'content',
+        'intro',
+        'announcement',
+        'quote',
+        'message',
+        'policy',
+        'success_body',
+    ];
+
     foreach ($rows as $row) {
-        if (!is_array($row)) {
+        if (! is_array($row)) {
+            continue;
+        }
+
+        foreach ($preferred_keys as $key) {
+            if (empty($row[ $key ]) || ! is_string($row[ $key ])) {
+                continue;
+            }
+
+            $text = prelaunch_clean_text($row[ $key ]);
+            if (prelaunch_is_usable_meta_text($text)) {
+                return $text;
+            }
+        }
+    }
+
+    $skip_keys = [
+        'acf_fc_layout',
+        'header_image',
+        'poster_image',
+        'background_photo',
+        'side_photo',
+        'video_background',
+        'form_id',
+    ];
+
+    foreach ($rows as $row) {
+        if (! is_array($row)) {
             continue;
         }
 
         foreach ($row as $key => $value) {
-            if ($key === 'acf_fc_layout') {
-                continue;
-            }
+            $key = (string) $key;
 
-            if (is_array($value) || is_object($value)) {
+            if (
+                in_array($key, $skip_keys, true)
+                || is_array($value)
+                || is_object($value)
+                || preg_match('#(?:button|cta|heading|kicker|label|_url|_image|video|photo|file)#i', $key) === 1
+            ) {
                 continue;
             }
 
             $text = prelaunch_clean_text((string) $value);
-            if ($text !== '' && mb_strlen($text) >= 60) {
+            if (prelaunch_is_usable_meta_text($text)) {
                 return $text;
             }
         }
@@ -116,7 +168,7 @@ function prelaunch_extract_first_meaningful_text_from_acf_fields(
         $value = get_field($field_name, $post_id);
         $text = prelaunch_flatten_to_text($value);
 
-        if ($text !== '' && mb_strlen($text) >= 60) {
+        if (prelaunch_is_usable_meta_text($text)) {
             return $text;
         }
     }
@@ -134,7 +186,7 @@ function prelaunch_extract_first_meaningful_text_from_acf_fields(
 
         $text = prelaunch_flatten_to_text($value);
 
-        if ($text !== '' && mb_strlen($text) >= 60) {
+        if (prelaunch_is_usable_meta_text($text)) {
             return $text;
         }
     }
@@ -159,8 +211,34 @@ function prelaunch_clean_text(string $text): string
 {
     $text = strip_shortcodes($text);
     $text = wp_strip_all_tags($text);
+    $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     $text = trim((string) preg_replace('/\s+/', ' ', $text));
     return $text;
+}
+
+function prelaunch_is_usable_meta_text(string $text): bool
+{
+    if ($text === '' || mb_strlen($text) < 60) {
+        return false;
+    }
+
+    if (preg_match('#^https?://#i', $text) === 1) {
+        return false;
+    }
+
+    if (preg_match('#\.(?:jpe?g|png|gif|webp|svg|avif|mp4|webm|pdf)(?:\?|$)#i', $text) === 1) {
+        return false;
+    }
+
+    if (preg_match_all('/\bbutton\b/i', $text) >= 4) {
+        return false;
+    }
+
+    if (mb_strlen($text) < 160 && preg_match('/[.!?]/', $text) !== 1) {
+        return false;
+    }
+
+    return true;
 }
 
 function prelaunch_trim_meta_description(string $text): string
@@ -224,4 +302,64 @@ function prelaunch_tsf_fallback_image_generator($args = null, string $size = 'fu
     }
 
     yield ['url' => $url, 'id' => $id];
+}
+
+/**
+ * Form Success pages are confirmation screens, not landing pages.
+ */
+add_filter('the_seo_framework_robots_meta_array', 'prelaunch_tsf_form_success_noindex', 10, 3);
+
+function prelaunch_tsf_form_success_noindex(array $meta, $args = null, $options = 0): array
+{
+    if (($meta['noindex'] ?? '') === 'noindex') {
+        return $meta;
+    }
+
+    $page_id = 0;
+
+    if (is_array($args) && ! empty($args['id'])) {
+        $page_id = (int) $args['id'];
+    } elseif (function_exists('tsf')) {
+        $query = tsf()->query();
+        if ($query && method_exists($query, 'is_singular') && $query->is_singular() && method_exists($query, 'get_the_real_id')) {
+            $page_id = (int) $query->get_the_real_id();
+        }
+    }
+
+    if ($page_id > 0 && get_page_template_slug($page_id) === 'form-success.php') {
+        $meta['noindex'] = 'noindex';
+    }
+
+    return $meta;
+}
+
+/**
+ * Drop WordPress's default tagline so TSF does not append it to titles.
+ */
+add_filter('bloginfo', 'prelaunch_filter_default_blog_description', 10, 2);
+
+function prelaunch_filter_default_blog_description(string $output, string $show): string
+{
+    if ($show !== 'description') {
+        return $output;
+    }
+
+    $normalized = strtolower(trim(wp_strip_all_tags($output)));
+
+    if ($normalized === '' || $normalized === 'just another wordpress site') {
+        return '';
+    }
+
+    return $output;
+}
+
+/**
+ * Policy pages already output the title as H1; remap extra H1s in the WYSIWYG.
+ */
+function prelaunch_demote_policy_h1s(string $html): string
+{
+    $html = preg_replace('/<h1(\s[^>]*)?>/i', '<h2$1>', $html) ?? $html;
+    $html = preg_replace('/<\/h1>/i', '</h2>', $html) ?? $html;
+
+    return $html;
 }
